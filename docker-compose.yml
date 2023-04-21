@@ -11,4 +11,19 @@ services:
     volumes:
       - "./backend/create.sql:/docker-entrypoint-initdb.d/create.sql"
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      - MYSQL_ROOT_PASSWORD=root
+
+  backend:
+    build: ./backend
+    ports:
+      - "80:80"
+    volumes:
+      - "./backend:/app"
+    depends_on:
+      - db
+    environment:
+      - MYSQL_HOST=db
+      - MYSQL_PORT=3306
+      - MYSQL_USER=newuser
+      - MYSQL_PASSWORD=password2
+      - MYSQL_DATABASE=AniSong
