@@ -1,17 +1,26 @@
 from typing import Union
-from database import engine
-from fastapi import FastAPI
+from sqlalchemy.orm import Session
+from database import SessionLocal
+import models
+from fastapi import FastAPI, Depends
 
 app = FastAPI()
 
 
-with engine.connect() as connection:
-    print(connection)
+# Dependency
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 
 @app.get("/")
-def read_root():
-    return {"Hello": "World"}
+def read_root(db: Session = Depends(get_db)):
+    types = db.query(models.Type).all()
+    print(types)
+    return types
 
 
 @app.get("/items/{item_id}")
