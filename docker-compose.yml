@@ -1,17 +1,6 @@
-version: '3.1'
+version: '3.8'
 
 services:
-
-  db:
-    image: mysql:8.0
-    container_name: mysql_container
-    ports:
-      - "3306:3306"
-    restart: always
-    volumes:
-      - "./backend/create.sql:/docker-entrypoint-initdb.d/create.sql"
-    environment:
-      - MYSQL_ROOT_PASSWORD=root
 
   backend:
     build: ./backend
@@ -22,8 +11,13 @@ services:
     depends_on:
       - db
     environment:
-      - MYSQL_HOST=db
-      - MYSQL_PORT=3306
-      - MYSQL_USER=newuser
-      - MYSQL_PASSWORD=password2
-      - MYSQL_DATABASE=AniSong
+      - DATABASE_URL=mysql+pymysql://root:root@db/anisong
+
+  db:
+    image: mysql:8.0
+    container_name: mysql_container
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=anisong
