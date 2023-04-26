@@ -1,23 +1,23 @@
-# coding: utf-8
-from sqlalchemy import BigInteger, Float, Column, Date, ForeignKey, Integer, LargeBinary, String, Table, Text
-from sqlalchemy.orm import relationship
-from sqlalchemy.ext.declarative import declarative_base
-
+from sqlalchemy import BigInteger, Column, Date, Float, ForeignKeyConstraint, Index, Integer, LargeBinary, String, Table, Text
+from sqlalchemy.orm import declarative_base, relationship
 
 Base = declarative_base()
 metadata = Base.metadata
 
 
 class Account(Base):
+
     __tablename__ = 'account'
 
     id = Column(BigInteger, primary_key=True)
     username = Column(String(250), nullable=False, unique=True)
     email = Column(String(250), nullable=False, unique=True)
     password = Column(String(250), nullable=False)
-    profil_picture = Column(LargeBinary)
     is_manager = Column(Integer, nullable=False, default=False)
+    profil_picture = Column(LargeBinary)
     creation_date = Column(Date)
+
+    review = relationship('Review', back_populates='account')
 
 
 class Anime(Base):
@@ -28,6 +28,8 @@ class Anime(Base):
     poster_img = Column(LargeBinary, nullable=False)
     description = Column(Text, nullable=False)
 
+    music = relationship('Music', back_populates='anime')
+
 
 class Author(Base):
     __tablename__ = 'author'
@@ -36,45 +38,7 @@ class Author(Base):
     name = Column(String(250), nullable=False, unique=True)
     poster_img = Column(LargeBinary, nullable=False)
 
-    music = relationship('music', secondary='chante')
-
-
-t_Chante = Table(
-    'chante', metadata,
-    Column('music_id', ForeignKey('music.id'),
-           primary_key=True, nullable=False),
-    Column('author_id', ForeignKey('author.id'),
-           primary_key=True, nullable=False, index=True)
-)
-
-
-class Music(Base):
-    __tablename__ = 'music'
-
-    id = Column(BigInteger, primary_key=True)
-    name = Column(String(250), nullable=False)
-    poster_img = Column(LargeBinary)
-    release_date = Column(Date, nullable=False)
-    anime_id = Column(ForeignKey('anime.id'), nullable=False, index=True)
-    type_id = Column(ForeignKey('type.id'), nullable=False, index=True)
-
-    anime = relationship('anime')
-    type = relationship('type')
-
-
-class Review(Base):
-    __tablename__ = 'review'
-
-    id = Column(BigInteger, primary_key=True)
-    note_visual = Column(Float, nullable=False)
-    note_music = Column(Float, nullable=False)
-    description = Column(Text)
-    creation_date = Column(Date, nullable=False)
-    music_id = Column(ForeignKey('music.id'), nullable=False, index=True)
-    account_id = Column(ForeignKey('account.id'), nullable=False, index=True)
-
-    account = relationship('account')
-    music = relationship('music')
+    music = relationship('Music', secondary='chante', back_populates='author')
 
 
 class Type(Base):
@@ -82,3 +46,56 @@ class Type(Base):
 
     id = Column(BigInteger, primary_key=True)
     type_name = Column(String(250), nullable=False, unique=True)
+
+    music = relationship('Music', back_populates='type')
+
+
+class Music(Base):
+    __tablename__ = 'music'
+    __table_args__ = (
+        ForeignKeyConstraint(['anime_id'], ['anime.id'], name='music_ibfk_1'),
+        ForeignKeyConstraint(['type_id'], ['type.id'], name='music_ibfk_2')
+    )
+
+    id = Column(BigInteger, primary_key=True)
+    name = Column(String(250), nullable=False)
+    release_date = Column(Date, nullable=False)
+    anime_id = Column(BigInteger, nullable=False, index=True)
+    type_id = Column(BigInteger, nullable=False, index=True)
+    poster_img = Column(LargeBinary)
+
+    author = relationship('Author', secondary='chante', back_populates='music')
+    anime = relationship('Anime', back_populates='music')
+    type = relationship('Type', back_populates='music')
+    review = relationship('Review', back_populates='music')
+
+
+t_chante = Table(
+    'chante', metadata,
+    Column('music_id', BigInteger, primary_key=True, nullable=False),
+    Column('author_id', BigInteger, primary_key=True,
+           nullable=False, index=True),
+    ForeignKeyConstraint(['author_id'], ['author.id'], name='chante_ibfk_1'),
+    ForeignKeyConstraint(['music_id'], ['music.id'], name='chante_ibfk_2'),
+    Index('ix_chante_author_id', 'author_id')
+)
+
+
+class Review(Base):
+    __tablename__ = 'review'
+    __table_args__ = (
+        ForeignKeyConstraint(
+            ['account_id'], ['account.id'], name='review_ibfk_1'),
+        ForeignKeyConstraint(['music_id'], ['music.id'], name='review_ibfk_2')
+    )
+
+    id = Column(BigInteger, primary_key=True)
+    note_visual = Column(Float, nullable=False)
+    note_music = Column(Float, nullable=False)
+    creation_date = Column(Date, nullable=False)
+    music_id = Column(BigInteger, nullable=False, index=True)
+    account_id = Column(BigInteger, nullable=False, index=True)
+    description = Column(Text)
+
+    account = relationship('Account', back_populates='review')
+    music = relationship('Music', back_populates='review')
