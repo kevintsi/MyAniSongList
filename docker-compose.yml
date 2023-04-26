@@ -5,13 +5,15 @@ services:
   backend:
     build: ./backend
     ports:
-      - "80:80"
+      - "8000:8000"
     volumes:
       - "./backend:/app"
     depends_on:
       - db
     environment:
-      - DATABASE_URL=mysql+pymysql://root:root@db/anisong
+      - DATABASE_URL=$DATABASE_URL
+      - SECRET_KEY=$SECRET_KEY
+      - ALGORITHM=$ALGORITHM
 
   db:
     image: mysql:8.0
