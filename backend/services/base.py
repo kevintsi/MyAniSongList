@@ -36,11 +36,10 @@ class BaseService(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
             self.db_session.commit()
         except sqlalchemy.exc.IntegrityError as e:
             self.db_session.rollback()
-            if "duplicate key" in str(e):
+            if "Duplicate entry" in str(e):
                 raise HTTPException(status_code=409, detail="Conflict Error")
             else:
                 raise e
-        print("End create")
         return db_obj
 
     def update(self, id: Any, obj: UpdateSchemaType) -> Optional[ModelType]:

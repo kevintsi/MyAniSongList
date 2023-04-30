@@ -39,23 +39,30 @@ class Type(TypeBase):
 
 ## Account ##
 
+# BASE
+
 
 class AccountBase(BaseModel):
     username: str
     email: str
 
+# POST
+
 
 class AccountCreate(AccountBase):
     password: str
-    creation_date: datetime = datetime.now()
+
+# UPDATE
 
 
 class AccountUpdate(AccountCreate):
     profil_picture: str
 
+# GET
+
 
 class Account(AccountBase):
-    id: int = None
+    id: int
 
     class Config:
         orm_mode = True

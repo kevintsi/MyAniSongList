@@ -3,7 +3,7 @@ from db.session import get_session
 from fastapi import FastAPI, Depends, status, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 from db.models import Account
-from datetime import timedelta
+from datetime import timedelta, datetime
 from services.accounts import AccountsService, get_accounts_service
 from sqlalchemy.orm import Session
 from utils import (
@@ -21,7 +21,6 @@ app = FastAPI()
 
 @app.post("/register")
 async def register(account: schemas.AccountCreate, account_service: AccountsService = Depends(get_accounts_service)):
-    account.password = get_password_hash(account.password)
     return account_service.create(account)
 
 
