@@ -2,6 +2,7 @@ from db import schemas
 from db.session import get_session
 from fastapi import FastAPI, Depends, status, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
+from fastapi.middleware.cors import CORSMiddleware
 from db.models import Account
 from datetime import timedelta, datetime
 from services.accounts import AccountsService, get_accounts_service
@@ -18,6 +19,18 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 app = FastAPI()
 
+origins = [
+    "http://localhost:4200",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 @app.post("/register")
 async def register(account: schemas.AccountCreate, account_service: AccountsService = Depends(get_accounts_service)):
@@ -32,6 +45,7 @@ async def update(account: schemas.AccountUpdate, account_service: AccountsServic
 
 @app.post('/login', summary="Create access tokens for user", response_model=schemas.Token)
 async def login(form_data: OAuth2PasswordRequestForm = Depends(), db_session: Session = Depends(get_session)):
+    print(form_data)
     user: Account | None = authenticate_user(
         db_session,
         form_data.username,
