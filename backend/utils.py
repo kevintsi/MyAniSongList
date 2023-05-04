@@ -3,7 +3,7 @@ from db.session import get_session
 from sqlalchemy.orm import Session
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
-from db.models import Account
+from db.models import User
 from db.schemas import TokenData
 from jose import JWTError, jwt
 from passlib.context import CryptContext
@@ -21,11 +21,11 @@ reuseable_oauth = OAuth2PasswordBearer(
 
 
 def get_user(db_session: Session, username: str):
-    return db_session.query(Account).filter(Account.username == username).one()
+    return db_session.query(User).filter(User.username == username).one()
 
 
 def authenticate_user(db_session: Session, username: str, password: str):
-    user: Account = get_user(db_session, username)
+    user: User = get_user(db_session, username)
     if not user:
         return False
     if not verify_password(password, user.password):

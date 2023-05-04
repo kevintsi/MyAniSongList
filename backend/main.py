@@ -3,9 +3,9 @@ from db.session import get_session
 from fastapi import FastAPI, Depends, status, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi.middleware.cors import CORSMiddleware
-from db.models import Account
+from db.models import User
 from datetime import timedelta, datetime
-from services.accounts import AccountsService, get_accounts_service
+from services.users import UserService, get_user_service
 from sqlalchemy.orm import Session
 from utils import (
     get_password_hash,
@@ -33,20 +33,20 @@ app.add_middleware(
 
 
 @app.post("/register")
-async def register(account: schemas.AccountCreate, account_service: AccountsService = Depends(get_accounts_service)):
-    return account_service.create(account)
+async def register(user: schemas.UserCreate, user_service: UserService = Depends(get_user_service)):
+    return user_service.create(user)
 
 
 @app.post("/update")
-async def update(account: schemas.AccountUpdate, account_service: AccountsService = Depends(get_accounts_service), current_user: Account = Depends(get_current_user)):
-    print(f"Data : {account}")
+async def update(user: schemas.UserUpdate, user_service: UserService = Depends(get_user_service), current_user: User = Depends(get_current_user)):
+    print(f"Data : {user}")
     print(f"Current user : {current_user.username}")
 
 
 @app.post('/login', summary="Create access tokens for user", response_model=schemas.Token)
 async def login(form_data: OAuth2PasswordRequestForm = Depends(), db_session: Session = Depends(get_session)):
     print(form_data)
-    user: Account | None = authenticate_user(
+    user: User | None = authenticate_user(
         db_session,
         form_data.username,
         form_data.password

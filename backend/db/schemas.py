@@ -37,31 +37,31 @@ class Type(TypeBase):
     class Config:
         orm_mode = True
 
-## Account ##
+## User ##
 
 # BASE
 
 
-class AccountBase(BaseModel):
+class UserBase(BaseModel):
     username: str
     email: str
 
 # POST
 
 
-class AccountCreate(AccountBase):
+class UserCreate(UserBase):
     password: str
 
 # UPDATE
 
 
-class AccountUpdate(AccountCreate):
+class UserUpdate(UserCreate):
     profil_picture: str
 
 # GET
 
 
-class Account(AccountBase):
+class User(UserBase):
     id: int
 
     class Config:
@@ -97,7 +97,7 @@ class ReviewBase(BaseModel):
     description: str = None
     creation_date: datetime = None
     music: Music
-    account: Account
+    User: User
 
 
 class ReviewCreate(ReviewBase):

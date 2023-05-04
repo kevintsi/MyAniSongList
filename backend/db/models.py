@@ -5,9 +5,9 @@ Base = declarative_base()
 metadata = Base.metadata
 
 
-class Account(Base):
+class User(Base):
 
-    __tablename__ = 'account'
+    __tablename__ = 'user'
 
     id = Column(BigInteger, primary_key=True)
     username = Column(String(250), nullable=False, unique=True)
@@ -17,7 +17,7 @@ class Account(Base):
     profil_picture = Column(LargeBinary)
     creation_date = Column(Date)
 
-    review = relationship('Review', back_populates='account')
+    review = relationship('Review', back_populates='user')
 
 
 class Anime(Base):
@@ -85,7 +85,7 @@ class Review(Base):
     __tablename__ = 'review'
     __table_args__ = (
         ForeignKeyConstraint(
-            ['account_id'], ['account.id'], name='review_ibfk_1'),
+            ['user_id'], ['user.id'], name='review_ibfk_1'),
         ForeignKeyConstraint(['music_id'], ['music.id'], name='review_ibfk_2')
     )
 
@@ -94,8 +94,8 @@ class Review(Base):
     note_music = Column(Float, nullable=False)
     creation_date = Column(Date, nullable=False)
     music_id = Column(BigInteger, nullable=False, index=True)
-    account_id = Column(BigInteger, nullable=False, index=True)
+    user_id = Column(BigInteger, nullable=False, index=True)
     description = Column(Text)
 
-    account = relationship('Account', back_populates='review')
+    user = relationship('User', back_populates='review')
     music = relationship('Music', back_populates='review')
