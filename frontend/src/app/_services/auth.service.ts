@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http"
 import { environment } from '../environments/environment';
+import { User } from '../models/User';
 
 
 @Injectable({
@@ -11,15 +12,22 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
-  login(username: string, password: string) {
-    console.log("Endpoint : " + this.endpoint + "/login")
+  login(user: User) {
     const body = new HttpParams()
-      .set("username", username)
-      .set("password", password)
+      .set("username", String(user.username))
+      .set("password", String(user.password))
     const headers = new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')
     return this.http.post(this.endpoint + '/login', body, {
       headers: headers
     })
+  }
+
+  register(user: User) {
+    const headers = new HttpHeaders().set('Content-Type', 'application/json')
+    return this.http.post(this.endpoint + '/register', JSON.stringify(user), {
+      headers: headers
+    })
+
   }
 
   public setSession(authResult: any) {
