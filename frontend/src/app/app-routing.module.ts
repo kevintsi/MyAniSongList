@@ -8,7 +8,7 @@ import { HomeComponent } from './home/home.component';
 const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [notSignedInGuard] },
   { path: 'register', component: RegistrationComponent, canActivate: [notSignedInGuard] },
-  { path: 'home', component: HomeComponent, }
+  { path: '', component: HomeComponent, pathMatch: 'full' }
 ];
 
 @NgModule({
