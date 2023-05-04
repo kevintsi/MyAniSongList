@@ -1,8 +1,8 @@
-"""Create initial tables from Models
+"""Initial tables
 
-Revision ID: 5d2b100eb0db
+Revision ID: f8c8a284fe59
 Revises: 
-Create Date: 2023-05-04 13:18:22.257802
+Create Date: 2023-05-04 18:08:35.956035
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '5d2b100eb0db'
+revision = 'f8c8a284fe59'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -21,7 +21,7 @@ def upgrade() -> None:
     op.create_table('anime',
     sa.Column('id', sa.BigInteger(), nullable=False),
     sa.Column('name', sa.String(length=250), nullable=False),
-    sa.Column('poster_img', sa.LargeBinary(), nullable=False),
+    sa.Column('poster_img', sa.String(length=250), nullable=False),
     sa.Column('description', sa.Text(), nullable=False),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('name')
@@ -29,7 +29,7 @@ def upgrade() -> None:
     op.create_table('author',
     sa.Column('id', sa.BigInteger(), nullable=False),
     sa.Column('name', sa.String(length=250), nullable=False),
-    sa.Column('poster_img', sa.LargeBinary(), nullable=False),
+    sa.Column('poster_img', sa.String(length=250), nullable=False),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('name')
     )
@@ -45,7 +45,7 @@ def upgrade() -> None:
     sa.Column('email', sa.String(length=250), nullable=False),
     sa.Column('password', sa.String(length=250), nullable=False),
     sa.Column('is_manager', sa.Integer(), nullable=False),
-    sa.Column('profil_picture', sa.LargeBinary(), nullable=True),
+    sa.Column('profil_picture', sa.String(length=250), nullable=True),
     sa.Column('creation_date', sa.Date(), nullable=True),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('email'),
@@ -57,7 +57,7 @@ def upgrade() -> None:
     sa.Column('release_date', sa.Date(), nullable=False),
     sa.Column('anime_id', sa.BigInteger(), nullable=False),
     sa.Column('type_id', sa.BigInteger(), nullable=False),
-    sa.Column('poster_img', sa.LargeBinary(), nullable=True),
+    sa.Column('poster_img', sa.String(length=250), nullable=True),
     sa.ForeignKeyConstraint(['anime_id'], ['anime.id'], name='music_ibfk_1'),
     sa.ForeignKeyConstraint(['type_id'], ['type.id'], name='music_ibfk_2'),
     sa.PrimaryKeyConstraint('id')

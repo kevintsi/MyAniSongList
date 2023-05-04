@@ -15,7 +15,7 @@ ALGORITHM = os.getenv("ALGORITHM")
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 reuseable_oauth = OAuth2PasswordBearer(
-    tokenUrl="/login",
+    tokenUrl="/user/login",
     scheme_name="JWT"
 )
 

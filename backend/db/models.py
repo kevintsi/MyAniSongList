@@ -14,7 +14,7 @@ class User(Base):
     email = Column(String(250), nullable=False, unique=True)
     password = Column(String(250), nullable=False)
     is_manager = Column(Integer, nullable=False, default=False)
-    profil_picture = Column(LargeBinary)
+    profil_picture = Column(String(250))
     creation_date = Column(Date)
 
     review = relationship('Review', back_populates='user')
@@ -25,7 +25,7 @@ class Anime(Base):
 
     id = Column(BigInteger, primary_key=True)
     name = Column(String(250), nullable=False, unique=True)
-    poster_img = Column(LargeBinary, nullable=False)
+    poster_img = Column(String(250), nullable=False)
     description = Column(Text, nullable=False)
 
     music = relationship('Music', back_populates='anime')
@@ -36,7 +36,7 @@ class Author(Base):
 
     id = Column(BigInteger, primary_key=True)
     name = Column(String(250), nullable=False, unique=True)
-    poster_img = Column(LargeBinary, nullable=False)
+    poster_img = Column(String(250), nullable=False)
 
     music = relationship('Music', secondary='chante', back_populates='author')
 
@@ -62,7 +62,7 @@ class Music(Base):
     release_date = Column(Date, nullable=False)
     anime_id = Column(BigInteger, nullable=False, index=True)
     type_id = Column(BigInteger, nullable=False, index=True)
-    poster_img = Column(LargeBinary)
+    poster_img = Column(String(250))
 
     author = relationship('Author', secondary='chante', back_populates='music')
     anime = relationship('Anime', back_populates='music')
