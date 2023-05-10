@@ -9,7 +9,7 @@ from starlette.exceptions import HTTPException
 import sqlalchemy
 from utils import get_password_hash
 from datetime import datetime
-import json
+import os
 
 
 class UserService(BaseService[User, UserCreate, UserUpdate]):
@@ -37,6 +37,9 @@ class UserService(BaseService[User, UserCreate, UserUpdate]):
         return db_obj
 
     def update(self, id, obj: UserUpdate, pfp: UploadFile):
+        if not os.path.exists("static/profile_pictures"):
+            os.makedirs("static/profile_pictures")
+
         with open(f"static/profile_pictures/{pfp.filename}", "wb") as f:
             f.write(pfp.file.read())
         # print(pfp.file.read())

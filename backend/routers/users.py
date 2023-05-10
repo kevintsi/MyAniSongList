@@ -27,8 +27,8 @@ from services.users import (
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 router = APIRouter(
-    prefix='/user',
-    tags=["User"]
+    prefix='/users',
+    tags=["Users"]
 )
 
 
@@ -37,7 +37,7 @@ async def register(user: UserCreate, user_service: UserService = Depends(get_use
     return user_service.create(user)
 
 
-@router.post("/update")
+@router.put("/update")
 async def update(profile_picture: UploadFile = File(...),
                  user_service: UserService = Depends(get_user_service),
                  current_user: User = Depends(get_current_user),
@@ -77,3 +77,11 @@ async def profile(
     current_user: User = Depends(get_current_user),
 ):
     return user_service.get(current_user.id)
+
+
+@router.delete("/delete")
+async def delete(
+        user_service: UserService = Depends(get_user_service),
+        current_user: User = Depends(get_current_user)
+):
+    return user_service.delete(current_user.id)
