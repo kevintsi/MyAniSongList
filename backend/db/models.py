@@ -19,6 +19,9 @@ class User(Base):
 
     review = relationship('Review', back_populates='user')
 
+    def __str__(self):
+        return f"User({self.id},{self.username},{self.email}, {self.creation_date}, {self.profile_picture}, {self.is_manager})"
+
 
 class Anime(Base):
     __tablename__ = 'anime'
@@ -30,6 +33,9 @@ class Anime(Base):
 
     music = relationship('Music', back_populates='anime')
 
+    def __str__(self):
+        return f"Anime({self.id},{self.name},{self.poster_img}, {self.description}, {self.music})"
+
 
 class Author(Base):
     __tablename__ = 'author'
@@ -40,6 +46,9 @@ class Author(Base):
 
     music = relationship('Music', secondary='chante', back_populates='author')
 
+    def __str__(self):
+        return f"Author({self.id},{self.name},{self.poster_img}, {self.music})"
+
 
 class Type(Base):
     __tablename__ = 'type'
@@ -48,6 +57,9 @@ class Type(Base):
     type_name = Column(String(250), nullable=False, unique=True)
 
     music = relationship('Music', back_populates='type')
+
+    def __str__(self):
+        return f"Type({self.id},{self.type_name},{self.music})"
 
 
 class Music(Base):
@@ -68,6 +80,9 @@ class Music(Base):
     anime = relationship('Anime', back_populates='music')
     type = relationship('Type', back_populates='music')
     review = relationship('Review', back_populates='music')
+
+    def __str__(self):
+        return f"Music({self.id},{self.name},{self.release_date},{self.anime_id},{self.type_id},{self.poster_img},{self.author},{self.anime},{self.type},{self.review})"
 
 
 t_chante = Table(
@@ -99,3 +114,6 @@ class Review(Base):
 
     user = relationship('User', back_populates='review')
     music = relationship('Music', back_populates='review')
+
+    def __str__(self):
+        return f"Review({self.id},{self.note_visual},{self.note_music},{self.creation_date},{self.music_id},{self.user_id},{self.description},{self.user},{self.music})"

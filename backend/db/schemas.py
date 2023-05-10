@@ -8,15 +8,26 @@ import json
 
 class AnimeBase(BaseModel):
     name: str
-    poster_img: str
     description: str
 
 
 class AnimeCreate(AnimeBase):
-    pass
+    @classmethod
+    def __get_validators__(cls):
+        yield cls.validate_to_json
+
+    @classmethod
+    def validate_to_json(cls, value):
+        if isinstance(value, str):
+            return cls(**json.loads(value))
+        return value
 
 
-class Anime(AnimeBase):
+class AnimeUpdate(AnimeCreate):
+    poster_img: str = None
+
+
+class Anime(AnimeUpdate):
     id: int
 
     class Config:
