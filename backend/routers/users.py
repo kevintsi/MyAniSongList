@@ -69,3 +69,11 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends(), db_session: Se
     )
 
     return {"access_token": access_token, "token_type": "bearer"}
+
+
+@router.get("/", response_model=User)
+async def profile(
+    user_service: UserService = Depends(get_user_service),
+    current_user: User = Depends(get_current_user),
+):
+    return user_service.get(current_user.id)

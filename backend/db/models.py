@@ -14,7 +14,7 @@ class User(Base):
     email = Column(String(250), nullable=False, unique=True)
     password = Column(String(250), nullable=False)
     is_manager = Column(Integer, nullable=False, default=False)
-    profil_picture = Column(String(250))
+    profile_picture = Column(String(250))
     creation_date = Column(Date)
 
     review = relationship('Review', back_populates='user')

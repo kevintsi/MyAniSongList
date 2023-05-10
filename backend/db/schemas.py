@@ -71,8 +71,9 @@ class UserUpdate(UserCreate):
 # GET
 
 
-class User(UserBase):
+class User(UserCreate):
     id: int
+    profile_picture: str = None
 
     class Config:
         orm_mode = True
