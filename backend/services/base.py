@@ -19,12 +19,16 @@ class BaseService(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         self.db_session = db_session
 
     def get(self, id: Any) -> Optional[ModelType]:
+        print(
+            f"Result get : {self.db_session.query(self.model).get(id)}")
         obj: Optional[ModelType] = self.db_session.query(self.model).get(id)
         if obj is None:
             raise HTTPException(status_code=404, detail="Not Found")
         return obj
 
     def list(self) -> List[ModelType]:
+        print(
+            f"Result list : {list(map(str,self.db_session.query(self.model).all()))}")
         objs: List[ModelType] = self.db_session.query(self.model).all()
         return objs
 

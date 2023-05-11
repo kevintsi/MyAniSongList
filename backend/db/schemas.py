@@ -44,6 +44,10 @@ class TypeCreate(TypeBase):
     pass
 
 
+class TypeUpdate(TypeBase):
+    pass
+
+
 class Type(TypeBase):
     id: int
 
@@ -94,14 +98,27 @@ class User(UserCreate):
 
 class MusicBase(BaseModel):
     name: str
-    poster_img: str
-    release_date: datetime
-    anime: Anime
-    type: Type
+    release_date: str
+    anime_id: int
+    type_id: int
 
 
 class MusicCreate(MusicBase):
-    pass
+    author_id: int
+
+    @classmethod
+    def __get_validators__(cls):
+        yield cls.validate_to_json
+
+    @classmethod
+    def validate_to_json(cls, value):
+        if isinstance(value, str):
+            return cls(**json.loads(value))
+        return value
+
+
+class MusicUpdate(MusicCreate):
+    poster_img: str = None
 
 
 class Music(MusicBase):
@@ -132,6 +149,37 @@ class Review(ReviewBase):
     class Config:
         orm_mode = True
 
+## Author ##
+
+
+class AuthorBase(BaseModel):
+    name: str
+
+
+class AuthorCreate(AuthorBase):
+    @classmethod
+    def __get_validators__(cls):
+        yield cls.validate_to_json
+
+    @classmethod
+    def validate_to_json(cls, value):
+        if isinstance(value, str):
+            return cls(**json.loads(value))
+        return value
+
+
+class AuthorUpdate(AuthorCreate):
+    poster_img: str = None
+
+
+class Author(AuthorUpdate):
+    id: int
+
+    class Config:
+        orm_mode = True
+
+
+## Token ##
 
 class Token(BaseModel):
     access_token: str

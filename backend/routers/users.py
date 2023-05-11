@@ -20,7 +20,7 @@ from services.users import (
     UserService,
     UserCreate,
     UserUpdate,
-    get_user_service,
+    get_service,
     get_session,
 )
 
@@ -33,23 +33,30 @@ router = APIRouter(
 
 
 @router.post("/register")
-async def register(user: UserCreate, user_service: UserService = Depends(get_user_service)):
-    return user_service.create(user)
+async def register(
+    user: UserCreate,
+    service: UserService = Depends(get_service)
+):
+    return service.create(user)
 
 
 @router.put("/update")
-async def update(profile_picture: UploadFile = File(...),
-                 user_service: UserService = Depends(get_user_service),
-                 current_user: User = Depends(get_current_user),
-                 user: UserUpdate = Body(...)
-                 ):
+async def update(
+    profile_picture: UploadFile = File(...),
+    service: UserService = Depends(get_service),
+    current_user: User = Depends(get_current_user),
+    user: UserUpdate = Body(...)
+):
     print(f"Data : {user} , {profile_picture.filename}")
     print(f"Current user : {current_user.id} , {current_user.username}")
-    return user_service.update(current_user.id, user, profile_picture)
+    return service.update(current_user.id, user, profile_picture)
 
 
 @router.post('/login', summary="Create access tokens for user", response_model=Token)
-async def login(form_data: OAuth2PasswordRequestForm = Depends(), db_session: Session = Depends(get_session)):
+async def login(
+    form_data: OAuth2PasswordRequestForm = Depends(),
+    db_session: Session = Depends(get_session)
+):
     print(form_data)
     user: User | None = authenticate_user(
         db_session,
@@ -73,15 +80,15 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends(), db_session: Se
 
 @router.get("/", response_model=User)
 async def profile(
-    user_service: UserService = Depends(get_user_service),
+    service: UserService = Depends(get_service),
     current_user: User = Depends(get_current_user),
 ):
-    return user_service.get(current_user.id)
+    return service.get(current_user.id)
 
 
 @router.delete("/delete")
 async def delete(
-        user_service: UserService = Depends(get_user_service),
+        service: UserService = Depends(get_service),
         current_user: User = Depends(get_current_user)
 ):
-    return user_service.delete(current_user.id)
+    return service.delete(current_user.id)

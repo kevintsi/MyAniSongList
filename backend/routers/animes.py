@@ -6,11 +6,9 @@ from fastapi import (
 )
 from db.schemas import *
 from typing import List
-from sqlalchemy.orm import Session
-from datetime import timedelta
 from services.animes import (
     AnimeService,
-    get_anime_service,
+    get_service,
 )
 
 router = APIRouter(
@@ -21,18 +19,18 @@ router = APIRouter(
 
 @router.get("/all", response_model=List[Anime])
 async def get_all(
-    anime_service: AnimeService = Depends(get_anime_service),
+    service: AnimeService = Depends(get_service),
 ):
-    return anime_service.list()
+    return service.list()
 
 
 @router.post("/add", response_model=Anime)
 async def add(
     anime: AnimeCreate = Body(...),
     poster_img: UploadFile = File(...),
-    anime_service: AnimeService = Depends(get_anime_service),
+    service: AnimeService = Depends(get_service),
 ):
-    return anime_service.create(anime, poster_img)
+    return service.create(anime, poster_img)
 
 
 @router.put("/update/{id}", response_model=Anime)
@@ -40,23 +38,25 @@ async def update(
     id: int,
     anime: AnimeUpdate = Body(...),
     poster_img: UploadFile = File(...),
-    anime_service: AnimeService = Depends(get_anime_service),
+    service: AnimeService = Depends(get_service),
 ):
     anime.poster_img = poster_img.filename
-    return anime_service.update(id, anime)
+    return service.update(id, anime)
 
 
 @router.delete("/delete/{id}")
-async def update(
+async def delete(
     id: int,
-    anime_service: AnimeService = Depends(get_anime_service),
+    service: AnimeService = Depends(get_service),
 ):
-    return anime_service.delete(id)
+    return service.delete(id)
 
 
 @router.get("/{id}")
-async def update(
+async def get(
     id: int,
-    anime_service: AnimeService = Depends(get_anime_service),
+    service: AnimeService = Depends(get_service),
 ):
-    return anime_service.get(id)
+    anime: Anime = service.get(id)
+    print(str(anime.music[0]))
+    return service.get(id)

@@ -1,32 +1,31 @@
 from sqlalchemy.orm import Session
 from fastapi import Depends, UploadFile
-from db.schemas import AnimeCreate, AnimeUpdate
+from db.schemas import AuthorCreate, AuthorUpdate
 from starlette.exceptions import HTTPException
-from db.models import Anime
+from db.models import Author
 from .base import BaseService
 from db.session import get_session
 import sqlalchemy
 import os
 
 
-class AnimeService(BaseService[Anime, AnimeCreate, AnimeUpdate]):
+class AuthorService(BaseService[Author, AuthorCreate, AuthorUpdate]):
     def __init__(self, db_session: Session):
-        super(AnimeService, self).__init__(Anime, db_session)
+        super(AuthorService, self).__init__(Author, db_session)
 
-    def create(self, obj: AnimeCreate, poster_img: UploadFile):
-        if not os.path.exists("static/poster_images"):
-            os.makedirs("static/poster_images")
+    def create(self, obj: AuthorCreate, poster_img: UploadFile):
+        if not os.path.exists("static/author_poster_images"):
+            os.makedirs("static/author_poster_images")
 
-        with open(f"static/poster_images/{poster_img.filename}", "wb") as f:
+        with open(f"static/author_poster_images/{poster_img.filename}", "wb") as f:
             f.write(poster_img.file.read())
 
-        db_obj: Anime = Anime(
+        db_obj: Author = Author(
             name=obj.name,
             poster_img=poster_img.filename,
-            description=obj.description
         )
 
-        print(f"converted to Anime model : ${db_obj}")
+        print(f"converted to Author model : ${db_obj}")
         self.db_session.add(db_obj)
         try:
             self.db_session.commit()
@@ -40,5 +39,5 @@ class AnimeService(BaseService[Anime, AnimeCreate, AnimeUpdate]):
         return db_obj
 
 
-def get_service(db_session: Session = Depends(get_session)) -> AnimeService:
-    return AnimeService(db_session)
+def get_service(db_session: Session = Depends(get_session)) -> AuthorService:
+    return AuthorService(db_session)

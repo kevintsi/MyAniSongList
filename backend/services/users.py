@@ -59,5 +59,5 @@ class UserService(BaseService[User, UserCreate, UserUpdate]):
         self.db_session.commit()
 
 
-def get_user_service(db_session: Session = Depends(get_session)) -> UserService:
+def get_service(db_session: Session = Depends(get_session)) -> UserService:
     return UserService(db_session)
