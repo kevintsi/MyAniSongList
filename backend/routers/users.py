@@ -78,7 +78,7 @@ async def login(
     authorize.set_access_cookies(access_token)
     authorize.set_refresh_cookies(refresh_token)
 
-    return {"msg": "Successfully login"}
+    return user
 
 
 @router.post('/refresh')
@@ -92,7 +92,7 @@ def refresh(authorize: AuthJWT = Depends()):
     return {"msg": "The token has been refresh"}
 
 
-@router.delete('/logout')
+@router.post('/logout')
 def logout(authorize: AuthJWT = Depends()):
     """
     Because the JWT are stored in an httponly cookie now, we cannot
