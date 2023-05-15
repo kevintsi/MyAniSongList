@@ -7,15 +7,11 @@ from fastapi import (
     Body,
     UploadFile
 )
-from fastapi.security import OAuth2PasswordRequestForm
 from db.schemas import *
 from utils import (
-    get_current_user,
     authenticate_user,
-    create_access_token
 )
 from sqlalchemy.orm import Session
-from datetime import timedelta
 from services.users import (
     UserService,
     UserCreate,
@@ -24,7 +20,7 @@ from services.users import (
     get_session,
 )
 
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+from fastapi_jwt_auth import AuthJWT
 
 router = APIRouter(
     prefix='/users',
@@ -44,17 +40,22 @@ async def register(
 async def update(
     profile_picture: UploadFile = File(...),
     service: UserService = Depends(get_service),
-    current_user: User = Depends(get_current_user),
+    authorize: AuthJWT = Depends(),
     user: UserUpdate = Body(...)
 ):
+
+    authorize.jwt_refresh_token_required()
+    current_user = authorize.get_jwt_subject()
+
     print(f"Data : {user} , {profile_picture.filename}")
-    print(f"Current user : {current_user.id} , {current_user.username}")
-    return service.update(current_user.id, user, profile_picture)
+    print(f"Current user : {current_user}")
+    return service.update(current_user, user, profile_picture)
 
 
-@router.post('/login', summary="Create access tokens for user", response_model=Token)
+@router.post('/login', summary="Create access tokens for user")
 async def login(
-    form_data: OAuth2PasswordRequestForm = Depends(),
+    form_data: UserLogin,
+    authorize: AuthJWT = Depends(),
     db_session: Session = Depends(get_session)
 ):
     print(form_data)
@@ -69,26 +70,57 @@ async def login(
             detail="Incorrect username or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    access_token = create_access_token(
-        data={"sub": user.username},
-        expires_delta=access_token_expires
-    )
+    # Create the tokens and passing to set_access_cookies or set_refresh_cookies
+    access_token = authorize.create_access_token(subject=user.id)
+    refresh_token = authorize.create_refresh_token(subject=user.id)
 
-    return {"access_token": access_token, "token_type": "bearer"}
+    # Set the JWT cookies in the response
+    authorize.set_access_cookies(access_token)
+    authorize.set_refresh_cookies(refresh_token)
+
+    return {"msg": "Successfully login"}
+
+
+@router.post('/refresh')
+def refresh(authorize: AuthJWT = Depends()):
+    authorize.jwt_refresh_token_required()
+
+    current_user = authorize.get_jwt_subject()
+    new_access_token = authorize.create_access_token(subject=current_user)
+    # Set the JWT cookies in the response
+    authorize.set_access_cookies(new_access_token)
+    return {"msg": "The token has been refresh"}
+
+
+@router.delete('/logout')
+def logout(authorize: AuthJWT = Depends()):
+    """
+    Because the JWT are stored in an httponly cookie now, we cannot
+    log the user out by simply deleting the cookies in the frontend.
+    We need the backend to send us a response to delete the cookies.
+    """
+    authorize.jwt_required()
+
+    authorize.unset_jwt_cookies()
+    return {"msg": "Successfully logout"}
 
 
 @router.get("/", response_model=User)
 async def profile(
+    authorize: AuthJWT = Depends(),
     service: UserService = Depends(get_service),
-    current_user: User = Depends(get_current_user),
 ):
-    return service.get(current_user.id)
+    authorize.jwt_refresh_token_required()
+    current_user = authorize.get_jwt_subject()
+    return service.get(current_user)
 
 
 @router.delete("/delete")
 async def delete(
-        service: UserService = Depends(get_service),
-        current_user: User = Depends(get_current_user)
+    service: UserService = Depends(get_service),
+    authorize: AuthJWT = Depends(),
 ):
-    return service.delete(current_user.id)
+    authorize.jwt_refresh_token_required()
+    current_user = authorize.get_jwt_subject()
+
+    return service.delete(current_user)

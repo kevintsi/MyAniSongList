@@ -8,3 +8,4 @@ alembic==1.10.4
 passlib[bcrypt]
 python-jose[cryptography]
 python-multipart
+fastapi-jwt-auth

@@ -2,6 +2,7 @@ from pydantic import BaseModel
 from datetime import datetime
 from fastapi import UploadFile
 import json
+import os
 
 ## Anime ##
 
@@ -62,6 +63,11 @@ class Type(TypeBase):
 class UserBase(BaseModel):
     username: str
     email: str
+
+
+class UserLogin(BaseModel):
+    username: str
+    password: str
 
 # POST
 
@@ -188,3 +194,13 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     username: str | None = None
+
+### Settings JWT Auth ###
+
+
+class Settings(BaseModel):
+    authjwt_secret_key: str = os.getenv("SECRET_KEY")
+    # Configure application to store and get JWT from cookies
+    authjwt_token_location: set = {"cookies"}
+    # Disable CSRF Protection for this example. default is True
+    authjwt_cookie_csrf_protect: bool = False
