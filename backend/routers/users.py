@@ -68,11 +68,15 @@ async def login(
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect username or password",
-            headers={"WWW-Authenticate": "Bearer"},
         )
     # Create the tokens and passing to set_access_cookies or set_refresh_cookies
-    access_token = authorize.create_access_token(subject=user.id)
-    refresh_token = authorize.create_refresh_token(subject=user.id)
+    access_token = authorize.create_access_token(
+        subject=user.id,
+    )
+    print(access_token)
+    refresh_token = authorize.create_refresh_token(
+        subject=user.id,
+    )
 
     # Set the JWT cookies in the response
     authorize.set_access_cookies(access_token)
@@ -99,7 +103,7 @@ def logout(authorize: AuthJWT = Depends()):
     log the user out by simply deleting the cookies in the frontend.
     We need the backend to send us a response to delete the cookies.
     """
-    authorize.jwt_required()
+    authorize.jwt_refresh_token_required()
 
     authorize.unset_jwt_cookies()
     return {"msg": "Successfully logout"}
@@ -108,7 +112,8 @@ def logout(authorize: AuthJWT = Depends()):
 @router.get("/", response_model=User)
 async def profile(
     authorize: AuthJWT = Depends(),
-    service: UserService = Depends(get_service),
+    service: UserService = Depends(get_service)
+
 ):
     authorize.jwt_refresh_token_required()
     current_user = authorize.get_jwt_subject()

@@ -1,3 +1,4 @@
+import time
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routers import (
@@ -12,7 +13,6 @@ from fastapi import FastAPI, HTTPException, Depends, Request
 from fastapi.responses import JSONResponse
 from fastapi_jwt_auth import AuthJWT
 from fastapi_jwt_auth.exceptions import AuthJWTException
-from pydantic import BaseModel
 from db.schemas import Settings
 import os
 
@@ -38,7 +38,7 @@ app.add_middleware(
 
 
 @app.exception_handler(AuthJWTException)
-def authjwt_exception_handler(request: Request, exc: AuthJWTException):
+def authjwt_exception_handler(exc: AuthJWTException):
     return JSONResponse(
         status_code=exc.status_code,
         content={"detail": exc.message}

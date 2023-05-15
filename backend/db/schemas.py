@@ -1,6 +1,5 @@
 from pydantic import BaseModel
 from datetime import datetime
-from fastapi import UploadFile
 import json
 import os
 
@@ -204,3 +203,5 @@ class Settings(BaseModel):
     authjwt_token_location: set = {"cookies"}
     # Disable CSRF Protection for this example. default is True
     authjwt_cookie_csrf_protect: bool = False
+
+    algorithm: str = os.getenv("ALGORITHM")

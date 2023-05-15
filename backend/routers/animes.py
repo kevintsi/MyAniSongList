@@ -3,6 +3,7 @@ from fastapi import (
     Depends,
     File,
     Body,
+    UploadFile,
 )
 from db.schemas import *
 from typing import List

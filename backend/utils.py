@@ -6,7 +6,12 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 def get_user(db_session: Session, username: str):
-    return db_session.query(User).filter(User.username == username).one()
+    try:
+        res = db_session.query(User).filter(User.username == username).one()
+    except:
+        res = None
+
+    return res
 
 
 def authenticate_user(db_session: Session, username: str, password: str):

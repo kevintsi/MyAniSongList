@@ -27,8 +27,6 @@ class BaseService(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         return obj
 
     def list(self) -> List[ModelType]:
-        print(
-            f"Result list : {list(map(str,self.db_session.query(self.model).all()))}")
         objs: List[ModelType] = self.db_session.query(self.model).all()
         return objs
 

@@ -50,7 +50,7 @@ class UserService(BaseService[User, UserCreate, UserUpdate]):
                 username=obj.username,
                 email=obj.email,
                 password=get_password_hash(obj.password),
-                profil_picture=pfp.filename
+                profile_picture=pfp.filename
             )
         )
         print(stmt)
