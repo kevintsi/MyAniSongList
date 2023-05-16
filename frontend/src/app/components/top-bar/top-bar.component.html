@@ -1,0 +1,23 @@
+<div class="top-bar">
+    <div>
+        <h2>MyAniSongList</h2>
+    </div>
+    <div>
+        <div *ngIf="!isLoggedIn()">
+            <a routerLink="/login" routerLinkActive="active" ariaCurrentWhenActive="page">Se connecter</a>
+            <a href="/register" routerLinkActive="active" ariaCurrentWhenActive="page">S'inscrire</a>
+        </div>
+        <a (click)="logout()" *ngIf="isLoggedIn()">Se déconnecter</a>
+        <a href="/profile" routerLinkActive="active" *ngIf="isLoggedIn()" ariaCurrentWhenActive="page">Profile</a>
+    </div>
+    <nav>
+        <ul>
+            <a href="/animes">
+                <li>Animes</li>
+            </a>
+            <li>Artistes</li>
+            <li>Musiques</li>
+            <li>Communautés</li>
+        </ul>
+    </nav>
+</div>
