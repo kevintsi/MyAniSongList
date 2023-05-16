@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http"
+import { HttpClient, HttpHeaders } from "@angular/common/http"
 import { environment } from '../environments/environment';
 import { User } from '../models/User';
 
@@ -12,34 +12,31 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
-  login(user: User) {
-    const body = new HttpParams()
-      .set("username", String(user.username))
-      .set("password", String(user.password))
-    const headers = new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')
-    return this.http.post(this.endpoint + '/login', body, {
-      headers: headers
-    })
-  }
-
-  register(user: User) {
+  public login(user: User) {
     const headers = new HttpHeaders().set('Content-Type', 'application/json')
-    return this.http.post(this.endpoint + '/register', JSON.stringify(user), {
+    return this.http.post(this.endpoint + '/users/login', JSON.stringify(user), {
+      headers: headers
+    })
+  }
+
+  public register(user: User) {
+    const headers = new HttpHeaders().set('Content-Type', 'application/json')
+    return this.http.post(this.endpoint + '/users/register', JSON.stringify(user), {
       headers: headers
     })
 
   }
 
-  public setSession(authResult: any) {
-    localStorage.setItem('id_token', authResult.access_token);
+  public get() {
+    return this.http.get(this.endpoint + '/users')
   }
 
-  logout() {
-    localStorage.removeItem("id_token");
+  public logout() {
+    return this.http.post(this.endpoint + '/users/logout', null)
   }
 
   public isLoggedIn() {
-    return localStorage.getItem("id_token") != null
+    return sessionStorage.getItem("auth-user") != null
   }
 
 }
