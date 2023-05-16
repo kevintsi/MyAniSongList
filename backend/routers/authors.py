@@ -34,15 +34,14 @@ async def add(
     return service.create(author, poster_img)
 
 
-@router.put("/update/{id}", response_model=Author)
+@router.put("/update/{id}")
 async def update(
     id: int,
     author: AuthorUpdate = Body(...),
     poster_img: UploadFile = File(...),
     service: AuthorService = Depends(get_service),
 ):
-    author.poster_img = poster_img.filename
-    return service.update(id, author)
+    return service.update(id, author, poster_img)
 
 
 @router.delete("/delete/{id}")

@@ -34,15 +34,14 @@ async def add(
     return service.create(music, poster_img)
 
 
-@router.put("/update/{id}", response_model=Music)
+@router.put("/update/{id}")
 async def update(
     id: int,
     music: MusicUpdate = Body(...),
     poster_img: UploadFile = File(...),
     service: MusicService = Depends(get_service),
 ):
-    music.poster_img = poster_img.filename
-    return service.update(id, music)
+    return service.update(id, music, poster_img)
 
 
 @router.delete("/delete/{id}")

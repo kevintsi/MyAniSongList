@@ -9,3 +9,4 @@ passlib[bcrypt]
 python-jose[cryptography]
 python-multipart
 fastapi-jwt-auth
+firebase_admin

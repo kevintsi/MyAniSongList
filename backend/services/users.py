@@ -9,7 +9,7 @@ from starlette.exceptions import HTTPException
 import sqlalchemy
 from utils import get_password_hash
 from datetime import datetime
-import os
+from firebase import bucket
 
 
 class UserService(BaseService[User, UserCreate, UserUpdate]):
@@ -37,12 +37,16 @@ class UserService(BaseService[User, UserCreate, UserUpdate]):
         return db_obj
 
     def update(self, id, obj: UserUpdate, pfp: UploadFile):
-        if not os.path.exists("static/profile_pictures"):
-            os.makedirs("static/profile_pictures")
+        # if not os.path.exists("static/profile_pictures"):
+        #     os.makedirs("static/profile_pictures")
 
-        with open(f"static/profile_pictures/{pfp.filename}", "wb") as f:
-            f.write(pfp.file.read())
-        # print(pfp.file.read())
+        # with open(f"static/profile_pictures/{pfp.filename}", "wb") as f:
+        #     f.write(pfp.file.read())
+
+        blob = bucket.blob(f"profile_pictures/{pfp.filename}")
+        blob.upload_from_file(pfp.file, content_type="image/png")
+        blob.make_public()
+
         stmt = (
             update(User)
             .where(User.id == id)
@@ -50,7 +54,7 @@ class UserService(BaseService[User, UserCreate, UserUpdate]):
                 username=obj.username,
                 email=obj.email,
                 password=get_password_hash(obj.password),
-                profile_picture=pfp.filename
+                profile_picture=blob.public_url
             )
         )
         print(stmt)

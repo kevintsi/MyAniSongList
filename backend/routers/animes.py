@@ -34,15 +34,14 @@ async def add(
     return service.create(anime, poster_img)
 
 
-@router.put("/update/{id}", response_model=Anime)
+@router.put("/update/{id}")
 async def update(
     id: int,
     anime: AnimeUpdate = Body(...),
     poster_img: UploadFile = File(...),
     service: AnimeService = Depends(get_service),
 ):
-    anime.poster_img = poster_img.filename
-    return service.update(id, anime)
+    return service.update(id, anime, poster_img)
 
 
 @router.delete("/delete/{id}")

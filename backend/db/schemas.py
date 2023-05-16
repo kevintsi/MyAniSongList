@@ -24,7 +24,7 @@ class AnimeCreate(AnimeBase):
 
 
 class AnimeUpdate(AnimeCreate):
-    poster_img: str = None
+    pass
 
 
 class Anime(AnimeUpdate):
@@ -123,7 +123,7 @@ class MusicCreate(MusicBase):
 
 
 class MusicUpdate(MusicCreate):
-    poster_img: str = None
+    pass
 
 
 class Music(MusicBase):
@@ -174,7 +174,7 @@ class AuthorCreate(AuthorBase):
 
 
 class AuthorUpdate(AuthorCreate):
-    poster_img: str = None
+    pass
 
 
 class Author(AuthorUpdate):

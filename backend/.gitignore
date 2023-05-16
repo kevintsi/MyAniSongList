@@ -3,6 +3,8 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+anisonglist-firebase-admin.json
+
 static/profile_pictures/
 static/poster_images/
 
