@@ -1,0 +1,4 @@
+<div *ngIf="loading">Chargement en cours...</div>
+<div *ngFor="let anime of animes">
+    <app-anime [anime]="anime"></app-anime>
+</div>
