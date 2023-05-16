@@ -76,6 +76,7 @@ async def login(
     print(access_token)
     refresh_token = authorize.create_refresh_token(
         subject=user.id,
+        expires_time=None
     )
 
     # Set the JWT cookies in the response
