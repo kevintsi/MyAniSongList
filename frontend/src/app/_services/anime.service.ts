@@ -35,4 +35,21 @@ export class AnimeService {
       }
     )
   }
+
+  public create(data: any, file: File) {
+    const headers = new HttpHeaders()
+
+    const form_data = new FormData()
+
+    form_data.append("anime", JSON.stringify(data))
+    form_data.append('poster_img', file ? file : "")
+
+    return this.http.post<Anime>(
+      this.endpoint + '/animes/add',
+      form_data,
+      {
+        headers: headers,
+      }
+    )
+  }
 }
