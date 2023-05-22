@@ -1,0 +1,9 @@
+<div>
+    <form [formGroup]="update_form" (ngSubmit)="onSubmit()">
+        <img (click)="imageInput.click()" [src]="preview_image" alt="Image animé" />
+        <input type="text" formControlName="name" />
+        <input type="text" formControlName="description" />
+        <input [hidden]="true" #imageInput type="file" (change)="processFile(imageInput)" />
+        <button type="submit">Valider</button>
+    </form>
+</div>

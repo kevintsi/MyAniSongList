@@ -1,0 +1,22 @@
+<div *ngIf="loading">Chargement en cours...</div>
+<table>
+    <tr>
+        <th></th>
+        <th>Nom</th>
+        <th>Description</th>
+        <th>Action</th>
+    </tr>
+
+    <tr [routerLink]="['/manage/animes', anime.id]" class="anime-row" *ngFor="let anime of animes">
+        <td><img [src]="anime?.poster_img" [alt]="anime?.name" /></td>
+        <td>{{ anime?.name}} </td>
+        <td>{{ anime?.description}}</td>
+        <td>
+            <ul>
+                <a href="">
+                    <mat-icon class="delete_btn" fontIcon="delete"></mat-icon>
+                </a>
+            </ul>
+        </td>
+    </tr>
+</table>
