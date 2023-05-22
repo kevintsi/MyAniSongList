@@ -12,11 +12,12 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { httpInterceptorProviders } from './_helpers/http.interceptor';
 import { AnimeListComponent } from './components/anime-list/anime-list.component';
 import { AnimeComponent } from './components/anime/anime.component';
-import { ManageComponent } from './components/manage/manage.component';
-import { ManageAnimeComponent } from './components/manage-anime/manage-anime.component';
-import { ManageArtistComponent } from './components/manage-artist/manage-artist.component';
+import { ManageComponent } from './components/management/manage/manage.component';
+import { ManageAnimeComponent } from './components/management/anime/manage-anime/manage-anime.component';
+import { ManageArtistComponent } from './components/management/artist/manage-artist/manage-artist.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatIconModule } from '@angular/material/icon';
+import { ManageAnimeDetailComponent } from './components/management/anime/manage-anime-detail/manage-anime-detail.component';
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import { MatIconModule } from '@angular/material/icon';
     AnimeComponent,
     ManageComponent,
     ManageAnimeComponent,
-    ManageArtistComponent
+    ManageArtistComponent,
+    ManageAnimeDetailComponent
   ],
   imports: [
     HttpClientModule,
