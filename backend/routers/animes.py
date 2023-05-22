@@ -3,10 +3,11 @@ from fastapi import (
     Depends,
     File,
     Body,
+    Form,
     UploadFile,
 )
 from db.schemas import *
-from typing import List
+from typing import Annotated, List, Optional
 from services.animes import (
     AnimeService,
     get_service,
@@ -37,10 +38,11 @@ async def add(
 @router.put("/update/{id}")
 async def update(
     id: int,
-    anime: AnimeUpdate = Body(...),
-    poster_img: UploadFile = File(...),
+    anime: AnimeUpdate = Form(...),
+    poster_img: Optional[UploadFile] = File(None),
     service: AnimeService = Depends(get_service),
 ):
+    print("Begin update route")
     return service.update(id, anime, poster_img)
 
 

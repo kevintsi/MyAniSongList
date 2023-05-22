@@ -106,7 +106,7 @@ class Music(Base):
     review: list = relationship('Review', back_populates='music')
 
     def __repr__(self):
-        return f"Music({self.id},{self.name},{self.release_date},{self.anime_id},{self.type_id},{self.poster_img},{self.author})"
+        return f"Music({self.id},{self.name},{self.release_date},{self.anime_id},{self.type_id},{self.poster_img})"
 
 
 class Review(Base):
@@ -129,4 +129,4 @@ class Review(Base):
     music: list = relationship('Music', back_populates='review')
 
     def __repr__(self):
-        return f"Review({self.id},{self.note_visual},{self.note_music},{self.creation_date},{self.music_id},{self.user_id},{self.description},{self.user},{self.music})"
+        return f"Review({self.id},{self.note_visual},{self.note_music},{self.creation_date},{self.music_id},{self.user_id},{self.description})"

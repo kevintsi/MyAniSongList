@@ -49,23 +49,22 @@ class AnimeService(BaseService[Anime, AnimeCreate, AnimeUpdate]):
 
         # with open(f"static/profile_pictures/{pfp.filename}", "wb") as f:
         #     f.write(pfp.file.read())
+        print(f"Data : {obj}, img : {poster_img}")
 
-        blob = bucket.blob(f"anime_poster_images/{poster_img.filename}")
-        blob.upload_from_file(poster_img.file, content_type="image/png")
-        blob.make_public()
+        db_obj = self.db_session.get(Anime, id)
 
-        stmt = (
-            sqlalchemy.update(Anime)
-            .where(Anime.id == id)
-            .values(
-                name=obj.name,
-                description=obj.description,
-                poster_img=blob.public_url
-            )
-        )
-        print(stmt)
+        for column, value in obj.dict(exclude_unset=True).items():
+            setattr(db_obj, column, value)
+        print(poster_img is not None)
+        if poster_img is not None:
+            blob = bucket.blob(
+                f"anime_poster_images/{poster_img.filename}")
+            blob.upload_from_file(
+                poster_img.file, content_type="image/png")
+            blob.make_public()
 
-        self.db_session.execute(stmt)
+            setattr(db_obj, "poster_img", blob.public_url)
+
         self.db_session.commit()
 
 
