@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { User } from '../../models/User';
 import { AuthService } from '../../_services/auth.service';
 import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-registration',
@@ -11,7 +12,7 @@ import { Router } from '@angular/router';
 })
 
 
-export class RegistrationComponent {
+export class RegistrationComponent implements OnInit {
 
   registrationForm = this.formBuilder.group({
     username: "",
@@ -23,9 +24,13 @@ export class RegistrationComponent {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private title: Title
   ) {
     console.log("In constructor");
+  }
+  ngOnInit(): void {
+    this.title.setTitle(this.title.getTitle() + " - S'enregistrer")
   }
 
   onSubmit(): void {
