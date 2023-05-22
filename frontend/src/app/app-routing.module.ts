@@ -7,24 +7,17 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { AnimeListComponent } from './components/anime-list/anime-list.component';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { ManageComponent } from './components/management/manage/manage.component';
-import { ManageAnimeComponent } from './components/management/anime/manage-anime/manage-anime.component';
-import { ManageArtistComponent } from './components/management/artist/manage-artist/manage-artist.component';
-import { ManageAnimeDetailComponent } from './components/management/anime/manage-anime-detail/manage-anime-detail.component';
+
 
 const routes: Routes = [
+  { path: '', component: HomeComponent, pathMatch: 'full' },
   { path: 'login', component: LoginComponent, canActivate: [notSignedInGuard] },
   { path: 'register', component: RegistrationComponent, canActivate: [notSignedInGuard] },
   { path: 'profile', component: ProfileComponent },
   { path: 'animes', component: AnimeListComponent },
-  {
-    path: 'manage', component: ManageComponent, children: [
-      { path: 'animes', component: ManageAnimeComponent },
-      { path: 'animes/:id', component: ManageAnimeDetailComponent, },
-      { path: 'artists', component: ManageArtistComponent }
-    ]
-  },
-  { path: '', component: HomeComponent, pathMatch: 'full' }
-];
+  { path: 'manage', component: ManageComponent, loadChildren: () => import("./modules/management/management.module").then(m => m.ManagementModule) },
+
+]
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
