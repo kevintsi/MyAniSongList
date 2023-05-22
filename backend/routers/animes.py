@@ -59,6 +59,4 @@ async def get(
     id: int,
     service: AnimeService = Depends(get_service),
 ):
-    anime: Anime = service.get(id)
-    print(str(anime.music[0]))
     return service.get(id)
