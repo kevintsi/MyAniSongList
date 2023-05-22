@@ -4,16 +4,16 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AnimeService } from 'src/app/_services/anime.service';
 
 @Component({
-  selector: 'app-manage-anime-detail',
-  templateUrl: './manage-anime-detail.component.html',
-  styleUrls: ['./manage-anime-detail.component.css']
+  selector: 'app-manage-create-anime',
+  templateUrl: './manage-create-anime.component.html',
+  styleUrls: ['./manage-create-anime.component.css']
 })
-export class ManageAnimeDetailComponent {
-  update_form = this.form_builder.group({
+export class ManageCreateAnimeComponent {
+  create_form = this.form_builder.group({
     name: '',
     description: '',
   })
-  preview_image?: any
+  preview_image?: any = null
   file: any
 
   constructor(
@@ -23,32 +23,11 @@ export class ManageAnimeDetailComponent {
     private form_builder: FormBuilder,
   ) { }
 
-  ngOnInit(): void {
-    console.log(`Anime id : ${this.route.snapshot.paramMap.get('id')}`)
-    let id = Number(this.route.snapshot.paramMap.get('id'))
-    this.get(id)
-  }
-
-  get(id: number) {
-    this.service.get(id).subscribe({
-      next: (value) => {
-        this.update_form.setValue({
-          name: String(value.name),
-          description: String(value.description),
-        })
-
-        this.preview_image = String(value.poster_img)
-      },
-      error: (err) => console.log(err)
-    })
-  }
-
   onSubmit() {
-    let id = Number(this.route.snapshot.paramMap.get('id'))
-    this.service.update(id, this.update_form.value, this.file)
+    this.service.create(this.create_form.value, this.file)
       .subscribe({
-        next: () => {
-          this.router.navigate(["manage", "animes", id])
+        next: (value) => {
+          this.router.navigate(["manage", "animes", value.id])
         },
         error: (err) => console.log(err)
       })
