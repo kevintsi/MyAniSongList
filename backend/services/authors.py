@@ -26,6 +26,7 @@ class AuthorService(BaseService[Author, AuthorCreate, AuthorUpdate]):
 
         db_obj: Author = Author(
             name=obj.name,
+            creation_year=obj.creation_year,
             poster_img=blob.public_url,
         )
 
@@ -40,7 +41,6 @@ class AuthorService(BaseService[Author, AuthorCreate, AuthorUpdate]):
             else:
                 raise e
         print("End create")
-        return db_obj
 
     def update(self, id, obj: AuthorUpdate, poster_img: UploadFile):
         # if not os.path.exists("static/profile_pictures"):
@@ -49,21 +49,20 @@ class AuthorService(BaseService[Author, AuthorCreate, AuthorUpdate]):
         # with open(f"static/profile_pictures/{pfp.filename}", "wb") as f:
         #     f.write(pfp.file.read())
 
-        blob = bucket.blob(f"artist_poster_images/{poster_img.filename}")
-        blob.upload_from_file(poster_img.file, content_type="image/png")
-        blob.make_public()
+        db_obj = self.db_session.get(Author, id)
 
-        stmt = (
-            sqlalchemy.update(Author)
-            .where(Author.id == id)
-            .values(
-                name=obj.name,
-                poster_img=blob.public_url
-            )
-        )
-        print(stmt)
+        for column, value in obj.dict(exclude_unset=True).items():
+            setattr(db_obj, column, value)
 
-        self.db_session.execute(stmt)
+        if poster_img is not None:
+            blob = bucket.blob(
+                f"artist_poster_images/{poster_img.filename}")
+            blob.upload_from_file(
+                poster_img.file, content_type="image/png")
+            blob.make_public()
+
+            setattr(db_obj, "poster_img", blob.public_url)
+
         self.db_session.commit()
 
 

@@ -56,24 +56,20 @@ class MusicService(BaseService[Music, MusicCreate, MusicUpdate]):
         # with open(f"static/profile_pictures/{pfp.filename}", "wb") as f:
         #     f.write(pfp.file.read())
 
-        blob = bucket.blob(f"music_poster_images/{poster_img.filename}")
-        blob.upload_from_file(poster_img.file, content_type="image/png")
-        blob.make_public()
+        db_obj = self.db_session.get(Music, id)
 
-        stmt = (
-            sqlalchemy.update(Music)
-            .where(Music.id == id)
-            .values(
-                name=obj.name,
-                release_date=obj.release_date,
-                anime_id=obj.anime_id,
-                type_id=obj.type_id,
-                poster_img=blob.public_url
-            )
-        )
-        print(stmt)
+        for column, value in obj.dict(exclude_unset=True).items():
+            setattr(db_obj, column, value)
 
-        self.db_session.execute(stmt)
+        if poster_img is not None:
+            blob = bucket.blob(
+                f"music_poster_images/{poster_img.filename}")
+            blob.upload_from_file(
+                poster_img.file, content_type="image/png")
+            blob.make_public()
+
+            setattr(db_obj, "poster_img", blob.public_url)
+
         self.db_session.commit()
 
 

@@ -34,7 +34,6 @@ class UserService(BaseService[User, UserCreate, UserUpdate]):
             else:
                 raise e
         print("End create")
-        return db_obj
 
     def update(self, id, obj: UserUpdate, pfp: UploadFile):
         # if not os.path.exists("static/profile_pictures"):

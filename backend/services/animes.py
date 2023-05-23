@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from fastapi import Depends, UploadFile
-from db.schemas import AnimeCreate, AnimeUpdate, UserUpdate
+from db.schemas import AnimeCreate, AnimeUpdate
 from starlette.exceptions import HTTPException
 from db.models import Anime
 from .base import BaseService
@@ -41,7 +41,6 @@ class AnimeService(BaseService[Anime, AnimeCreate, AnimeUpdate]):
             else:
                 raise e
         print("End create")
-        return db_obj
 
     def update(self, id, obj: AnimeUpdate, poster_img: UploadFile):
         # if not os.path.exists("static/profile_pictures"):
