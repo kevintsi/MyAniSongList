@@ -6,8 +6,8 @@ from fastapi import (
     Form,
     UploadFile,
 )
-from db.schemas import *
-from typing import Annotated, List, Optional
+from db.schemas import Anime, AnimeCreate, AnimeUpdate
+from typing import List, Optional
 from services.animes import (
     AnimeService,
     get_service,
@@ -26,7 +26,7 @@ async def get_all(
     return service.list()
 
 
-@router.post("/add", response_model=Anime)
+@router.post("/add")
 async def add(
     anime: AnimeCreate = Body(...),
     poster_img: UploadFile = File(...),
@@ -54,7 +54,7 @@ async def delete(
     return service.delete(id)
 
 
-@router.get("/{id}")
+@router.get("/{id}", response_model=Anime)
 async def get(
     id: int,
     service: AnimeService = Depends(get_service),

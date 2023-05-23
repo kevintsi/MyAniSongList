@@ -5,6 +5,7 @@ from fastapi import (
     Body,
     UploadFile,
 )
+from typing import Optional
 from db.schemas import *
 from typing import List
 from services.authors import (
@@ -25,7 +26,7 @@ async def get_all(
     return service.list()
 
 
-@router.post("/add", response_model=Author)
+@router.post("/add")
 async def add(
     author: AuthorCreate = Body(...),
     poster_img: UploadFile = File(...),
@@ -38,7 +39,7 @@ async def add(
 async def update(
     id: int,
     author: AuthorUpdate = Body(...),
-    poster_img: UploadFile = File(...),
+    poster_img: Optional[UploadFile] = File(None),
     service: AuthorService = Depends(get_service),
 ):
     return service.update(id, author, poster_img)
