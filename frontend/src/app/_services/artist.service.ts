@@ -1,22 +1,22 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../environments/environment';
-import { Anime } from '../models/Anime';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Artist } from '../models/Artist';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AnimeService {
+export class ArtistService {
   endpoint: string = environment.REST_API_URL
 
   constructor(private http: HttpClient) { }
 
   public get_all() {
-    return this.http.get<Anime[]>(this.endpoint + '/animes/all')
+    return this.http.get<Artist[]>(this.endpoint + '/authors/all')
   }
 
   public get(id: number) {
-    return this.http.get<Anime>(this.endpoint + '/animes/' + id)
+    return this.http.get<Artist>(this.endpoint + '/authors/' + id)
   }
 
   public update(id: number, data: any, file: File) {
@@ -24,11 +24,12 @@ export class AnimeService {
 
     const form_data = new FormData()
 
-    form_data.append("anime", JSON.stringify(data))
-    form_data.append('poster_img', file ? file : "")
+    form_data.append("author", JSON.stringify(data))
+    if (file != null)
+      form_data.append('poster_img', file)
 
     return this.http.put(
-      this.endpoint + '/animes/update/' + id,
+      this.endpoint + '/authors/update/' + id,
       form_data,
       {
         headers: headers,
@@ -41,11 +42,11 @@ export class AnimeService {
 
     const form_data = new FormData()
 
-    form_data.append("anime", JSON.stringify(data))
+    form_data.append("author", JSON.stringify(data))
     form_data.append('poster_img', file)
 
     return this.http.post(
-      this.endpoint + '/animes/add',
+      this.endpoint + '/authors/add',
       form_data,
       {
         headers: headers,
@@ -55,6 +56,6 @@ export class AnimeService {
 
   public delete(id: number) {
     return this.http.delete(
-      this.endpoint + '/animes/delete/' + id)
+      this.endpoint + '/authors/delete/' + id)
   }
 }
