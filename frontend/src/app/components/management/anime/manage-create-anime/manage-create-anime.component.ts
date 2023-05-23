@@ -26,8 +26,8 @@ export class ManageCreateAnimeComponent {
   onSubmit() {
     this.service.create(this.create_form.value, this.file)
       .subscribe({
-        next: (value) => {
-          this.router.navigate(["manage", "animes", value.id])
+        next: () => {
+          alert("Animé ajouté")
         },
         error: (err) => console.log(err)
       })

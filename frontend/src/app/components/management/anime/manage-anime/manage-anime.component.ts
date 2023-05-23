@@ -25,4 +25,14 @@ export class ManageAnimeComponent implements OnInit {
       complete: () => this.loading = false
     })
   }
+
+  delete(id: any) {
+    this.service.delete(id).subscribe({
+      next: () => {
+        this.animes = this.animes?.filter(anime => anime.id != id)
+        console.log(this.animes)
+      },
+      error: (err) => console.log(err.message)
+    })
+  }
 }

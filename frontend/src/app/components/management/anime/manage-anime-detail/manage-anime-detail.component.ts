@@ -48,7 +48,7 @@ export class ManageAnimeDetailComponent {
     this.service.update(id, this.update_form.value, this.file)
       .subscribe({
         next: () => {
-          this.router.navigate(["manage", "animes", id])
+          alert("Informations mises à jour")
         },
         error: (err) => console.log(err)
       })
