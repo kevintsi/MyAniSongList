@@ -65,6 +65,7 @@ class Author(Base):
     id = Column(BigInteger, primary_key=True)
     name = Column(String(250), nullable=False, unique=True)
     poster_img = Column(String(250), nullable=False)
+    creation_year = Column(String(50), nullable=True)
 
     music: list = relationship(
         'Music', secondary=t_chante, back_populates='author')

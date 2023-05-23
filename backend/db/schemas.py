@@ -29,6 +29,7 @@ class AnimeUpdate(AnimeCreate):
 
 class Anime(AnimeUpdate):
     id: int
+    poster_img: str
 
     class Config:
         orm_mode = True
@@ -128,6 +129,7 @@ class MusicUpdate(MusicCreate):
 
 class Music(MusicBase):
     id: int
+    poster_img: str
 
     class Config:
         orm_mode = True
@@ -159,6 +161,7 @@ class Review(ReviewBase):
 
 class AuthorBase(BaseModel):
     name: str
+    creation_year: str
 
 
 class AuthorCreate(AuthorBase):
@@ -179,6 +182,7 @@ class AuthorUpdate(AuthorCreate):
 
 class Author(AuthorUpdate):
     id: int
+    poster_img: str
 
     class Config:
         orm_mode = True
