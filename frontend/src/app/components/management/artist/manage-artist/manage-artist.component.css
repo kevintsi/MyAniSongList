@@ -1,0 +1,53 @@
+table {
+    border-collapse: collapse;
+}
+
+th,
+td {
+    border: 1px solid black;
+    padding: 8px;
+}
+
+th {
+    background-color: #f2f2f2;
+    text-align: left;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    margin-bottom: 5px;
+}
+
+img {
+    width: 75%;
+}
+
+.delete_btn {
+    font-size: 50px;
+    height: 50px;
+    width: 50px;
+    color: red;
+}
+
+.anime-row {
+    cursor: pointer;
+}
+
+.anime-row:hover {
+    background-color: azure;
+}
+
+.add_btn {
+    font-size: 50px;
+    height: 50px;
+    width: 50px;
+    margin: 10px;
+    color: white;
+    border-radius: 10%;
+    background-color: rgb(19, 166, 219);
+}

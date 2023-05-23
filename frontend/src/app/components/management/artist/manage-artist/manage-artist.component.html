@@ -1,1 +1,20 @@
-<p>manage-artist works!</p>
+<div *ngIf="loading">Chargement en cours...</div>
+
+<mat-icon routerLink="/manage/artists/create" class="add_btn" fontIcon="add"></mat-icon>
+<table *ngIf="!loading">
+    <tr>
+        <th></th>
+        <th>Nom</th>
+        <th>Action</th>
+    </tr>
+
+    <tr class="anime-row" *ngFor="let artist of artists">
+        <td [routerLink]="['/manage/artists', artist.id]"><img [src]="artist?.poster_img" [alt]="artist?.name" /></td>
+        <td>{{ artist?.name}} </td>
+        <td>
+            <ul>
+                <mat-icon (click)="delete(artist.id)" class="delete_btn" fontIcon="delete"></mat-icon>
+            </ul>
+        </td>
+    </tr>
+</table>
