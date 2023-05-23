@@ -15,6 +15,8 @@ import { AnimeComponent } from './components/anime/anime.component';
 import { ManageComponent } from './components/management/manage/manage.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatIconModule } from '@angular/material/icon';
+import { ManageCreateArtistComponent } from './components/management/artist/manage-create-artist/manage-create-artist.component';
+import { ManageArtistDetailComponent } from './components/management/artist/manage-artist-detail/manage-artist-detail.component';
 
 
 @NgModule({
@@ -28,6 +30,8 @@ import { MatIconModule } from '@angular/material/icon';
     AnimeListComponent,
     AnimeComponent,
     ManageComponent,
+    ManageCreateArtistComponent,
+    ManageArtistDetailComponent,
   ],
   imports: [
     HttpClientModule,

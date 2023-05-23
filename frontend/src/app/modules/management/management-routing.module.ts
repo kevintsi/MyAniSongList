@@ -4,6 +4,8 @@ import { ManageAnimeComponent } from '../../components/management/anime/manage-a
 import { ManageAnimeDetailComponent } from '../../components/management/anime/manage-anime-detail/manage-anime-detail.component';
 import { ManageCreateAnimeComponent } from '../../components/management/anime/manage-create-anime/manage-create-anime.component';
 import { ManageArtistComponent } from '../../components/management/artist/manage-artist/manage-artist.component';
+import { ManageCreateArtistComponent } from 'src/app/components/management/artist/manage-create-artist/manage-create-artist.component';
+import { ManageArtistDetailComponent } from 'src/app/components/management/artist/manage-artist-detail/manage-artist-detail.component';
 
 const routes: Routes = [
   {
@@ -15,7 +17,11 @@ const routes: Routes = [
   },
 
   {
-    path: 'artists', component: ManageArtistComponent,
+    path: 'artists', children: [
+      { path: '', component: ManageArtistComponent, pathMatch: 'full' },
+      { path: 'create', component: ManageCreateArtistComponent },
+      { path: ':id', component: ManageArtistDetailComponent },
+    ]
   },
   { path: '', redirectTo: 'animes', pathMatch: 'full' },
 ]
