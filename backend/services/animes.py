@@ -13,6 +13,9 @@ class AnimeService(BaseService[Anime, AnimeCreate, AnimeUpdate]):
     def __init__(self, db_session: Session):
         super(AnimeService, self).__init__(Anime, db_session)
 
+    def search(self, term: str):
+        return self.db_session.query(Anime).filter(Anime.name.like(f"%{term}%")).all()
+
     def create(self, obj: AnimeCreate, poster_img: UploadFile):
         # if not os.path.exists("static/poster_images"):
         #     os.makedirs("static/poster_images")

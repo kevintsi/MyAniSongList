@@ -24,7 +24,12 @@ class MusicService(BaseService[Music, MusicCreate, MusicUpdate]):
         blob.upload_from_file(poster_img.file, content_type="image/png")
         blob.make_public()
 
-        author: Author = self.db_session.get(Author, obj.author_id)
+        list_author = []
+
+        for id in obj.authors:
+            list_author.append(self.db_session.get(Author, id))
+
+        print(list_author)
 
         db_obj: Music = Music(
             name=obj.name,
@@ -34,7 +39,9 @@ class MusicService(BaseService[Music, MusicCreate, MusicUpdate]):
             poster_img=blob.public_url,
         )
 
-        db_obj.author.append(author)
+        print(db_obj)
+
+        db_obj.authors = list_author
 
         print(f"converted to Music model : ${db_obj}")
         self.db_session.add(db_obj)
@@ -47,7 +54,7 @@ class MusicService(BaseService[Music, MusicCreate, MusicUpdate]):
             else:
                 raise e
         print("End create")
-        return db_obj
+        return db_obj.id
 
     def update(self, id, obj: MusicUpdate, poster_img: UploadFile):
         # if not os.path.exists("static/profile_pictures"):

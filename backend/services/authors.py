@@ -13,6 +13,9 @@ class AuthorService(BaseService[Author, AuthorCreate, AuthorUpdate]):
     def __init__(self, db_session: Session):
         super(AuthorService, self).__init__(Author, db_session)
 
+    def search(self, term: str):
+        return self.db_session.query(Author).filter(Author.name.like(f"%{term}%")).all()
+
     def create(self, obj: AuthorCreate, poster_img: UploadFile):
         # if not os.path.exists("static/author_poster_images"):
         #     os.makedirs("static/author_poster_images")
