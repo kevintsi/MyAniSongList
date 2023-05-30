@@ -11,6 +11,10 @@ export class AnimeService {
 
   constructor(private http: HttpClient) { }
 
+  public search(term: string) {
+    return this.http.get<Anime[]>(this.endpoint + '/animes/search?query=' + term)
+  }
+
   public get_all() {
     return this.http.get<Anime[]>(this.endpoint + '/animes/all')
   }

@@ -11,6 +11,10 @@ export class ArtistService {
 
   constructor(private http: HttpClient) { }
 
+  public search(term: string) {
+    return this.http.get<Artist[]>(this.endpoint + '/authors/search?query=' + term)
+  }
+
   public get_all() {
     return this.http.get<Artist[]>(this.endpoint + '/authors/all')
   }
