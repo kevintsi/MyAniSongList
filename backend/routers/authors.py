@@ -26,6 +26,17 @@ async def get_all(
     return service.list()
 
 
+@router.get("/search", response_model=List[Author])
+async def search(
+    query: str,
+    service: AuthorService = Depends(get_service),
+):
+    if query.strip() == "":
+        return []
+    else:
+        return service.search(query)
+
+
 @router.post("/add")
 async def add(
     author: AuthorCreate = Body(...),

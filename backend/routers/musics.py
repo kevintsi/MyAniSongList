@@ -25,7 +25,7 @@ async def get_all(
     return service.list()
 
 
-@router.post("/add", response_model=Music)
+@router.post("/add")
 async def add(
     music: MusicCreate = Body(...),
     poster_img: UploadFile = File(...),

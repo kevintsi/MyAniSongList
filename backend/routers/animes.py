@@ -26,6 +26,17 @@ async def get_all(
     return service.list()
 
 
+@router.get("/search", response_model=List[Anime])
+async def search(
+    query: str,
+    service: AnimeService = Depends(get_service),
+):
+    if query.strip() == "":
+        return []
+    else:
+        return service.search(query)
+
+
 @router.post("/add")
 async def add(
     anime: AnimeCreate = Body(...),
