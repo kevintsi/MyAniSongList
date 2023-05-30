@@ -1,0 +1,23 @@
+<div *ngIf="loading">Chargement en cours...</div>
+<mat-icon routerLink="/manage/musics/create" class="add_btn" fontIcon="add"></mat-icon>
+<div *ngIf="!loading && musics.length == 0">Il n'y a pas de musiques</div>
+
+<table *ngIf="!loading && musics.length > 0">
+    <tr>
+        <th></th>
+        <th>Nom</th>
+        <th>Type</th>
+        <th>Date de sortie</th>
+        <th>Action</th>
+    </tr>
+
+    <tr class="row" *ngFor="let music of musics">
+        <td [routerLink]="['/manage/musics', music.id]"><img [src]="music.poster_img" [alt]="music.name" /></td>
+        <td>{{ music.name}} </td>
+        <td> {{music.release_date}}</td>
+        <td> {{ music.type?.type_name }}</td>
+        <td>
+            <mat-icon (click)="delete(music)" class="delete_btn" fontIcon="delete"></mat-icon>
+        </td>
+    </tr>
+</table>
