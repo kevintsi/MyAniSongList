@@ -10,7 +10,7 @@ from sqlalchemy import (
     Table,
     Text,
 )
-from sqlalchemy.orm import declarative_base, relationship, backref
+from sqlalchemy.orm import declarative_base, relationship
 
 Base = declarative_base()
 metadata = Base.metadata
@@ -39,7 +39,7 @@ class User(Base):
     profile_picture = Column(String(250))
     creation_date = Column(DateTime)
 
-    review: list = relationship('Review', back_populates='user')
+    reviews: list = relationship('Review', back_populates='users')
 
     def __repr__(self):
         return f"User({self.id},{self.username},{self.email}, {self.creation_date}, {self.profile_picture}, {self.is_manager})"
@@ -53,10 +53,10 @@ class Anime(Base):
     poster_img = Column(String(250), nullable=False)
     description = Column(Text, nullable=False)
 
-    music: list = relationship('Music', back_populates='anime')
+    musics: list = relationship('Music', back_populates='anime')
 
     def __repr__(self):
-        return f"Anime({self.id},{self.name},{self.poster_img}, {self.description}, {self.music})"
+        return f"Anime({self.id},{self.name},{self.poster_img}, {self.description})"
 
 
 class Author(Base):
@@ -67,11 +67,11 @@ class Author(Base):
     poster_img = Column(String(250), nullable=False)
     creation_year = Column(String(50), nullable=True)
 
-    music: list = relationship(
-        'Music', secondary=t_chante, back_populates='author')
+    musics: list = relationship(
+        'Music', secondary=t_chante, back_populates='authors')
 
     def __repr__(self):
-        return f"Author({self.id},{self.name},{self.poster_img}, {self.music})"
+        return f"Author({self.id},{self.name},{self.poster_img})"
 
 
 class Type(Base):
@@ -80,10 +80,10 @@ class Type(Base):
     id = Column(BigInteger, primary_key=True)
     type_name = Column(String(250), nullable=False, unique=True)
 
-    music = relationship('Music', back_populates='type')
+    musics = relationship('Music', back_populates='type')
 
     def __repr__(self):
-        return f"Type({self.id},{self.type_name},{self.music})"
+        return f"Type({self.id},{self.type_name})"
 
 
 class Music(Base):
@@ -100,11 +100,11 @@ class Music(Base):
     type_id = Column(BigInteger, nullable=False, index=True)
     poster_img = Column(String(250))
 
-    author: list = relationship(
-        'Author', secondary=t_chante, back_populates='music')
-    anime: list = relationship('Anime', back_populates='music')
-    type: list = relationship('Type', back_populates='music')
-    review: list = relationship('Review', back_populates='music')
+    authors = relationship(
+        'Author', secondary=t_chante, back_populates='musics')
+    anime = relationship('Anime', uselist=False, back_populates='musics')
+    type = relationship('Type', uselist=False, back_populates='musics')
+    reviews = relationship('Review', back_populates='musics')
 
     def __repr__(self):
         return f"Music({self.id},{self.name},{self.release_date},{self.anime_id},{self.type_id},{self.poster_img})"
@@ -126,8 +126,8 @@ class Review(Base):
     user_id = Column(BigInteger, nullable=False, index=True)
     description = Column(Text)
 
-    user: list = relationship('User', back_populates='review')
-    music: list = relationship('Music', back_populates='review')
+    users = relationship('User', back_populates='reviews')
+    musics = relationship('Music', back_populates='reviews')
 
     def __repr__(self):
         return f"Review({self.id},{self.note_visual},{self.note_music},{self.creation_date},{self.music_id},{self.user_id},{self.description})"

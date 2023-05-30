@@ -1,3 +1,4 @@
+from dataclasses import Field
 from pydantic import BaseModel
 from datetime import datetime
 import json
@@ -99,63 +100,6 @@ class User(UserCreate):
     class Config:
         orm_mode = True
 
-## Music ##
-
-
-class MusicBase(BaseModel):
-    name: str
-    release_date: str
-    anime_id: int
-    type_id: int
-
-
-class MusicCreate(MusicBase):
-    author_id: int
-
-    @classmethod
-    def __get_validators__(cls):
-        yield cls.validate_to_json
-
-    @classmethod
-    def validate_to_json(cls, value):
-        if isinstance(value, str):
-            return cls(**json.loads(value))
-        return value
-
-
-class MusicUpdate(MusicCreate):
-    pass
-
-
-class Music(MusicBase):
-    id: int
-    poster_img: str
-
-    class Config:
-        orm_mode = True
-
-## Review ##
-
-
-class ReviewBase(BaseModel):
-    note_visual: float
-    note_music: float
-    description: str = None
-    creation_date: datetime = None
-    music: Music
-    User: User
-
-
-class ReviewCreate(ReviewBase):
-    pass
-
-
-class Review(ReviewBase):
-    id: int
-
-    class Config:
-        orm_mode = True
-
 ## Author ##
 
 
@@ -183,6 +127,66 @@ class AuthorUpdate(AuthorCreate):
 class Author(AuthorUpdate):
     id: int
     poster_img: str
+
+    class Config:
+        orm_mode = True
+
+## Music ##
+
+
+class MusicBase(BaseModel):
+    name: str
+    release_date: str
+
+
+class MusicCreate(MusicBase):
+    authors: list[int]
+    anime_id: int
+    type_id: int
+
+    @classmethod
+    def __get_validators__(cls):
+        yield cls.validate_to_json
+
+    @classmethod
+    def validate_to_json(cls, value):
+        if isinstance(value, str):
+            return cls(**json.loads(value))
+        return value
+
+
+class MusicUpdate(MusicCreate):
+    pass
+
+
+class Music(MusicBase):
+    id: int
+    poster_img: str
+    authors: list[Author]
+    anime: Anime
+    type: Type
+
+    class Config:
+        orm_mode = True
+
+## Review ##
+
+
+class ReviewBase(BaseModel):
+    note_visual: float
+    note_music: float
+    description: str = None
+    creation_date: datetime = None
+    music: Music
+    user: User
+
+
+class ReviewCreate(ReviewBase):
+    pass
+
+
+class Review(ReviewBase):
+    id: int
 
     class Config:
         orm_mode = True
