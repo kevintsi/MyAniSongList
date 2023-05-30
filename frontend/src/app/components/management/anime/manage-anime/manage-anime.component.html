@@ -1,21 +1,24 @@
 <div *ngIf="loading">Chargement en cours...</div>
 
 <mat-icon routerLink="/manage/animes/create" class="add_btn" fontIcon="add"></mat-icon>
-<table *ngIf="!loading">
+
+
+<div *ngIf="!loading && animes.length == 0">Il n'y a pas de animes</div>
+
+<table *ngIf="!loading && animes.length > 0">
     <tr>
         <th></th>
         <th>Nom</th>
         <th>Description</th>
         <th>Action</th>
     </tr>
-
-    <tr class="anime-row" *ngFor="let anime of animes">
-        <td [routerLink]="['/manage/animes', anime.id]"><img [src]="anime?.poster_img" [alt]="anime?.name" /></td>
-        <td>{{ anime?.name}} </td>
-        <td>{{ anime?.description}}</td>
+    <tr class="row" *ngFor="let anime of animes">
+        <td [routerLink]="['/manage/animes', anime.id]"><img [src]="anime.poster_img" [alt]="anime.name" /></td>
+        <td>{{ anime.name}} </td>
+        <td>{{ anime.description}}</td>
         <td>
             <ul>
-                <mat-icon (click)="delete(anime.id)" class="delete_btn" fontIcon="delete"></mat-icon>
+                <mat-icon (click)="delete(anime)" class="delete_btn" fontIcon="delete"></mat-icon>
             </ul>
         </td>
     </tr>

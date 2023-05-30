@@ -10,7 +10,7 @@ import { Anime } from 'src/app/models/Anime';
 })
 export class ManageAnimeComponent implements OnInit {
   loading = true
-  animes?: Anime[]
+  animes!: Anime[]
 
   constructor(private service: AnimeService, private router: Router) { }
 
@@ -26,10 +26,10 @@ export class ManageAnimeComponent implements OnInit {
     })
   }
 
-  delete(id: any) {
-    this.service.delete(id).subscribe({
+  delete(selected: Anime) {
+    this.service.delete(Number(selected.id)).subscribe({
       next: () => {
-        this.animes = this.animes?.filter(anime => anime.id != id)
+        this.animes = this.animes?.filter(anime => anime.id != selected.id)
         console.log(this.animes)
       },
       error: (err) => console.log(err.message)
