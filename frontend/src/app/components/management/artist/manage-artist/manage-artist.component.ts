@@ -10,26 +10,26 @@ import { Artist } from 'src/app/models/Artist';
 })
 export class ManageArtistComponent {
   loading = true
-  artists?: Artist[]
+  artists!: Artist[]
 
   constructor(private service: ArtistService, private router: Router) { }
 
 
   ngOnInit(): void {
     this.service.get_all().subscribe({
-      next: (animes) => {
-        console.log("Artists : ", animes)
-        this.artists = animes
+      next: (artists) => {
+        console.log("Artists : ", artists)
+        this.artists = artists
       },
       error: (err) => console.log(err),
       complete: () => this.loading = false
     })
   }
 
-  delete(id: any) {
-    this.service.delete(id).subscribe({
+  delete(artist: Artist) {
+    this.service.delete(Number(artist.id)).subscribe({
       next: () => {
-        this.artists = this.artists?.filter(anime => anime.id != id)
+        this.artists = this.artists?.filter(artist => artist.id != artist.id)
         console.log(this.artists)
       },
       error: (err) => console.log(err.message)

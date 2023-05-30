@@ -1,20 +1,22 @@
 <div *ngIf="loading">Chargement en cours...</div>
 
 <mat-icon routerLink="/manage/artists/create" class="add_btn" fontIcon="add"></mat-icon>
-<table *ngIf="!loading">
+
+<div *ngIf="!loading && artists.length == 0">Il n'y a pas de d'artistes</div>
+
+<table *ngIf="!loading && artists.length > 0">
     <tr>
         <th></th>
         <th>Nom</th>
+        <th>Date de création</th>
         <th>Action</th>
     </tr>
-
-    <tr class="anime-row" *ngFor="let artist of artists">
-        <td [routerLink]="['/manage/artists', artist.id]"><img [src]="artist?.poster_img" [alt]="artist?.name" /></td>
-        <td>{{ artist?.name}} </td>
+    <tr className="row" *ngFor="let artist of artists">
+        <td [routerLink]="['/manage/musics', artist.id]"><img [src]="artist.poster_img" [alt]="artist.name" /></td>
+        <td>{{ artist.name}} </td>
+        <td> {{artist.creation_year}}</td>
         <td>
-            <ul>
-                <mat-icon (click)="delete(artist.id)" class="delete_btn" fontIcon="delete"></mat-icon>
-            </ul>
+            <mat-icon (click)="delete(artist)" class="delete_btn" fontIcon="delete"></mat-icon>
         </td>
     </tr>
 </table>
