@@ -7,23 +7,31 @@ import { ManageAnimeDetailComponent } from '../../components/management/anime/ma
 import { ManageCreateAnimeComponent } from '../../components/management/anime/manage-create-anime/manage-create-anime.component';
 import { ManageArtistComponent } from '../../components/management/artist/manage-artist/manage-artist.component';
 import { HttpClientModule } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
-import { ManageComponent } from '../../components/management/manage/manage.component';
-
-
+import { ManageCreateArtistComponent } from 'src/app/components/management/artist/manage-create-artist/manage-create-artist.component';
+import { ManageArtistDetailComponent } from 'src/app/components/management/artist/manage-artist-detail/manage-artist-detail.component';
+import { ManageMusicComponent } from 'src/app/components/management/music/manage-music/manage-music.component';
+import { ManageMusicDetailComponent } from 'src/app/components/management/music/manage-music-detail/manage-music-detail.component';
+import { ManageCreateMusicComponent } from 'src/app/components/management/music/manage-create-music/manage-create-music.component';
 
 @NgModule({
   declarations: [
     ManageAnimeComponent,
     ManageAnimeDetailComponent,
     ManageCreateAnimeComponent,
-    ManageArtistComponent
+    ManageArtistComponent,
+    ManageCreateArtistComponent,
+    ManageArtistDetailComponent,
+    ManageMusicComponent,
+    ManageMusicDetailComponent,
+    ManageCreateMusicComponent,
   ],
   imports: [
     CommonModule,
     ManagementRoutingModule,
     HttpClientModule,
+    FormsModule,
     ReactiveFormsModule,
     MatIconModule,
   ]
