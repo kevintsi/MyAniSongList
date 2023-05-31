@@ -6,7 +6,7 @@ from fastapi import (
     UploadFile,
 )
 from db.schemas import *
-from typing import List
+from typing import List, Optional
 from services.musics import (
     MusicService,
     get_service,
@@ -38,7 +38,7 @@ async def add(
 async def update(
     id: int,
     music: MusicUpdate = Body(...),
-    poster_img: UploadFile = File(...),
+    poster_img: Optional[UploadFile] = File(None),
     service: MusicService = Depends(get_service),
 ):
     return service.update(id, music, poster_img)
@@ -52,7 +52,7 @@ async def delete(
     return service.delete(id)
 
 
-@router.get("/{id}")
+@router.get("/{id}", response_model=Music)
 async def get(
     id: int,
     service: MusicService = Depends(get_service),

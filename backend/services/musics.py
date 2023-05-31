@@ -65,8 +65,16 @@ class MusicService(BaseService[Music, MusicCreate, MusicUpdate]):
 
         db_obj = self.db_session.get(Music, id)
 
+        list_author = []
+
+        for id in obj.authors:
+            list_author.append(self.db_session.get(Author, id))
+
         for column, value in obj.dict(exclude_unset=True).items():
-            setattr(db_obj, column, value)
+            if column == "authors":
+                db_obj.authors = list_author
+            else:
+                setattr(db_obj, column, value)
 
         if poster_img is not None:
             blob = bucket.blob(

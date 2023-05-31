@@ -95,7 +95,7 @@ class Music(Base):
 
     id = Column(BigInteger, primary_key=True)
     name = Column(String(250), nullable=False, unique=True)
-    release_date = Column(String(250), nullable=False)
+    release_date = Column(DateTime, nullable=False)
     anime_id = Column(BigInteger, nullable=False, index=True)
     type_id = Column(BigInteger, nullable=False, index=True)
     poster_img = Column(String(250))

@@ -136,7 +136,7 @@ class Author(AuthorUpdate):
 
 class MusicBase(BaseModel):
     name: str
-    release_date: str
+    release_date: datetime
 
 
 class MusicCreate(MusicBase):
