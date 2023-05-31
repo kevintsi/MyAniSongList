@@ -7,7 +7,7 @@
         <input type="text" formControlName="name" />
 
         <label>Date de sortie : </label>
-        <input type="text" formControlName="release_date" />
+        <input type="date" formControlName="release_date" />
 
         <label>Anime : </label>
         <input type="text" placeholder="Tapez le nom de l'anime..." (keyup)="get_anime_list(get_value($event))" />
@@ -28,7 +28,7 @@
         <input type="text" placeholder="Tapez le nom de l'artiste/groupe..."
             (keyup)="get_artist_list(get_value($event))" />
 
-        <ng-container *ngIf="selected_artists.length>0">
+        <ng-container *ngIf="selected_artists && selected_artists.length>0">
             <div [style.font-weight]="500">Artistes selectionnés : </div>
             <div (click)="onunselectartist(artist)" *ngFor="let artist of selected_artists">{{ artist.name}}</div>
         </ng-container>

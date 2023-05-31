@@ -22,12 +22,21 @@ export class MusicService {
     return this.http.get<Music>(this.endpoint + '/musics/' + id)
   }
 
-  public update(id: number, data: any, file: File) {
+  public update(id: number, data: any, file: File, selected_anime: Anime, selected_artists: Artist[]) {
     const headers = new HttpHeaders()
+    console.log(data.release_date)
+    let artists_id = selected_artists.map(artist => artist.id)
 
+    let music = {
+      name: data.name,
+      release_date: new Date(data.release_date),
+      authors: artists_id,
+      anime_id: selected_anime.id,
+      type_id: data.type_id
+    }
     const form_data = new FormData()
-
-    form_data.append("music", JSON.stringify(data))
+    console.log(music)
+    form_data.append("music", JSON.stringify(music))
     if (file != null)
       form_data.append('poster_img', file)
 
@@ -40,7 +49,7 @@ export class MusicService {
     )
   }
 
-  public create(data: any, file: File, selected_anime: any, selected_artists: Artist[]) {
+  public create(data: any, file: File, selected_anime: Anime, selected_artists: Artist[]) {
     const headers = new HttpHeaders()
     // {
     //   "name": "string",
@@ -55,11 +64,13 @@ export class MusicService {
     let artists_id = selected_artists.map(artist => artist.id)
     let music = {
       name: data.name,
-      release_date: data.release_date,
+      release_date: new Date(data.release_date),
       authors: artists_id,
       anime_id: selected_anime.id,
       type_id: data.type_id
     }
+
+    console.log(music)
 
     const form_data = new FormData()
 

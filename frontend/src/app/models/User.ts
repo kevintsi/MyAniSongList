@@ -3,6 +3,5 @@ export interface User {
     username?: string;
     email?: string;
     password?: string;
-    profile_picture?: Blob;
-
+    profile_picture?: string;
 }

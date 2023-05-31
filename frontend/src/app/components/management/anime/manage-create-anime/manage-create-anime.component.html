@@ -1,7 +1,7 @@
 <div>
     <form [formGroup]="create_form" (ngSubmit)="onSubmit()">
-        <img #thenBlock (click)="imageInput.click()"
-            [src]="preview_image ? preview_image : '/assets/images/default_image.jpg'" alt="Image animé" />
+        <img (click)="imageInput.click()" [src]="preview_image ? preview_image : '/assets/images/default_image.jpg'"
+            alt="Image animé" />
         <label>Nom : </label>
         <input type="text" formControlName="name" />
         <label>Description : </label>

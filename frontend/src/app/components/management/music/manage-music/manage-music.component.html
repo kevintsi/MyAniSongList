@@ -14,8 +14,8 @@
     <tr class="row" *ngFor="let music of musics">
         <td [routerLink]="['/manage/musics', music.id]"><img [src]="music.poster_img" [alt]="music.name" /></td>
         <td>{{ music.name}} </td>
-        <td> {{music.release_date}}</td>
-        <td> {{ music.type?.type_name }}</td>
+        <td> {{music.release_date | date:'dd-MM-YYY' }}</td>
+        <td> {{ music.type.type_name }}</td>
         <td>
             <mat-icon (click)="delete(music)" class="delete_btn" fontIcon="delete"></mat-icon>
         </td>

@@ -55,13 +55,15 @@ export class ManageCreateMusicComponent implements OnInit {
 
   onSubmit() {
     console.log(this.create_form.value)
-    this.music_service.create(this.create_form.value, this.file, this.selected_anime, this.selected_artists)
-      .subscribe({
-        next: () => {
-          alert("Musique ajouté")
-        },
-        error: (err) => console.log(err)
-      })
+    if (this.selected_anime && this.selected_artists.length > 0) {
+      this.music_service.create(this.create_form.value, this.file, this.selected_anime, this.selected_artists)
+        .subscribe({
+          next: () => {
+            alert("Musique ajouté")
+          },
+          error: (err) => console.log(err)
+        })
+    }
   }
 
   get_value(event: Event): string {

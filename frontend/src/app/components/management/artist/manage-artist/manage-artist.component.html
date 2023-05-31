@@ -12,7 +12,7 @@
         <th>Action</th>
     </tr>
     <tr className="row" *ngFor="let artist of artists">
-        <td [routerLink]="['/manage/musics', artist.id]"><img [src]="artist.poster_img" [alt]="artist.name" /></td>
+        <td [routerLink]="['/manage/artists', artist.id]"><img [src]="artist.poster_img" [alt]="artist.name" /></td>
         <td>{{ artist.name}} </td>
         <td> {{artist.creation_year}}</td>
         <td>
