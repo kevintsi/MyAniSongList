@@ -15,6 +15,7 @@ import { AnimeComponent } from './components/anime/anime.component';
 import { ManageComponent } from './components/management/manage/manage.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatIconModule } from '@angular/material/icon';
+import { AnimeDetailComponent } from './components/anime-detail/anime-detail.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { MatIconModule } from '@angular/material/icon';
     AnimeListComponent,
     AnimeComponent,
     ManageComponent,
+    AnimeDetailComponent,
 
   ],
   imports: [

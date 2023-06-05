@@ -7,6 +7,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { AnimeListComponent } from './components/anime-list/anime-list.component';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { ManageComponent } from './components/management/manage/manage.component';
+import { AnimeDetailComponent } from './components/anime-detail/anime-detail.component';
 
 
 const routes: Routes = [
@@ -14,7 +15,12 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [notSignedInGuard] },
   { path: 'register', component: RegistrationComponent, canActivate: [notSignedInGuard] },
   { path: 'profile', component: ProfileComponent },
-  { path: 'animes', component: AnimeListComponent },
+  {
+    path: 'animes', children: [
+      { path: '', component: AnimeListComponent },
+      { path: ':id', component: AnimeDetailComponent }
+    ]
+  },
   { path: 'manage', component: ManageComponent, loadChildren: () => import("./modules/management/management.module").then(m => m.ManagementModule) },
 
 ]
