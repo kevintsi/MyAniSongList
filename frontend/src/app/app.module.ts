@@ -11,7 +11,6 @@ import { HomeComponent } from './components/home/home.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { httpInterceptorProviders } from './_helpers/http.interceptor';
 import { AnimeListComponent } from './components/anime-list/anime-list.component';
-import { AnimeComponent } from './components/anime/anime.component';
 import { ManageComponent } from './components/management/manage/manage.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatIconModule } from '@angular/material/icon';
@@ -26,7 +25,6 @@ import { AnimeDetailComponent } from './components/anime-detail/anime-detail.com
     HomeComponent,
     ProfileComponent,
     AnimeListComponent,
-    AnimeComponent,
     ManageComponent,
     AnimeDetailComponent,
 
