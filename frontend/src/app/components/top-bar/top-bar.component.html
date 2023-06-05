@@ -1,23 +1,37 @@
-<div class="top-bar">
-    <div>
-        <h2>MyAniSongList</h2>
-    </div>
-    <div>
-        <div *ngIf="!isLoggedIn()">
-            <a routerLink="/login" routerLinkActive="active" ariaCurrentWhenActive="page">Se connecter</a>
-            <a href="/register" routerLinkActive="active" ariaCurrentWhenActive="page">S'inscrire</a>
+<div class="sticky top-0">
+    <div class="navbar bg-base-100">
+        <div class="flex-1">
+            <a routerLink="/" class="btn btn-ghost normal-case text-xl">MyAniSongList</a>
         </div>
-        <a (click)="logout()" *ngIf="isLoggedIn()">Se déconnecter</a>
-        <a href="/profile" routerLinkActive="active" *ngIf="isLoggedIn()" ariaCurrentWhenActive="page">Profile</a>
+        <div class="burger-menu sm:hidden" [class.open]="isMenuOpen" (click)="toggleMenu()">
+            <div class="burger"></div>
+            <ul *ngIf="isMenuOpen" class="block fixed list-none z-50 top-16 h-full -left-0 w-full bg-red-950">
+                <li><a routerLink="/register">S'inscrire</a></li>
+                <li><a routerLink="/login">Se connecter</a></li>
+                <li><a routerLink="/animes">Animes</a></li>
+                <li><a routerLink="">Artistes</a></li>
+                <li><a routerLink="">Musiques</a></li>
+                <li><a routerLink="">Communauté</a></li>
+            </ul>
+        </div>
+        <div class="hidden flex-none gap-2">
+            <ul tabindex="0" class="flex flex-row mt-3 p-2 shadow w-52">
+                <li><a routerLink="/register">S'inscrire</a></li>
+                <li><a routerLink="/login">Se connecter</a></li>
+            </ul>
+        </div>
     </div>
-    <nav>
-        <ul>
-            <a href="/animes">
-                <li>Animes</li>
-            </a>
-            <li>Artistes</li>
-            <li>Musiques</li>
-            <li>Communautés</li>
-        </ul>
-    </nav>
+    <div class="hidden pb-3 sm:flex flex-row items-center justify-between">
+        <div>
+            <ul tabindex="0" class="flex flex-row mt-3 p-2">
+                <li><a routerLink="/animes">Animes</a></li>
+                <li><a routerLink="">Artistes</a></li>
+                <li><a routerLink="">Musiques</a></li>
+                <li><a routerLink="">Communauté</a></li>
+            </ul>
+        </div>
+        <div>
+            <input type="text" placeholder="Search" class="input input-bordered w-24 md:w-auto" />
+        </div>
+    </div>
 </div>

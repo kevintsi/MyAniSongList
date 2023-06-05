@@ -11,6 +11,7 @@ import { StorageService } from '../../_services/storage.service';
 
 
 export class TopBarComponent implements OnInit {
+  isMenuOpen: boolean = false;
 
   constructor(
     private authService: AuthService,
@@ -21,6 +22,11 @@ export class TopBarComponent implements OnInit {
   ngOnInit(): void {
     console.log("ngOnInit TopBarComponent")
   }
+
+  toggleMenu() {
+    this.isMenuOpen = !this.isMenuOpen;
+  }
+
 
   isLoggedIn() {
     return this.authService.isLoggedIn()

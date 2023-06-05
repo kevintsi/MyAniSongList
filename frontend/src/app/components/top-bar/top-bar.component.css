@@ -1,16 +1,70 @@
-.top-bar {
-    background-color: white;
-    border-bottom: 1px solid black;
-}
-
-ul {
-    display: flex;
-    flex-direction: row;
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-}
-
 li {
     padding: 10px;
+}
+
+/* MOBILE MENU */
+
+.burger-menu {
+    position: relative;
+    cursor: pointer;
+}
+
+.burger-menu .burger {
+    width: 30px;
+    height: 4px;
+    background: rgb(255, 255, 255);
+    margin: 6px 0;
+    transition: transform 0.3s ease;
+}
+
+.burger-menu .burger:before,
+.burger-menu .burger:after {
+    content: "";
+    position: absolute;
+    width: 30px;
+    height: 4px;
+    background: #ffffff;
+    transition: transform 0.3s ease;
+}
+
+.burger-menu .burger:before {
+    transform: translateY(-10px);
+}
+
+.burger-menu .burger:after {
+    transform: translateY(10px);
+}
+
+.burger-menu.open .burger {
+    transform: rotate(45deg);
+    background-color: transparent;
+}
+
+.burger-menu.open .burger:before {
+    transform: translateY(0) rotate(45deg);
+}
+
+.burger-menu.open .burger:after {
+    transform: translateY(0) rotate(-45deg);
+}
+
+/* .burger-menu ul {
+    position: absolute;
+    top: 2.5rem;
+    left : -18rem;
+    z-index: 1;
+    width: 20.3rem;
+    display: block;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+} */
+
+.burger-menu ul li {
+    padding: 10px;
+}
+
+.burger-menu ul li a {
+    text-decoration: none;
+    font-weight: 500;
 }
