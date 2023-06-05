@@ -18,6 +18,10 @@ export class MusicService {
     return this.http.get<Music[]>(this.endpoint + '/musics/all')
   }
 
+  public get_musics_anime(id_anime: number) {
+    return this.http.get<Music[]>(this.endpoint + '/musics/anime/' + id_anime)
+  }
+
   public get(id: number) {
     return this.http.get<Music>(this.endpoint + '/musics/' + id)
   }
