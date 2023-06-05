@@ -25,6 +25,14 @@ async def get_all(
     return service.list()
 
 
+@router.get("/anime/{id_anime}", response_model=List[Music])
+async def get_musics_by_id_anime(
+    id_anime: int,
+    service: MusicService = Depends(get_service),
+):
+    return service.get_musics_anime(id_anime)
+
+
 @router.post("/add")
 async def add(
     music: MusicCreate = Body(...),

@@ -13,6 +13,12 @@ class MusicService(BaseService[Music, MusicCreate, MusicUpdate]):
     def __init__(self, db_session: Session):
         super(MusicService, self).__init__(Music, db_session)
 
+    def get_musics_anime(self, id_anime: int):
+        musics = self.db_session.query(
+            Music).filter(Music.anime_id == id_anime).all()
+
+        return musics
+
     def create(self, obj: MusicCreate, poster_img: UploadFile):
         # if not os.path.exists("static/music_poster_images"):
         #     os.makedirs("static/music_poster_images")
