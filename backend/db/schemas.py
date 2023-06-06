@@ -119,11 +119,11 @@ class AuthorCreate(AuthorBase):
         return value
 
 
-class AuthorUpdate(AuthorCreate):
+class AuthorUpdate(AuthorBase):
     pass
 
 
-class Author(AuthorUpdate):
+class Author(AuthorBase):
     id: int
     poster_img: str
 
