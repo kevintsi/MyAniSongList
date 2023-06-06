@@ -158,6 +158,16 @@ class MusicUpdate(MusicCreate):
     pass
 
 
+class MusicArtist(MusicBase):
+    id: int
+    poster_img: str
+    anime: Anime
+    type: Type
+
+    class Config:
+        orm_mode = True
+
+
 class Music(MusicBase):
     id: int
     poster_img: str
