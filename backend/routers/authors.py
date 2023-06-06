@@ -64,7 +64,7 @@ async def delete(
     return service.delete(id)
 
 
-@router.get("/{id}")
+@router.get("/{id}", response_model=Author)
 async def get(
     id: int,
     service: AuthorService = Depends(get_service),
