@@ -17,14 +17,11 @@
             <div class="flex flex-row p-4 hover:shadow-xl hover:shadow-blue-400/40 rounded-lg hover:cursor-pointer items-center"
                 *ngFor="let music of musics">
                 <img [src]="music.poster_img" class="rounded-full object-fill w-20 h-20" />
-                <div class="pl-4 text-ellipsis whitespace-nowrap">
-                    <div>{{ music.anime.name }}</div>
-                    <div>{{ music.name }}</div>
+                <div class="pl-4 w-36">
+                    <div class="overflow-hidden text-ellipsis whitespace-nowrap">{{ music.anime.name }}</div>
+                    <div class="overflow-hidden text-ellipsis whitespace-nowrap">{{ music.name }}</div>
                     <div>{{ music.release_date | date: 'dd-MM-YYYY' }}</div>
                     <div>{{ music.type.type_name }}</div>
-                    <div *ngFor="let artist of music.authors">
-                        <div>{{ artist.name }}</div>
-                    </div>
                 </div>
             </div>
         </div>
