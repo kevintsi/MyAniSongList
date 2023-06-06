@@ -6,7 +6,7 @@ from fastapi import (
     UploadFile,
 )
 from db.schemas import *
-from typing import List, Optional
+from typing import Optional
 from services.musics import (
     MusicService,
     get_service,
@@ -18,14 +18,14 @@ router = APIRouter(
 )
 
 
-@router.get("/all", response_model=List[Music])
+@router.get("/all", response_model=list[Music])
 async def get_all(
     service: MusicService = Depends(get_service),
 ):
     return service.list()
 
 
-@router.get("/anime/{id_anime}", response_model=List[Music])
+@router.get("/anime/{id_anime}", response_model=list[Music])
 async def get_musics_by_id_anime(
     id_anime: int,
     service: MusicService = Depends(get_service),
@@ -33,7 +33,7 @@ async def get_musics_by_id_anime(
     return service.get_musics_anime(id_anime)
 
 
-@router.get("/artist/{id_artist}", response_model=List[MusicArtist])
+@router.get("/artist/{id_artist}", response_model=list[MusicArtist])
 async def get_musics_by_id_artist(
     id_artist: int,
     service: MusicService = Depends(get_service),

@@ -7,7 +7,6 @@ from fastapi import (
 )
 from typing import Optional
 from db.schemas import *
-from typing import List
 from services.authors import (
     AuthorService,
     get_service,
@@ -19,14 +18,14 @@ router = APIRouter(
 )
 
 
-@router.get("/all", response_model=List[Author])
+@router.get("/all", response_model=list[Author])
 async def get_all(
     service: AuthorService = Depends(get_service),
 ):
     return service.list()
 
 
-@router.get("/search", response_model=List[Author])
+@router.get("/search", response_model=list[Author])
 async def search(
     query: str,
     service: AuthorService = Depends(get_service),

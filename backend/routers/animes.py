@@ -7,7 +7,7 @@ from fastapi import (
     UploadFile,
 )
 from db.schemas import Anime, AnimeCreate, AnimeUpdate
-from typing import List, Optional
+from typing import Optional
 from services.animes import (
     AnimeService,
     get_service,
@@ -19,14 +19,14 @@ router = APIRouter(
 )
 
 
-@router.get("/all", response_model=List[Anime])
+@router.get("/all", response_model=list[Anime])
 async def get_all(
     service: AnimeService = Depends(get_service),
 ):
     return service.list()
 
 
-@router.get("/search", response_model=List[Anime])
+@router.get("/search", response_model=list[Anime])
 async def search(
     query: str,
     service: AnimeService = Depends(get_service),

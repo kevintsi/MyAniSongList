@@ -1,11 +1,8 @@
 from fastapi import (
     APIRouter,
     Depends,
-    File,
-    Body,
 )
 from db.schemas import *
-from typing import List
 from services.types import (
     TypeService,
     get_service,
@@ -17,7 +14,7 @@ router = APIRouter(
 )
 
 
-@router.get("/all", response_model=List[Type])
+@router.get("/all", response_model=list[Type])
 async def get_all(
     service: TypeService = Depends(get_service),
 ):
