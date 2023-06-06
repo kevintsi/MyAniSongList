@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Anime } from '../../models/Anime';
-import { AnimeService } from '../../_services/anime.service';
+import { Anime } from '../../../models/Anime';
+import { AnimeService } from '../../../_services/anime.service';
 import { Title } from '@angular/platform-browser';
 
 @Component({

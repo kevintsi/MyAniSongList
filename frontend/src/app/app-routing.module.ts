@@ -4,10 +4,10 @@ import { LoginComponent } from './components/login/login.component'
 import { isSignedInGuard, notSignedInGuard } from './guards/authguard.service';
 import { HomeComponent } from './components/home/home.component';
 import { ProfileComponent } from './components/profile/profile.component';
-import { AnimeListComponent } from './components/anime-list/anime-list.component';
+import { AnimeListComponent } from './components/animes/anime-list/anime-list.component';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { ManageComponent } from './components/management/manage/manage.component';
-import { AnimeDetailComponent } from './components/anime-detail/anime-detail.component';
+import { AnimeDetailComponent } from './components/animes/anime-detail/anime-detail.component';
 
 
 const routes: Routes = [
