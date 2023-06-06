@@ -3,8 +3,8 @@
     <div class="grid grid-cols-2 gap-8">
         <div class="bg-base-100 hover:cursor-pointer rounded-lg" *ngFor="let anime of animes"
             [routerLink]="['/animes', anime.id]">
-            <div class="text-center font-bold text-xl pb-4">
-                <div>{{ anime.name}}</div>
+            <div class="text-center font-bold text-sm pb-4 overflow-hidden text-ellipsis whitespace-nowrap">
+                {{ anime.name }}
             </div>
             <div class="flex justify-center text-center">
                 <img class="hover:shadow-xl hover:shadow-blue-400/40 rounded-3xl w-28 h-36 object-fill"
