@@ -15,6 +15,8 @@ import { ManageComponent } from './components/management/manage/manage.component
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatIconModule } from '@angular/material/icon';
 import { AnimeDetailComponent } from './components/animes/anime-detail/anime-detail.component';
+import { ArtistListComponent } from './components/artists/artist-list/artist-list.component';
+import { ArtistDetailComponent } from './components/artists/artist-detail/artist-detail.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +29,8 @@ import { AnimeDetailComponent } from './components/animes/anime-detail/anime-det
     AnimeListComponent,
     ManageComponent,
     AnimeDetailComponent,
+    ArtistListComponent,
+    ArtistDetailComponent,
 
   ],
   imports: [

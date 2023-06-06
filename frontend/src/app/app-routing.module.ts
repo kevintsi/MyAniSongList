@@ -8,6 +8,8 @@ import { AnimeListComponent } from './components/animes/anime-list/anime-list.co
 import { RegistrationComponent } from './components/registration/registration.component';
 import { ManageComponent } from './components/management/manage/manage.component';
 import { AnimeDetailComponent } from './components/animes/anime-detail/anime-detail.component';
+import { ArtistListComponent } from './components/artists/artist-list/artist-list.component';
+import { ArtistDetailComponent } from './components/artists/artist-detail/artist-detail.component';
 
 
 const routes: Routes = [
@@ -19,6 +21,12 @@ const routes: Routes = [
     path: 'animes', children: [
       { path: '', component: AnimeListComponent },
       { path: ':id', component: AnimeDetailComponent }
+    ]
+  },
+  {
+    path: 'artists', children: [
+      { path: '', component: ArtistListComponent },
+      { path: ':id', component: ArtistDetailComponent }
     ]
   },
   { path: 'manage', component: ManageComponent, loadChildren: () => import("./modules/management/management.module").then(m => m.ManagementModule) },
