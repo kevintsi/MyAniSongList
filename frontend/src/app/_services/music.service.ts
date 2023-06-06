@@ -22,6 +22,10 @@ export class MusicService {
     return this.http.get<Music[]>(this.endpoint + '/musics/anime/' + id_anime)
   }
 
+  public get_musics_artist(id_artist: number) {
+    return this.http.get<Music[]>(this.endpoint + '/musics/artist/' + id_artist)
+  }
+
   public get(id: number) {
     return this.http.get<Music>(this.endpoint + '/musics/' + id)
   }
