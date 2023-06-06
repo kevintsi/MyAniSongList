@@ -19,6 +19,12 @@ class MusicService(BaseService[Music, MusicCreate, MusicUpdate]):
 
         return musics
 
+    def get_musics_artist(self, id_artist: int):
+        artist: Author = self.db_session.query(
+            Author).get(id_artist)
+        musics = artist.musics
+        return musics
+
     def create(self, obj: MusicCreate, poster_img: UploadFile):
         # if not os.path.exists("static/music_poster_images"):
         #     os.makedirs("static/music_poster_images")
