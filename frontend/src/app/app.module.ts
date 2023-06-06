@@ -10,13 +10,13 @@ import { RegistrationComponent } from './components/registration/registration.co
 import { HomeComponent } from './components/home/home.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { httpInterceptorProviders } from './_helpers/http.interceptor';
-import { AnimeListComponent } from './components/animes/anime-list/anime-list.component';
+import { AnimeListComponent } from './components/anime/anime-list/anime-list.component';
 import { ManageComponent } from './components/management/manage/manage.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatIconModule } from '@angular/material/icon';
-import { AnimeDetailComponent } from './components/animes/anime-detail/anime-detail.component';
-import { ArtistListComponent } from './components/artists/artist-list/artist-list.component';
-import { ArtistDetailComponent } from './components/artists/artist-detail/artist-detail.component';
+import { AnimeDetailComponent } from './components/anime/anime-detail/anime-detail.component';
+import { ArtistListComponent } from './components/artist/artist-list/artist-list.component';
+import { ArtistDetailComponent } from './components/artist/artist-detail/artist-detail.component';
 
 @NgModule({
   declarations: [
