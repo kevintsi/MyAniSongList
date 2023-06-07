@@ -17,6 +17,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { AnimeDetailComponent } from './components/anime/anime-detail/anime-detail.component';
 import { ArtistListComponent } from './components/artist/artist-list/artist-list.component';
 import { ArtistDetailComponent } from './components/artist/artist-detail/artist-detail.component';
+import { MusicListComponent } from './components/music/music-list/music-list.component';
+import { MusicDetailComponent } from './components/music/music-detail/music-detail.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +33,8 @@ import { ArtistDetailComponent } from './components/artist/artist-detail/artist-
     AnimeDetailComponent,
     ArtistListComponent,
     ArtistDetailComponent,
+    MusicListComponent,
+    MusicDetailComponent,
 
   ],
   imports: [
