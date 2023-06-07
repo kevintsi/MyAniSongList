@@ -3,6 +3,26 @@
         <div class="flex-1">
             <a routerLink="/" class="btn btn-ghost normal-case text-xl">MyAniSongList</a>
         </div>
+        <div class="pr-3">
+            <mat-icon (click)="toggleSearchBar()" style="font-size:xx-large">search</mat-icon>
+        </div>
+        <div *ngIf="isSearchBarOpen" class="block fixed w-full z-50 top-16 h-full bg-black/10">
+            <div class="bg-white/100 flex flex-row">
+                <select class="select bg-white" [(ngModel)]="category">
+                    <option value="musics">Musique</option>
+                    <option value="artists">Artiste</option>
+                    <option value="animes">Anime</option>
+                </select>
+                <input type="text" placeholder="Search" class="bg-white w-full md:w-auto"
+                    (keyup)="get_list(get_value($event))" />
+            </div>
+            <div class="bg-white flex flex-col" *ngFor="let item of result_search | async">
+                <div [routerLink]="['/',category,item.id]" class="flex flex-row items-center">
+                    <img src="{{item.poster_img}}" class=" w-16 h-16 object-fill rounded-full" />
+                    <div class="pl-2">{{ item.name}}</div>
+                </div>
+            </div>
+        </div>
         <div class="burger-menu sm:hidden" [class.open]="isMenuOpen" (click)="toggleMenu()">
             <div class="burger"></div>
             <ul *ngIf="isMenuOpen" class="block fixed list-none z-50 top-16 h-full -left-0 w-full bg-red-950">
@@ -14,6 +34,7 @@
                 <li><a routerLink="">Communauté</a></li>
             </ul>
         </div>
+
         <div class="hidden flex-none gap-2">
             <ul tabindex="0" class="flex flex-row mt-3 p-2 shadow w-52">
                 <li><a routerLink="/register">S'inscrire</a></li>
