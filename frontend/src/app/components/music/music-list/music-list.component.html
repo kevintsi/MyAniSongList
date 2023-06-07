@@ -1,0 +1,15 @@
+<div class="container mx-auto pt-10">
+    <div *ngIf="loading">Chargement en cours...</div>
+    <div class="grid grid-cols-2 gap-8">
+        <div class="bg-base-100 hover:cursor-pointer rounded-lg" *ngFor="let music of musics"
+            [routerLink]="['/musics', music.id]">
+            <div class="text-center font-bold text-sm pb-4 overflow-hidden text-ellipsis whitespace-nowrap">
+                {{ music.name }}
+            </div>
+            <div class="flex justify-center text-center">
+                <img class="hover:shadow-xl hover:shadow-blue-400/40 rounded-3xl object-fill" [src]="music.poster_img"
+                    [alt]="music.name" />
+            </div>
+        </div>
+    </div>
+</div>

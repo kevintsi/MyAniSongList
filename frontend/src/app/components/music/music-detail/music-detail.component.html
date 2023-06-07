@@ -1,0 +1,46 @@
+<div class="flex flex-col">
+
+    <div class="flex flex-col">
+        <div class="text-center flex flex-col items-center p-4">
+            <h1 class="font-bold pb-5">{{ music?.name}}</h1>
+            <img class="rounded-3xl w-44 pb-4" src="{{music?.poster_img}}" alt="{{music?.name}}" />
+        </div>
+        <div class="pl-5 p-4">
+            <h2 class="font-bold pb-3 text-center">Informations</h2>
+            <div class="flex flex-col">
+                <div>Date de sortie : {{ music?.release_date | date : "dd-MM-YYYY"}}</div>
+                <div>Type : {{ music?.type?.type_name}} </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="p-4 flex flex-col">
+        <h2 class="font-bold text-center">Anime</h2>
+        <div class="flex flex-col">
+            <div [routerLink]="['/animes', music?.anime?.id]"
+                class="flex flex-row p-4 hover:shadow-xl hover:shadow-blue-400/40 rounded-lg hover:cursor-pointer items-center">
+                <img [src]="music?.anime?.poster_img" class="rounded-full object-fill w-20 h-20" />
+                <div class="pl-4 text-ellipsis whitespace-nowrap">
+                    <div>{{ music?.anime?.name }}</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="p-4 flex flex-col">
+        <h2 class="font-bold text-center">Artistes</h2>
+        <div class="flex flex-col">
+            <div [routerLink]="['/artists', author?.id]"
+                class="flex flex-row p-4 hover:shadow-xl hover:shadow-blue-400/40 rounded-lg hover:cursor-pointer items-center"
+                *ngFor="let author of music?.authors">
+                <img [src]="author.poster_img" class="rounded-full object-fill w-20 h-20" />
+                <div class="pl-4 text-ellipsis whitespace-nowrap">
+                    <div>{{ author.name }}</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
