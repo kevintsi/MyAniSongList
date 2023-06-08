@@ -19,6 +19,7 @@ import { ArtistListComponent } from './components/artist/artist-list/artist-list
 import { ArtistDetailComponent } from './components/artist/artist-detail/artist-detail.component';
 import { MusicListComponent } from './components/music/music-list/music-list.component';
 import { MusicDetailComponent } from './components/music/music-detail/music-detail.component';
+import { SearchBarComponent } from './components/search-bar/search-bar.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { MusicDetailComponent } from './components/music/music-detail/music-deta
     ArtistDetailComponent,
     MusicListComponent,
     MusicDetailComponent,
+    SearchBarComponent,
 
   ],
   imports: [
