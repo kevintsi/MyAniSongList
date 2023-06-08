@@ -45,10 +45,15 @@ export class TopBarComponent {
         })
       }
         break
-      // case "musics": {
-      //   this.music_service.search(query)
-      // }
-      // break
+      case "musics": {
+        this.music_service.search(searchTerm).subscribe({
+          next: (music) => {
+            this.result_search = music
+          },
+          error: (err) => console.error(err.message)
+        })
+      }
+        break
       case "artists": {
         this.artist_service.search(searchTerm).subscribe({
           next: (artist) => {
