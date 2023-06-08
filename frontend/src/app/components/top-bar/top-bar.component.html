@@ -3,8 +3,8 @@
         <div class="flex-1">
             <a routerLink="/" class="btn btn-ghost normal-case text-xl">MyAniSongList</a>
         </div>
-        <div class="pr-3">
-            <mat-icon (click)="toggleSearchBar()" style="font-size:xx-large">search</mat-icon>
+        <div class="text-3xl flex items-center pr-3">
+            <mat-icon (click)="toggleSearchBar()" [inline]="true">search</mat-icon>
         </div>
         <div *ngIf="isSearchBarOpen" class="block fixed w-full z-50 top-16 h-full bg-black/20">
             <div class="flex flex-row">
@@ -24,7 +24,9 @@
         </div>
 
         <div class="burger-menu sm:hidden" [class.open]="isMenuOpen" (click)="toggleMenu()">
-            <div class="burger"></div>
+            <div class="text-3xl flex items-center">
+                <mat-icon [inline]="true">{{!isMenuOpen ? "menu" : "close"}}</mat-icon>
+            </div>
             <ul *ngIf="isMenuOpen" class="block fixed list-none z-50 top-16 h-full -left-0 w-full bg-red-950">
                 <li><a routerLink="/register">S'inscrire</a></li>
                 <li><a routerLink="/login">Se connecter</a></li>
