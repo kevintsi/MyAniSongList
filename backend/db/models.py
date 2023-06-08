@@ -96,6 +96,7 @@ class Music(Base):
     id = Column(BigInteger, primary_key=True)
     name = Column(String(250), nullable=False, unique=True)
     release_date = Column(DateTime, nullable=False)
+    avg_note = Column(Float, nullable=True)
     anime_id = Column(BigInteger, nullable=False, index=True)
     type_id = Column(BigInteger, nullable=False, index=True)
     poster_img = Column(String(250))
@@ -124,7 +125,7 @@ class Review(Base):
     creation_date = Column(DateTime, nullable=False)
     music_id = Column(BigInteger, nullable=False, index=True)
     user_id = Column(BigInteger, nullable=False, index=True)
-    description = Column(Text)
+    description = Column(Text, nullable=True)
 
     users = relationship('User', back_populates='reviews')
     musics = relationship('Music', back_populates='reviews')
