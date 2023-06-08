@@ -18,14 +18,15 @@ class MusicService(BaseService[Music, MusicCreate, MusicUpdate]):
 
     def get_musics_anime(self, id_anime: int):
         musics = self.db_session.query(
-            Music).filter(Music.anime_id == id_anime).all()
+            Music).filter(Music.anime_id == id_anime).order_by(Music.release_date.desc()).all()
 
         return musics
 
     def get_musics_artist(self, id_artist: int):
         artist: Author = self.db_session.query(
             Author).get(id_artist)
-        musics = artist.musics
+        musics = sorted(
+            artist.musics, key=lambda m: m.release_date, reverse=True)
         return musics
 
     def create(self, obj: MusicCreate, poster_img: UploadFile):
