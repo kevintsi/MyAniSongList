@@ -25,6 +25,17 @@ async def get_all(
     return service.list()
 
 
+@router.get("/search", response_model=list[Music])
+async def search(
+    query: str,
+    service: MusicService = Depends(get_service),
+):
+    if query.strip() == "":
+        return []
+    else:
+        return service.search(query)
+
+
 @router.get("/anime/{id_anime}", response_model=list[Music])
 async def get_musics_by_id_anime(
     id_anime: int,
