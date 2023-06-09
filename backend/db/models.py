@@ -39,7 +39,7 @@ class User(Base):
     profile_picture = Column(String(250))
     creation_date = Column(DateTime)
 
-    reviews: list = relationship('Review', back_populates='users')
+    reviews: list = relationship('Review', back_populates='user')
 
     def __repr__(self):
         return f"User({self.id},{self.username},{self.email}, {self.creation_date}, {self.profile_picture}, {self.is_manager})"
@@ -105,7 +105,7 @@ class Music(Base):
         'Author', secondary=t_chante, back_populates='musics')
     anime = relationship('Anime', uselist=False, back_populates='musics')
     type = relationship('Type', uselist=False, back_populates='musics')
-    reviews = relationship('Review', back_populates='musics')
+    reviews = relationship('Review', back_populates='music')
 
     def __repr__(self):
         return f"Music({self.id},{self.name},{self.release_date},{self.anime_id},{self.type_id},{self.poster_img})"
@@ -127,8 +127,8 @@ class Review(Base):
     user_id = Column(BigInteger, nullable=False, index=True)
     description = Column(Text, nullable=True)
 
-    users = relationship('User', back_populates='reviews')
-    musics = relationship('Music', back_populates='reviews')
+    user = relationship('User', back_populates='reviews')
+    music = relationship('Music', back_populates='reviews')
 
     def __repr__(self):
         return f"Review({self.id},{self.note_visual},{self.note_music},{self.creation_date},{self.music_id},{self.user_id},{self.description})"

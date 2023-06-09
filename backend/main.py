@@ -6,7 +6,8 @@ from routers import (
     animes,
     musics,
     authors,
-    types
+    types,
+    reviews
 )
 
 from fastapi import FastAPI, HTTPException, Depends, Request
@@ -50,3 +51,4 @@ app.include_router(animes.router)
 app.include_router(musics.router)
 app.include_router(authors.router)
 app.include_router(types.router)
+app.include_router(reviews.router)

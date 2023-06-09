@@ -62,12 +62,12 @@ class Type(TypeBase):
 
 class UserBase(BaseModel):
     username: str
-    email: str
 
 
 class UserLogin(BaseModel):
     username: str
     password: str
+    email: str
 
 # POST
 
@@ -92,7 +92,7 @@ class UserUpdate(UserCreate):
 # GET
 
 
-class User(UserCreate):
+class User(UserBase):
     id: int
     profile_picture: str = None
 
@@ -136,6 +136,7 @@ class Author(AuthorBase):
 class MusicBase(BaseModel):
     name: str
     release_date: datetime
+    avg_note: float = None
 
 
 class MusicCreate(MusicBase):
@@ -185,17 +186,20 @@ class ReviewBase(BaseModel):
     note_visual: float
     note_music: float
     description: str = None
-    creation_date: datetime = None
-    music: Music
-    user: User
 
 
 class ReviewCreate(ReviewBase):
+    music_id: int
+
+
+class ReviewUpdate(ReviewCreate):
     pass
 
 
 class Review(ReviewBase):
     id: int
+    user: User
+    music: Music
 
     class Config:
         orm_mode = True
