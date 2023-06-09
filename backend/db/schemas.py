@@ -119,7 +119,7 @@ class AuthorCreate(AuthorBase):
         return value
 
 
-class AuthorUpdate(AuthorBase):
+class AuthorUpdate(AuthorCreate):
     pass
 
 
