@@ -1,3 +1,4 @@
+from typing import List
 from sqlalchemy import (
     BigInteger,
     Column,
@@ -10,14 +11,15 @@ from sqlalchemy import (
     Table,
     Text,
 )
-from sqlalchemy.orm import declarative_base, relationship
+from sqlalchemy.orm import DeclarativeBase, relationship, mapped_column, Mapped
 
-Base = declarative_base()
-metadata = Base.metadata
+
+class Base(DeclarativeBase):
+    pass
 
 
 t_chante = Table(
-    'chante', metadata,
+    'chante', Base.metadata,
     Column('music_id', BigInteger, primary_key=True, nullable=False),
     Column('author_id', BigInteger, primary_key=True,
            nullable=False, index=True),
@@ -31,15 +33,16 @@ class User(Base):
 
     __tablename__ = 'user'
 
-    id = Column(BigInteger, primary_key=True)
-    username = Column(String(250), nullable=False, unique=True)
-    email = Column(String(250), nullable=False, unique=True)
-    password = Column(String(250), nullable=False)
-    is_manager = Column(Integer, nullable=False, default=False)
-    profile_picture = Column(String(250))
-    creation_date = Column(DateTime)
+    id = mapped_column(BigInteger, primary_key=True)
+    username = mapped_column(String(250), nullable=False, unique=True)
+    email = mapped_column(String(250), nullable=False, unique=True)
+    password = mapped_column(String(250), nullable=False)
+    is_manager = mapped_column(Integer, nullable=False, default=False)
+    profile_picture = mapped_column(String(250))
+    creation_date = mapped_column(DateTime)
 
-    reviews: list = relationship('Review', back_populates='user')
+    reviews: Mapped[List["Review"]] = relationship(
+        'Review', back_populates='user')
 
     def __repr__(self):
         return f"User({self.id},{self.username},{self.email}, {self.creation_date}, {self.profile_picture}, {self.is_manager})"
@@ -48,12 +51,13 @@ class User(Base):
 class Anime(Base):
     __tablename__ = 'anime'
 
-    id = Column(BigInteger, primary_key=True)
-    name = Column(String(250), nullable=False, unique=True)
-    poster_img = Column(String(250), nullable=False)
-    description = Column(Text, nullable=False)
+    id = mapped_column(BigInteger, primary_key=True)
+    name = mapped_column(String(250), nullable=False, unique=True)
+    poster_img = mapped_column(String(250), nullable=False)
+    description = mapped_column(Text, nullable=False)
 
-    musics: list = relationship('Music', back_populates='anime')
+    musics: Mapped[List["Music"]] = relationship(
+        'Music', back_populates='anime')
 
     def __repr__(self):
         return f"Anime({self.id},{self.name},{self.poster_img}, {self.description})"
@@ -62,12 +66,12 @@ class Anime(Base):
 class Author(Base):
     __tablename__ = 'author'
 
-    id = Column(BigInteger, primary_key=True)
-    name = Column(String(250), nullable=False, unique=True)
-    poster_img = Column(String(250), nullable=False)
-    creation_year = Column(String(50), nullable=True)
+    id = mapped_column(BigInteger, primary_key=True)
+    name = mapped_column(String(250), nullable=False, unique=True)
+    poster_img = mapped_column(String(250), nullable=False)
+    creation_year = mapped_column(String(50), nullable=True)
 
-    musics: list = relationship(
+    musics: Mapped[List["Music"]] = relationship(
         'Music', secondary=t_chante, back_populates='authors')
 
     def __repr__(self):
@@ -77,10 +81,11 @@ class Author(Base):
 class Type(Base):
     __tablename__ = 'type'
 
-    id = Column(BigInteger, primary_key=True)
-    type_name = Column(String(250), nullable=False, unique=True)
+    id = mapped_column(BigInteger, primary_key=True)
+    type_name = mapped_column(String(250), nullable=False, unique=True)
 
-    musics = relationship('Music', back_populates='type')
+    musics: Mapped[List["Music"]] = relationship(
+        'Music', back_populates='type')
 
     def __repr__(self):
         return f"Type({self.id},{self.type_name})"
@@ -93,19 +98,22 @@ class Music(Base):
         ForeignKeyConstraint(['type_id'], ['type.id'], name='music_ibfk_2')
     )
 
-    id = Column(BigInteger, primary_key=True)
-    name = Column(String(250), nullable=False, unique=True)
-    release_date = Column(DateTime, nullable=False)
-    avg_note = Column(Float, nullable=True)
-    anime_id = Column(BigInteger, nullable=False, index=True)
-    type_id = Column(BigInteger, nullable=False, index=True)
-    poster_img = Column(String(250))
+    id = mapped_column(BigInteger, primary_key=True)
+    name = mapped_column(String(250), nullable=False, unique=True)
+    release_date = mapped_column(DateTime, nullable=False)
+    avg_note = mapped_column(Float, nullable=True)
+    anime_id = mapped_column(BigInteger, nullable=False, index=True)
+    type_id = mapped_column(BigInteger, nullable=False, index=True)
+    poster_img = mapped_column(String(250))
 
-    authors = relationship(
+    authors: Mapped[List["Author"]] = relationship(
         'Author', secondary=t_chante, back_populates='musics')
-    anime = relationship('Anime', uselist=False, back_populates='musics')
-    type = relationship('Type', uselist=False, back_populates='musics')
-    reviews = relationship('Review', back_populates='music')
+    anime: Mapped["Anime"] = relationship(
+        'Anime', uselist=False, back_populates='musics')
+    type: Mapped["Type"] = relationship(
+        'Type', uselist=False, back_populates='musics')
+    reviews: Mapped[List["Review"]] = relationship(
+        'Review', back_populates='music')
 
     def __repr__(self):
         return f"Music({self.id},{self.name},{self.release_date},{self.anime_id},{self.type_id},{self.poster_img})"
@@ -119,16 +127,16 @@ class Review(Base):
         ForeignKeyConstraint(['music_id'], ['music.id'], name='review_ibfk_2')
     )
 
-    id = Column(BigInteger, primary_key=True)
-    note_visual = Column(Float, nullable=False)
-    note_music = Column(Float, nullable=False)
-    creation_date = Column(DateTime, nullable=False)
-    music_id = Column(BigInteger, nullable=False, index=True)
-    user_id = Column(BigInteger, nullable=False, index=True)
-    description = Column(Text, nullable=True)
+    id = mapped_column(BigInteger, primary_key=True)
+    note_visual = mapped_column(Float, nullable=False)
+    note_music = mapped_column(Float, nullable=False)
+    creation_date = mapped_column(DateTime, nullable=False)
+    music_id = mapped_column(BigInteger, nullable=False, index=True)
+    user_id = mapped_column(BigInteger, nullable=False, index=True)
+    description = mapped_column(Text, nullable=True)
 
-    user = relationship('User', back_populates='reviews')
-    music = relationship('Music', back_populates='reviews')
+    user: Mapped["User"] = relationship('User', back_populates='reviews')
+    music: Mapped["Music"] = relationship('Music', back_populates='reviews')
 
     def __repr__(self):
         return f"Review({self.id},{self.note_visual},{self.note_music},{self.creation_date},{self.music_id},{self.user_id},{self.description})"
