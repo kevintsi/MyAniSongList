@@ -91,7 +91,7 @@ async def login(
     access_token = create_access_token(
         data={"sub": {"id": user.id, "is_manager": user.is_manager}}, expires_delta=access_token_expires)
 
-    refresh_token_expires = timedelta(minutes=5)
+    refresh_token_expires = timedelta(days=7)
     refresh_token = create_access_token(
         data={"sub": {"id": user.id, "is_manager": user.is_manager}}, expires_delta=refresh_token_expires)
 
@@ -100,7 +100,7 @@ async def login(
 
     # Générez également un refresh token et stockez-le dans votre système de stockage
     # Vous pouvez utiliser votre propre logique de génération et de stockage du refresh token ici
-    return {"access_token": access_token}
+    return {"access_token": access_token, "refresh_token": refresh_token}
 
 
 @router.post("/refresh_token")
@@ -119,13 +119,14 @@ def refresh_access_token(response: Response, refresh_token: str = Cookie(None)):
                 data={"sub": {"id": user['id'], "is_manager": user['is_manager']}}, expires_delta=access_token_expires
             )
 
-            refresh_token_expires = timedelta(minutes=5)
+            refresh_token_expires = timedelta(days=7)
             refresh_token = create_access_token(
                 data={"sub": {"id": user['id'], "is_manager": user['is_manager']}}, expires_delta=refresh_token_expires)
 
-            response.set_cookie("refresh_token", refresh_token)
+            response.set_cookie("refresh_token", refresh_token,
+                                secure=True, httponly=True)
             # Return the new access token
-            return {"access_token": new_access_token}
+            return {"access_token": new_access_token, "refresh_token": refresh_token}
         else:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
@@ -146,7 +147,7 @@ def logout(response: Response):
     return {"msg": "Successfully logout"}
 
 
-@router.get("/", response_model=User)
+@router.get("/me", response_model=User)
 async def profile(
     current_user: User = Depends(get_current_user),
     service: UserService = Depends(get_service)
