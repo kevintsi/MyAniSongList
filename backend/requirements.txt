@@ -5,8 +5,8 @@ sqlalchemy==2.0.16
 pymysql==1.0.3
 cryptography==40.0.2
 alembic==1.11.1
+pyJWT==2.7.0
+pytz==2023.3
 passlib[bcrypt]
-python-jose[cryptography]
 python-multipart
-fastapi-jwt-auth
 firebase_admin

@@ -3,12 +3,11 @@ from fastapi import (
     Depends,
 )
 from db.schemas import *
+from routers.users import get_current_user
 from services.reviews import (
     ReviewService,
     get_service,
 )
-
-from fastapi_jwt_auth import AuthJWT
 
 router = APIRouter(
     prefix='/reviews',
@@ -34,38 +33,26 @@ async def get(
 @router.post("/add", response_model=Review)
 async def add(
     review: ReviewCreate,
-    # authorize: AuthJWT = Depends(),
     service: ReviewService = Depends(get_service),
+    current_user: User = Depends(get_current_user)
 ):
-    # authorize.jwt_refresh_token_required()
-    # current_user = authorize.get_jwt_subject()
-    # return service.create(review, current_user)
-    id_user = 1
-    return service.create(review, id_user)
+    return service.create(review, current_user.id)
 
 
 @router.put("/update/{id}")
 async def update(
     id: int,
     review: ReviewUpdate,
-    # authorize: AuthJWT = Depends(),
     service: ReviewService = Depends(get_service),
+    current_user: User = Depends(get_current_user)
 ):
-    # authorize.jwt_refresh_token_required()
-    # current_user = authorize.get_jwt_subject()
-    # return service.update(id, current_user, review)
-    id_user = 1
-    return service.update(id, review, id_user)
+    return service.update(id, review, current_user)
 
 
 @router.delete("/delete/{id}")
 async def delete(
     id: int,
-    # authorize: AuthJWT = Depends(),
     service: ReviewService = Depends(get_service),
+    current_user: User = Depends(get_current_user)
 ):
-    # authorize.jwt_refresh_token_required()
-    # current_user = authorize.get_jwt_subject()
-    # return service.delete(id, current_user)
-    id_user = 1
-    return service.delete(id, id_user)
+    return service.delete(id, current_user)

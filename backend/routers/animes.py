@@ -6,8 +6,10 @@ from fastapi import (
     Form,
     UploadFile,
 )
+from db.models import User
 from db.schemas import Anime, AnimeCreate, AnimeUpdate
 from typing import Optional
+from routers.users import get_current_user
 from services.animes import (
     AnimeService,
     get_service,
@@ -42,8 +44,9 @@ async def add(
     anime: AnimeCreate = Body(...),
     poster_img: UploadFile = File(...),
     service: AnimeService = Depends(get_service),
+    current_user: User = Depends(get_current_user)
 ):
-    return service.create(anime, poster_img)
+    return service.create(anime, poster_img, current_user)
 
 
 @router.put("/update/{id}")
@@ -52,17 +55,19 @@ async def update(
     anime: AnimeUpdate = Form(...),
     poster_img: Optional[UploadFile] = File(None),
     service: AnimeService = Depends(get_service),
+    current_user: User = Depends(get_current_user)
 ):
     print("Begin update route")
-    return service.update(id, anime, poster_img)
+    return service.update(id, anime, poster_img, current_user)
 
 
 @router.delete("/delete/{id}")
 async def delete(
     id: int,
     service: AnimeService = Depends(get_service),
+    current_user: User = Depends(get_current_user)
 ):
-    return service.delete(id)
+    return service.delete(id, current_user)
 
 
 @router.get("/{id}", response_model=Anime)

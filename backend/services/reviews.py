@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from fastapi import Depends
 from db.schemas import ReviewCreate, ReviewUpdate
 from starlette.exceptions import HTTPException
-from db.models import Music, Review
+from db.models import Music, Review, User
 from .base import BaseService
 from db.session import get_session
 import sqlalchemy
@@ -47,26 +47,33 @@ class ReviewService(BaseService[Review, ReviewCreate, ReviewUpdate]):
 
         return db_obj
 
-    def update(self, id, obj: ReviewUpdate, id_user):
+    def update(self, id, obj: ReviewUpdate, user: User):
 
-        db_obj = self.db_session.get(Review, id)
+        db_obj: Review = self.db_session.get(Review, id)
 
-        music: Music = self.db_session.query(Music).get(obj.music_id)
+        if db_obj.user.id == user.id or user.is_manager:
+            music: Music = self.db_session.query(Music).get(obj.music_id)
 
-        if music.avg_note is not None:
-            new_avg_note = (music.avg_note +
-                            (obj.note_visual + obj.note_music)) / 2
+            if music.avg_note is not None:
+                new_avg_note = (music.avg_note +
+                                (obj.note_visual + obj.note_music)) / 2
 
-            music.avg_note = new_avg_note
+                music.avg_note = new_avg_note
 
-        for column, value in obj.dict(exclude_unset=True).items():
-            setattr(db_obj, column, value)
-        self.db_session.commit()
+            for column, value in obj.dict(exclude_unset=True).items():
+                setattr(db_obj, column, value)
+            self.db_session.commit()
+        else:
+            raise HTTPException(status_code=401, detail="Forbidden")
 
-    def delete(self, id):
-        db_obj = self.db_session.query(Review).get(id)
-        self.db_session.delete(db_obj)
-        self.db_session.commit()
+    def delete(self, id: int,  user: User) -> None:
+        db_obj: Review = self.db_session.query(Review).get(id)
+
+        if db_obj.user.id == user.id or user.is_manager:
+            self.db_session.delete(db_obj)
+            self.db_session.commit()
+        else:
+            raise HTTPException(status_code=401, detail="Forbidden")
 
 
 def get_service(db_session: Session = Depends(get_session)) -> ReviewService:

@@ -61,18 +61,17 @@ class Type(TypeBase):
 
 
 class UserBase(BaseModel):
-    username: str
-
-
-class UserLogin(BaseModel):
-    username: str
-    password: str
     email: str
+
+
+class UserLogin(UserBase):
+    password: str
 
 # POST
 
 
 class UserCreate(UserBase):
+    username: str
     password: str
 
 # UPDATE
@@ -95,6 +94,7 @@ class UserUpdate(UserCreate):
 class User(UserBase):
     id: int
     profile_picture: str = None
+    username: str
 
     class Config:
         orm_mode = True
