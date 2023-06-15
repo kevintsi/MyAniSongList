@@ -16,7 +16,7 @@ export class ManageMusicComponent {
 
 
   ngOnInit(): void {
-    this.service.get_all().subscribe({
+    this.service.getAll().subscribe({
       next: (musics) => {
         console.log("Musics : ", musics)
         this.musics = musics

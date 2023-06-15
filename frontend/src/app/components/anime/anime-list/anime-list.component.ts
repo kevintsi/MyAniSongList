@@ -15,7 +15,7 @@ export class AnimeListComponent implements OnInit {
   constructor(private service: AnimeService, private title: Title) { }
   ngOnInit(): void {
     this.title.setTitle(this.title.getTitle() + " - Liste d'animés")
-    this.service.get_all().subscribe({
+    this.service.getAll().subscribe({
       next: (animes) => {
         console.log("Animes : ", animes)
         this.animes = animes

@@ -15,7 +15,7 @@ export class AnimeService {
     return this.http.get<Anime[]>(this.endpoint + '/animes/search?query=' + term)
   }
 
-  public get_all() {
+  public getAll() {
     return this.http.get<Anime[]>(this.endpoint + '/animes/all')
   }
 

@@ -15,7 +15,7 @@ export class ArtistListComponent implements OnInit {
   constructor(private service: ArtistService, private title: Title) { }
   ngOnInit(): void {
     this.title.setTitle(this.title.getTitle() + " - Liste d'artistes")
-    this.service.get_all().subscribe({
+    this.service.getAll().subscribe({
       next: (artists) => {
         console.log("Artists : ", artists)
         this.artists = artists

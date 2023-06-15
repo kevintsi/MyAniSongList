@@ -21,7 +21,7 @@ export class ArtistDetailComponent implements OnInit {
 
   ngOnInit(): void {
     let id_artist = Number(this.route.snapshot.paramMap.get("id"))
-    this.music_service.get_musics_artist(id_artist).subscribe({
+    this.music_service.getMusicsArtist(id_artist).subscribe({
       next: (musics) => {
         console.log("Musics : ", musics)
 

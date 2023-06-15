@@ -1,15 +1,18 @@
-<div>
+<div class="container flex flex-col items-center justify-center">
+    <h1 class="text-center text-2xl font-medium p-4">Connexion</h1>
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <div>
-            <label for="username">Nom d'utilisateur :</label>
-            <input type="text" id="username" formControlName="username">
+            <label for="email" class="label">Adresse e-mail :</label>
+            <input type="email" id="email" formControlName="email" class="input input-bordered w-full max-w-xs"
+                required>
         </div>
         <div>
-            <label for="password">Mot de passe :</label>
-            <input type="password" id="password" formControlName="password">
+            <label for="password" class="label">Mot de passe :</label>
+            <input type="password" id="password" formControlName="password" class="input input-bordered w-full max-w-xs"
+                required>
         </div>
         <div>
-            <button type="submit">Se connecter</button>
+            <button class="btn" type="submit">S'inscrire</button>
         </div>
     </form>
 </div>

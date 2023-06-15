@@ -5,8 +5,7 @@ import { StorageService } from '../../_services/storage.service';
 import { MusicService } from 'src/app/_services/music.service';
 import { ArtistService } from 'src/app/_services/artist.service';
 import { AnimeService } from 'src/app/_services/anime.service';
-import { Observable, Subject, debounceTime, distinctUntilChanged, switchMap, takeUntil } from 'rxjs';
-import { FormControl } from '@angular/forms';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-top-bar',
@@ -25,9 +24,9 @@ export class TopBarComponent {
 
   constructor(
     private authService: AuthService,
-    private music_service: MusicService,
-    private artist_service: ArtistService,
-    private anime_service: AnimeService,
+    private musiService: MusicService,
+    private artistService: ArtistService,
+    private animeService: AnimeService,
     private router: Router,
     private storageService: StorageService
   ) {
@@ -37,7 +36,7 @@ export class TopBarComponent {
     console.log("New search : ", this.category)
     switch (this.category) {
       case "animes": {
-        this.anime_service.search(searchTerm).subscribe({
+        this.animeService.search(searchTerm).subscribe({
           next: (anime) => {
             this.result_search = anime
           },
@@ -46,7 +45,7 @@ export class TopBarComponent {
       }
         break
       case "musics": {
-        this.music_service.search(searchTerm).subscribe({
+        this.musiService.search(searchTerm).subscribe({
           next: (music) => {
             this.result_search = music
           },
@@ -55,7 +54,7 @@ export class TopBarComponent {
       }
         break
       case "artists": {
-        this.artist_service.search(searchTerm).subscribe({
+        this.artistService.search(searchTerm).subscribe({
           next: (artist) => {
             this.result_search = artist
           },

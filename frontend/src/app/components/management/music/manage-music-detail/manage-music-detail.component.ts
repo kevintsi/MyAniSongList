@@ -97,7 +97,7 @@ export class ManageMusicDetailComponent {
   }
 
   get_type_list() {
-    this.type_service.get_all()
+    this.type_service.getAll()
       .subscribe({
         next: (types) => {
           this.types = types

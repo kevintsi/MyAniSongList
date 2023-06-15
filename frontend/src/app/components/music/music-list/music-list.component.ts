@@ -15,7 +15,7 @@ export class MusicListComponent {
   constructor(private service: MusicService, private title: Title) { }
   ngOnInit(): void {
     this.title.setTitle(this.title.getTitle() + " - Liste de musiques")
-    this.service.get_all().subscribe({
+    this.service.getAll().subscribe({
       next: (musics) => {
         console.log("Musics : ", musics)
         this.musics = musics

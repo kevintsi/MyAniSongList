@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { User } from '../../models/User';
 import { StorageService } from '../../_services/storage.service';
 import { Title } from '@angular/platform-browser';
+import { TokenService } from 'src/app/_services/token.service';
 
 @Component({
   selector: 'app-login',
@@ -14,13 +15,13 @@ import { Title } from '@angular/platform-browser';
 export class LoginComponent implements OnInit {
 
   loginForm = this.formBuilder.group({
-    username: '',
+    email: '',
     password: ''
   })
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private storageService: StorageService,
+    private tokenService: TokenService,
     private router: Router,
     private title: Title
   ) {
@@ -33,19 +34,19 @@ export class LoginComponent implements OnInit {
   onSubmit() {
     console.log("onSubmit")
     console.log(this.loginForm.value)
-    const { username, password } = this.loginForm.value
+    const { email, password } = this.loginForm.value
 
-    if (username?.length == 0 || password?.length == 0) return;
+    if (email?.length == 0 || password?.length == 0) return;
 
     let user: User = {
-      username: username?.toString(),
+      email: email?.toString(),
       password: password?.toString()
     }
 
     this.authService.login(user)
       .subscribe({
         next: data => {
-          this.storageService.saveUser(data)
+          this.tokenService.setToken(data)
           this.router.navigateByUrl("/")
         },
         error: err => {

@@ -15,7 +15,7 @@ export class ArtistService {
     return this.http.get<Artist[]>(this.endpoint + '/authors/search?query=' + term)
   }
 
-  public get_all() {
+  public getAll() {
     return this.http.get<Artist[]>(this.endpoint + '/authors/all')
   }
 

@@ -16,7 +16,7 @@ export class ManageArtistComponent {
 
 
   ngOnInit(): void {
-    this.service.get_all().subscribe({
+    this.service.getAll().subscribe({
       next: (artists) => {
         console.log("Artists : ", artists)
         this.artists = artists

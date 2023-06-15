@@ -12,7 +12,7 @@ export class TypeService {
 
   constructor(private http: HttpClient) { }
 
-  public get_all() {
+  public getAll() {
     return this.http.get<Type[]>(this.endpoint + '/types/all')
   }
 

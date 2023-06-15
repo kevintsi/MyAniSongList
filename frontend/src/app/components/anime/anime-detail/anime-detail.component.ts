@@ -21,7 +21,7 @@ export class AnimeDetailComponent implements OnInit {
 
   ngOnInit(): void {
     let id_anime = Number(this.route.snapshot.paramMap.get("id"))
-    this.music_service.get_musics_anime(id_anime).subscribe({
+    this.music_service.getMusicsAnime(id_anime).subscribe({
       next: (musics) => {
         console.log("Musics : ", musics)
         this.musics = musics

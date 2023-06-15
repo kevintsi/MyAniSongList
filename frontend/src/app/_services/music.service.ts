@@ -18,15 +18,15 @@ export class MusicService {
     return this.http.get<Music[]>(this.endpoint + '/musics/search?query=' + term)
   }
 
-  public get_all() {
+  public getAll() {
     return this.http.get<Music[]>(this.endpoint + '/musics/all')
   }
 
-  public get_musics_anime(id_anime: number) {
+  public getMusicsAnime(id_anime: number) {
     return this.http.get<Music[]>(this.endpoint + '/musics/anime/' + id_anime)
   }
 
-  public get_musics_artist(id_artist: number) {
+  public getMusicsArtist(id_artist: number) {
     return this.http.get<Music[]>(this.endpoint + '/musics/artist/' + id_artist)
   }
 

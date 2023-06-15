@@ -18,7 +18,7 @@ const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
   { path: 'login', component: LoginComponent, canActivate: [notSignedInGuard] },
   { path: 'register', component: RegistrationComponent, canActivate: [notSignedInGuard] },
-  { path: 'profile', component: ProfileComponent },
+  { path: 'profile', component: ProfileComponent, canActivate: [isSignedInGuard] },
   {
     path: 'animes', children: [
       { path: '', component: AnimeListComponent },

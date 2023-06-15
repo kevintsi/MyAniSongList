@@ -16,7 +16,7 @@ export class ManageAnimeComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.service.get_all().subscribe({
+    this.service.getAll().subscribe({
       next: (animes) => {
         console.log("Animes : ", animes)
         this.animes = animes
