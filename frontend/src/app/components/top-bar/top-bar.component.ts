@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../_services/auth.service';
 import { Router } from '@angular/router';
-import { StorageService } from '../../_services/storage.service';
 import { MusicService } from 'src/app/_services/music.service';
 import { ArtistService } from 'src/app/_services/artist.service';
 import { AnimeService } from 'src/app/_services/anime.service';
 import { Subject } from 'rxjs';
+import { TokenService } from 'src/app/_services/token.service';
 
 @Component({
   selector: 'app-top-bar',
@@ -28,7 +28,7 @@ export class TopBarComponent {
     private artistService: ArtistService,
     private animeService: AnimeService,
     private router: Router,
-    private storageService: StorageService
+    private tokenService: TokenService
   ) {
   }
 
@@ -99,8 +99,8 @@ export class TopBarComponent {
     console.log("Logout function called")
     this.authService.logout().subscribe({
       next: () => {
-        this.storageService.clean()
-        this.router.navigate(["/"])
+        this.tokenService.clean()
+        this.router.navigate(["/login"])
       },
       error: (err) => console.log(err)
     })

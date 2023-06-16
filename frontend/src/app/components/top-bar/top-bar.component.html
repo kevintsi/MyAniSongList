@@ -40,6 +40,12 @@
                 <li><a routerLink="/artists">Artistes</a></li>
                 <li><a routerLink="/musics">Musiques</a></li>
                 <li><a routerLink="">Communauté</a></li>
+                <li *ngIf="isLoggedIn()" (click)="logout()" class="flex flex-row items-center">
+                    <div class="text-2xl">
+                        <mat-icon [inline]="true">logout</mat-icon>
+                    </div>
+                    <a class="pl-2">Se déconnecter</a>
+                </li>
             </ul>
         </div>
 

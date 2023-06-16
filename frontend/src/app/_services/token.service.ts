@@ -56,6 +56,7 @@ export class TokenService {
       `expires=${expirationDate.toUTCString()}`,
       `path=/`,
       `secure`,
+      `httpponly`,
       `SameSite=Strict`
     ];
 
