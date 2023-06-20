@@ -1,6 +1,7 @@
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi_pagination import add_pagination
 from routers import (
     users,
     animes,
@@ -30,3 +31,5 @@ app.include_router(musics.router)
 app.include_router(authors.router)
 app.include_router(types.router)
 app.include_router(reviews.router)
+
+add_pagination(app)
