@@ -27,8 +27,7 @@ class BaseService(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         return obj
 
     def list(self) -> List[ModelType]:
-        objs: List[ModelType] = self.db_session.query(self.model).all()
-        return objs
+        return self.db_session.query(self.model)
 
     def create(self, obj: CreateSchemaType) -> ModelType:
         db_obj: ModelType = self.model(**obj.dict())
