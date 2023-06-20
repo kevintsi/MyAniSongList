@@ -1,0 +1,28 @@
+<div class="rating rating-lg rating-half -z-50">
+
+    <ng-container *ngIf="isStatic;else dynamic">
+        <input type="radio" [disabled]="isStatic" class="rating-hidden" />
+        <ng-container *ngFor="let num of getRange(1, maxStar)">
+            <ng-container *ngIf="num % 2 == 0">
+                <input type="radio" [disabled]="isStatic" [checked]="rate == num"
+                    class="bg-orange-500 mask mask-star-2 mask-half-2" />
+            </ng-container>
+            <ng-container *ngIf="num % 2 == 1">
+                <input type="radio" [disabled]="isStatic" class="bg-orange-500 mask mask-star-2 mask-half-1"
+                    [checked]="rate == num" />
+            </ng-container>
+        </ng-container>
+    </ng-container>
+
+    <ng-template #dynamic>
+        <input type="radio" class="rating-hidden" checked />
+        <ng-container *ngFor="let num of getRange(1, maxStar)">
+            <ng-container *ngIf="num % 2 == 0">
+                <input type="radio" class="bg-orange-500 mask mask-star-2 mask-half-2" />
+            </ng-container>
+            <ng-container *ngIf="num % 2 == 1">
+                <input type="radio" class="bg-orange-500 mask mask-star-2 mask-half-1" />
+            </ng-container>
+        </ng-container>
+    </ng-template>
+</div>
