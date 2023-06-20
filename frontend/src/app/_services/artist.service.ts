@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Artist } from '../models/Artist';
+import { Artist, PagedArtist } from '../models/Artist';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +16,7 @@ export class ArtistService {
   }
 
   public getAll() {
-    return this.http.get<Artist[]>(this.endpoint + '/authors/all')
+    return this.http.get<PagedArtist>(this.endpoint + '/authors/all')
   }
 
   public get(id: number) {

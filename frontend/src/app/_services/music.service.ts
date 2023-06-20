@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Music } from '../models/Music';
+import { Music, PagedMusic } from '../models/Music';
 import { Anime } from '../models/Anime';
 import { Artist } from '../models/Artist';
 
@@ -19,7 +19,7 @@ export class MusicService {
   }
 
   public getAll() {
-    return this.http.get<Music[]>(this.endpoint + '/musics/all')
+    return this.http.get<PagedMusic>(this.endpoint + '/musics/all')
   }
 
   public getMusicsAnime(id_anime: number) {

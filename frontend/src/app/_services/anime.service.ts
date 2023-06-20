@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../environments/environment';
-import { Anime } from '../models/Anime';
+import { Anime, PagedAnime } from '../models/Anime';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +16,7 @@ export class AnimeService {
   }
 
   public getAll() {
-    return this.http.get<Anime[]>(this.endpoint + '/animes/all')
+    return this.http.get<PagedAnime>(this.endpoint + '/animes/all')
   }
 
   public get(id: number) {
