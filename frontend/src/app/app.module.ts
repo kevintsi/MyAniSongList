@@ -20,6 +20,9 @@ import { ArtistDetailComponent } from './components/artist/artist-detail/artist-
 import { MusicListComponent } from './components/music/music-list/music-list.component';
 import { MusicDetailComponent } from './components/music/music-detail/music-detail.component';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
+import { RatingStarsComponent } from './components/rating-stars/rating-stars.component';
+import { ReviewListComponent } from './components/review/review-list/review-list.component';
+import { ReviewDetailComponent } from './components/review/review-detail/review-detail.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +40,9 @@ import { SearchBarComponent } from './components/search-bar/search-bar.component
     MusicListComponent,
     MusicDetailComponent,
     SearchBarComponent,
-
+    RatingStarsComponent,
+    ReviewListComponent,
+    ReviewDetailComponent,
   ],
   imports: [
     HttpClientModule,
