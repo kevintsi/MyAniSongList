@@ -1,0 +1,14 @@
+<div *ngIf="reviews.length == 0" class=" p-4 text-center">Pas encore d'avis sur cet opening ou ending</div>
+<div *ngFor="let review of reviews">
+    <div>{{ review.user.username}}</div>
+    <img class="w-20" [src]="review.user.profile_picture" />
+    <div>
+        <h3>Note du visuel :</h3>
+        <app-rating-stars [isStatic]="true" [rate]="review.note_visual*2"></app-rating-stars>
+    </div>
+    <div>
+        <h3>Note de la musique :</h3>
+        <app-rating-stars [isStatic]="true" [rate]="review.note_music*2"></app-rating-stars>
+    </div>
+    <div>{{ review.description}}</div>
+</div>
