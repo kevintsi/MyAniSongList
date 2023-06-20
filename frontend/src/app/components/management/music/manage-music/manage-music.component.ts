@@ -18,8 +18,8 @@ export class ManageMusicComponent {
   ngOnInit(): void {
     this.service.getAll().subscribe({
       next: (musics) => {
-        console.log("Musics : ", musics)
-        this.musics = musics
+        console.log("Musics : ", musics.items)
+        this.musics = musics.items
       },
       error: (err) => console.log(err),
       complete: () => this.loading = false

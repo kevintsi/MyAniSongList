@@ -18,8 +18,8 @@ export class ManageAnimeComponent implements OnInit {
   ngOnInit(): void {
     this.service.getAll().subscribe({
       next: (animes) => {
-        console.log("Animes : ", animes)
-        this.animes = animes
+        console.log("Animes : ", animes.items)
+        this.animes = animes.items
       },
       error: (err) => console.log(err),
       complete: () => this.loading = false

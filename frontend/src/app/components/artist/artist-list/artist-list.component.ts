@@ -17,8 +17,8 @@ export class ArtistListComponent implements OnInit {
     this.title.setTitle(this.title.getTitle() + " - Liste d'artistes")
     this.service.getAll().subscribe({
       next: (artists) => {
-        console.log("Artists : ", artists)
-        this.artists = artists
+        console.log("Artists : ", artists.items)
+        this.artists = artists.items
       },
       error: (err) => console.log(err),
       complete: () => this.loading = false
