@@ -1,8 +1,7 @@
-from pydantic import BaseModel
+from typing import List
+from pydantic import BaseModel, Extra
 from datetime import datetime
 import json
-import os
-
 ## Anime ##
 
 
@@ -99,6 +98,15 @@ class User(UserBase):
     class Config:
         orm_mode = True
 
+
+class UserPublic(BaseModel):
+    id: int
+    profile_picture: str = None
+    username: str
+
+    class Config:
+        orm_mode = True
+
 ## Author ##
 
 
@@ -129,6 +137,7 @@ class Author(AuthorBase):
 
     class Config:
         orm_mode = True
+
 
 ## Music ##
 
@@ -172,7 +181,7 @@ class MusicArtist(MusicBase):
 class Music(MusicBase):
     id: int
     poster_img: str
-    authors: list[Author]
+    authors: List[Author]
     anime: Anime
     type: Type
 
@@ -198,14 +207,14 @@ class ReviewUpdate(ReviewCreate):
 
 class Review(ReviewBase):
     id: int
-    user: User
-    music: Music
+    creation_date: datetime
+    user: UserPublic
+    music_id: int
 
     class Config:
         orm_mode = True
-
-
 ## Token ##
+
 
 class Token(BaseModel):
     access_token: str
@@ -214,15 +223,3 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     username: str | None = None
-
-### Settings JWT Auth ###
-
-
-class Settings(BaseModel):
-    authjwt_secret_key: str = os.getenv("SECRET_KEY")
-    # Configure application to store and get JWT from cookies
-    authjwt_token_location: set = {"cookies"}
-    # Disable CSRF Protection for this example. default is True
-    authjwt_cookie_csrf_protect: bool = False
-
-    algorithm: str = os.getenv("ALGORITHM")

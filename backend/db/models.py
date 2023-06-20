@@ -135,8 +135,10 @@ class Review(Base):
     user_id = mapped_column(BigInteger, nullable=False, index=True)
     description = mapped_column(Text, nullable=True)
 
-    user: Mapped["User"] = relationship('User', back_populates='reviews')
-    music: Mapped["Music"] = relationship('Music', back_populates='reviews')
+    user: Mapped["User"] = relationship(
+        'User', uselist=False, back_populates='reviews')
+    music: Mapped["Music"] = relationship(
+        'Music', uselist=False, back_populates='reviews')
 
     def __repr__(self):
         return f"Review({self.id},{self.note_visual},{self.note_music},{self.creation_date},{self.music_id},{self.user_id},{self.description})"
