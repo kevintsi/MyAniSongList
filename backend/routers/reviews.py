@@ -2,6 +2,8 @@ from fastapi import (
     APIRouter,
     Depends,
 )
+from fastapi_pagination import Page
+from fastapi_pagination.ext.sqlalchemy import paginate
 from db.schemas import *
 from routers.users import get_current_user
 from services.reviews import (
@@ -15,11 +17,11 @@ router = APIRouter(
 )
 
 
-@router.get("/all", response_model=list[Review])
+@router.get("/all", response_model=Page[Review])
 async def get_all(
     service: ReviewService = Depends(get_service),
 ):
-    return service.list()
+    return paginate(service.list())
 
 
 @router.get("/{id}", response_model=Review)
@@ -28,6 +30,14 @@ async def get(
     service: ReviewService = Depends(get_service),
 ):
     return service.get(id)
+
+
+@router.get("/music/{id_music}", response_model=Page[Review])
+async def get_music_reviews(
+    id_music: int,
+    service: ReviewService = Depends(get_service),
+):
+    return paginate(service.get_music_review(id_music))
 
 
 @router.post("/add", response_model=Review)

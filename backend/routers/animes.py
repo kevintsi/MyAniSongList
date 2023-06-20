@@ -6,9 +6,11 @@ from fastapi import (
     Form,
     UploadFile,
 )
+from fastapi_pagination import Page
+from fastapi_pagination.ext.sqlalchemy import paginate
 from db.models import User
 from db.schemas import Anime, AnimeCreate, AnimeUpdate
-from typing import Optional
+from typing import List, Optional
 from routers.users import get_current_user
 from services.animes import (
     AnimeService,
@@ -21,11 +23,11 @@ router = APIRouter(
 )
 
 
-@router.get("/all", response_model=list[Anime])
+@router.get("/all", response_model=Page[Anime])
 async def get_all(
     service: AnimeService = Depends(get_service),
 ):
-    return service.list()
+    return paginate(service.list())
 
 
 @router.get("/search", response_model=list[Anime])

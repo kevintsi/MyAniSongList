@@ -6,6 +6,9 @@ from fastapi import (
     UploadFile,
 )
 from typing import Optional
+
+from fastapi_pagination import Page
+from fastapi_pagination.ext.sqlalchemy import paginate
 from db.schemas import *
 from routers.users import get_current_user
 from services.authors import (
@@ -19,11 +22,11 @@ router = APIRouter(
 )
 
 
-@router.get("/all", response_model=list[Author])
+@router.get("/all", response_model=Page[Author])
 async def get_all(
     service: AuthorService = Depends(get_service),
 ):
-    return service.list()
+    return paginate(service.list())
 
 
 @router.get("/search", response_model=list[Author])

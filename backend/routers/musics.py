@@ -5,6 +5,8 @@ from fastapi import (
     Body,
     UploadFile,
 )
+from fastapi_pagination import Page
+from fastapi_pagination.ext.sqlalchemy import paginate
 from db.schemas import *
 from typing import Optional
 from services.musics import (
@@ -18,11 +20,11 @@ router = APIRouter(
 )
 
 
-@router.get("/all", response_model=list[Music])
+@router.get("/all", response_model=Page[Music])
 async def get_all(
     service: MusicService = Depends(get_service),
 ):
-    return service.list()
+    return paginate(service.list())
 
 
 @router.get("/search", response_model=list[Music])
