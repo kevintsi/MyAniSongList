@@ -1,15 +1,32 @@
-<div *ngIf="isLoading">Chargement...</div>
+<div *ngIf="isLoading" class="container mx-auto">Chargement...</div>
 
-<div *ngIf="!isLoading" class="flex flex-col">
+<div *ngIf="!isLoading" class="flex flex-col container mx-auto">
 
-    <div class="flex flex-col">
+    <div class="flex flex-col items-center">
         <div class="text-center flex flex-col items-center p-4">
             <h1 class="font-bold pb-5 text-center">{{ music.name}}</h1>
             <img class="rounded-3xl w-44 pb-4" src="{{music.poster_img}}" alt="{{music.name}}" />
             <ng-container *ngIf="music?.avg_note">
-                <app-rating-stars [isStatic]="true" [rate]="music.avg_note" />
+                <app-rating-stars [isStatic]=true [rate]=music.avg_note*2 />
             </ng-container>
-            <div *ngIf="isLoggedIn()">Donne ton avis</div>
+            <div *ngIf="isLoggedIn()" (click)="my_modal.showModal()">Donne/Modifie ton avis</div>
+            <dialog #my_modal class="modal">
+                <form method="dialog" class="modal-box flex flex-col" (ngSubmit)="onSubmit()">
+                    <h1 class="p-2 text-xl font-bold">Avis</h1>
+                    <label class="label">Note visuel : *</label>
+                    <app-rating-stars [isStatic]=false type="visual" [(rate)]="noteVisual" />
+                    <label class="label">Note musique : *</label>
+                    <app-rating-stars [isStatic]=false type="music" [(rate)]=noteMusic />
+                    <label class="label">Description :</label>
+                    <textarea [formControl]="description" class="textarea textarea-bordered"></textarea>
+                    <div class="flex justify-center p-2">
+                        <button type="submit" class="btn">Valider</button>
+                    </div>
+                </form>
+                <form method="dialog" class="modal-backdrop">
+                    <button>close</button>
+                </form>
+            </dialog>
         </div>
         <div class="pl-5 p-4">
             <h2 class="font-bold pb-3 text-center">Informations</h2>
@@ -20,7 +37,8 @@
         </div>
     </div>
 
-    <div class="p-4 flex flex-col">
+
+    <div class="p-4 flex flex-col items-center">
         <h2 class="font-bold text-center">Anime</h2>
         <div class="flex flex-col">
             <div [routerLink]="['/animes', music.anime.id]"
@@ -34,7 +52,7 @@
 
     </div>
 
-    <div class="p-4 flex flex-col">
+    <div class="p-4 flex flex-col items-center">
         <h2 class="font-bold text-center">Artistes</h2>
         <div class="flex flex-col">
             <div [routerLink]="['/artists', author?.id]"
