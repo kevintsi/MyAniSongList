@@ -32,6 +32,15 @@ async def get(
     return service.get(id)
 
 
+@router.get("/user/music/{id_music}", response_model=Review | None)
+async def get(
+    id_music: int,
+    service: ReviewService = Depends(get_service),
+    current_user: User = Depends(get_current_user)
+):
+    return service.get_user_review(id_music, current_user.id)
+
+
 @router.get("/music/{id_music}", response_model=Page[Review])
 async def get_music_reviews(
     id_music: int,
@@ -40,7 +49,7 @@ async def get_music_reviews(
     return paginate(service.get_music_review(id_music))
 
 
-@router.post("/add", response_model=Review)
+@router.post("/add")
 async def add(
     review: ReviewCreate,
     service: ReviewService = Depends(get_service),

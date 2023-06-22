@@ -13,6 +13,11 @@ class ReviewService(BaseService[Review, ReviewCreate, ReviewUpdate]):
     def __init__(self, db_session: Session):
         super(ReviewService, self).__init__(Review, db_session)
 
+    def get_user_review(self, id_music, id_user):
+        review = self.db_session.query(Review).filter(
+            Review.music_id == id_music, Review.user_id == id_user).first()
+        return review
+
     def create(self, obj: ReviewCreate, id_user):
         db_obj: Review = Review(
             note_visual=obj.note_visual,
@@ -23,29 +28,54 @@ class ReviewService(BaseService[Review, ReviewCreate, ReviewUpdate]):
             description=obj.description
         )
 
-        music: Music = self.db_session.query(Music).get(obj.music_id)
-        print(f"Music avg note empy ? {music.avg_note is None}")
-        if music.avg_note is None:
-            new_avg_note = obj.note_visual + obj.note_music
-        else:
-            new_avg_note = (music.avg_note +
-                            (obj.note_visual + obj.note_music)) / 2
+        user_review = self.db_session.query(Review).filter(
+            Review.user_id == id_user, Review.music_id == obj.music_id).first()
 
-        music.avg_note = new_avg_note
+        if user_review:
+            user_review.note_visual = obj.note_visual
+            user_review.note_music = obj.note_music
+            user_review.description = obj.description
 
-        print(f"converted to Review model : {db_obj}")
-        self.db_session.add(db_obj)
-        try:
             self.db_session.commit()
-        except sqlalchemy.exc.IntegrityError as e:
-            self.db_session.rollback()
-            if "Duplicate entry" in str(e):
-                raise HTTPException(status_code=409, detail="Conflict Error")
-            else:
-                raise e
+
+            self.calculate_note(user_review)
+        else:
+            self.calculate_note(obj)
+            print(f"converted to Review model : {db_obj}")
+            self.db_session.add(db_obj)
+            try:
+                self.db_session.commit()
+            except sqlalchemy.exc.IntegrityError as e:
+                self.db_session.rollback()
+                if "Duplicate entry" in str(e):
+                    raise HTTPException(
+                        status_code=409, detail="Conflict Error")
+                else:
+                    raise e
         print("End create")
 
-        return db_obj
+    def calculate_note(self, obj: Review):
+        music: Music = self.db_session.query(
+            Music).filter(Music.id == obj.music_id).first()
+
+        total_sum = self.db_session.query(sqlalchemy.func.sum(
+            Review.note_visual+Review.note_music)).filter(Review.music_id == music.id).scalar()
+
+        reviews_count = self.db_session.query(Review).filter(
+            Review.music_id == music.id).count()
+
+        print(f"Count : {reviews_count}")
+        print(f"Music avg note empy ? {total_sum is None}")
+        print(f"Total sum = {total_sum}")
+
+        if total_sum is None:
+            new_avg_note = obj.note_visual + obj.note_music / 2
+        else:
+            new_avg_note = total_sum/(reviews_count * 2)
+
+        print(f"New avg_note : {new_avg_note}")
+
+        music.avg_note = new_avg_note
 
     def get_music_review(self, id_music: int):
         return self.db_session.query(Review).filter(Review.music_id == id_music, Review.description != "")
