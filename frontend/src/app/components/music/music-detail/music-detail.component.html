@@ -1,6 +1,6 @@
-<div *ngIf="isLoading" class="container mx-auto">Chargement...</div>
+<div *ngIf="isLoading" class="container mx-auto pt-4">Chargement...</div>
 
-<div *ngIf="!isLoading" class="flex flex-col container mx-auto">
+<div *ngIf="!isLoading" class="flex flex-col container mx-auto pt-20">
 
     <div class="flex flex-col items-center">
         <div class="text-center flex flex-col items-center p-4">
@@ -69,7 +69,9 @@
     <div class="p-4 flex flex-col items-center">
         <h2 class="font-bold text-center ">Avis</h2>
         <div class="flex flex-col">
-            <app-review-list [reviews]=reviews></app-review-list>
+            <app-review-short-list [reviews]=reviews></app-review-short-list>
+            <div *ngIf="reviews.length == 10" class="text-center pt-4"><a [routerLink]="['/reviews', music.id]">Voir
+                    plus</a></div>
         </div>
     </div>
 

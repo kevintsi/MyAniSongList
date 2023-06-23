@@ -85,7 +85,7 @@ export class MusicDetailComponent {
   }
 
   getMusicReviews(id: number) {
-    return firstValueFrom(this.reviewService.getAll(id))
+    return firstValueFrom(this.reviewService.getAll(id, 1, 10))
   }
 
   getUserReview(id: number) {

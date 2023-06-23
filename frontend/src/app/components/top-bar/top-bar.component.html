@@ -1,4 +1,4 @@
-<div class="sticky top-0">
+<div class="fixed top-0 w-full">
     <div class="navbar bg-base-100">
         <div class="flex-1">
             <a routerLink="/" class="btn btn-ghost normal-case text-xl">MyAniSongList</a>
@@ -27,7 +27,7 @@
             <div class="text-3xl flex items-center">
                 <mat-icon [inline]="true">{{!isMenuOpen ? "menu" : "close"}}</mat-icon>
             </div>
-            <ul *ngIf="isMenuOpen" class="block fixed list-none z-50 top-16 h-full -left-0 w-full bg-red-950">
+            <ul *ngIf="isMenuOpen" class="block fixed list-none z-50 top-16 h-full -left-0 w-full bg-base-100">
                 <ng-container *ngIf="isLoggedIn();then thenBlock; else elseBlock"></ng-container>
                 <ng-template #thenBlock>
                     <li><a routerLink="/profile">Mon profil</a></li>

@@ -21,8 +21,9 @@ import { MusicListComponent } from './components/music/music-list/music-list.com
 import { MusicDetailComponent } from './components/music/music-detail/music-detail.component';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import { RatingStarsComponent } from './components/rating-stars/rating-stars.component';
-import { ReviewListComponent } from './components/review/review-list/review-list.component';
+import { ReviewShortListComponent } from './components/review/review-short-list/review-short-list.component';
 import { ReviewDetailComponent } from './components/review/review-detail/review-detail.component';
+import { ReviewListComponent } from './components/review/review-list/review-list.component';
 
 @NgModule({
   declarations: [
@@ -41,8 +42,9 @@ import { ReviewDetailComponent } from './components/review/review-detail/review-
     MusicDetailComponent,
     SearchBarComponent,
     RatingStarsComponent,
-    ReviewListComponent,
+    ReviewShortListComponent,
     ReviewDetailComponent,
+    ReviewListComponent,
   ],
   imports: [
     HttpClientModule,

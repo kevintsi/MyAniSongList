@@ -1,6 +1,6 @@
-<div class="container mx-auto flex flex-col">
+<div class="container mx-auto flex flex-col pt-20">
 
-    <div class="flex flex-col">
+    <div class="flex flex-col items-center">
         <div class="text-center flex flex-col items-center p-4">
             <h1 class="font-bold pb-5">{{ anime?.name}}</h1>
             <img class="rounded-3xl w-44 pb-4" src="{{anime?.poster_img}}" alt="{{anime?.name}}" />
@@ -11,7 +11,7 @@
         </div>
     </div>
 
-    <div class="p-4 flex flex-col">
+    <div class="p-4 flex flex-col items-center">
         <h2 class="font-bold text-center">Openings et Endings</h2>
         <div class="flex flex-col">
             <div [routerLink]="['/musics', music?.id]"

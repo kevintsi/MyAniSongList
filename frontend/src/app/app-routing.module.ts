@@ -12,6 +12,7 @@ import { ArtistListComponent } from './components/artist/artist-list/artist-list
 import { ArtistDetailComponent } from './components/artist/artist-detail/artist-detail.component';
 import { MusicListComponent } from './components/music/music-list/music-list.component';
 import { MusicDetailComponent } from './components/music/music-detail/music-detail.component';
+import { ReviewListComponent } from './components/review/review-list/review-list.component';
 
 
 const routes: Routes = [
@@ -35,6 +36,11 @@ const routes: Routes = [
     path: 'musics', children: [
       { path: '', component: MusicListComponent },
       { path: ':id', component: MusicDetailComponent }
+    ]
+  },
+  {
+    path: 'reviews', children: [
+      { path: ':id_music', component: ReviewListComponent },
     ]
   },
   { path: 'manage', component: ManageComponent, loadChildren: () => import("./modules/management/management.module").then(m => m.ManagementModule) },
