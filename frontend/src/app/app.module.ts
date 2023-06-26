@@ -24,6 +24,8 @@ import { RatingStarsComponent } from './components/rating-stars/rating-stars.com
 import { ReviewShortListComponent } from './components/review/review-short-list/review-short-list.component';
 import { ReviewDetailComponent } from './components/review/review-detail/review-detail.component';
 import { ReviewListComponent } from './components/review/review-list/review-list.component';
+import { SharedModule } from './modules/shared/shared.module';
+import { CommunityListComponent } from './components/community-list/community-list.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +47,7 @@ import { ReviewListComponent } from './components/review/review-list/review-list
     ReviewShortListComponent,
     ReviewDetailComponent,
     ReviewListComponent,
+    CommunityListComponent,
   ],
   imports: [
     HttpClientModule,
@@ -54,6 +57,7 @@ import { ReviewListComponent } from './components/review/review-list/review-list
     ReactiveFormsModule,
     BrowserAnimationsModule,
     MatIconModule,
+    SharedModule,
   ],
   providers: [
     httpInterceptorProviders

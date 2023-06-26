@@ -1,3 +1,4 @@
+import { Music } from "./Music";
 import { User } from "./User";
 
 export interface PagedReview {
@@ -15,5 +16,5 @@ export interface Review {
     description: string,
     creation_date: Date,
     user: User
-    music_id: number
+    music: Music
 }

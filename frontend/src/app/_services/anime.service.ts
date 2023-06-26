@@ -15,8 +15,8 @@ export class AnimeService {
     return this.http.get<Anime[]>(this.endpoint + '/animes/search?query=' + term)
   }
 
-  public getAll() {
-    return this.http.get<PagedAnime>(this.endpoint + '/animes/all')
+  public getAll(page: number, size: number = 10) {
+    return this.http.get<PagedAnime>(this.endpoint + '/animes/all?page=' + page + "&size=" + size)
   }
 
   public get(id: number) {

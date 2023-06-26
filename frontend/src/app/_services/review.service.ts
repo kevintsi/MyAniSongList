@@ -17,8 +17,12 @@ export class ReviewService {
     this.reviewAdded = new Subject<boolean>()
   }
 
-  public getAll(id_music: number, page: number = 1, size: number = 10) {
+  public getAllByIdMusic(id_music: number, page: number = 1, size: number = 10) {
     return this.http.get<PagedReview>(this.endpoint + '/reviews/music/' + id_music + "?page=" + page + "&size=" + size)
+  }
+
+  public getAll(page: number = 1, size: number = 10) {
+    return this.http.get<PagedReview>(this.endpoint + '/reviews/all?page=' + page + '&size=' + size)
   }
 
   public create(review: any) {
