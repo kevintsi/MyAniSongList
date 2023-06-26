@@ -26,11 +26,7 @@
                 </div>
             </div>
         </div>
-        <div class="join grid grid-cols-2 pt-4">
-            <button class="join-item btn btn-outline" [disabled]="reviews.page == 1"
-                (click)="onPageChange(currentPage -1)">Précedente</button>
-            <button [disabled]="currentPage == reviews.pages" class="join-item btn btn-outline"
-                (click)="onPageChange(currentPage + 1)">Suivante</button>
-        </div>
+        <app-pagination (onPageChange)="onPageChange($event)" [currentPage]="currentPage"
+            [pagedObject]="reviews"></app-pagination>
     </div>
 </div>

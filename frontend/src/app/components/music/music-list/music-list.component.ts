@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import { firstValueFrom } from 'rxjs';
 import { MusicService } from 'src/app/_services/music.service';
-import { Music } from 'src/app/models/Music';
+import { Music, PagedMusic } from 'src/app/models/Music';
 
 @Component({
   selector: 'app-music-list',
@@ -10,18 +11,33 @@ import { Music } from 'src/app/models/Music';
 })
 export class MusicListComponent {
   loading = true
-  musics?: Music[]
+  musics!: PagedMusic
+
+  currentPage: number = 1
 
   constructor(private service: MusicService, private title: Title) { }
   ngOnInit(): void {
     this.title.setTitle(this.title.getTitle() + " - Liste de musiques")
-    this.service.getAll().subscribe({
-      next: (musics) => {
-        console.log("Musics : ", musics.items)
-        this.musics = musics.items
-      },
-      error: (err) => console.log(err),
-      complete: () => this.loading = false
-    })
+    this.fetchData()
+  }
+
+  async fetchData() {
+    try {
+      this.musics = await this.fetchMusics()
+    } catch (error) {
+      console.log(error)
+    }
+    finally {
+      this.loading = false
+    }
+  }
+
+  fetchMusics() {
+    return firstValueFrom(this.service.getAll(this.currentPage))
+  }
+
+  onPageChange(page: number) {
+    this.currentPage = page;
+    this.fetchData()
   }
 }

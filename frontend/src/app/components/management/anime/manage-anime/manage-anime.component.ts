@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { firstValueFrom } from 'rxjs';
 import { AnimeService } from 'src/app/_services/anime.service';
-import { Anime } from 'src/app/models/Anime';
+import { Anime, PagedAnime } from 'src/app/models/Anime';
 
 @Component({
   selector: 'app-manage-anime',
@@ -10,26 +11,40 @@ import { Anime } from 'src/app/models/Anime';
 })
 export class ManageAnimeComponent implements OnInit {
   loading = true
-  animes!: Anime[]
+  animes!: PagedAnime
+
+  currentPage: number = 1
 
   constructor(private service: AnimeService, private router: Router) { }
 
-
   ngOnInit(): void {
-    this.service.getAll().subscribe({
-      next: (animes) => {
-        console.log("Animes : ", animes.items)
-        this.animes = animes.items
-      },
-      error: (err) => console.log(err),
-      complete: () => this.loading = false
-    })
+    this.fetchData()
+  }
+
+  async fetchData() {
+    try {
+      this.animes = await this.fetchAnimes()
+    } catch (error) {
+      console.log(error)
+    }
+    finally {
+      this.loading = false
+    }
+  }
+
+  fetchAnimes() {
+    return firstValueFrom(this.service.getAll(this.currentPage))
+  }
+
+  onPageChange(page: number) {
+    this.currentPage = page;
+    this.fetchData()
   }
 
   delete(selected: Anime) {
     this.service.delete(Number(selected.id)).subscribe({
       next: () => {
-        this.animes = this.animes?.filter(anime => anime.id != selected.id)
+        this.animes.items = this.animes.items?.filter(anime => anime.id != selected.id)
         console.log(this.animes)
       },
       error: (err) => console.log(err.message)

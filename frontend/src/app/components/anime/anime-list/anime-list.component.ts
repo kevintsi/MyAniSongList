@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Anime } from '../../../models/Anime';
+import { Anime, PagedAnime } from '../../../models/Anime';
 import { AnimeService } from '../../../_services/anime.service';
 import { Title } from '@angular/platform-browser';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-anime-list',
@@ -10,19 +11,34 @@ import { Title } from '@angular/platform-browser';
 })
 export class AnimeListComponent implements OnInit {
   loading = true
-  animes?: Anime[]
+  animes!: PagedAnime
+
+  currentPage: number = 1
+
 
   constructor(private service: AnimeService, private title: Title) { }
   ngOnInit(): void {
     this.title.setTitle(this.title.getTitle() + " - Liste d'animés")
-    this.service.getAll().subscribe({
-      next: (animes) => {
-        console.log("Animes : ", animes.items)
-        this.animes = animes.items
-      },
-      error: (err) => console.log(err),
-      complete: () => this.loading = false
-    })
+    this.fetchData()
   }
 
+  async fetchData() {
+    try {
+      this.animes = await this.fetchAnimes()
+    } catch (error) {
+      console.log(error)
+    }
+    finally {
+      this.loading = false
+    }
+  }
+
+  fetchAnimes() {
+    return firstValueFrom(this.service.getAll(this.currentPage))
+  }
+
+  onPageChange(page: number) {
+    this.currentPage = page;
+    this.fetchData()
+  }
 }

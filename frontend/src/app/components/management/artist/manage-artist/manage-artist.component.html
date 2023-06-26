@@ -1,22 +1,26 @@
-<div *ngIf="loading">Chargement en cours...</div>
+<div class="container mx-auto">
+    <div *ngIf="loading">Chargement en cours...</div>
 
-<mat-icon routerLink="/manage/artists/create" class="add_btn" fontIcon="add"></mat-icon>
+    <mat-icon routerLink="/manage/artists/create" class="add_btn" fontIcon="add"></mat-icon>
 
-<div *ngIf="!loading && artists.length == 0">Il n'y a pas de d'artistes</div>
+    <div *ngIf="!loading && artists.items.length == 0">Il n'y a pas de d'artistes</div>
 
-<table *ngIf="!loading && artists.length > 0">
-    <tr>
-        <th></th>
-        <th>Nom</th>
-        <th>Date de création</th>
-        <th>Action</th>
-    </tr>
-    <tr className="row" *ngFor="let artist of artists">
-        <td [routerLink]="['/manage/artists', artist.id]"><img [src]="artist.poster_img" [alt]="artist.name" /></td>
-        <td>{{ artist.name}} </td>
-        <td> {{artist.creation_year}}</td>
-        <td>
-            <mat-icon (click)="delete(artist)" class="delete_btn" fontIcon="delete"></mat-icon>
-        </td>
-    </tr>
-</table>
+    <table *ngIf="!loading && artists.items.length > 0">
+        <tr>
+            <th></th>
+            <th>Nom</th>
+            <th>Date de création</th>
+            <th>Action</th>
+        </tr>
+        <tr className="row" *ngFor="let artist of artists.items">
+            <td [routerLink]="['/manage/artists', artist.id]"><img [src]="artist.poster_img" [alt]="artist.name" /></td>
+            <td>{{ artist.name}} </td>
+            <td> {{artist.creation_year}}</td>
+            <td>
+                <mat-icon (click)="delete(artist)" class="delete_btn" fontIcon="delete"></mat-icon>
+            </td>
+        </tr>
+    </table>
+    <app-pagination (onPageChange)="onPageChange($event)" [currentPage]="currentPage"
+        [pagedObject]="artists"></app-pagination>
+</div>

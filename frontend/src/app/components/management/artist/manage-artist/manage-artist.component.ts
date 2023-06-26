@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { firstValueFrom } from 'rxjs';
 import { ArtistService } from 'src/app/_services/artist.service';
-import { Artist } from 'src/app/models/Artist';
+import { Artist, PagedArtist } from 'src/app/models/Artist';
 
 @Component({
   selector: 'app-manage-artist',
@@ -10,26 +11,40 @@ import { Artist } from 'src/app/models/Artist';
 })
 export class ManageArtistComponent {
   loading = true
-  artists!: Artist[]
+  artists!: PagedArtist
+
+  currentPage: number = 1
 
   constructor(private service: ArtistService, private router: Router) { }
 
-
   ngOnInit(): void {
-    this.service.getAll().subscribe({
-      next: (artists) => {
-        console.log("Artists : ", artists.items)
-        this.artists = artists.items
-      },
-      error: (err) => console.log(err),
-      complete: () => this.loading = false
-    })
+    this.fetchData()
+  }
+
+  async fetchData() {
+    try {
+      this.artists = await this.fetchArtists()
+    } catch (error) {
+      console.log(error)
+    }
+    finally {
+      this.loading = false
+    }
+  }
+
+  fetchArtists() {
+    return firstValueFrom(this.service.getAll(this.currentPage))
+  }
+
+  onPageChange(page: number) {
+    this.currentPage = page;
+    this.fetchData()
   }
 
   delete(artist: Artist) {
     this.service.delete(Number(artist.id)).subscribe({
       next: () => {
-        this.artists = this.artists?.filter(artist => artist.id != artist.id)
+        this.artists.items = this.artists.items.filter(artist => artist.id != artist.id)
         console.log(this.artists)
       },
       error: (err) => console.log(err.message)

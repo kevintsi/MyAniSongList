@@ -34,7 +34,7 @@ export class ReviewListComponent {
 
   fetchReviews() {
     let id_music = Number(this.route.snapshot.paramMap.get("id_music"))
-    return firstValueFrom(this.service.getAll(id_music, this.currentPage, 10))
+    return firstValueFrom(this.service.getAllByIdMusic(id_music, this.currentPage, this.pageSize))
   }
 
   onPageChange(page: number) {
