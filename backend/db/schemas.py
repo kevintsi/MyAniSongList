@@ -178,6 +178,14 @@ class MusicArtist(MusicBase):
         orm_mode = True
 
 
+class MusicShort(BaseModel):
+    id: int
+    name: str
+
+    class Config:
+        orm_mode = True
+
+
 class Music(MusicBase):
     id: int
     poster_img: str
@@ -209,7 +217,7 @@ class Review(ReviewBase):
     id: int
     creation_date: datetime
     user: UserPublic
-    music_id: int
+    music: MusicShort
 
     class Config:
         orm_mode = True

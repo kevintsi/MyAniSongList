@@ -78,7 +78,7 @@ class ReviewService(BaseService[Review, ReviewCreate, ReviewUpdate]):
         music.avg_note = new_avg_note
 
     def get_music_review(self, id_music: int):
-        return self.db_session.query(Review).filter(Review.music_id == id_music, Review.description != "")
+        return self.db_session.query(Review).filter(Review.music_id == id_music, Review.description != "").all()
 
     def update(self, id, obj: ReviewUpdate, user: User):
 

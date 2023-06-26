@@ -21,6 +21,8 @@ router = APIRouter(
 async def get_all(
     service: ReviewService = Depends(get_service),
 ):
+    # fake_data = service.list()*100
+    # return paginate(fake_data)
     return paginate(service.list())
 
 
@@ -46,6 +48,8 @@ async def get_music_reviews(
     id_music: int,
     service: ReviewService = Depends(get_service),
 ):
+    # fake_data = service.get_music_review(id_music)*100
+    # return paginate(fake_data)
     return paginate(service.get_music_review(id_music))
 
 

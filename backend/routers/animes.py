@@ -27,6 +27,8 @@ router = APIRouter(
 async def get_all(
     service: AnimeService = Depends(get_service),
 ):
+    # fake_data = service.list()*100
+    # return paginate(fake_data)
     return paginate(service.list())
 
 
