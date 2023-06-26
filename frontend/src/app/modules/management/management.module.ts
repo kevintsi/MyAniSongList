@@ -14,6 +14,7 @@ import { ManageArtistDetailComponent } from 'src/app/components/management/artis
 import { ManageMusicComponent } from 'src/app/components/management/music/manage-music/manage-music.component';
 import { ManageMusicDetailComponent } from 'src/app/components/management/music/manage-music-detail/manage-music-detail.component';
 import { ManageCreateMusicComponent } from 'src/app/components/management/music/manage-create-music/manage-create-music.component';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { ManageCreateMusicComponent } from 'src/app/components/management/music/
     FormsModule,
     ReactiveFormsModule,
     MatIconModule,
+    SharedModule,
   ]
 })
 export class ManagementModule { }
