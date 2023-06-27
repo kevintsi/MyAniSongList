@@ -14,7 +14,7 @@ class MusicService(BaseService[Music, MusicCreate, MusicUpdate]):
         super(MusicService, self).__init__(Music, db_session)
 
     def search(self, term: str):
-        return self.db_session.query(Music).filter(Music.name.like(f"%{term}%")).all()
+        return self.db_session.query(Music).filter(Music.name.like(f"%{term}%"))
 
     def get_musics_anime(self, id_anime: int):
         musics = self.db_session.query(

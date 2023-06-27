@@ -26,7 +26,7 @@ class BaseService(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
             raise HTTPException(status_code=404, detail="Not Found")
         return obj
 
-    def list(self) -> List[ModelType]:
+    def list(self):
         return self.db_session.query(self.model)
 
     def create(self, obj: CreateSchemaType) -> ModelType:

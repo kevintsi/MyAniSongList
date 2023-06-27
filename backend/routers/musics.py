@@ -29,15 +29,12 @@ async def get_all(
     return paginate(service.list())
 
 
-@router.get("/search", response_model=list[Music])
+@router.get("/search", response_model=Page[Music])
 async def search(
     query: str,
     service: MusicService = Depends(get_service),
 ):
-    if query.strip() == "":
-        return []
-    else:
-        return service.search(query)
+    return paginate(service.search(query))
 
 
 @router.get("/anime/{id_anime}", response_model=list[Music])

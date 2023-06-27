@@ -18,7 +18,7 @@ router = APIRouter(
 async def get_all(
     service: TypeService = Depends(get_service),
 ):
-    return service.list()
+    return service.list().all()
 
 
 @router.post("/add", response_model=Type)

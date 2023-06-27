@@ -14,7 +14,7 @@ class AnimeService(BaseService[Anime, AnimeCreate, AnimeUpdate]):
         super(AnimeService, self).__init__(Anime, db_session)
 
     def search(self, term: str):
-        return self.db_session.query(Anime).filter(Anime.name.like(f"%{term}%")).all()
+        return self.db_session.query(Anime).filter(Anime.name.like(f"%{term}%"))
 
     def create(self, obj: AnimeCreate, poster_img: UploadFile, user: User):
 

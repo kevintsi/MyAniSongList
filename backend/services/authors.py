@@ -14,7 +14,7 @@ class AuthorService(BaseService[Author, AuthorCreate, AuthorUpdate]):
         super(AuthorService, self).__init__(Author, db_session)
 
     def search(self, term: str):
-        return self.db_session.query(Author).filter(Author.name.like(f"%{term}%")).all()
+        return self.db_session.query(Author).filter(Author.name.like(f"%{term}%"))
 
     def create(self, obj: AuthorCreate, poster_img: UploadFile, user: User):
         if user.is_manager:

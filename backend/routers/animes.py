@@ -32,15 +32,12 @@ async def get_all(
     return paginate(service.list())
 
 
-@router.get("/search", response_model=list[Anime])
+@router.get("/search", response_model=Page[Anime])
 async def search(
     query: str,
     service: AnimeService = Depends(get_service),
 ):
-    if query.strip() == "":
-        return []
-    else:
-        return service.search(query)
+    return paginate(service.search(query))
 
 
 @router.post("/add")
