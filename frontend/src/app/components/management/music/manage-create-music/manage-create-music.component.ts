@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import { subscribe } from 'diagnostics_channel';
 import { Observable, Subject, debounceTime, defaultIfEmpty, distinctUntilChanged, switchMap } from 'rxjs';
 import { AnimeService } from 'src/app/_services/anime.service';
 import { ArtistService } from 'src/app/_services/artist.service';
 import { MusicService } from 'src/app/_services/music.service';
 import { TypeService } from 'src/app/_services/type.service';
-import { Anime } from 'src/app/models/Anime';
-import { Artist } from 'src/app/models/Artist';
+import { Anime, PagedAnime } from 'src/app/models/Anime';
+import { Artist, PagedArtist } from 'src/app/models/Artist';
 import { Type } from 'src/app/models/Type';
 
 @Component({
@@ -23,8 +24,8 @@ export class ManageCreateMusicComponent implements OnInit {
   preview_image?: any = null
   file: any
   types?: Type[]
-  artists?: Observable<Artist[]>
-  animes?: Observable<Anime[]>
+  artists!: PagedArtist
+  animes!: PagedAnime
   private input_anime = new Subject<string>()
   private input_artist = new Subject<string>()
   selected_artists: Array<Artist> = []
@@ -40,17 +41,36 @@ export class ManageCreateMusicComponent implements OnInit {
 
   ngOnInit(): void {
     this.get_type_list()
-    this.animes = this.input_anime.pipe(
-      debounceTime(500),
-      distinctUntilChanged(),
-      switchMap(query => this.anime_service.search(query)),
-    )
+  }
 
-    this.artists = this.input_artist.pipe(
-      debounceTime(500),
-      distinctUntilChanged(),
-      switchMap(query => this.artist_service.search(query)),
-    )
+  performSearchAnime(searchTerm: string) {
+    console.log("NEW TERM ANIME : " + searchTerm)
+    if (!searchTerm) {
+      this.animes.items = []
+      return
+    }
+
+    this.anime_service.search(searchTerm).subscribe({
+      next: (animes) => {
+        this.animes = animes
+      },
+      error: (err) => console.error(err.message)
+    })
+  }
+
+  performSearchArtist(searchTerm: string) {
+    console.log("NEW TERM Artist : " + searchTerm)
+    if (!searchTerm) {
+      this.artists.items = []
+      return
+    }
+
+    this.artist_service.search(searchTerm).subscribe({
+      next: (artists) => {
+        this.artists = artists
+      },
+      error: (err) => console.error(err.message)
+    })
   }
 
   onSubmit() {

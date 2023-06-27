@@ -1,5 +1,7 @@
 <div class="container mx-auto pt-20">
-    <div *ngIf="loading">Chargement en cours...</div>
+    <div class="flex justify-center" *ngIf="loading">
+        <span class="loading loading-bars loading-lg"></span>
+    </div>
     <div *ngIf="!loading">
         <div class="grid grid-cols-2 gap-8">
             <div class="bg-base-100 hover:cursor-pointer rounded-lg" *ngFor="let anime of animes.items"

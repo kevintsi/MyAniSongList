@@ -1,28 +1,43 @@
 <div class="container mx-auto">
-    <div *ngIf="loading">Chargement en cours...</div>
+    <div class="flex justify-center" *ngIf="loading">
+        <span class="loading loading-bars loading-lg"></span>
+    </div>
 
     <mat-icon routerLink="/manage/musics/create" class="add_btn" fontIcon="add"></mat-icon>
+    <app-search-bar placeholder="Tapez la musique que vous recherchez"
+        (searchEvent)="performSearch($event)"></app-search-bar>
     <div *ngIf="!loading && musics.items.length == 0">Il n'y a pas de musiques</div>
+    <div *ngIf="!loading">
+        <table class="table table-fixed">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Nom</th>
+                    <th>Type</th>
+                    <th class="overflow-hidden text-ellipsis whitespace-nowrap">Date de sortie</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
 
-    <table *ngIf="!loading && musics.items.length > 0">
-        <tr>
-            <th></th>
-            <th>Nom</th>
-            <th>Type</th>
-            <th>Date de sortie</th>
-            <th>Action</th>
-        </tr>
-
-        <tr class="row" *ngFor="let music of musics.items">
-            <td [routerLink]="['/manage/musics', music.id]"><img [src]="music.poster_img" [alt]="music.name" /></td>
-            <td>{{ music.name}} </td>
-            <td> {{music.release_date | date:'dd-MM-YYY' }}</td>
-            <td> {{ music.type.type_name }}</td>
-            <td>
-                <mat-icon (click)="delete(music)" class="delete_btn" fontIcon="delete"></mat-icon>
-            </td>
-        </tr>
-    </table>
-    <app-pagination (onPageChange)="onPageChange($event)" [currentPage]="currentPage"
-        [pagedObject]="musics"></app-pagination>
+            <tbody>
+                <tr class="row" [routerLink]="['/manage/musics', music.id]" *ngFor="let music of musics.items">
+                    <td>
+                        <div class="w-12 h-full">
+                            <img [src]="music.poster_img" [alt]="music.name" />
+                        </div>
+                    </td>
+                    <td class="overflow-hidden text-ellipsis whitespace-nowrap">{{ music.name}} </td>
+                    <td class="overflow-hidden text-ellipsis whitespace-nowrap"> {{music.release_date | date:'dd-MM-YYY'
+                        }}
+                    </td>
+                    <td class="overflow-hidden text-ellipsis whitespace-nowrap"> {{ music.type.type_name }}</td>
+                    <td>
+                        <mat-icon (click)="delete(music)" class="delete_btn" fontIcon="delete"></mat-icon>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <app-pagination (onPageChange)="onPageChange($event)" [currentPage]="currentPage"
+            [pagedObject]="musics"></app-pagination>
+    </div>
 </div>

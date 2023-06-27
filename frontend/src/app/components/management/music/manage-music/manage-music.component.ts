@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { firstValueFrom } from 'rxjs';
+import { Subject, firstValueFrom } from 'rxjs';
 import { MusicService } from 'src/app/_services/music.service';
 import { Music, PagedMusic } from 'src/app/models/Music';
 
@@ -12,7 +12,6 @@ import { Music, PagedMusic } from 'src/app/models/Music';
 export class ManageMusicComponent {
   loading = true
   musics!: PagedMusic
-
   currentPage: number = 1
 
   constructor(private service: MusicService, private router: Router) { }
@@ -33,6 +32,16 @@ export class ManageMusicComponent {
 
   fetchMusics() {
     return firstValueFrom(this.service.getAll(this.currentPage))
+  }
+
+
+  performSearch(searchTerm: string) {
+    this.service.search(searchTerm).subscribe({
+      next: (music) => {
+        this.musics = music
+      },
+      error: (err) => console.error(err.message)
+    })
   }
 
   onPageChange(page: number) {

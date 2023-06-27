@@ -19,7 +19,6 @@ import { ArtistListComponent } from './components/artist/artist-list/artist-list
 import { ArtistDetailComponent } from './components/artist/artist-detail/artist-detail.component';
 import { MusicListComponent } from './components/music/music-list/music-list.component';
 import { MusicDetailComponent } from './components/music/music-detail/music-detail.component';
-import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import { RatingStarsComponent } from './components/rating-stars/rating-stars.component';
 import { ReviewShortListComponent } from './components/review/review-short-list/review-short-list.component';
 import { ReviewDetailComponent } from './components/review/review-detail/review-detail.component';
@@ -42,7 +41,6 @@ import { CommunityListComponent } from './components/community-list/community-li
     ArtistDetailComponent,
     MusicListComponent,
     MusicDetailComponent,
-    SearchBarComponent,
     RatingStarsComponent,
     ReviewShortListComponent,
     ReviewDetailComponent,

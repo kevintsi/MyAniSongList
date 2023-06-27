@@ -12,7 +12,7 @@ export class ArtistService {
   constructor(private http: HttpClient) { }
 
   public search(term: string) {
-    return this.http.get<Artist[]>(this.endpoint + '/authors/search?query=' + term)
+    return this.http.get<PagedArtist>(this.endpoint + '/authors/search?query=' + term)
   }
 
   public getAll(page: number, size: number = 10) {

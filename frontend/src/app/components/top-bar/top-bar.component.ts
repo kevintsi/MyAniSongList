@@ -19,8 +19,6 @@ export class TopBarComponent {
   isSearchBarOpen: boolean = false
   category: string = "animes"
   result_search?: any[] = []
-  searchQuery: string = ""
-  searchQueryChanged: Subject<string> = new Subject<string>();
 
   constructor(
     private authService: AuthService,
@@ -34,11 +32,16 @@ export class TopBarComponent {
 
   performSearch(searchTerm: string) {
     console.log("New search : ", this.category)
+    console.log("Term : " + !searchTerm)
+    if (!searchTerm) {
+      this.result_search = []
+      return
+    }
     switch (this.category) {
       case "animes": {
         this.animeService.search(searchTerm).subscribe({
           next: (anime) => {
-            this.result_search = anime
+            this.result_search = anime.items
           },
           error: (err) => console.error(err.message)
         })
@@ -47,7 +50,7 @@ export class TopBarComponent {
       case "musics": {
         this.musiService.search(searchTerm).subscribe({
           next: (music) => {
-            this.result_search = music
+            this.result_search = music.items
           },
           error: (err) => console.error(err.message)
         })
@@ -56,7 +59,7 @@ export class TopBarComponent {
       case "artists": {
         this.artistService.search(searchTerm).subscribe({
           next: (artist) => {
-            this.result_search = artist
+            this.result_search = artist.items
           },
           error: (err) => console.error(err.message)
         })
@@ -74,10 +77,6 @@ export class TopBarComponent {
         window.location.reload()
       }
     })
-  }
-
-  onSearchQueryChange() {
-    this.searchQueryChanged.next(this.searchQuery);
   }
 
   toggleMenu() {

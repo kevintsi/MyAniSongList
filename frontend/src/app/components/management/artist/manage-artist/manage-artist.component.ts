@@ -36,6 +36,15 @@ export class ManageArtistComponent {
     return firstValueFrom(this.service.getAll(this.currentPage))
   }
 
+  performSearch(searchTerm: string) {
+    this.service.search(searchTerm).subscribe({
+      next: (artists) => {
+        this.artists = artists
+      },
+      error: (err) => console.error(err.message)
+    })
+  }
+
   onPageChange(page: number) {
     this.currentPage = page;
     this.fetchData()

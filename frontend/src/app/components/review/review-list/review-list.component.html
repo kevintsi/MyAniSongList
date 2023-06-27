@@ -1,6 +1,8 @@
 <div class="container mx-auto pt-20">
     <h1>Avis</h1>
-    <div *ngIf="isLoading">Chargement...</div>
+    <div class="flex justify-center" *ngIf="isLoading">
+        <span class="loading loading-bars loading-lg"></span>
+    </div>
     <div *ngIf="!isLoading" class="container mx-auto">
         <div class="flex flex-col items-center">
             <div *ngFor="let review of reviews.items" class="pt-8 w-full">

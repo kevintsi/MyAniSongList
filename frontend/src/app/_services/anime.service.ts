@@ -12,7 +12,7 @@ export class AnimeService {
   constructor(private http: HttpClient) { }
 
   public search(term: string) {
-    return this.http.get<Anime[]>(this.endpoint + '/animes/search?query=' + term)
+    return this.http.get<PagedAnime>(this.endpoint + '/animes/search?query=' + term)
   }
 
   public getAll(page: number, size: number = 10) {

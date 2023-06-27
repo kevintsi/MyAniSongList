@@ -10,32 +10,33 @@
         <input type="date" formControlName="release_date" />
 
         <label>Anime : </label>
-        <input type="text" placeholder="Tapez le nom de l'anime..." (keyup)="get_anime_list(get_value($event))" />
+
+        <app-search-bar placeholder="Tapez l'anime" (searchEvent)="performSearchAnime($event)"></app-search-bar>
 
         <ng-container *ngIf="selected_anime != undefined">
             <div [style.font-weight]="500">Animé selectionné : </div>
             <div (click)="onunselectanime($event)" [id]="selected_anime.id">{{ selected_anime.name }}</div>
         </ng-container>
 
-        <ng-container *ngIf="(animes | async) as animes">
-            <div *ngIf="animes.length > 0" [style.font-weight]="500">Animés trouvées : </div>
-            <div *ngFor="let anime of animes" (click)="onselectanime(anime)">{{ anime.name }}</div>
+        <ng-container *ngIf="animes">
+            <div *ngIf="animes.items.length > 0" [style.font-weight]="500">Animés trouvées : </div>
+            <div *ngFor="let anime of animes.items" (click)="onselectanime(anime)">{{ anime.name }}</div>
         </ng-container>
 
 
         <label>Artistes : </label>
 
-        <input type="text" placeholder="Tapez le nom de l'artiste/groupe..."
-            (keyup)="get_artist_list(get_value($event))" />
+        <app-search-bar placeholder="Tapez l'artiste/groupe"
+            (searchEvent)="performSearchArtist($event)"></app-search-bar>
 
         <ng-container *ngIf="selected_artists && selected_artists.length>0">
             <div [style.font-weight]="500">Artistes selectionnés : </div>
             <div (click)="onunselectartist(artist)" *ngFor="let artist of selected_artists">{{ artist.name}}</div>
         </ng-container>
 
-        <ng-container *ngIf="(artists | async) as artists">
-            <div *ngIf="artists.length > 0" [style.font-weight]="500">Artistes trouvées : </div>
-            <div *ngFor="let artist of artists" (click)="onselectartist(artist)">{{ artist.name }}</div>
+        <ng-container *ngIf="artists">
+            <div *ngIf="artists.items.length > 0" [style.font-weight]="500">Artistes trouvées : </div>
+            <div *ngFor="let artist of artists.items" (click)="onselectartist(artist)">{{ artist.name }}</div>
         </ng-container>
 
 

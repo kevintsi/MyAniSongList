@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { firstValueFrom } from 'rxjs';
+import { Subject, firstValueFrom } from 'rxjs';
 import { AnimeService } from 'src/app/_services/anime.service';
 import { Anime, PagedAnime } from 'src/app/models/Anime';
 
@@ -12,7 +12,6 @@ import { Anime, PagedAnime } from 'src/app/models/Anime';
 export class ManageAnimeComponent implements OnInit {
   loading = true
   animes!: PagedAnime
-
   currentPage: number = 1
 
   constructor(private service: AnimeService, private router: Router) { }
@@ -30,6 +29,15 @@ export class ManageAnimeComponent implements OnInit {
     finally {
       this.loading = false
     }
+  }
+
+  performSearch(searchTerm: string) {
+    this.service.search(searchTerm).subscribe({
+      next: (anime) => {
+        this.animes = anime
+      },
+      error: (err) => console.error(err.message)
+    })
   }
 
   fetchAnimes() {

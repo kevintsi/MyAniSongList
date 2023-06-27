@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, Subject, debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
 import { AnimeService } from 'src/app/_services/anime.service';
 import { ArtistService } from 'src/app/_services/artist.service';
 import { MusicService } from 'src/app/_services/music.service';
 import { TypeService } from 'src/app/_services/type.service';
-import { Anime } from 'src/app/models/Anime';
-import { Artist } from 'src/app/models/Artist';
+import { Anime, PagedAnime } from 'src/app/models/Anime';
+import { Artist, PagedArtist } from 'src/app/models/Artist';
 import { Type } from 'src/app/models/Type';
 
 @Component({
@@ -24,10 +23,8 @@ export class ManageMusicDetailComponent {
   preview_image?: any
   file: any
   types?: Type[]
-  artists?: Observable<Artist[]>
-  animes?: Observable<Anime[]>
-  private input_anime = new Subject<string>()
-  private input_artist = new Subject<string>()
+  artists!: PagedArtist
+  animes!: PagedAnime
   selected_artists?: Array<Artist>
   selected_anime?: Anime
 
@@ -46,18 +43,6 @@ export class ManageMusicDetailComponent {
     let id = Number(this.route.snapshot.paramMap.get('id'))
     this.get(id)
     this.get_type_list()
-
-    this.animes = this.input_anime.pipe(
-      debounceTime(500),
-      distinctUntilChanged(),
-      switchMap(query => this.anime_service.search(query)),
-    )
-
-    this.artists = this.input_artist.pipe(
-      debounceTime(500),
-      distinctUntilChanged(),
-      switchMap(query => this.artist_service.search(query)),
-    )
   }
 
   get(id: number) {
@@ -77,6 +62,37 @@ export class ManageMusicDetailComponent {
       error: (err) => console.log(err)
     })
   }
+
+  performSearchAnime(searchTerm: string) {
+    console.log("NEW TERM ANIME : " + searchTerm)
+    if (!searchTerm) {
+      this.animes.items = []
+      return
+    }
+
+    this.anime_service.search(searchTerm).subscribe({
+      next: (animes) => {
+        this.animes = animes
+      },
+      error: (err) => console.error(err.message)
+    })
+  }
+
+  performSearchArtist(searchTerm: string) {
+    console.log("NEW TERM Artist : " + searchTerm)
+    if (!searchTerm) {
+      this.artists.items = []
+      return
+    }
+
+    this.artist_service.search(searchTerm).subscribe({
+      next: (artists) => {
+        this.artists = artists
+      },
+      error: (err) => console.error(err.message)
+    })
+  }
+
 
   onSubmit() {
     let id = Number(this.route.snapshot.paramMap.get('id'))
@@ -104,14 +120,6 @@ export class ManageMusicDetailComponent {
         },
         error: (err) => console.log(err)
       })
-  }
-
-  get_artist_list(query: string) {
-    this.input_artist.next(query)
-  }
-
-  get_anime_list(query: string) {
-    this.input_anime.next(query)
   }
 
   onchange(event: Event) {

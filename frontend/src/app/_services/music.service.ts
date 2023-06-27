@@ -15,7 +15,7 @@ export class MusicService {
   constructor(private http: HttpClient) { }
 
   public search(term: string) {
-    return this.http.get<Music[]>(this.endpoint + '/musics/search?query=' + term)
+    return this.http.get<PagedMusic>(this.endpoint + '/musics/search?query=' + term)
   }
 
   public getAll(page: number, size: number = 10) {
