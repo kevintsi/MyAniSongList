@@ -9,6 +9,7 @@ from fastapi_pagination import Page
 from fastapi_pagination.ext.sqlalchemy import paginate
 from db.schemas import *
 from typing import Optional
+from routers.users import get_current_user
 from services.musics import (
     MusicService,
     get_service,
@@ -58,8 +59,9 @@ async def add(
     music: MusicCreate = Body(...),
     poster_img: UploadFile = File(...),
     service: MusicService = Depends(get_service),
+    current_user: User = Depends(get_current_user)
 ):
-    return service.create(music, poster_img)
+    return service.create(music, poster_img, current_user)
 
 
 @router.put("/update/{id}")
@@ -68,16 +70,18 @@ async def update(
     music: MusicUpdate = Body(...),
     poster_img: Optional[UploadFile] = File(None),
     service: MusicService = Depends(get_service),
+    current_user: User = Depends(get_current_user)
 ):
-    return service.update(id, music, poster_img)
+    return service.update(id, music, poster_img, current_user)
 
 
 @router.delete("/delete/{id}")
 async def delete(
     id: int,
     service: MusicService = Depends(get_service),
+    current_user: User = Depends(get_current_user)
 ):
-    return service.delete(id)
+    return service.delete(id, current_user)
 
 
 @router.get("/{id}", response_model=Music)

@@ -8,6 +8,9 @@ anisonglist-firebase-admin.json
 static/profile_pictures/
 static/poster_images/
 
+.env.*
+data/
+
 # Migration 
 migrations/versions/
 

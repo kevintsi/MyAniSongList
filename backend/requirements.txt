@@ -8,6 +8,8 @@ alembic==1.11.1
 pyJWT==2.7.0
 pytz==2023.3
 fastapi-pagination==0.12.4
+redis==4.6.0
+redis[hiredis]
 passlib[bcrypt]
 python-multipart
 firebase_admin

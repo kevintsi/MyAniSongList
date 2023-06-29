@@ -13,6 +13,7 @@ from fastapi import (
     UploadFile
 )
 import jwt
+import redis
 from db.schemas import *
 from utils import (
     authenticate_user,
@@ -85,7 +86,7 @@ async def login(
     if not user:
         raise HTTPException(
             status_code=401, detail="Invalid username or password")
-
+    print(user)
     access_token_expires = timedelta(minutes=1)
     print(access_token_expires)
     access_token = create_access_token(
@@ -106,44 +107,53 @@ async def login(
 @router.post("/refresh_token")
 def refresh_access_token(response: Response, refresh_token: str = Cookie(None)):
     try:
+        r = redis.Redis(host="redis")
         print(refresh_token)
         if refresh_token:
-            # Verify and decode the refresh token
-            decoded_token = jwt.decode(refresh_token, getenv(
-                "SECRET_KEY"), algorithms=getenv("ALGORITHM"))
-            user = decoded_token.get("sub")
-            print(user)
-            # Generate a new access token
-            access_token_expires = timedelta(minutes=1)
-            new_access_token = create_access_token(
-                data={"sub": {"id": user['id'], "is_manager": user['is_manager']}}, expires_delta=access_token_expires
-            )
+            if r.sismember('token_blacklist', refresh_token):
+                raise HTTPException(
+                    status_code=status.HTTP_401_UNAUTHORIZED,
+                    detail="Invalid refresh token has already been revoked",
+                    headers={"WWW-Authenticate": "Bearer"},
+                )
+            else:
+                # Verify and decode the refresh token
+                decoded_token = jwt.decode(refresh_token, getenv(
+                    "SECRET_KEY"), algorithms=getenv("ALGORITHM"))
+                user = decoded_token.get("sub")
+                print(user)
+                # Generate a new access token
+                access_token_expires = timedelta(minutes=1)
+                new_access_token = create_access_token(
+                    data={"sub": {"id": user['id'], "is_manager": user['is_manager']}}, expires_delta=access_token_expires
+                )
 
-            refresh_token_expires = timedelta(days=7)
-            refresh_token = create_access_token(
-                data={"sub": {"id": user['id'], "is_manager": user['is_manager']}}, expires_delta=refresh_token_expires)
+                refresh_token_expires = timedelta(days=7)
+                new_refresh_token = create_access_token(
+                    data={"sub": {"id": user['id'], "is_manager": user['is_manager']}}, expires_delta=refresh_token_expires)
 
-            response.set_cookie("refresh_token", refresh_token,
-                                secure=True, httponly=True)
-            # Return the new access token
-            return {"access_token": new_access_token, "refresh_token": refresh_token}
+                response.set_cookie("refresh_token", new_refresh_token,
+                                    secure=True, httponly=True)
+
+                r.sadd("token_blacklist", refresh_token)
+                # Return the new access token
+                return {"access_token": new_access_token, "refresh_token": new_refresh_token}
         else:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Invalid refresh token",
                 headers={"WWW-Authenticate": "Bearer"},
             )
-    except:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Refresh token has expired",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
+    except HTTPException as e:
+        raise e
 
 
 @router.post('/logout')
-def logout(response: Response):
+def logout(response: Response, refresh_token: str = Cookie(None)):
+    r = redis.Redis(host="redis")
+    r.sadd("token_blacklist", refresh_token)
     response.delete_cookie("refresh_token")
+
     return {"msg": "Successfully logout"}
 
 
