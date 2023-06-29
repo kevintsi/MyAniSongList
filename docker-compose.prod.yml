@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+
+  backend:
+    build: ./backend
+    restart: always
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - redis
+    env_file:
+      - ./backend/.env.prod
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "4200:4200"
+    depends_on:
+      - backend
+
+  db:
+    image: mysql:8.0
+    container_name: mysql_container
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=vEDL8UBBJNcA9b3RY4983YK5
+      - MYSQL_DATABASE=anisong
+    volumes:
+      - ./backend/data/mysql/:/var/lib/mysql
+
+  redis:
+    image: redis/redis-stack-server:latest
+    container_name: redis_container
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./backend/data/redis/:/data
