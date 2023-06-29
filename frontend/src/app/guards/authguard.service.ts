@@ -7,5 +7,9 @@ export const isSignedInGuard = (next: ActivatedRouteSnapshot) => {
 }
 
 export const notSignedInGuard = (next: ActivatedRouteSnapshot) => {
-  return !inject(AuthService).isLoggedIn() ? true : createUrlTreeFromSnapshot(next, ['/', 'home'])
+  return !inject(AuthService).isLoggedIn() ? true : createUrlTreeFromSnapshot(next, ['/'])
+}
+
+export const ManagerGuard = (next: ActivatedRouteSnapshot) => {
+  return inject(AuthService).isLoggedIn() && inject(AuthService).isManager() ? true : createUrlTreeFromSnapshot(next, ['/'])
 }

@@ -1,50 +1,58 @@
-<div>
+<div class="container mx-auto flex justify-center">
     <form [formGroup]="update_form" (ngSubmit)="onSubmit()">
-        <img (click)="imageInput.click()" [src]="preview_image" alt="Image animé" />
-        <label>Nom : </label>
-        <input type="text" formControlName="name" />
-        <label>Date de sortie : </label>
-        <input type="date" formControlName="release_date" />
-        <label>Anime : </label>
+        <img (click)="imageInput.click()" [src]="preview_image" alt="Image animé" class="w-32" />
 
-        <app-search-bar placeholder="Tapez l'anime" (searchEvent)="performSearchAnime($event)"></app-search-bar>
+        <div class="w-full flex flex-col items-center">
+            <label class="label mt-4">Nom : </label>
+            <input class="input input-bordered w-full max-w-xs mt-4" type="text" formControlName="name"
+                placeholder="Nom de la musique" />
+            <label class="label mt-4">Date de sortie : </label>
+            <input class="input input-bordered w-full max-w-xs mt-4" type="date" formControlName="release_date" />
+            <div>
+                <label class="label mt-4">Anime : </label>
+                <app-search-bar placeholder="Tapez l'anime" [defaultValue]="selected_anime?.name"
+                    (searchEvent)="performSearchAnime($event)"></app-search-bar>
+
+                <ng-container *ngIf="animes">
+                    <div *ngFor="let anime of animes.items" (click)="onselectanime(anime)"
+                        class="grid h-10 bg-base-300 hover:border-2  hover:bg-base-100 hover:border-white w-full place-items-center">
+                        {{ anime.name }}</div>
+                </ng-container>
+
+            </div>
+            <div>
+
+                <label class="label mt-4">Artistes : </label>
+                <div class="p-2 flex flex-row justify-start">
+                    <ng-container *ngFor="let artist of selected_artists">
+                        <div class="flex flex-row justify-start h-10 w-24 pl-2 mr-2 bg-base-300 rounded-lg place-items-center"
+                            (click)="onunselectartist(artist)">
+                            <div class="flex items-center">
+                                <mat-icon [inline]="true">close</mat-icon>
+                            </div>
+                            <div class="text-ellipsis overflow-hidden whitespace-nowrap">{{ artist.name}}
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+
+                <app-search-bar placeholder="Tapez l'artiste/groupe"
+                    (searchEvent)="performSearchArtist($event)"></app-search-bar>
 
 
-        <ng-container *ngIf="selected_anime != undefined">
-            <div [style.font-weight]="500">Animé selectionné : </div>
-            <div (click)="onunselectanime($event)" [id]="selected_anime.id">{{ selected_anime.name }}</div>
-        </ng-container>
+                <ng-container *ngIf="artists">
+                    <div *ngFor="let artist of artists.items" (click)="onselectartist(artist)"
+                        class="grid h-10 bg-base-300 hover:border-2  hover:bg-base-100 hover:border-white w-full place-items-center">
+                        {{ artist.name }}</div>
+                </ng-container>
+            </div>
 
-        <ng-container *ngIf="animes">
-            <div *ngIf="animes.items.length > 0" [style.font-weight]="500">Animés trouvées : </div>
-            <div *ngFor="let anime of animes.items" (click)="onselectanime(anime)">{{ anime.name }}</div>
-        </ng-container>
-
-
-        <label>Artistes : </label>
-
-        <app-search-bar placeholder="Tapez l'artiste/groupe"
-            (searchEvent)="performSearchArtist($event)"></app-search-bar>
-
-
-        <ng-container *ngIf="selected_artists && selected_artists.length>0">
-            <div [style.font-weight]="500">Artistes selectionnés : </div>
-            <div (click)="onunselectartist(artist)" *ngFor="let artist of selected_artists">{{ artist.name}}</div>
-        </ng-container>
-
-        <ng-container *ngIf="artists">
-            <div *ngIf="artists.items.length > 0" [style.font-weight]="500">Artistes trouvées : </div>
-            <div *ngFor="let artist of artists.items" (click)="onselectartist(artist)">{{ artist.name }}</div>
-        </ng-container>
-
-
-
-        <label>Types : </label>
-        <select *ngIf="types" formControlName="type_id">
-            <option [ngValue]="type.id" *ngFor="let type of types">{{ type.type_name}}</option>
-        </select>
-
+            <label class="label mt-4">Types : </label>
+            <select class="select" *ngIf="types" formControlName="type_id">
+                <option [ngValue]="type.id" *ngFor="let type of types">{{ type.type_name}}</option>
+            </select>
+        </div>
         <input [hidden]="true" #imageInput type="file" (change)="processFile(imageInput)" />
-        <button type="submit">Valider</button>
+        <button class="btn mt-4" type="submit">Valider</button>
     </form>
 </div>

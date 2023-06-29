@@ -4,6 +4,7 @@ import { environment } from '../environments/environment';
 import { User } from '../models/User';
 import { TokenService } from './token.service';
 import { Token } from '../models/Token';
+import jwtDecode from 'jwt-decode';
 
 
 @Injectable({
@@ -56,6 +57,11 @@ export class AuthService {
 
   public isLoggedIn() {
     return !!this.tokenService.getToken()
+  }
+
+  public isManager() {
+    let decodedToken: any = jwtDecode(String(this.tokenService.getToken()))
+    return decodedToken.sub.is_manager
   }
 
 }

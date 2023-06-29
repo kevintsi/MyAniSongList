@@ -26,10 +26,9 @@ export class ManageCreateMusicComponent implements OnInit {
   types?: Type[]
   artists!: PagedArtist
   animes!: PagedAnime
-  private input_anime = new Subject<string>()
-  private input_artist = new Subject<string>()
   selected_artists: Array<Artist> = []
   selected_anime?: Anime
+  artist_name: string = ""
 
   constructor(
     private music_service: MusicService,
@@ -100,13 +99,6 @@ export class ManageCreateMusicComponent implements OnInit {
       })
   }
 
-  get_artist_list(query: string) {
-    this.input_artist.next(query)
-  }
-
-  get_anime_list(query: string) {
-    this.input_anime.next(query)
-  }
 
   onchange(event: Event) {
     console.log(event.target)
@@ -118,7 +110,7 @@ export class ManageCreateMusicComponent implements OnInit {
       this.selected_artists.push(artist)
     }
     console.log("Selected artists : ", this.selected_artists)
-    // this.resetData()
+    this.artists.items = []
   }
 
   onunselectartist(artist: Artist) {
@@ -135,7 +127,8 @@ export class ManageCreateMusicComponent implements OnInit {
       this.selected_anime = anime
     }
     console.log("Selected anime : ", this.selected_anime)
-    // this.resetData()
+    this.animes.items = []
+    this.create_form
   }
 
   onunselectanime(anime: any) {

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './components/login/login.component'
-import { isSignedInGuard, notSignedInGuard } from './guards/authguard.service';
+import { ManagerGuard, isSignedInGuard, notSignedInGuard } from './guards/authguard.service';
 import { HomeComponent } from './components/home/home.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { AnimeListComponent } from './components/anime/anime-list/anime-list.component';
@@ -49,7 +49,7 @@ const routes: Routes = [
       { path: '', component: CommunityListComponent },
     ]
   },
-  { path: 'manage', component: ManageComponent, loadChildren: () => import("./modules/management/management.module").then(m => m.ManagementModule) },
+  { path: 'manage', component: ManageComponent, loadChildren: () => import("./modules/management/management.module").then(m => m.ManagementModule), canActivate: [ManagerGuard] },
 
 ]
 

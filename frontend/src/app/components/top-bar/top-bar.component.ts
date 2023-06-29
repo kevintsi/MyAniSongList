@@ -94,6 +94,10 @@ export class TopBarComponent {
     return this.authService.isLoggedIn()
   }
 
+  isManager() {
+    return this.authService.isManager()
+  }
+
   logout() {
     console.log("Logout function called")
     this.authService.logout().subscribe({

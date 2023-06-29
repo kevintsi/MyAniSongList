@@ -43,24 +43,6 @@ export class AuthInterceptor implements HttpInterceptor {
                 return throwError(() => error);
             })
         );
-
-
-
-        // const token = this.tokenService.getToken()
-        // if (token) {
-        //     let decoded_token: any = jwtDecode(token)
-        //     if (Date.now() > decoded_token.exp * 1000) {
-        //         console.log("Token has expired get a new one bitch")
-        //         let new_token = this.tokenService.getRefreshToken()
-        //     }
-        //     req = req.clone({
-        //         headers: req.headers.set("Authorization", "Bearer " + token),
-        //     });
-        // }
-
-        // console.log("REQ before sending request : ", req)
-
-        // return next.handle(req);
     }
 }
 

@@ -8,6 +8,7 @@ import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 })
 export class SearchBarComponent {
   @Input() placeholder: string = "Recherche..."
+  @Input() defaultValue?: string = ""
   @Output() searchEvent: EventEmitter<string> = new EventEmitter<string>();
   private searchTermSubject: Subject<string> = new Subject<string>();
 

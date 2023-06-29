@@ -132,7 +132,7 @@ export class ManageMusicDetailComponent {
       this.selected_artists.push(artist)
     }
     console.log("Selected artists : ", this.selected_artists)
-    // this.resetData()
+    this.artists.items = []
   }
 
   onunselectartist(artist: Artist) {
@@ -149,7 +149,7 @@ export class ManageMusicDetailComponent {
       this.selected_anime = anime
     }
     console.log("Selected anime : ", this.selected_anime)
-    // this.resetData()
+    this.animes.items = []
   }
 
   onunselectanime(anime: any) {

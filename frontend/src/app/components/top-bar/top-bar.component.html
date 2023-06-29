@@ -40,12 +40,15 @@
                 <li><a routerLink="/artists">Artistes</a></li>
                 <li><a routerLink="/musics">Musiques</a></li>
                 <li><a routerLink="/community">Communauté</a></li>
-                <li *ngIf="isLoggedIn()" (click)="logout()" class="flex flex-row items-center">
-                    <div class="text-2xl">
-                        <mat-icon [inline]="true">logout</mat-icon>
-                    </div>
-                    <a class="pl-2">Se déconnecter</a>
-                </li>
+                <ng-container *ngIf="isLoggedIn()">
+                    <li> <a *ngIf="isManager()" routerLink="/manage">Gestion</a> </li>
+                    <li (click)="logout()" class="flex flex-row items-center">
+                        <div class="text-2xl">
+                            <mat-icon [inline]="true">logout</mat-icon>
+                        </div>
+                        <a class="pl-2">Se déconnecter</a>
+                    </li>
+                </ng-container>
             </ul>
         </div>
 
