@@ -17,7 +17,7 @@ export class ArtistListComponent implements OnInit {
 
   constructor(private service: ArtistService, private title: Title) { }
   ngOnInit(): void {
-    this.title.setTitle(this.title.getTitle() + " - Liste d'artistes")
+    this.title.setTitle("Liste d'artistes")
     this.fetchData()
   }
 

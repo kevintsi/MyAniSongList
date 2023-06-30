@@ -18,7 +18,7 @@ export class AnimeListComponent implements OnInit {
 
   constructor(private service: AnimeService, private title: Title) { }
   ngOnInit(): void {
-    this.title.setTitle(this.title.getTitle() + " - Liste d'animés")
+    this.title.setTitle("Liste d'animés")
     this.fetchData()
   }
 

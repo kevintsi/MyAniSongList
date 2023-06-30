@@ -25,7 +25,7 @@ export class ManageMusicDetailComponent {
   types?: Type[]
   artists!: PagedArtist
   animes!: PagedAnime
-  selected_artists?: Array<Artist>
+  selected_artists!: Array<Artist>
   selected_anime?: Anime
 
   constructor(
@@ -128,7 +128,7 @@ export class ManageMusicDetailComponent {
 
   onselectartist(artist: Artist) {
     console.log("Selected : ", artist)
-    if (this.selected_artists && !this.selected_artists.includes(artist)) {
+    if (!this.selected_artists.some(_ => _.id === artist.id)) {
       this.selected_artists.push(artist)
     }
     console.log("Selected artists : ", this.selected_artists)
@@ -137,9 +137,8 @@ export class ManageMusicDetailComponent {
 
   onunselectartist(artist: Artist) {
     console.log("Selected : ", artist)
-    this.selected_artists = this.selected_artists && this.selected_artists.filter(item => item.id != Number(artist.id))
+    this.selected_artists = this.selected_artists.filter(item => item.id != Number(artist.id))
     console.log("Selected artists : ", this.selected_artists)
-    // this.resetData()
   }
 
 

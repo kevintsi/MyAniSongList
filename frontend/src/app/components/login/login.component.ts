@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
     console.log("In constructor");
   }
   ngOnInit(): void {
-    this.title.setTitle(this.title.getTitle() + " - Se connecter")
+    this.title.setTitle("Se connecter")
   }
 
   onSubmit() {

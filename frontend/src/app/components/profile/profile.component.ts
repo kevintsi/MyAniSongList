@@ -39,7 +39,7 @@ export class ProfileComponent implements OnInit {
           email: user.email,
         })
 
-        this.previewImage = String(user.profile_picture)
+        this.previewImage = user.profile_picture
       },
       error: (err) => { console.error(err.message) },
     })

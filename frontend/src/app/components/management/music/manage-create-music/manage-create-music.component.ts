@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { subscribe } from 'diagnostics_channel';
-import { Observable, Subject, debounceTime, defaultIfEmpty, distinctUntilChanged, switchMap } from 'rxjs';
 import { AnimeService } from 'src/app/_services/anime.service';
 import { ArtistService } from 'src/app/_services/artist.service';
 import { MusicService } from 'src/app/_services/music.service';

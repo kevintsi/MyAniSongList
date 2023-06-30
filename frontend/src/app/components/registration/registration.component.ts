@@ -30,7 +30,7 @@ export class RegistrationComponent implements OnInit {
     console.log("In constructor");
   }
   ngOnInit(): void {
-    this.title.setTitle(this.title.getTitle() + " - S'enregistrer")
+    this.title.setTitle("S'enregistrer")
   }
 
   onSubmit(): void {

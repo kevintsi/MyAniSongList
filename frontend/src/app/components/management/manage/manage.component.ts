@@ -9,7 +9,7 @@ import { Title } from '@angular/platform-browser';
 export class ManageComponent implements OnInit {
   constructor(private title: Title) { }
   ngOnInit(): void {
-    this.title.setTitle(this.title.getTitle() + " - Management")
+    this.title.setTitle("Management")
   }
 
 }

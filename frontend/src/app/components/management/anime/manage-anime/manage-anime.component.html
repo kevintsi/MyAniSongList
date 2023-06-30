@@ -2,16 +2,17 @@
     <div class="flex justify-center" *ngIf="loading">
         <span class="loading loading-bars loading-lg"></span>
     </div>
-
-    <mat-icon routerLink="/manage/animes/create" class="add_btn" fontIcon="add"></mat-icon>
-
-    <app-search-bar placeholder="Tapez l'anime que vous recherchez"
-        (searchEvent)="performSearch($event)"></app-search-bar>
-
+    <div class="flex flex-row items-center pt-4">
+        <div class="text-4xl">
+            <mat-icon [inline]="true" routerLink="/manage/animes/create">add</mat-icon>
+        </div>
+        <app-search-bar placeholder="Tapez l'anime que vous recherchez" (searchEvent)="performSearch($event)"
+            class="w-full"></app-search-bar>
+    </div>
     <div *ngIf="!loading && animes.items.length == 0">Il n'y a pas de animes</div>
 
     <div *ngIf="!loading">
-        <table class="table table-fixed">
+        <table class="table table-fixed text-center">
             <thead>
                 <tr>
                     <th></th>
@@ -33,10 +34,8 @@
                     <td class="overflow-hidden text-ellipsis whitespace-nowrap">
                         {{ anime.description}}
                     </td>
-                    <td>
-                        <ul>
-                            <mat-icon (click)="delete(anime)" class="delete_btn" fontIcon="delete"></mat-icon>
-                        </ul>
+                    <td class="text-4xl text-center">
+                        <mat-icon [inline]="true" (click)="delete(anime)"> delete</mat-icon>
                     </td>
                 </tr>
             </tbody>

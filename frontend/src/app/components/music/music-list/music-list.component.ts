@@ -17,7 +17,7 @@ export class MusicListComponent {
 
   constructor(private service: MusicService, private title: Title) { }
   ngOnInit(): void {
-    this.title.setTitle(this.title.getTitle() + " - Liste de musiques")
+    this.title.setTitle("Liste de musiques")
     this.fetchData()
   }
 

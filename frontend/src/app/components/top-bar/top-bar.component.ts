@@ -105,7 +105,8 @@ export class TopBarComponent {
         this.tokenService.clean()
         this.router.navigate(["/login"])
       },
-      error: (err) => console.log(err)
+      error: (err) => console.log(err),
+      complete: () => this.tokenService.clean()
     })
   }
 

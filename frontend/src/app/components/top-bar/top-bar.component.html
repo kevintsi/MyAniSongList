@@ -6,9 +6,9 @@
         <div class="sm:hidden text-3xl flex items-center pr-3">
             <mat-icon (click)="toggleSearchBar()" [inline]="true">search</mat-icon>
         </div>
-        <div *ngIf="isSearchBarOpen" class="block fixed w-full top-16 h-full bg-black/20">
+        <div *ngIf="isSearchBarOpen" class="block fixed z-50 w-full top-16 h-full bg-black/20">
             <div class="flex w-full">
-                <select class="select rounded-none w-1/2" [(ngModel)]="category">
+                <select class="select !outline-none rounded-none w-1/2" [(ngModel)]="category">
                     <option value="musics">Musique</option>
                     <option value="artists">Artiste</option>
                     <option value="animes">Anime</option>
@@ -59,7 +59,7 @@
             </ul>
         </div>
     </div>
-    <div class="hidden pb-3 sm:flex bg-base-100 flex-row items-center justify-between">
+    <div class="hidden pb-3  sm:flex bg-base-100 flex-row items-center justify-between">
         <div>
             <ul tabindex="0" class="flex flex-row mt-3 p-2">
                 <li><a routerLink="/animes">Animes</a></li>
@@ -70,7 +70,7 @@
         </div>
         <div class="pr-14 w-96">
             <div class="flex flex-row ">
-                <select class="select rounded-none" [(ngModel)]="category">
+                <select class="select !outline-none rounded-none" [(ngModel)]="category">
                     <option value="musics">Musique</option>
                     <option value="artists">Artiste</option>
                     <option value="animes">Anime</option>
