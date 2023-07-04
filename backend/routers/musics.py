@@ -3,6 +3,7 @@ from fastapi import (
     Depends,
     File,
     Body,
+    Query,
     UploadFile,
 )
 from fastapi_pagination import Page
@@ -24,10 +25,11 @@ router = APIRouter(
 @router.get("/all", response_model=Page[Music])
 async def get_all(
     service: MusicService = Depends(get_service),
+    order_by: OrderMusicBy = Query(None, description="Order items by")
 ):
     # fake_data = service.list()*100
     # return paginate(fake_data)
-    return paginate(service.list())
+    return paginate(service.list(order_by))
 
 
 @router.get("/search", response_model=Page[Music])

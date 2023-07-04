@@ -1,3 +1,4 @@
+from enum import Enum
 from typing import List
 from pydantic import BaseModel, Extra
 from datetime import datetime
@@ -145,13 +146,13 @@ class Author(AuthorBase):
 class MusicBase(BaseModel):
     name: str
     release_date: datetime
-    avg_note: float = None
 
 
 class MusicCreate(MusicBase):
     authors: list[int]
     anime_id: int
     type_id: int
+    id_video: str
 
     @classmethod
     def __get_validators__(cls):
@@ -190,8 +191,10 @@ class Music(MusicBase):
     id: int
     poster_img: str
     authors: List[Author]
+    avg_note: float = None
     anime: Anime
     type: Type
+    id_video: str = None
 
     class Config:
         orm_mode = True
@@ -231,3 +234,7 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     username: str | None = None
+
+
+class OrderMusicBy(str, Enum):
+    AVG_NOTE = "Music note"

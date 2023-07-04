@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from fastapi import Depends, UploadFile
-from db.schemas import MusicCreate, MusicUpdate
+from db.schemas import MusicCreate, MusicUpdate, OrderMusicBy
 from starlette.exceptions import HTTPException
 from db.models import Music, Author, User
 from .base import BaseService
@@ -12,6 +12,13 @@ from firebase import bucket
 class MusicService(BaseService[Music, MusicCreate, MusicUpdate]):
     def __init__(self, db_session: Session):
         super(MusicService, self).__init__(Music, db_session)
+
+    def list(self, order_by):
+        if order_by:
+            if order_by == OrderMusicBy.AVG_NOTE:
+                return self.db_session.query(Music).order_by(Music.avg_note.desc())
+        else:
+            return self.db_session.query(Music).order_by(Music.name)
 
     def search(self, term: str):
         return self.db_session.query(Music).filter(Music.name.like(f"%{term}%"))

@@ -105,6 +105,7 @@ class Music(Base):
     anime_id = mapped_column(BigInteger, nullable=False, index=True)
     type_id = mapped_column(BigInteger, nullable=False, index=True)
     poster_img = mapped_column(String(250))
+    id_video = mapped_column(String(25))
 
     authors: Mapped[List["Author"]] = relationship(
         'Author', secondary=t_chante, back_populates='musics')

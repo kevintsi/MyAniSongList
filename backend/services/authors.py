@@ -13,6 +13,9 @@ class AuthorService(BaseService[Author, AuthorCreate, AuthorUpdate]):
     def __init__(self, db_session: Session):
         super(AuthorService, self).__init__(Author, db_session)
 
+    def list(self):
+        return self.db_session.query(Author).order_by(Author.name)
+
     def search(self, term: str):
         return self.db_session.query(Author).filter(Author.name.like(f"%{term}%"))
 
