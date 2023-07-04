@@ -1,5 +1,5 @@
 <div class="fixed top-0 w-full">
-    <div class="navbar bg-base-100">
+    <div class="navbar p-1 bg-base-100">
         <div class="flex-1">
             <a routerLink="/" class="btn btn-ghost normal-case text-xl">MyAniSongList</a>
         </div>
@@ -7,13 +7,15 @@
             <mat-icon (click)="toggleSearchBar()" [inline]="true">search</mat-icon>
         </div>
         <div *ngIf="isSearchBarOpen" class="block fixed z-50 w-full top-16 h-full bg-black/20">
-            <div class="flex w-full">
-                <select class="select !outline-none rounded-none w-1/2" [(ngModel)]="category">
+            <div class="w-full join">
+                <select class="select rounded-none join-item !outline-none grow w-1/2" [(ngModel)]="category">
                     <option value="musics">Musique</option>
                     <option value="artists">Artiste</option>
                     <option value="animes">Anime</option>
                 </select>
-                <app-search-bar (searchEvent)="performSearch($event)"></app-search-bar>
+                <div class="w-full h-full">
+                    <app-search-bar (searchEvent)="performSearch($event)"></app-search-bar>
+                </div>
             </div>
             <div class="flex flex-col bg-base-200" *ngFor="let item of result_search">
                 <div (click)="goToItem(item.id)" class="flex flex-row items-center">

@@ -44,7 +44,8 @@ export class MusicService {
       release_date: new Date(data.release_date),
       authors: artists_id,
       anime_id: selected_anime.id,
-      type_id: data.type_id
+      type_id: data.type_id,
+      id_video: data.id_video
     }
     const form_data = new FormData()
     console.log(music)

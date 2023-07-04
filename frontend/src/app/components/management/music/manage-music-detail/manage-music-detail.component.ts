@@ -18,7 +18,8 @@ export class ManageMusicDetailComponent {
   update_form = this.form_builder.group({
     name: '',
     release_date: "",
-    type_id: undefined
+    type_id: undefined,
+    id_video: ""
   })
   preview_image?: any
   file: any
@@ -51,7 +52,8 @@ export class ManageMusicDetailComponent {
         this.update_form.setValue({
           name: value.name,
           release_date: new Date(value.release_date).toISOString().split("T")[0],
-          type_id: value.type.id
+          type_id: value.type.id,
+          id_video: value.id_video
         })
 
         this.selected_anime = value.anime
@@ -120,10 +122,6 @@ export class ManageMusicDetailComponent {
         },
         error: (err) => console.log(err)
       })
-  }
-
-  onchange(event: Event) {
-    console.log(event.target)
   }
 
   onselectartist(artist: Artist) {

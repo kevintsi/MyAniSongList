@@ -16,6 +16,7 @@ export interface Music {
     poster_img: string,
     release_date: Date,
     avg_note: number,
+    id_video: string,
     anime: Anime,
     type: Type,
     authors: Artist[]

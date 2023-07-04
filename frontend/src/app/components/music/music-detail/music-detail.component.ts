@@ -7,6 +7,7 @@ import { MusicService } from 'src/app/_services/music.service';
 import { ReviewService } from 'src/app/_services/review.service';
 import { Music } from 'src/app/models/Music';
 import { Review } from 'src/app/models/Review';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-music-detail',
@@ -14,6 +15,7 @@ import { Review } from 'src/app/models/Review';
   styleUrls: ['./music-detail.component.css']
 })
 export class MusicDetailComponent {
+
   isLoading: boolean = true
   music!: Music
   reviews!: Review[]
@@ -30,11 +32,17 @@ export class MusicDetailComponent {
     private musicService: MusicService,
     private reviewService: ReviewService,
     private authService: AuthService,
+    private sanitizer: DomSanitizer
   ) { }
 
   ngOnInit(): void {
     this.fetchData()
     this.initReviewAddedSubscription()
+  }
+
+  getSafeUrl(id_video: string) {
+    console.log("https://www.youtube.com/embed/" + id_video)
+    return this.sanitizer.bypassSecurityTrustResourceUrl("https://www.youtube.com/embed/" + id_video)
   }
 
   ngOnDestroy() {
