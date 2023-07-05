@@ -23,13 +23,18 @@ export class AnimeService {
     return this.http.get<Anime>(this.endpoint + '/animes/' + id)
   }
 
-  public update(id: number, data: any, file: File) {
+  public update(id: number, data: any) {
     const headers = new HttpHeaders()
 
     const form_data = new FormData()
 
-    form_data.append("anime", JSON.stringify(data))
-    form_data.append('poster_img', file ? file : "")
+    let anime = {
+      name: data.name,
+      description: data.description
+    }
+
+    form_data.append("anime", JSON.stringify(anime))
+    form_data.append('poster_img', data.poster_img ? data.poster_img : "")
 
     return this.http.put(
       this.endpoint + '/animes/update/' + id,
@@ -40,13 +45,18 @@ export class AnimeService {
     )
   }
 
-  public create(data: any, file: File) {
+  public create(data: any) {
     const headers = new HttpHeaders()
 
     const form_data = new FormData()
 
-    form_data.append("anime", JSON.stringify(data))
-    form_data.append('poster_img', file)
+    let anime = {
+      name: data.name,
+      description: data.description
+    }
+
+    form_data.append("anime", JSON.stringify(anime))
+    form_data.append('poster_img', data.poster_img)
 
     return this.http.post(
       this.endpoint + '/animes/add',

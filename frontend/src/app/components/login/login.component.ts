@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from "@angular/forms"
+import { FormBuilder, FormControl, Validators } from "@angular/forms"
 import { AuthService } from '../../_services/auth.service';
 import { Router } from '@angular/router';
 import { User } from '../../models/User';
-import { StorageService } from '../../_services/storage.service';
 import { Title } from '@angular/platform-browser';
 import { TokenService } from 'src/app/_services/token.service';
 
@@ -15,8 +14,8 @@ import { TokenService } from 'src/app/_services/token.service';
 export class LoginComponent implements OnInit {
 
   loginForm = this.formBuilder.group({
-    email: '',
-    password: ''
+    email: new FormControl("", [Validators.email, Validators.required]),
+    password: new FormControl("", [Validators.required]),
   })
   constructor(
     private formBuilder: FormBuilder,
@@ -33,25 +32,24 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
     console.log("onSubmit")
-    console.log(this.loginForm.value)
-    const { email, password } = this.loginForm.value
 
-    if (email?.length == 0 || password?.length == 0) return;
+    if (this.loginForm.valid) {
+      const { email, password } = this.loginForm.value
+      let user: User = {
+        email: email?.toString(),
+        password: password?.toString()
+      }
 
-    let user: User = {
-      email: email?.toString(),
-      password: password?.toString()
+      this.authService.login(user)
+        .subscribe({
+          next: data => {
+            this.tokenService.setToken(data)
+            this.router.navigateByUrl("/")
+          },
+          error: err => {
+            console.log(err)
+          }
+        })
     }
-
-    this.authService.login(user)
-      .subscribe({
-        next: data => {
-          this.tokenService.setToken(data)
-          this.router.navigateByUrl("/")
-        },
-        error: err => {
-          console.log(err)
-        }
-      })
   }
 }

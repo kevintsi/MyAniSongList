@@ -15,6 +15,9 @@ import { ManageMusicComponent } from 'src/app/components/management/music/manage
 import { ManageMusicDetailComponent } from 'src/app/components/management/music/manage-music-detail/manage-music-detail.component';
 import { ManageCreateMusicComponent } from 'src/app/components/management/music/manage-create-music/manage-create-music.component';
 import { SharedModule } from '../shared/shared.module';
+import { FormAnimeComponent } from 'src/app/components/management/anime/form-anime/form-anime.component';
+import { FormMusicComponent } from 'src/app/components/management/music/form-music/form-music.component';
+import { FormArtistComponent } from 'src/app/components/management/artist/form-artist/form-artist.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +30,9 @@ import { SharedModule } from '../shared/shared.module';
     ManageMusicComponent,
     ManageMusicDetailComponent,
     ManageCreateMusicComponent,
+    FormAnimeComponent,
+    FormMusicComponent,
+    FormArtistComponent,
   ],
   imports: [
     CommonModule,

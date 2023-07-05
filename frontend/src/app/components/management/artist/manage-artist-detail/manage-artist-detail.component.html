@@ -1,25 +1,7 @@
 <div class="container mx-auto flex justify-center">
-    <form [formGroup]="update_form" class="w-full" (ngSubmit)="onSubmit()">
-        <div (click)="imageInput.click()"
-            class="flex hover:bg-slate-100  border-2 border-base-300 justify-center items-center h-80 w-60">
-            <ng-container *ngIf="preview_image;else elseBlock">
-                <img class="h-full w-full object-cover" [src]="preview_image" alt="Image artiste" />
-            </ng-container>
-            <ng-template #elseBlock>
-                <div class="text-8xl">
-                    <mat-icon [inline]="true">upload</mat-icon>
-                </div>
-            </ng-template>
-        </div>
-        <div class="w-full flex flex-col items-center">
-            <label class="label mt-4">Nom : </label>
-            <input type="text" placeholder="Nom de l'artiste" formControlName="name"
-                class="input input-bordered w-full mt-4 !outline-none" />
-            <label class="label mt-4">Date de création : </label>
-            <input class="input input-bordered w-full mt-4 !outline-none" type="number" min="1900" max="2099"
-                formControlName="creation_year" />
-        </div>
-        <input [hidden]="true" #imageInput type="file" (change)="processFile(imageInput)" />
-        <button type="submit" class="btn mt-4">Valider</button>
-    </form>
+    <div class="flex justify-center" *ngIf="isLoading">
+        <span class="loading loading-bars loading-lg"></span>
+    </div>
+    <app-form-artist *ngIf="!isLoading" class="w-full" [artist]=artist [isUpdate]=true
+        (submitForm)="onSubmit($event)"></app-form-artist>
 </div>

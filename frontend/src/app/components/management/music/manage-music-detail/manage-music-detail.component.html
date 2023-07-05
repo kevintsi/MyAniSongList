@@ -1,67 +1,7 @@
 <div class="container mx-auto flex justify-center">
-    <form [formGroup]="update_form" (ngSubmit)="onSubmit()">
-        <div (click)="imageInput.click()"
-            class="flex hover:bg-slate-100  border-2 border-base-300 justify-center items-center h-80 w-60">
-            <ng-container *ngIf="preview_image;else elseBlock">
-                <img class="h-full w-full object-cover" [src]="preview_image" alt="Image musique" />
-            </ng-container>
-            <ng-template #elseBlock>
-                <div class="text-8xl">
-                    <mat-icon [inline]="true">upload</mat-icon>
-                </div>
-            </ng-template>
-        </div>
-
-        <label class="label mt-4">Nom : </label>
-        <input class="input input-bordered w-full mt-4 !outline-none" type="text" formControlName="name"
-            placeholder="Nom de la musique" />
-        <label class="label mt-4">Date de sortie : </label>
-        <input class="input input-bordered w-full  mt-4 !outline-none" type="date" formControlName="release_date" />
-
-        <label class="label mt-4">Anime : </label>
-        <app-search-bar placeholder="Tapez l'anime" [defaultValue]="selected_anime?.name"
-            (searchEvent)="performSearchAnime($event)" class="w-full"></app-search-bar>
-
-        <ng-container *ngIf="animes">
-            <div *ngFor="let anime of animes.items" (click)="onselectanime(anime)"
-                class="grid h-10 bg-base-300 hover:border-2  hover:bg-base-100 hover:border-white w-full place-items-center">
-                {{ anime.name }}</div>
-        </ng-container>
-
-        <label class="label mt-4">Video : </label>
-        <input class="input input-bordered w-full  mt-4 !outline-none" placeholder="Identifiant de la vidéo" type="text"
-            formControlName="id_video" />
-
-        <label class="label mt-4">Artistes : </label>
-        <div class="p-2 flex flex-wrap justify-start w-full">
-            <ng-container *ngFor="let artist of selected_artists">
-                <div class="flex flex-row justify-start h-10 pl-2 mr-2 bg-base-300 rounded-lg place-items-center"
-                    (click)="onunselectartist(artist)">
-                    <div class="flex items-center">
-                        <mat-icon [inline]="true">close</mat-icon>
-                    </div>
-                    <div class="text-ellipsis overflow-hidden whitespace-nowrap">{{ artist.name}}
-                    </div>
-                </div>
-            </ng-container>
-        </div>
-
-
-        <app-search-bar placeholder="Tapez l'artiste/groupe" (searchEvent)="performSearchArtist($event)"
-            class="w-full"></app-search-bar>
-
-
-        <ng-container *ngIf="artists">
-            <div *ngFor="let artist of artists.items" (click)="onselectartist(artist)"
-                class="grid h-10 bg-base-300 hover:border-2  hover:bg-base-100 hover:border-white w-full place-items-center">
-                {{ artist.name }}</div>
-        </ng-container>
-
-        <label class="label mt-4">Types : </label>
-        <select class="select select-bordered !outline-none w-full" *ngIf="types" formControlName="type_id">
-            <option [ngValue]="type.id" *ngFor="let type of types">{{ type.type_name}}</option>
-        </select>
-        <input [hidden]="true" #imageInput type="file" (change)="processFile(imageInput)" />
-        <button class="btn mt-4" type="submit">Valider</button>
-    </form>
+    <div class="flex justify-center" *ngIf="isLoading">
+        <span class="loading loading-bars loading-lg"></span>
+    </div>
+    <app-form-music *ngIf="!isLoading" class="w-full" [isUpdate]=true [music]="music"
+        (submitForm)="onSubmit($event)"></app-form-music>
 </div>

@@ -1,27 +1,47 @@
-<div class="container flex flex-col items-center justify-center">
+<div class="container mx-auto pt-20 flex flex-col items-center justify-center">
+
     <h1 class="text-center text-2xl font-medium p-4">Inscription</h1>
-    <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
-        <div>
-            <label for="username" class="label">Nom d'utilisateur :</label>
-            <input type="text" formControlName="username" class="input input-bordered w-full max-w-xs" required>
+
+    <form [formGroup]="registrationForm" class="w-full flex flex-col  items-center" (ngSubmit)="onSubmit()">
+
+        <label for="username" class="label">Nom d'utilisateur :</label>
+        <input type="text" formControlName="username" class="input input-bordered w-full" required>
+        <div class="flex flex-col items-center alert alert-error mt-4 pb-4"
+            *ngIf="registrationForm.get('username')?.invalid && (registrationForm.get('username')?.dirty || registrationForm.get('username')?.touched)">
+            <div *ngIf="registrationForm.get('username')?.errors?.['required']">
+                Le nom d'utilisateur est obligatoire
+            </div>
+            <div *ngIf="registrationForm.get('username')?.errors?.['minlength']">
+                Le nom d'utilisateur doit avoir au minimum 4 caractères
+            </div>
         </div>
-        <div>
-            <label for="email" class="label">Adresse e-mail :</label>
-            <input type="email" id="email" formControlName="email" class="input input-bordered w-full max-w-xs"
-                required>
+        <label for="email" class="label">Adresse e-mail :</label>
+        <input type="email" id="email" formControlName="email" class="input input-bordered w-full" required>
+        <div class="flex flex-col items-center alert alert-error mt-4 pb-4"
+            *ngIf="registrationForm.get('email')?.invalid && (registrationForm.get('email')?.dirty || registrationForm.get('email')?.touched)">
+            <div *ngIf="registrationForm.get('email')?.errors?.['email']">
+                L'email doit être avec le format d'email
+            </div>
+            <div *ngIf="registrationForm.get('email')?.errors?.['required']">
+                L'email est obligatoire
+            </div>
         </div>
-        <div>
-            <label for="password" class="label">Mot de passe :</label>
-            <input type="password" id="password" formControlName="password" class="input input-bordered w-full max-w-xs"
-                required>
+        <label for="password" class="label">Mot de passe :</label>
+        <input type="password" id="password" formControlName="password" class="input input-bordered w-full" required>
+
+        <label for="confirm-password" class="label">Confirmer le mot de passe :</label>
+        <input type="password" id="confirm-password" formControlName="confirmPassword"
+            class="input input-bordered w-full " required>
+
+        <div class="flex flex-col items-center alert alert-error mt-4 pb-4"
+            *ngIf="registrationForm.get('password')?.invalid && (registrationForm.get('password')?.dirty || registrationForm.get('password')?.touched)">
+            <div
+                *ngIf="registrationForm.get('password')?.errors?.['required'] || registrationForm.get('confirmPassword')?.errors?.['required'] ">
+                Le mot de passe est obligatoire
+            </div>
         </div>
-        <div>
-            <label for="confirm-password" class="label">Confirmer le mot de passe :</label>
-            <input type="password" id="confirm-password" formControlName="confirmPassword"
-                class="input input-bordered w-full max-w-xs" required>
-        </div>
-        <div>
-            <button class="btn" type="submit">S'inscrire</button>
-        </div>
+
+        <button class="btn mt-4" type="submit">S'inscrire</button>
+
     </form>
 </div>

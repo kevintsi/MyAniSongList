@@ -23,14 +23,19 @@ export class ArtistService {
     return this.http.get<Artist>(this.endpoint + '/authors/' + id)
   }
 
-  public update(id: number, data: any, file: File) {
+  public update(id: number, data: any) {
     const headers = new HttpHeaders()
+
+    let artist = {
+      name: data.name,
+      creation_year: data.creation_year
+    }
 
     const form_data = new FormData()
 
-    form_data.append("author", JSON.stringify(data))
-    if (file != null)
-      form_data.append('poster_img', file)
+    form_data.append("author", JSON.stringify(artist))
+    if (data.file != null)
+      form_data.append('poster_img', data.file)
 
     return this.http.put(
       this.endpoint + '/authors/update/' + id,
@@ -41,13 +46,18 @@ export class ArtistService {
     )
   }
 
-  public create(data: any, file: File) {
+  public create(data: any) {
     const headers = new HttpHeaders()
+
+    let artist = {
+      name: data.name,
+      creation_year: data.creation_year
+    }
 
     const form_data = new FormData()
 
-    form_data.append("author", JSON.stringify(data))
-    form_data.append('poster_img', file)
+    form_data.append("author", JSON.stringify(artist))
+    form_data.append('poster_img', data.poster_img)
 
     return this.http.post(
       this.endpoint + '/authors/add',

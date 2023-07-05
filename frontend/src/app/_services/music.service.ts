@@ -34,24 +34,25 @@ export class MusicService {
     return this.http.get<Music>(this.endpoint + '/musics/' + id)
   }
 
-  public update(id: number, data: any, file: File, selected_anime: Anime, selected_artists: Artist[]) {
+  public update(id: number, data: any) {
     const headers = new HttpHeaders()
     console.log(data.release_date)
-    let artists_id = selected_artists.map(artist => artist.id)
+    let artists_id = data.selected_artists.map((artist: Artist) => artist.id)
 
     let music = {
       name: data.name,
       release_date: new Date(data.release_date),
       authors: artists_id,
-      anime_id: selected_anime.id,
+      anime_id: data.selected_anime.id,
       type_id: data.type_id,
       id_video: data.id_video
     }
+
     const form_data = new FormData()
     console.log(music)
     form_data.append("music", JSON.stringify(music))
-    if (file != null)
-      form_data.append('poster_img', file)
+    if (data.poster_img != null)
+      form_data.append('poster_img', data.poster_img)
 
     return this.http.put(
       this.endpoint + '/musics/update/' + id,
@@ -62,7 +63,7 @@ export class MusicService {
     )
   }
 
-  public create(data: any, file: File, selected_anime: Anime, selected_artists: Artist[]) {
+  public create(data: any) {
     const headers = new HttpHeaders()
     // {
     //   "name": "string",
@@ -74,12 +75,12 @@ export class MusicService {
     //   "type_id": 0
     // }
 
-    let artists_id = selected_artists.map(artist => artist.id)
+    let artists_id = data.selected_artists.map((artist: Artist) => artist.id)
     let music = {
       name: data.name,
       release_date: new Date(data.release_date),
       authors: artists_id,
-      anime_id: selected_anime.id,
+      anime_id: data.selected_anime.id,
       type_id: data.type_id
     }
 
@@ -88,7 +89,7 @@ export class MusicService {
     const form_data = new FormData()
 
     form_data.append("music", JSON.stringify(music))
-    form_data.append('poster_img', file)
+    form_data.append('poster_img', data.poster_img)
 
     return this.http.post(
       this.endpoint + '/musics/add',

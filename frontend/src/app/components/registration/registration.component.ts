@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { User } from '../../models/User';
 import { AuthService } from '../../_services/auth.service';
 import { Router } from '@angular/router';
@@ -15,10 +15,10 @@ import { Title } from '@angular/platform-browser';
 export class RegistrationComponent implements OnInit {
 
   registrationForm = this.formBuilder.group({
-    username: "",
-    email: "",
-    password: "",
-    confirmPassword: ""
+    username: new FormControl("", [Validators.required, Validators.minLength(4)]),
+    email: new FormControl("", [Validators.email, Validators.required]),
+    password: new FormControl("", [Validators.required]),
+    confirmPassword: new FormControl("", [Validators.required])
   });
 
   constructor(
@@ -35,27 +35,23 @@ export class RegistrationComponent implements OnInit {
 
   onSubmit(): void {
     console.log("onSubmit")
-    console.log(this.registrationForm.value)
     const { username, email, password, confirmPassword } = this.registrationForm.value
+    if (this.registrationForm.valid && password === confirmPassword) {
+      let user: User = {
+        username: username?.toString(),
+        email: email?.toString(),
+        password: password?.toString(),
+      }
 
-    if (username?.length == 0 || password?.length == 0 || email?.length == 0 || confirmPassword?.length == 0) return;
-    if (password != confirmPassword) return;
-
-    let user: User = {
-      username: username?.toString(),
-      email: email?.toString(),
-      password: password?.toString(),
+      this.authService.register(user)
+        .subscribe({
+          next: () => {
+            this.router.navigateByUrl("/login")
+          },
+          error: err => {
+            console.log(err)
+          }
+        })
     }
-
-    this.authService.register(user)
-      .subscribe({
-        next: () => {
-          this.router.navigateByUrl("/login")
-        },
-        error: err => {
-          console.log(err)
-        }
-      })
   }
-
 }

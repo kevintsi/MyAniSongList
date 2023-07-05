@@ -1,0 +1,42 @@
+<form [formGroup]="form" class="flex flex-col items-center" (ngSubmit)="onSubmit()">
+    <div (click)="imageInput.click()"
+        class="flex hover:bg-slate-100  border-2 border-base-300 justify-center items-center h-80 w-60">
+        <ng-container *ngIf="previewImage;else elseBlock">
+            <img class="h-full w-full object-cover" [src]="previewImage" alt="Image artiste" />
+        </ng-container>
+        <ng-template #elseBlock>
+            <div class="text-8xl">
+                <mat-icon [inline]="true">upload</mat-icon>
+            </div>
+        </ng-template>
+    </div>
+    <div class="flex flex-col items-center alert alert-error mt-4 pb-4"
+        *ngIf="form.get('poster_img')?.invalid && (form.get('poster_img')?.dirty || form.get('poster_img')?.touched)">
+        <div *ngIf="form.get('poster_img')?.errors?.['required']">
+            L'image d'affiche est obligatoire
+        </div>
+    </div>
+    <div class="w-full flex flex-col items-center">
+        <label class="label mt-4">Nom : </label>
+        <input type="text" placeholder="Nom de l'artiste" formControlName="name"
+            class="input input-bordered w-full mt-4 !outline-none" />
+        <div class="flex flex-col items-center alert alert-error mt-4 pb-4"
+            *ngIf="form.get('name')?.invalid && (form.get('name')?.dirty || form.get('name')?.touched)">
+            <div *ngIf="form.get('name')?.errors?.['required']">
+                Le nom de l'artiste est obligatoire
+            </div>
+        </div>
+        <label class="label mt-4">Date de création : </label>
+        <input class="input input-bordered mt-4 w-full !outline-none" placeholder="Date de création" type="number"
+            min="1900" max="2099" formControlName="creation_year" />
+        <div class="flex flex-col items-center alert alert-error mt-4 pb-4"
+            *ngIf="form.get('creation_year')?.invalid && (form.get('creation_year')?.dirty || form.get('creation_year')?.touched)">
+            <div *ngIf="form.get('creation_year')?.errors?.['required']">
+                L'année de création est obligatoire
+            </div>
+        </div>
+
+    </div>
+    <input [hidden]="true" #imageInput type="file" (change)="processFile(imageInput)" />
+    <button type="submit" class="btn mt-4">Valider</button>
+</form>

@@ -52,7 +52,7 @@ export class AuthService {
   }
 
   public logout() {
-    return this.http.post(this.endpoint + '/users/logout', null)
+    return this.http.post(this.endpoint + '/users/logout', null, { withCredentials: true })
   }
 
   public isLoggedIn() {
