@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { AnimeService } from 'src/app/_services/anime.service';
 import { Anime } from 'src/app/models/Anime';
 import { firstValueFrom } from 'rxjs'
