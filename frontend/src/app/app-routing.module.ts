@@ -14,6 +14,7 @@ import { MusicListComponent } from './components/music/music-list/music-list.com
 import { MusicDetailComponent } from './components/music/music-detail/music-detail.component';
 import { ReviewListComponent } from './components/review/review-list/review-list.component';
 import { CommunityListComponent } from './components/community-list/community-list.component';
+import { RankingMusicComponent } from './components/music/ranking-music/ranking-music.component';
 
 
 const routes: Routes = [
@@ -36,7 +37,8 @@ const routes: Routes = [
   {
     path: 'musics', children: [
       { path: '', component: MusicListComponent },
-      { path: ':id', component: MusicDetailComponent }
+      { path: 'ranking', component: RankingMusicComponent },
+      { path: ':id', component: MusicDetailComponent },
     ]
   },
   {

@@ -18,8 +18,8 @@ export class MusicService {
     return this.http.get<PagedMusic>(this.endpoint + '/musics/search?query=' + term)
   }
 
-  public getAll(page: number, size: number = 10) {
-    return this.http.get<PagedMusic>(this.endpoint + '/musics/all?page=' + page + "&size=" + size)
+  public getAll(page: number, size: number = 10, filter: string = 'name') {
+    return this.http.get<PagedMusic>(this.endpoint + '/musics/all?order_by=' + filter + '&page=' + page + "&size=" + size)
   }
 
   public getMusicsAnime(id_anime: number) {

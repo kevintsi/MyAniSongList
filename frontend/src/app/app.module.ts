@@ -25,6 +25,7 @@ import { ReviewDetailComponent } from './components/review/review-detail/review-
 import { ReviewListComponent } from './components/review/review-list/review-list.component';
 import { SharedModule } from './modules/shared/shared.module';
 import { CommunityListComponent } from './components/community-list/community-list.component';
+import { RankingMusicComponent } from './components/music/ranking-music/ranking-music.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { CommunityListComponent } from './components/community-list/community-li
     ReviewDetailComponent,
     ReviewListComponent,
     CommunityListComponent,
+    RankingMusicComponent,
   ],
   imports: [
     HttpClientModule,

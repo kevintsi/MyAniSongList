@@ -25,8 +25,8 @@
             </div>
         </div>
 
-        <div class="burger-menu sm:hidden" [class.open]="isMenuOpen" (click)="toggleMenu()">
-            <div class="text-3xl flex items-center">
+        <div class="burger-menu sm:hidden">
+            <div class="text-3xl flex items-center" (click)="toggleMenu()">
                 <mat-icon [inline]="true">{{!isMenuOpen ? "menu" : "close"}}</mat-icon>
             </div>
             <ul *ngIf="isMenuOpen" class="block fixed list-none top-16 h-full -left-0 w-full bg-base-100">
@@ -40,7 +40,17 @@
                 </ng-template>
                 <li><a routerLink="/animes">Animes</a></li>
                 <li><a routerLink="/artists">Artistes</a></li>
-                <li><a routerLink="/musics">Musiques</a></li>
+                <ul tabindex="0" class="collapse collapse-arrow">
+                    <input type="checkbox" />
+                    <li class="flex items-center collapse-title">
+                        <a>Musiques</a>
+                    </li>
+                    <ul class="collapse-content p-0">
+                        <li><a routerLink="/musics">Liste musiques</a></li>
+                        <li><a routerLink="/musics/ranking">Top musique</a></li>
+                    </ul>
+                </ul>
+
                 <li><a routerLink="/community">Communauté</a></li>
                 <ng-container *ngIf="isLoggedIn()">
                     <li> <a *ngIf="isManager()" routerLink="/manage">Gestion</a> </li>
@@ -66,7 +76,14 @@
             <ul tabindex="0" class="flex flex-row mt-3 p-2">
                 <li><a routerLink="/animes">Animes</a></li>
                 <li><a routerLink="/artists">Artistes</a></li>
-                <li><a routerLink="/musics">Musiques</a></li>
+                <li class="relative cursor-pointer hover:bg-base-300">
+                    <a>Musiques</a>
+                    <ul class="hidden absolute pt-2 left-0 w-40">
+                        <li class=" hover:bg-base-300"><a routerLink="/musics">Liste de musiques</a></li>
+                        <li class="hover:bg-base-300"><a routerLink="/musics/ranking">Classement</a></li>
+                    </ul>
+                </li>
+
                 <li><a routerLink="/community">Communauté</a></li>
             </ul>
         </div>

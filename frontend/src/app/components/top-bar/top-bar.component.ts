@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../_services/auth.service';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { MusicService } from 'src/app/_services/music.service';
 import { ArtistService } from 'src/app/_services/artist.service';
 import { AnimeService } from 'src/app/_services/anime.service';
@@ -14,7 +14,7 @@ import { TokenService } from 'src/app/_services/token.service';
 })
 
 
-export class TopBarComponent {
+export class TopBarComponent implements OnInit {
   isMenuOpen: boolean = false;
   isSearchBarOpen: boolean = false
   category: string = "animes"
@@ -28,6 +28,17 @@ export class TopBarComponent {
     private router: Router,
     private tokenService: TokenService
   ) {
+  }
+
+  ngOnInit() {
+    this.router.events.subscribe({
+      next: (ev) => {
+        if (ev instanceof NavigationEnd) {
+          this.isMenuOpen = false
+          this.isSearchBarOpen = false
+        }
+      }
+    });
   }
 
   performSearch(searchTerm: string) {
@@ -80,6 +91,7 @@ export class TopBarComponent {
   }
 
   toggleMenu() {
+    console.log('Menu toggled')
     this.isMenuOpen = !this.isMenuOpen;
     this.isSearchBarOpen = false;
   }

@@ -33,8 +33,10 @@ export class AuthInterceptor implements HttpInterceptor {
                             return next.handle(updatedRequest);
                         }),
                         catchError((refreshError: any) => {
-                            this.tokenService.clean()
-                            return throwError(() => refreshError);
+                            return throwError(() => {
+                                this.tokenService.clean()
+                                console.log(refreshError)
+                            });
                         })
                     );
                 }

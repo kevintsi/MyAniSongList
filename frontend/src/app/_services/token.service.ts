@@ -49,7 +49,9 @@ export class TokenService {
 
   setSecureCookie(name: string, value: string, expirationDays: number): void {
     const expirationDate = new Date();
-    expirationDate.setDate(expirationDate.getDate() + expirationDays);
+    expirationDate.setTime(expirationDate.getTime() + expirationDays);
+
+    console.log("Expiration date : ", expirationDate)
 
     const cookieOptions: string[] = [
       `${name}=${value}`,

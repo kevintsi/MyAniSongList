@@ -1,4 +1,4 @@
-<form [formGroup]="form" class="flex flex-col items-center" (ngSubmit)="onSubmit()">
+<form [formGroup]="form" class="flex flex-col items-center  p-10" (ngSubmit)="onSubmit()">
     <div (click)="imageInput.click()"
         class="flex hover:bg-slate-100  border-2 border-base-300 justify-center items-center h-80 w-60">
         <ng-container *ngIf="previewImage;else elseBlock">

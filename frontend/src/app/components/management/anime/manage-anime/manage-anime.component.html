@@ -1,4 +1,4 @@
-<div class="container mx-auto">
+<div class="container mx-auto overflow-hidden">
     <div class="flex justify-center" *ngIf="loading">
         <span class="loading loading-bars loading-lg"></span>
     </div>
@@ -11,9 +11,9 @@
     </div>
     <div *ngIf="!loading && animes.items.length == 0">Il n'y a pas de animes</div>
 
-    <div *ngIf="!loading">
-        <table class="table table-fixed text-center">
-            <thead>
+    <div *ngIf="!loading" class="overflow-x-auto">
+        <table class="md:text-xl table table-fixed text-center">
+            <thead class="md:text-xl">
                 <tr>
                     <th></th>
                     <th>Nom</th>
@@ -22,9 +22,10 @@
                 </tr>
             </thead>
             <tbody>
-                <tr class="row" [routerLink]="['/manage/animes', anime.id]" *ngFor="let anime of animes.items">
+                <tr class="hover:bg-base-300" [routerLink]="['/manage/animes', anime.id]"
+                    *ngFor="let anime of animes.items">
                     <td>
-                        <div class="w-20 h-full">
+                        <div class="h-full w-20 md:w-40">
                             <img [src]="anime.poster_img" [alt]="anime.name" />
                         </div>
                     </td>
@@ -34,7 +35,7 @@
                     <td class="overflow-hidden text-ellipsis whitespace-nowrap">
                         {{ anime.description}}
                     </td>
-                    <td class="text-4xl text-center">
+                    <td class="md:text-6xl text-4xl text-center">
                         <mat-icon [inline]="true" (click)="delete(anime)"> delete</mat-icon>
                     </td>
                 </tr>
