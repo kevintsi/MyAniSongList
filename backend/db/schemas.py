@@ -237,4 +237,5 @@ class TokenData(BaseModel):
 
 
 class OrderMusicBy(str, Enum):
-    AVG_NOTE = "Music note"
+    AVG_NOTE = "avg_note"
+    NAME = "name"
