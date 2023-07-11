@@ -22,7 +22,7 @@ jobs:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           application_name: myanisonglist
-          environment_name: Myanisonglist
+          environment_name: Myanisonglist-env
           version_label: ${{ env.VERSION_LABEL }}
           region: eu-west-3
           deployment_package: deploy.zip
