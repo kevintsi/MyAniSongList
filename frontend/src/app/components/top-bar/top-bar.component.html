@@ -32,7 +32,11 @@
             <ul *ngIf="isMenuOpen" class="block fixed list-none top-16 h-full -left-0 w-full bg-base-100">
                 <ng-container *ngIf="isLoggedIn();then thenBlock; else elseBlock"></ng-container>
                 <ng-template #thenBlock>
-                    <li><a routerLink="/profile">Mon profil</a></li>
+                    <li class="flex flex-row items-center">
+                        <img class="w-10 h-10 pr-2 object-contain"
+                            [src]="user_pfp ? user_pfp : '/assets/images/default_image.jpg' " />
+                        <a routerLink="/profile">Mon profil</a>
+                    </li>
                 </ng-template>
                 <ng-template #elseBlock>
                     <li><a routerLink="/register">S'inscrire</a></li>

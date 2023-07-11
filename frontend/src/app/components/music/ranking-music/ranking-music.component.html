@@ -1,4 +1,4 @@
-<div class="container mx-auto pt-20 text-center">
+<div class="container mx-auto pt-20 text-center md:pt-40">
     <h1 class="p-4">Classement des meilleurs musiques</h1>
     <div class="flex justify-center" *ngIf="loading">
         <span class="loading loading-bars loading-lg"></span>
@@ -21,8 +21,13 @@
                         <th>{{i+1}}</th>
                         <td>{{music.name}}</td>
                         <td>
-                            <ng-container *ngIf="music.avg_note;else elseBlock"> <app-rating-stars [isStatic]="true"
-                                    [rate]="music.avg_note"></app-rating-stars></ng-container>
+                            <div class="flex flex-row justify-center items-center"
+                                *ngIf="music.avg_note;else elseBlock">
+                                <div class=" text-orange-500">
+                                    <mat-icon>star</mat-icon>
+                                </div>
+                                <div class="pl-2">{{music.avg_note}}</div>
+                            </div>
                             <ng-template #elseBlock>N/A</ng-template>
                         </td>
                     </tr>

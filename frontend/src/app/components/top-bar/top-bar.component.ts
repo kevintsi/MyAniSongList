@@ -6,6 +6,7 @@ import { ArtistService } from 'src/app/_services/artist.service';
 import { AnimeService } from 'src/app/_services/anime.service';
 import { Subject } from 'rxjs';
 import { TokenService } from 'src/app/_services/token.service';
+import jwtDecode from 'jwt-decode';
 
 @Component({
   selector: 'app-top-bar',
@@ -19,6 +20,7 @@ export class TopBarComponent implements OnInit {
   isSearchBarOpen: boolean = false
   category: string = "animes"
   result_search?: any[] = []
+  user_pfp: string = ""
 
   constructor(
     private authService: AuthService,
@@ -39,6 +41,10 @@ export class TopBarComponent implements OnInit {
         }
       }
     });
+    if (!!this.tokenService.getToken()) {
+      let decodedToken: any = jwtDecode(String(this.tokenService.getToken()))
+      this.user_pfp = decodedToken.sub.profile_picture
+    }
   }
 
   performSearch(searchTerm: string) {

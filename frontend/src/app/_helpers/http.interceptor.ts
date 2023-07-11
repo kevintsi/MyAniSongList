@@ -3,13 +3,15 @@ import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HTTP_INTERCEPTORS
 import { Observable, catchError, switchMap, throwError } from 'rxjs';
 import { TokenService } from '../_services/token.service';
 import { Token } from '../models/Token';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-    constructor(private tokenService: TokenService) { }
+    constructor(private tokenService: TokenService, private router: Router) { }
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+        console.log('Intercept...')
         let token = this.tokenService.getToken()
         if (!!token) {
             req = req.clone({
@@ -18,13 +20,16 @@ export class AuthInterceptor implements HttpInterceptor {
                 }
             })
         }
+
         return next.handle(req).pipe(
             catchError((error: any) => {
                 if (error instanceof HttpErrorResponse && error.status === 401) {
-                    // Unauthorized error, attempt to refresh the token
+                    console.log('Error when calling API access token probably expired')
+                    console.log("CALL REFRESH TOKEN API")
                     return this.tokenService.getRefreshToken().pipe(
                         switchMap((token: Token) => {
                             // Update the original request with the new token
+                            console.log("New access token gotten")
                             const updatedRequest = req.clone({
                                 setHeaders: {
                                     Authorization: `Bearer ${token.access_token}`
@@ -32,19 +37,18 @@ export class AuthInterceptor implements HttpInterceptor {
                             });
                             return next.handle(updatedRequest);
                         }),
-                        catchError((refreshError: any) => {
-                            return throwError(() => {
-                                this.tokenService.clean()
-                                console.log(refreshError)
-                            });
+                        catchError(() => {
+                            console.log('Error from calling refresh token caught')
+                            this.tokenService.clean()
+                            this.router.navigateByUrl("/login")
+                            return throwError(() => new Error('Error when calling refresh token, cleaning cookies and local storage'))
                         })
-                    );
+                    )
                 }
-
                 // For other errors, propagate the error
-                return throwError(() => error);
+                return throwError(() => new Error(error.message));
             })
-        );
+        )
     }
 }
 

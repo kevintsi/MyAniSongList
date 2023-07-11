@@ -11,8 +11,8 @@
     </div>
     <div *ngIf="!loading && animes.items.length == 0">Il n'y a pas de animes</div>
 
-    <div *ngIf="!loading" class="overflow-x-auto">
-        <table class="md:text-xl table table-fixed text-center">
+    <div *ngIf="!loading" class="h-full overflow-y-auto">
+        <table class="table table-fixed text-justify font-semibold">
             <thead class="md:text-xl">
                 <tr>
                     <th></th>
@@ -24,7 +24,7 @@
             <tbody>
                 <tr class="hover:bg-base-300" [routerLink]="['/manage/animes', anime.id]"
                     *ngFor="let anime of animes.items">
-                    <td>
+                    <td class="flex justify-center items-center">
                         <div class="h-full w-20 md:w-40">
                             <img [src]="anime.poster_img" [alt]="anime.name" />
                         </div>

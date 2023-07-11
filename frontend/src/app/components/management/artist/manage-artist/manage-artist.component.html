@@ -13,9 +13,9 @@
 
     <div *ngIf="!loading && artists.items.length == 0">Il n'y a pas de d'artistes</div>
     <div *ngIf="!loading">
-        <table class="table table-fixed text-center">
-            <thead>
-                <tr class="md:text-xl">
+        <table class="table table-fixed text-justify font-semibold">
+            <thead class="md:text-xl">
+                <tr>
                     <th></th>
                     <th class="overflow-hidden text-ellipsis whitespace-nowrap">Nom</th>
                     <th class="overflow-hidden text-ellipsis whitespace-nowrap">Date de création</th>
@@ -25,13 +25,13 @@
             <tbody>
                 <tr class="hover:bg-base-300" [routerLink]="['/manage/artists', artist.id]"
                     *ngFor="let artist of artists.items">
-                    <td>
+                    <td class="flex justify-center items-center">
                         <div class="w-20 md:w-40 h-full">
                             <img [src]="artist.poster_img" [alt]="artist.name" />
                         </div>
                     </td>
-                    <td class="md:text-xl overflow-hidden text-ellipsis whitespace-nowrap">{{ artist.name}} </td>
-                    <td class="md:text-xl"> {{artist.creation_year}}</td>
+                    <td class="overflow-hidden text-ellipsis whitespace-nowrap">{{ artist.name}} </td>
+                    <td> {{artist.creation_year}}</td>
                     <td class="md:text-6xl text-4xl text-center">
                         <mat-icon [inline]="true" (click)="delete(artist)">delete</mat-icon>
                     </td>

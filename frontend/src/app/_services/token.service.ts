@@ -29,6 +29,7 @@ export class TokenService {
   }
 
   clean() {
+    console.log("Clean local storage/cookies")
     localStorage.removeItem("access_token")
     this.deleteCookie("refresh_token")
 
@@ -65,8 +66,9 @@ export class TokenService {
     document.cookie = cookieOptions.join(';');
   }
 
-  getCookie(name: string): string {
+  getCookie(name: string) {
     const cookieString = decodeURIComponent(document.cookie);
+    console.log(cookieString)
     const cookies = cookieString.split(';');
 
     for (let i = 0; i < cookies.length; i++) {
@@ -79,6 +81,6 @@ export class TokenService {
     }
 
     // Return empty string if the cookie is not found
-    return '';
+    return null;
   }
 }

@@ -14,8 +14,8 @@
 
     <div *ngIf="!loading && musics.items.length == 0">Il n'y a pas de musiques</div>
     <div *ngIf="!loading">
-        <table class="table table-fixed text-center">
-            <thead>
+        <table class="table table-fixed text-justify font-semibold">
+            <thead class="md:text-xl">
                 <tr>
                     <th></th>
                     <th>Nom</th>
@@ -28,7 +28,7 @@
             <tbody>
                 <tr class="hover:bg-base-300" [routerLink]="['/manage/musics', music.id]"
                     *ngFor="let music of musics.items">
-                    <td>
+                    <td class="flex justify-center items-center">
                         <div class="w-20 md:w-40 h-full">
                             <img [src]="music.poster_img" [alt]="music.name" />
                         </div>
@@ -38,7 +38,7 @@
                         }}
                     </td>
                     <td class="overflow-hidden text-ellipsis whitespace-nowrap"> {{ music.type.type_name }}</td>
-                    <td class="text-4xl text-center">
+                    <td class="md:text-6xl text-4xl text-center">
                         <mat-icon [inline]="true" (click)="delete(music)">delete</mat-icon>
                     </td>
                 </tr>
