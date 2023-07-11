@@ -28,7 +28,7 @@
                     "value": "${MYSQL_DATABASE}"
                 }
             ],
-            "essential": false,
+            "essential": true,
             "memory": 128,
             "mountPoints": [
                 {
@@ -46,7 +46,7 @@
         {
             "name": "redis",
             "image": "redis/redis-stack-server:latest",
-            "essential": false,
+            "essential": true,
             "memory": 128,
             "mountPoints": [
                 {
@@ -64,7 +64,7 @@
         {
             "name": "backend",
             "image": "241681967124.dkr.ecr.eu-west-3.amazonaws.com/anisong-backend:1.0",
-            "essential": false,
+            "essential": true,
             "memory": 300,
             "portMappings": [
                 {
@@ -80,7 +80,7 @@
         {
             "name": "frontend",
             "image": "241681967124.dkr.ecr.eu-west-3.amazonaws.com/anisong-frontend:1.0",
-            "essential": false,
+            "essential": true,
             "memory": 300,
             "portMappings": [
                 {
