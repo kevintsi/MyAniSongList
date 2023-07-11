@@ -4,7 +4,7 @@
         {
             "name": "db",
             "host": {
-                "sourcePath": "./backend/data/mysql"
+                "sourcePath": "/backend/data/mysql"
             }
         },
         {
