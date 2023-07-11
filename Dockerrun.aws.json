@@ -16,6 +16,23 @@
     ],
     "containerDefinitions": [
         {
+            "name": "nginx",
+            "image": "241681967124.dkr.ecr.eu-west-3.amazonaws.com/anisong-nginx:1.0",
+            "hostname": "nginx",
+            "essential": true,
+            "portMappings": [
+                {
+                    "hostPort": 80,
+                    "containerPort": 80
+                }
+            ],
+            "links": [
+                "frontend",
+                "backend"
+            ],
+            "memory": 100
+        },
+        {
             "name": "db",
             "image": "mysql:8.0",
             "environment": [

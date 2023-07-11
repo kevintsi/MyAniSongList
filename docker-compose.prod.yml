@@ -2,9 +2,16 @@ version: '3.8'
 
 services:
 
+  nginx:
+    build:
+      dockerfile: Dockerfile
+      context: ./nginx
+    ports:
+      - "80:80"
+
   backend:
-    build: ./backend
-    restart: always
+    context: ./backend
+    dockerfile: Dockerfile
     ports:
       - "8000:8000"
     depends_on:
@@ -14,7 +21,8 @@ services:
       - ./backend/.env.prod
 
   frontend:
-    build: ./frontend
+    context: ./backend
+    dockerfile: Dockerfile
     ports:
       - "4200:4200"
     depends_on:

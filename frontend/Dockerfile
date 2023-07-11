@@ -1,9 +1,11 @@
-FROM node:18.16
-
+FROM node:18.16 as build
 WORKDIR /app
-
+COPY package*.json ./
+RUN npm install 
 COPY . .
+RUN npm run build
 
-RUN npm install -g @angular/cli && npm install
-
-CMD ["npm","run","start"]
+FROM nginx 
+EXPOSE 4200
+COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
+COPY --from=build /app/build /usr/share/nginx/html
