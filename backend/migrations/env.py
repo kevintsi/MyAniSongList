@@ -1,4 +1,5 @@
 from logging.config import fileConfig
+import time
 
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
@@ -59,17 +60,28 @@ def run_migrations_online() -> None:
     and associate a connection with the context.
 
     """
+    RETRIES = 5
+    DELAY = 10
+
     from db.session import engine
 
     connectable = engine
 
-    with connectable.connect() as connection:
-        context.configure(
-            connection=connection, target_metadata=target_metadata
-        )
+    for _ in range(RETRIES):
+        try:
+            with connectable.connect() as connection:
+                context.configure(
+                    connection=connection, target_metadata=target_metadata
+                )
 
-        with context.begin_transaction():
-            context.run_migrations()
+                with context.begin_transaction():
+                    context.run_migrations()
+                print("Migration done with success")
+                break
+        except Exception as e:
+            print(e)
+            print("Database is not available. Retrying in {} seconds...".format(DELAY))
+            time.sleep(DELAY)
 
 
 if context.is_offline_mode():
