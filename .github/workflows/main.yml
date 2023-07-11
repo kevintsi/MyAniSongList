@@ -2,7 +2,7 @@ name: Deploy AniSongList to AWS Elastic Beanstalk
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   build:
