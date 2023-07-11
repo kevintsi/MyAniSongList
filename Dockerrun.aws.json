@@ -1,0 +1,96 @@
+{
+    "AWSEBDockerrunVersion": 2,
+    "volumes": [
+        {
+            "name": "db",
+            "host": {
+                "sourcePath": "./backend/data/mysql"
+            }
+        },
+        {
+            "name": "redis",
+            "host": {
+                "sourcePath": "/backend/data/redis"
+            }
+        }
+    ],
+    "containerDefinitions": [
+        {
+            "name": "db",
+            "image": "mysql:8.0",
+            "environment": [
+                {
+                    "name": "MYSQL_ROOT_PASSWORD",
+                    "value": "${MYSQL_ROOT_PASSWORD}"
+                },
+                {
+                    "name": "MYSQL_DATABASE",
+                    "value": "${MYSQL_DATABASE}"
+                }
+            ],
+            "essential": false,
+            "memory": 128,
+            "mountPoints": [
+                {
+                    "sourceVolume": "db",
+                    "containerPath": "/var/lib/mysql"
+                }
+            ],
+            "portMappings": [
+                {
+                    "hostPort": 3306,
+                    "containerPort": 3306
+                }
+            ]
+        },
+        {
+            "name": "redis",
+            "image": "redis/redis-stack-server:latest",
+            "essential": false,
+            "memory": 128,
+            "mountPoints": [
+                {
+                    "sourceVolume": "redis",
+                    "containerPath": "/data"
+                }
+            ],
+            "portMappings": [
+                {
+                    "hostPort": 6379,
+                    "containerPort": 6379
+                }
+            ]
+        },
+        {
+            "name": "backend",
+            "image": "241681967124.dkr.ecr.eu-west-3.amazonaws.com/anisong-backend:1.0",
+            "essential": false,
+            "memory": 300,
+            "portMappings": [
+                {
+                    "hostPort": 8000,
+                    "containerPort": 8000
+                }
+            ],
+            "links": [
+                "db",
+                "redis"
+            ]
+        },
+        {
+            "name": "frontend",
+            "image": "241681967124.dkr.ecr.eu-west-3.amazonaws.com/anisong-frontend:1.0",
+            "essential": false,
+            "memory": 300,
+            "portMappings": [
+                {
+                    "hostPort": 4200,
+                    "containerPort": 4200
+                }
+            ],
+            "links": [
+                "backend"
+            ]
+        }
+    ]
+}

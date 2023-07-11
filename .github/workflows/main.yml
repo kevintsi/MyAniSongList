@@ -1,0 +1,28 @@
+name: Deploy AniSongList to AWS Elastic Beanstalk
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v1
+
+      - name: Generate deployment package
+        run: zip -r deploy.zip . -x '*.git*'
+
+      - name: Deploy to EB
+        uses: einaregilsson/beanstalk-deploy@v21
+        env:
+          VERSION_LABEL: myanisonglist-${{ github.run_id }}
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: myanisonglist
+          environment_name: Myanisonglist
+          version_label: ${{ env.VERSION_LABEL }}
+          region: eu-west-3
+          deployment_package: deploy.zip
