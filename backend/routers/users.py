@@ -1,5 +1,6 @@
 from datetime import timedelta
 from os import getenv
+import os
 from fastapi import (
     APIRouter,
     Cookie,
@@ -106,7 +107,7 @@ async def login(
 @router.post("/refresh_token")
 def refresh_access_token(response: Response, refresh_token: str = Cookie(None)):
     try:
-        r = redis.Redis(host="redis")
+        r = redis.Redis(host=os.getenv("REDIS_HOST"))
         print(refresh_token)
         if refresh_token:
             if r.sismember('token_blacklist', refresh_token):
@@ -149,7 +150,7 @@ def refresh_access_token(response: Response, refresh_token: str = Cookie(None)):
 
 @router.post('/logout')
 def logout(response: Response, refresh_token: str = Cookie(None)):
-    r = redis.Redis(host="redis")
+    r = redis.Redis(host=os.getenv("REDIS_HOST"))
     r.sadd("token_blacklist", refresh_token)
     response.delete_cookie("refresh_token")
 

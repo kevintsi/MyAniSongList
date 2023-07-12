@@ -1,4 +1,5 @@
 
+import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi_pagination import add_pagination
@@ -14,7 +15,7 @@ from routers import (
 app = FastAPI()
 
 origins = [
-    "http://localhost:4200",
+    os.getenv("ORIGINS")
 ]
 
 app.add_middleware(
