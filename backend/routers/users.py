@@ -107,7 +107,10 @@ async def login(
 @router.post("/refresh_token")
 def refresh_access_token(response: Response, refresh_token: str = Cookie(None)):
     try:
-        r = redis.Redis(host=os.getenv("REDIS_HOST"))
+        r = redis.Redis(
+        host=os.getenv("REDIS_HOST"),
+        port=os.getenv("REDIS_PORT"),
+        password=os.getenv("REDIS_PASSWORD"))
         print(refresh_token)
         if refresh_token:
             if r.sismember('token_blacklist', refresh_token):
@@ -150,7 +153,10 @@ def refresh_access_token(response: Response, refresh_token: str = Cookie(None)):
 
 @router.post('/logout')
 def logout(response: Response, refresh_token: str = Cookie(None)):
-    r = redis.Redis(host=os.getenv("REDIS_HOST"))
+    r = redis.Redis(
+    host=os.getenv("REDIS_HOST"),
+    port=os.getenv("REDIS_PORT"),
+    password=os.getenv("REDIS_PASSWORD"))
     r.sadd("token_blacklist", refresh_token)
     response.delete_cookie("refresh_token")
 
