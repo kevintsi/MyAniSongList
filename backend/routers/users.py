@@ -153,8 +153,8 @@ def refresh_access_token(response: Response, refresh_token: str = Cookie(None)):
 
 
 @router.post('/logout')
-def logout(response: Response, refresh_token: str = Cookie(None)):
-    print("Refresh token in cookie : "+refresh_token)
+def logout(response: Response, refresh_token: str = Cookie(default=None)):
+    print(f"Refresh token in cookie : {refresh_token} ")
     r = redis.Redis(
     host=os.getenv("REDIS_HOST"),
     port=os.getenv("REDIS_PORT"),
