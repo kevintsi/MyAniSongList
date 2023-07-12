@@ -12,9 +12,6 @@ static/poster_images/
 .env.*
 data/
 
-# Migration 
-migrations/versions/
-
 # C extensions
 *.so
 
