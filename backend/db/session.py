@@ -23,7 +23,7 @@ retry_count = 0
 def getconn() -> pymysql.connections.Connection:
     # initialize Connector object
     creds = load_credentials_from_file("application_default_credentials.json")
-
+    
     connector = Connector(
         credentials=creds[0]
 )

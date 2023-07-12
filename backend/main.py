@@ -15,7 +15,7 @@ from routers import (
 app = FastAPI()
 
 origins = [
-    os.getenv("ORIGINS")
+    "https://myanisonglist.vercel.app/"
 ]
 
 app.add_middleware(
