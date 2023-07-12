@@ -5,7 +5,7 @@
     <div *ngIf="!loading">
         <div class="grid grid-cols-2 md:grid-cols-3 gap-8">
             <div *ngIf="animes.items.length == 0;else elseBlock">
-                Pas d'animéss
+                Pas d'animés
             </div>
             <ng-template #elseBlock>
                 <div class="bg-base-100 hover:cursor-pointer rounded-lg" *ngFor="let anime of animes.items"

@@ -25,6 +25,7 @@ export class AnimeListComponent implements OnInit {
   async fetchData() {
     try {
       this.animes = await this.fetchAnimes()
+      console.log("Animes : ", this.animes)
     } catch (error) {
       console.log(error)
     }
