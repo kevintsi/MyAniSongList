@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { environment } from '../environments/environment';
+import { environment } from '../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Music, PagedMusic } from '../models/Music';
 import { Anime } from '../models/Anime';

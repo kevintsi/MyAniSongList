@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
-import { environment } from '../environments/environment';
+import { environment } from '../../environments/environment';
 import jwtDecode from 'jwt-decode';
 import { Token } from '../models/Token';
 
