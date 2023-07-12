@@ -2,19 +2,10 @@ version: '3.8'
 
 services:
 
-  nginx:
-    build:
-      dockerfile: Dockerfile
-      context: ./nginx
-    ports:
-      - "80:80"
-    depends_on:
-      - backend
-      - frontend
-
   backend:
-    context: ./backend
-    dockerfile: Dockerfile
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
     ports:
       - "8000:8000"
     volumes:
@@ -23,11 +14,12 @@ services:
       - db
       - redis
     env_file:
-      - ./backend/.env.dev
+      - ./backend/.env
 
   frontend:
-    context: ./backend
-    dockerfile: Dockerfile
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
     ports:
       - "4200:4200"
     volumes:

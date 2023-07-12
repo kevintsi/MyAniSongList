@@ -4,19 +4,24 @@
     </div>
     <div *ngIf="!loading">
         <div class="grid grid-cols-2 md:grid-cols-3 gap-8">
-            <div class="bg-base-100 hover:cursor-pointer rounded-lg" *ngFor="let anime of animes.items"
-                [routerLink]="['/animes', anime.id]">
-                <div class="text-center font-bold text-sm pb-4 overflow-hidden text-ellipsis whitespace-nowrap">
-                    {{ anime.name }}
-                </div>
-                <div class="flex justify-center text-justify">
-                    <img class="hover:shadow-xl hover:shadow-base-300 rounded-3xl w-28 h-36 object-fill"
-                        [src]="anime.poster_img" [alt]="anime.name" />
-                    <div class="hidden md:block overflow-auto text-ellipsis whitespace-nowrap w-10 h-10">
-                        {{anime.description }}
+            <div *ngIf="animes.items.length == 0;else elseBlock">
+                Pas d'animéss
+            </div>
+            <ng-template #elseBlock>
+                <div class="bg-base-100 hover:cursor-pointer rounded-lg" *ngFor="let anime of animes.items"
+                    [routerLink]="['/animes', anime.id]">
+                    <div class="text-center font-bold text-sm pb-4 overflow-hidden text-ellipsis whitespace-nowrap">
+                        {{ anime.name }}
+                    </div>
+                    <div class="flex justify-center text-justify">
+                        <img class="hover:shadow-xl hover:shadow-base-300 rounded-3xl w-28 h-36 object-fill"
+                            [src]="anime.poster_img" [alt]="anime.name" />
+                        <div class="hidden md:block overflow-auto text-ellipsis whitespace-nowrap w-10 h-10">
+                            {{anime.description }}
+                        </div>
                     </div>
                 </div>
-            </div>
+            </ng-template>
         </div>
         <div class="pt-4">
             <app-pagination (onPageChange)="onPageChange($event)" [currentPage]="currentPage"
