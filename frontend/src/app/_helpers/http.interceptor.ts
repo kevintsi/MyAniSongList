@@ -37,6 +37,7 @@ export class AuthInterceptor implements HttpInterceptor {
                                     Authorization: `Bearer ${token.access_token}`
                                 }
                             });
+                            this.tokenService.setToken(token)
                             return next.handle(updatedRequest);
                         }),
                         catchError(() => {
