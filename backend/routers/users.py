@@ -144,7 +144,7 @@ def refresh_access_token(response: Response, refresh_token: str = Cookie(None)):
                     data={"sub": {"id": user['id'], "is_manager": user['is_manager'], 'profile_picture': user['profile_picture']}}, expires_delta=refresh_token_expires)
 
                 response.set_cookie("refresh_token",
-                                    value=refresh_token,
+                                    value=new_refresh_token,
                                     samesite="none",
                                     secure=True,
                                     httponly=True,
