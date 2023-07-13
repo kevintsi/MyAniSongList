@@ -18,7 +18,8 @@ export class AuthService {
   public login(user: User) {
     const headers = new HttpHeaders().set('Content-Type', 'application/json')
     return this.http.post<Token>(this.endpoint + '/users/login', JSON.stringify(user), {
-      headers: headers
+      headers: headers,
+      withCredentials: true
     })
   }
 
