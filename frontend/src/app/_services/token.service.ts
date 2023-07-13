@@ -16,8 +16,8 @@ export class TokenService {
 
   setToken(token: Token) {
     localStorage.setItem("access_token", token.access_token)
-    let decoded_token: any = jwtDecode(token.refresh_token)
-    this.setSecureCookie("refresh_token", token.refresh_token, decoded_token.exp)
+    // let decoded_token: any = jwtDecode(token.refresh_token)
+    // this.setSecureCookie("refresh_token", token.refresh_token, decoded_token.exp)
   }
   getToken() {
     return localStorage.getItem("access_token")

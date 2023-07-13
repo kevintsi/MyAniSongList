@@ -25,7 +25,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
         return next.handle(req).pipe(
             catchError((error: any) => {
-                if (error instanceof HttpErrorResponse && error.status === 401) {
+                if (error instanceof HttpErrorResponse && error.status === 401 && error.error.detail == "Token has expired") {
                     console.log('Error when calling API access token probably expired')
                     console.log("CALL REFRESH TOKEN API")
                     return this.tokenService.getRefreshToken().pipe(
