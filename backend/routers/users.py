@@ -108,7 +108,7 @@ async def login(
 
     # Générez également un refresh token et stockez-le dans votre système de stockage
     # Vous pouvez utiliser votre propre logique de génération et de stockage du refresh token ici
-    return {"access_token": access_token, "refresh_token": refresh_token}
+    return {"access_token": access_token}
 
 
 @router.post("/refresh_token")
@@ -155,7 +155,7 @@ def refresh_access_token(response: Response, refresh_token: str = Cookie(None)):
 
                 r.sadd("token_blacklist", refresh_token)
                 # Return the new access token
-                return {"access_token": new_access_token, "refresh_token": new_refresh_token}
+                return {"access_token": new_access_token}
         else:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
