@@ -1,4 +1,4 @@
-from datetime import timedelta
+from datetime import timedelta, timezone
 from os import getenv
 import os
 from fastapi import (
@@ -39,7 +39,7 @@ router = APIRouter(
 async def get_current_user(token: str = Depends(HTTPBearer()), user_service: UserService = Depends(get_service)):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials",
+        detail="Token has expired",
         headers={"WWW-Authenticate": "Bearer"},
     )
     try:
@@ -85,7 +85,7 @@ async def login(
 
     if not user:
         raise HTTPException(
-            status_code=401, detail="Invalid username or password")
+            status_code=status.HTTP_404_NOT_FOUND, detail="Invalid username or password")
     print(user)
     access_token_expires = timedelta(minutes=1)
     print(access_token_expires)
@@ -96,12 +96,14 @@ async def login(
     refresh_token = create_access_token(
         data={"sub": {"id": user.id, "is_manager": user.is_manager, 'profile_picture': user.profile_picture}}, expires_delta=refresh_token_expires)
 
-    response.set_cookie("refresh_token", 
-                        refresh_token,
+    response.set_cookie(key="refresh_token",
+                        value=refresh_token,
+                        samesite="none",
                         secure=True,
-                        httponly=True, 
-                        samesite="none", 
-                        domain=os.getenv("ORIGINS")
+                        httponly=True,
+                        domain=os.getenv("DOMAIN"),
+                        expires=datetime.now(
+                            timezone.utc)+refresh_token_expires
                         )
 
     # Générez également un refresh token et stockez-le dans votre système de stockage
@@ -113,15 +115,15 @@ async def login(
 def refresh_access_token(response: Response, refresh_token: str = Cookie(None)):
     try:
         r = redis.Redis(
-        host=os.getenv("REDIS_HOST"),
-        port=os.getenv("REDIS_PORT"),
-        password=os.getenv("REDIS_PASSWORD")
+            host=os.getenv("REDIS_HOST"),
+            port=os.getenv("REDIS_PORT"),
+            password=os.getenv("REDIS_PASSWORD")
         )
         print(refresh_token)
         if refresh_token:
             if r.sismember('token_blacklist', refresh_token):
                 raise HTTPException(
-                    status_code=status.HTTP_401_UNAUTHORIZED,
+                    status_code=status.HTTP_403_FORBIDDEN,
                     detail="Invalid refresh token has already been revoked",
                     headers={"WWW-Authenticate": "Bearer"},
                 )
@@ -141,12 +143,14 @@ def refresh_access_token(response: Response, refresh_token: str = Cookie(None)):
                 new_refresh_token = create_access_token(
                     data={"sub": {"id": user['id'], "is_manager": user['is_manager'], 'profile_picture': user['profile_picture']}}, expires_delta=refresh_token_expires)
 
-                response.set_cookie("refresh_token", 
-                                    refresh_token,
+                response.set_cookie("refresh_token",
+                                    value=refresh_token,
+                                    samesite="none",
                                     secure=True,
-                                    httponly=True, 
-                                    samesite="none", 
-                                    domain=os.getenv("ORIGINS")
+                                    httponly=True,
+                                    domain=os.getenv("DOMAIN"),
+                                    expires=datetime.now(
+                                        timezone.utc)+refresh_token_expires
                                     )
 
                 r.sadd("token_blacklist", refresh_token)
@@ -155,7 +159,7 @@ def refresh_access_token(response: Response, refresh_token: str = Cookie(None)):
         else:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Invalid refresh token",
+                detail="Refresh token missing",
                 headers={"WWW-Authenticate": "Bearer"},
             )
     except HTTPException as e:
@@ -166,9 +170,9 @@ def refresh_access_token(response: Response, refresh_token: str = Cookie(None)):
 def logout(response: Response, refresh_token: str = Cookie(default=None)):
     print(f"Refresh token in cookie : {refresh_token} ")
     r = redis.Redis(
-    host=os.getenv("REDIS_HOST"),
-    port=os.getenv("REDIS_PORT"),
-    password=os.getenv("REDIS_PASSWORD")
+        host=os.getenv("REDIS_HOST"),
+        port=os.getenv("REDIS_PORT"),
+        password=os.getenv("REDIS_PASSWORD")
     )
 
     r.sadd("token_blacklist", refresh_token)
