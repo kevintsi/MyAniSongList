@@ -1,8 +1,6 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { firstValueFrom } from 'rxjs';
 import { environment } from '../../environments/environment';
-import jwtDecode from 'jwt-decode';
 import { Token } from '../models/Token';
 
 @Injectable({
@@ -16,8 +14,6 @@ export class TokenService {
 
   setToken(token: Token) {
     localStorage.setItem("access_token", token.access_token)
-    // let decoded_token: any = jwtDecode(token.refresh_token)
-    // this.setSecureCookie("refresh_token", token.refresh_token, decoded_token.exp)
   }
   getToken() {
     return localStorage.getItem("access_token")
