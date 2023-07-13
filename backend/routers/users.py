@@ -96,8 +96,13 @@ async def login(
     refresh_token = create_access_token(
         data={"sub": {"id": user.id, "is_manager": user.is_manager, 'profile_picture': user.profile_picture}}, expires_delta=refresh_token_expires)
 
-    response.set_cookie("refresh_token", refresh_token,
-                        secure=True, httponly=True)
+    response.set_cookie("refresh_token", 
+                        refresh_token,
+                        secure=True,
+                        httponly=True, 
+                        samesite="none", 
+                        domain=os.getenv("ORIGINS")
+                        )
 
     # Générez également un refresh token et stockez-le dans votre système de stockage
     # Vous pouvez utiliser votre propre logique de génération et de stockage du refresh token ici
@@ -136,8 +141,13 @@ def refresh_access_token(response: Response, refresh_token: str = Cookie(None)):
                 new_refresh_token = create_access_token(
                     data={"sub": {"id": user['id'], "is_manager": user['is_manager'], 'profile_picture': user['profile_picture']}}, expires_delta=refresh_token_expires)
 
-                response.set_cookie("refresh_token", new_refresh_token,
-                                    secure=True, httponly=True)
+                response.set_cookie("refresh_token", 
+                                    refresh_token,
+                                    secure=True,
+                                    httponly=True, 
+                                    samesite="none", 
+                                    domain=os.getenv("ORIGINS")
+                                    )
 
                 r.sadd("token_blacklist", refresh_token)
                 # Return the new access token
