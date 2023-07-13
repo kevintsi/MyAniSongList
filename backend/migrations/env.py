@@ -61,9 +61,10 @@ def run_migrations_online() -> None:
 
     """
 
-    from db.session import engine
+    from db.session import getconn
 
-    connectable = engine
+    connectable = getconn()
+
     with connectable.connect() as connection:
         context.configure(
             connection=connection, target_metadata=target_metadata
@@ -72,7 +73,7 @@ def run_migrations_online() -> None:
         with context.begin_transaction():
             context.run_migrations()
             print("Migration done with success")
-            
+
 
 if context.is_offline_mode():
     run_migrations_offline()
