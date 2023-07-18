@@ -21,6 +21,7 @@ export class TopBarComponent implements OnInit {
   category: string = "animes"
   result_search?: any[] = []
   user_pfp: string = ""
+  username: string = ""
 
   constructor(
     private authService: AuthService,
@@ -44,6 +45,8 @@ export class TopBarComponent implements OnInit {
     if (!!this.tokenService.getToken()) {
       let decodedToken: any = jwtDecode(String(this.tokenService.getToken()))
       this.user_pfp = decodedToken.sub.profile_picture
+      this.username = decodedToken.sub.username
+      console.log(decodedToken.sub.username)
     }
   }
 

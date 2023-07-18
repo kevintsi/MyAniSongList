@@ -15,6 +15,7 @@ import { MusicDetailComponent } from './components/music/music-detail/music-deta
 import { ReviewListComponent } from './components/review/review-list/review-list.component';
 import { CommunityListComponent } from './components/community-list/community-list.component';
 import { RankingMusicComponent } from './components/music/ranking-music/ranking-music.component';
+import { FavoriteListComponent } from './components/favorite-list/favorite-list.component';
 
 
 const routes: Routes = [
@@ -27,6 +28,9 @@ const routes: Routes = [
       { path: '', component: AnimeListComponent },
       { path: ':id', component: AnimeDetailComponent }
     ]
+  },
+  {
+    path: 'favorites', component: FavoriteListComponent
   },
   {
     path: 'artists', children: [

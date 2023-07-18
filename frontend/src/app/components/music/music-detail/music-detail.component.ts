@@ -18,6 +18,7 @@ export class MusicDetailComponent {
 
   isLoading: boolean = true
   music!: Music
+  favorites!: Music[]
   reviews!: Review[]
   userReview!: Review | null
 
@@ -64,6 +65,7 @@ export class MusicDetailComponent {
           this.noteMusic = this.userReview.note_music * 2
           this.noteVisual = this.userReview.note_visual * 2
         }
+        this.favorites = await this.getFavorites()
       }
       console.log(this.reviews)
     } catch (error) {
@@ -83,10 +85,43 @@ export class MusicDetailComponent {
 
   }
 
+  toggleFavorite() {
+    if (this.isFavorite()) {
+      this.removeFromFavorites();
+    } else {
+      this.addToFavorites();
+    }
+  }
+
+  isFavorite() {
+    return this.favorites.some((fav_music => fav_music.id == this.music.id))
+  }
+
 
   getMusic(id: number) {
     return firstValueFrom(this.musicService.get(id))
   }
+
+  addToFavorites(): void {
+    this.musicService.addToFavorites(this.music.id).subscribe({
+      next: () => {
+        this.favorites.push(this.music);
+      }
+    });
+  }
+
+  removeFromFavorites(): void {
+    this.musicService.removeFromFavorites(this.music.id).subscribe({
+      next: () => {
+        this.favorites = this.favorites.filter((favItem) => favItem.id !== this.music.id);
+      }
+    });
+  }
+
+  getFavorites() {
+    return firstValueFrom(this.musicService.getFavorites())
+  }
+
 
   isLoggedIn() {
     return this.authService.isLoggedIn()

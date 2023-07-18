@@ -22,6 +22,16 @@ export class MusicService {
     return this.http.get<PagedMusic>(this.endpoint + '/musics/all?order_by=' + filter + '&page=' + page + "&size=" + size)
   }
 
+  public getFavorites() {
+    return this.http.get<Music[]>(this.endpoint + '/favorites/all')
+  }
+  public addToFavorites(id: number) {
+    return this.http.post<Music[]>(this.endpoint + '/favorites/' + id, null)
+  }
+  public removeFromFavorites(id: number) {
+    return this.http.delete<Music[]>(this.endpoint + '/favorites/' + id)
+  }
+
   public getMusicsAnime(id_anime: number) {
     return this.http.get<Music[]>(this.endpoint + '/musics/anime/' + id_anime)
   }
