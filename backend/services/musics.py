@@ -96,6 +96,9 @@ class MusicService(BaseService[Music, MusicCreate, MusicUpdate]):
                 raise e
         print("End add to favorite")
 
+    def get_favorites(self, user: User):
+        return user.favorites
+
     def remove_from_favorite(self, id: str, user: User):
         music = self.db_session.get(Music, id)
 

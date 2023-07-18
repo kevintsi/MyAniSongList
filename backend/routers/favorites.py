@@ -2,6 +2,7 @@ from fastapi import APIRouter
 from fastapi.params import Depends
 from db.models import User
 from routers.users import get_current_user
+from db.schemas import Music
 
 from services.musics import MusicService, get_service
 
@@ -10,6 +11,14 @@ router = APIRouter(
     prefix='/favorites',
     tags=["Favorites"]
 )
+
+
+@router.get("/all", response_model=list[Music])
+async def get_all(
+    service: MusicService = Depends(get_service),
+    current_user: User = Depends(get_current_user)
+):
+    return service.get_favorites(current_user)
 
 
 @router.post("/{id_music}")

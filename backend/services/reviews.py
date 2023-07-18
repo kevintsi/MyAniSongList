@@ -30,29 +30,31 @@ class ReviewService(BaseService[Review, ReviewCreate, ReviewUpdate]):
 
         user_review = self.db_session.query(Review).filter(
             Review.user_id == id_user, Review.music_id == obj.music_id).first()
+        try:
+            if user_review:
+                user_review.note_visual = obj.note_visual
+                user_review.note_music = obj.note_music
+                user_review.description = obj.description
 
-        if user_review:
-            user_review.note_visual = obj.note_visual
-            user_review.note_music = obj.note_music
-            user_review.description = obj.description
+                self.db_session.commit()
+
+                self.calculate_note(user_review)
+            else:
+                print(f"converted to Review model : {db_obj}")
+                self.db_session.add(db_obj)
+                self.db_session.commit()
+                self.calculate_note(db_obj)
 
             self.db_session.commit()
+            print("End create or update review successfully")
 
-            self.calculate_note(user_review)
-        else:
-            self.calculate_note(obj)
-            print(f"converted to Review model : {db_obj}")
-            self.db_session.add(db_obj)
-            try:
-                self.db_session.commit()
-            except sqlalchemy.exc.IntegrityError as e:
-                self.db_session.rollback()
-                if "Duplicate entry" in str(e):
-                    raise HTTPException(
-                        status_code=409, detail="Conflict Error")
-                else:
-                    raise e
-        print("End create")
+        except sqlalchemy.exc.IntegrityError as e:
+            self.db_session.rollback()
+            if "Duplicate entry" in str(e):
+                raise HTTPException(
+                    status_code=409, detail="Conflict Error")
+            else:
+                raise e
 
     def calculate_note(self, obj: Review):
         music: Music = self.db_session.query(

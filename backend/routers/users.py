@@ -90,11 +90,11 @@ async def login(
     access_token_expires = timedelta(minutes=1)
     print(access_token_expires)
     access_token = create_access_token(
-        data={"sub": {"id": user.id, "is_manager": user.is_manager, 'profile_picture': user.profile_picture}}, expires_delta=access_token_expires)
+        data={"sub": {"id": user.id, "username": user.username, "is_manager": user.is_manager, 'profile_picture': user.profile_picture}}, expires_delta=access_token_expires)
 
     refresh_token_expires = timedelta(days=7)
     refresh_token = create_access_token(
-        data={"sub": {"id": user.id, "is_manager": user.is_manager, 'profile_picture': user.profile_picture}}, expires_delta=refresh_token_expires)
+        data={"sub": {"id": user.id, "username": user.username, "is_manager": user.is_manager, 'profile_picture': user.profile_picture}}, expires_delta=refresh_token_expires)
 
     response.set_cookie(key="refresh_token",
                         value=refresh_token,
@@ -119,7 +119,6 @@ def refresh_access_token(response: Response, refresh_token: str = Cookie(None)):
             port=os.getenv("REDIS_PORT"),
             password=os.getenv("REDIS_PASSWORD")
         )
-        print(refresh_token)
         if refresh_token:
             if r.sismember('token_blacklist', refresh_token):
                 raise HTTPException(
@@ -136,12 +135,12 @@ def refresh_access_token(response: Response, refresh_token: str = Cookie(None)):
                 # Generate a new access token
                 access_token_expires = timedelta(minutes=1)
                 new_access_token = create_access_token(
-                    data={"sub": {"id": user['id'], "is_manager": user['is_manager'], 'profile_picture': user['profile_picture']}}, expires_delta=access_token_expires
+                    data={"sub": {"id": user['id'], "username": user["username"], "is_manager": user['is_manager'], 'profile_picture': user['profile_picture']}}, expires_delta=access_token_expires
                 )
 
                 refresh_token_expires = timedelta(days=7)
                 new_refresh_token = create_access_token(
-                    data={"sub": {"id": user['id'], "is_manager": user['is_manager'], 'profile_picture': user['profile_picture']}}, expires_delta=refresh_token_expires)
+                    data={"sub": {"id": user['id'], "username": user["username"], "is_manager": user['is_manager'], 'profile_picture': user['profile_picture']}}, expires_delta=refresh_token_expires)
 
                 response.set_cookie("refresh_token",
                                     value=new_refresh_token,
@@ -168,7 +167,6 @@ def refresh_access_token(response: Response, refresh_token: str = Cookie(None)):
 
 @router.post('/logout')
 def logout(response: Response, refresh_token: str = Cookie(default=None)):
-    print(f"Refresh token in cookie : {refresh_token} ")
     r = redis.Redis(
         host=os.getenv("REDIS_HOST"),
         port=os.getenv("REDIS_PORT"),
