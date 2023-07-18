@@ -83,7 +83,7 @@ class MusicService(BaseService[Music, MusicCreate, MusicUpdate]):
         if music is None:
             raise HTTPException(status_code=404, detail="Music not found")
 
-        user.favorites = [music]
+        user.favorites.append(music)
 
         try:
             self.db_session.commit()
@@ -105,8 +105,7 @@ class MusicService(BaseService[Music, MusicCreate, MusicUpdate]):
         if music is None:
             raise HTTPException(status_code=404, detail="Music not found")
 
-        user.favorites = list(
-            filter(lambda fav: fav.id != int(id), user.favorites))
+        user.favorites.remove(music)
 
         try:
             self.db_session.commit()
