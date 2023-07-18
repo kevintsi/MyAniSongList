@@ -61,18 +61,35 @@ def run_migrations_online() -> None:
 
     """
 
-    from db.session import getconn
+    from db.session import engine
 
-    connectable = getconn()
+    connectable = engine
 
-    with connectable.connect() as connection:
-        context.configure(
-            connection=connection, target_metadata=target_metadata
-        )
+    MAX_RETRIES = 5
+    RETRY_DELAY = 5  # in seconds
 
-        with context.begin_transaction():
-            context.run_migrations()
-            print("Migration done with success")
+    retry_count = 0
+
+    while retry_count < MAX_RETRIES:
+        try:
+            with connectable.connect() as connection:
+                context.configure(
+                    connection=connection, target_metadata=target_metadata
+                )
+
+                with context.begin_transaction():
+                    context.run_migrations()
+                    print("Migration done with success")
+                    break
+        except Exception as e:
+            print(f"Connection failed: {e}")
+            retry_count += 1
+            if retry_count < MAX_RETRIES:
+                print(f"Retrying in {RETRY_DELAY} seconds...")
+                time.sleep(RETRY_DELAY)
+            else:
+                print("Max retry attempts reached. Exiting...")
+                exit()
 
 
 if context.is_offline_mode():

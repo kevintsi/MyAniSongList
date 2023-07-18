@@ -9,7 +9,8 @@ from routers import (
     musics,
     authors,
     types,
-    reviews
+    reviews,
+    favorites
 )
 
 app = FastAPI()
@@ -30,5 +31,6 @@ app.include_router(musics.router)
 app.include_router(authors.router)
 app.include_router(types.router)
 app.include_router(reviews.router)
+app.include_router(favorites.router)
 
 add_pagination(app)

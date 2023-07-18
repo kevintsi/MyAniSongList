@@ -30,32 +30,13 @@ from config import get_settings
 #     return conn
 
 
-def getconn() -> sqlalchemy.Engine:
-    MAX_RETRIES = 5
-    RETRY_DELAY = 5  # in seconds
-
-    retry_count = 0
-    while retry_count < MAX_RETRIES:
-        try:
-            engine = create_engine(get_settings().database_url)
-            break
-        except Exception as e:
-            print(f"Connection failed: {e}")
-            retry_count += 1
-            if retry_count < MAX_RETRIES:
-                print(f"Retrying in {RETRY_DELAY} seconds...")
-                time.sleep(RETRY_DELAY)
-            else:
-                print("Max retry attempts reached. Exiting...")
-                exit()
-
-    return engine
+engine = create_engine(get_settings().database_url)
 
 
 @lru_cache
 def create_session() -> scoped_session:
     Session = scoped_session(
-        sessionmaker(autocommit=False, autoflush=False, bind=getconn())
+        sessionmaker(autocommit=False, autoflush=False, bind=engine)
     )
     return Session
 

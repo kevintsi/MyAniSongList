@@ -28,6 +28,16 @@ t_chante = Table(
     Index('ix_chante_author_id', 'author_id')
 )
 
+t_favorite = Table(
+    'favorite', Base.metadata,
+    Column('music_id', BigInteger, primary_key=True, nullable=False),
+    Column('user_id', BigInteger, primary_key=True,
+           nullable=False, index=True),
+    ForeignKeyConstraint(['user_id'], ['user.id'], name='favorite_ibfk_1'),
+    ForeignKeyConstraint(['music_id'], ['music.id'], name='favorite_ibfk_2'),
+    Index('ix_favorite_user_id', 'user_id')
+)
+
 
 class User(Base):
 
@@ -43,6 +53,8 @@ class User(Base):
 
     reviews: Mapped[List["Review"]] = relationship(
         'Review', back_populates='user')
+    favorites: Mapped[List["Music"]] = relationship(
+        'Music', secondary=t_favorite)
 
     def __repr__(self):
         return f"User({self.id},{self.username},{self.email}, {self.creation_date}, {self.profile_picture}, {self.is_manager})"

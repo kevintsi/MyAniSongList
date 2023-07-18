@@ -77,6 +77,45 @@ class MusicService(BaseService[Music, MusicCreate, MusicUpdate]):
         else:
             raise HTTPException(status_code=401, detail="Forbidden")
 
+    def add_to_favorite(self, id: str, user: User):
+        music = self.db_session.get(Music, id)
+
+        if music is None:
+            raise HTTPException(status_code=404, detail="Music not found")
+
+        user.favorites = [music]
+
+        try:
+            self.db_session.commit()
+        except sqlalchemy.exc.IntegrityError as e:
+            self.db_session.rollback()
+            if "Duplicate entry" in str(e):
+                raise HTTPException(
+                    status_code=409, detail="Conflict Error")
+            else:
+                raise e
+        print("End add to favorite")
+
+    def remove_from_favorite(self, id: str, user: User):
+        music = self.db_session.get(Music, id)
+
+        if music is None:
+            raise HTTPException(status_code=404, detail="Music not found")
+
+        user.favorites = list(
+            filter(lambda fav: fav.id != int(id), user.favorites))
+
+        try:
+            self.db_session.commit()
+        except sqlalchemy.exc.IntegrityError as e:
+            self.db_session.rollback()
+            if "Duplicate entry" in str(e):
+                raise HTTPException(
+                    status_code=409, detail="Conflict Error")
+            else:
+                raise e
+        print("End remove from favorite")
+
     def update(self, id, obj: MusicUpdate, poster_img: UploadFile, user: User):
         if user.is_manager:
             db_obj = self.db_session.get(Music, id)
