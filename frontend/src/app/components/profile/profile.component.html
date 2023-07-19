@@ -1,34 +1,39 @@
-<div class="container flex flex-col justify-center text-center pt-12">
-    <h1 class="text-center text-2xl font-medium p-4">Informations</h1>
-    <form [formGroup]="updateForm" class="w-full flex flex-col items-center" (ngSubmit)="onSubmit()">
-        <div (click)="imageInput.click()"
-            class="flex hover:bg-slate-100  border-2 border-base-300 justify-center items-center h-80 w-60">
-            <ng-container *ngIf="previewImage;else elseBlock">
-                <img class="h-full w-full object-cover" [src]="previewImage" alt="Image profil" />
-            </ng-container>
-            <ng-template #elseBlock>
-                <div class="text-8xl">
-                    <mat-icon [inline]="true">upload</mat-icon>
+<div class="container flex flex-col justify-center text-center pt-20 md:pt-40">
+    <h1 class="text-center text-2xl font-medium p-4">Profil</h1>
+    <div class="flex justify-center" *ngIf="isLoading">
+        <span class="loading loading-bars loading-lg"></span>
+    </div>
+    <ng-container *ngIf="!isLoading">
+        <div class="flex flex-col items-center">
+            <h1 class="text-center text-xl font-medium p-4">{{userInfo.username}}</h1>
+            <div class="h-80 w-60">
+                <img class="h-full w-full object-cover"
+                    [src]="userInfo.profile_picture ? userInfo.profile_picture  : '/assets/images/default_image.jpg'"
+                    alt="Photo de profil de l'utilisateur" />
+            </div>
+
+            <div>
+                <div class="p-4 flex flex-col items-center">
+                    <h2 class="font-bold text-center">Musiques favorites</h2>
+                    <div class="flex flex-col">
+                        <ng-container *ngIf="favorites.length > 0;else elseBlock">
+                            <div [routerLink]="['/musics', fav.id]"
+                                class="flex flex-row p-4 hover:shadow-xl hover:shadow-blue-400/40 rounded-lg hover:cursor-pointer items-center"
+                                *ngFor="let fav of favorites">
+                                <img [src]="fav.poster_img" class="rounded-full object-fill w-20 h-20"
+                                    alt="Poster du single" />
+                                <div class="pl-4 w-40">
+                                    <div class="overflow-hidden text-ellipsis whitespace-nowrap">{{ fav.name }}</div>
+                                </div>
+                            </div>
+                        </ng-container>
+                        <ng-template #elseBlock>
+                            Aucune musiques ajoutées en favoris
+                        </ng-template>
+                    </div>
                 </div>
-            </ng-template>
-
+            </div>
         </div>
+    </ng-container>
 
-        <label for="username" class="label">Nom d'utilisateur :</label>
-        <input type="text" formControlName="username" class="input input-bordered w-full" required>
-
-        <label for="email" class="label">Adresse e-mail :</label>
-        <input type="email" id="email" formControlName="email" class="input input-bordered w-full " required>
-
-        <label for="password" class="label">Mot de passe :</label>
-        <input type="password" id="password" formControlName="password" class="input input-bordered w-full" required>
-
-        <label for="confirm-password" class="label">Confirmer le mot de passe :</label>
-        <input type="password" id="confirm-password" formControlName="confirmPassword"
-            class="input input-bordered w-full" required>
-
-        <button class="btn m-4" type="submit">Valider</button>
-
-        <input [hidden]="true" #imageInput type="file" (change)="processFile(imageInput)" />
-    </form>
 </div>

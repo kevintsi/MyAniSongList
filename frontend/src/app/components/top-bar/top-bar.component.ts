@@ -7,6 +7,7 @@ import { AnimeService } from 'src/app/_services/anime.service';
 import { Subject } from 'rxjs';
 import { TokenService } from 'src/app/_services/token.service';
 import jwtDecode from 'jwt-decode';
+import { UserService } from 'src/app/_services/user.service';
 
 @Component({
   selector: 'app-top-bar',
@@ -16,6 +17,7 @@ import jwtDecode from 'jwt-decode';
 
 
 export class TopBarComponent implements OnInit {
+  isLoading = false
   isMenuOpen: boolean = false;
   isSearchBarOpen: boolean = false
   category: string = "animes"
@@ -27,6 +29,7 @@ export class TopBarComponent implements OnInit {
     private authService: AuthService,
     private musiService: MusicService,
     private artistService: ArtistService,
+    private userService: UserService,
     private animeService: AnimeService,
     private router: Router,
     private tokenService: TokenService
@@ -39,22 +42,25 @@ export class TopBarComponent implements OnInit {
         if (ev instanceof NavigationEnd) {
           this.isMenuOpen = false
           this.isSearchBarOpen = false
+          if (!!this.tokenService.getToken()) {
+            let decodedToken: any = jwtDecode(String(this.tokenService.getToken()))
+            this.user_pfp = decodedToken.sub.profile_picture
+            this.username = decodedToken.sub.username
+            console.log(decodedToken.sub.username)
+          }
         }
       }
     });
-    if (!!this.tokenService.getToken()) {
-      let decodedToken: any = jwtDecode(String(this.tokenService.getToken()))
-      this.user_pfp = decodedToken.sub.profile_picture
-      this.username = decodedToken.sub.username
-      console.log(decodedToken.sub.username)
-    }
+
   }
 
   performSearch(searchTerm: string) {
+    this.isLoading = true
     console.log("New search : ", this.category)
     console.log("Term : " + !searchTerm)
     if (!searchTerm) {
       this.result_search = []
+      this.isLoading = false
       return
     }
     switch (this.category) {
@@ -63,7 +69,8 @@ export class TopBarComponent implements OnInit {
           next: (anime) => {
             this.result_search = anime.items
           },
-          error: (err) => console.error(err.message)
+          error: (err) => console.error(err.message),
+          complete: () => this.isLoading = false
         })
       }
         break
@@ -72,7 +79,8 @@ export class TopBarComponent implements OnInit {
           next: (music) => {
             this.result_search = music.items
           },
-          error: (err) => console.error(err.message)
+          error: (err) => console.error(err.message),
+          complete: () => this.isLoading = false
         })
       }
         break
@@ -81,7 +89,18 @@ export class TopBarComponent implements OnInit {
           next: (artist) => {
             this.result_search = artist.items
           },
-          error: (err) => console.error(err.message)
+          error: (err) => console.error(err.message),
+          complete: () => this.isLoading = false
+        })
+      }
+        break
+      case "profile": {
+        this.userService.search(searchTerm).subscribe({
+          next: (users) => {
+            this.result_search = users.items
+          },
+          error: (err) => console.error(err.message),
+          complete: () => this.isLoading = false
         })
       }
         break

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { firstValueFrom } from 'rxjs'
 import { Music } from 'src/app/models/Music'
 import { MusicService } from 'src/app/_services/music.service';
 import { AnimeService } from 'src/app/_services/anime.service';
@@ -11,30 +12,38 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./anime-detail.component.css']
 })
 export class AnimeDetailComponent implements OnInit {
-  musics: Music[] = []
-  anime?: Anime
+  isLoading: boolean = true
+  musics!: Music[]
+  anime!: Anime
   constructor(
     private route: ActivatedRoute,
-    private music_service: MusicService,
-    private anime_service: AnimeService
+    private musicService: MusicService,
+    private animeService: AnimeService
   ) { }
 
   ngOnInit(): void {
-    let id_anime = Number(this.route.snapshot.paramMap.get("id"))
-    this.music_service.getMusicsAnime(id_anime).subscribe({
-      next: (musics) => {
-        console.log("Musics : ", musics)
-        this.musics = musics
-      },
-      error: (err) => console.log(err)
-    })
+    this.fetchData()
+  }
 
-    this.anime_service.get(id_anime).subscribe({
-      next: (anime) => {
-        console.log("Anime : ", anime)
-        this.anime = anime
-      },
-      error: (err) => console.log(err)
-    })
+  async fetchData() {
+    let id_anime = Number(this.route.snapshot.paramMap.get("id"))
+    try {
+      this.anime = await this.fetchAnime(id_anime)
+      this.musics = await this.fetchMusics(id_anime)
+    } catch (error) {
+      console.log(error)
+    } finally {
+      this.isLoading = false
+    }
+  }
+
+  async fetchAnime(id: number) {
+    return firstValueFrom(this.animeService.get(id))
+  }
+
+  async fetchMusics(id: number) {
+    return firstValueFrom(this.musicService.getMusicsAnime(id))
   }
 }
+
+

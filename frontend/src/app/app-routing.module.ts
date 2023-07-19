@@ -4,6 +4,7 @@ import { LoginComponent } from './components/login/login.component'
 import { ManagerGuard, isSignedInGuard, notSignedInGuard } from './guards/authguard.service';
 import { HomeComponent } from './components/home/home.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { ProfileEditComponent } from './components/profile-edit/profile-edit.component';
 import { AnimeListComponent } from './components/anime/anime-list/anime-list.component';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { ManageComponent } from './components/management/manage/manage.component';
@@ -22,7 +23,12 @@ const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
   { path: 'login', component: LoginComponent, canActivate: [notSignedInGuard] },
   { path: 'register', component: RegistrationComponent, canActivate: [notSignedInGuard] },
-  { path: 'profile', component: ProfileComponent, canActivate: [isSignedInGuard] },
+  { path: 'editProfile', component: ProfileEditComponent, canActivate: [isSignedInGuard] },
+  {
+    path: 'profile', children: [
+      { path: ':id', component: ProfileComponent }
+    ]
+  },
   {
     path: 'animes', children: [
       { path: '', component: AnimeListComponent },

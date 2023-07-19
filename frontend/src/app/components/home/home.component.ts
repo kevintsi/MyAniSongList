@@ -10,7 +10,4 @@ export class HomeComponent {
 
   constructor(private authService: AuthService) { }
 
-  isLoggedIn() {
-    return this.authService.isLoggedIn()
-  }
 }

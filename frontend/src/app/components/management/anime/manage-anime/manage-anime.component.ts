@@ -10,7 +10,7 @@ import { Anime, PagedAnime } from 'src/app/models/Anime';
   styleUrls: ['./manage-anime.component.css']
 })
 export class ManageAnimeComponent implements OnInit {
-  loading = true
+  isLoading = true
   animes!: PagedAnime
   currentPage: number = 1
 
@@ -27,7 +27,7 @@ export class ManageAnimeComponent implements OnInit {
       console.log(error)
     }
     finally {
-      this.loading = false
+      this.isLoading = false
     }
   }
 

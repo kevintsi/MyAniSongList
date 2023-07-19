@@ -12,7 +12,7 @@ import { TokenService } from 'src/app/_services/token.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-
+  isLoading: boolean = false
   loginForm = this.formBuilder.group({
     email: new FormControl("", [Validators.email, Validators.required]),
     password: new FormControl("", [Validators.required]),
@@ -32,6 +32,7 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
     console.log("onSubmit")
+    this.isLoading = true
 
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value
@@ -48,7 +49,10 @@ export class LoginComponent implements OnInit {
           },
           error: err => {
             console.log(err)
-          }
+          },
+          complete: () => {
+            this.isLoading = false
+          },
         })
     }
   }

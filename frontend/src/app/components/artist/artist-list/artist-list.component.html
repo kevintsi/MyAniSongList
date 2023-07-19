@@ -1,24 +1,29 @@
 <div class="container mx-auto pt-20 md:pt-40">
-    <div class="flex justify-center" *ngIf="loading">
+    <div class="flex justify-center" *ngIf="isLoading">
         <span class="loading loading-bars loading-lg"></span>
     </div>
-    <div *ngIf="!loading">
-        <div class="grid grid-cols-2 gap-8">
-            <div class="bg-base-100 hover:cursor-pointer rounded-lg" *ngFor="let artist of artists.items"
-                [routerLink]="['/artists', artist.id]">
-                <div class="text-center font-bold text-sm pb-4 overflow-hidden text-ellipsis whitespace-nowrap">
-                    {{ artist.name }}
-                </div>
-                <div class="flex justify-center text-center">
-                    <img class="hover:shadow-xl hover:shadow-blue-400/40 rounded-3xl w-28 h-36 object-fill"
-                        [src]="artist.poster_img" [alt]="artist.name" />
-                    <!-- <div class="synopsis overflow-auto">{{ anime.description }}</div> -->
+    <div *ngIf="!isLoading">
+        <ng-container *ngIf="artists.items.length > 0;else elseBlock">
+            <div class="grid grid-cols-2 gap-8">
+                <div class="bg-base-100 hover:cursor-pointer rounded-lg" *ngFor="let artist of artists.items"
+                    [routerLink]="['/artists', artist.id]">
+                    <div class="text-center font-bold text-sm pb-4 overflow-hidden text-ellipsis whitespace-nowrap">
+                        {{ artist.name }}
+                    </div>
+                    <div class="flex justify-center text-center">
+                        <img class="hover:shadow-xl hover:shadow-blue-400/40 rounded-3xl w-28 h-36 object-fill"
+                            [src]="artist.poster_img" [alt]="artist.name" />
+                        <!-- <div class="synopsis overflow-auto">{{ anime.description }}</div> -->
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="pt-4">
-            <app-pagination (onPageChange)="onPageChange($event)" [currentPage]="currentPage"
-                [pagedObject]="artists"></app-pagination>
-        </div>
+            <div class="pt-4">
+                <app-pagination (onPageChange)="onPageChange($event)" [currentPage]="currentPage"
+                    [pagedObject]="artists"></app-pagination>
+            </div>
+        </ng-container>
+        <ng-template #elseBlock>
+            Aucun artistes
+        </ng-template>
     </div>
 </div>

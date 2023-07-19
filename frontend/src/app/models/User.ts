@@ -1,3 +1,12 @@
+export interface PagedUser {
+    items: Array<User>
+    total: number,
+    page: number,
+    size: number,
+    pages: number
+}
+
+
 export interface User {
     id?: number;
     username?: string;

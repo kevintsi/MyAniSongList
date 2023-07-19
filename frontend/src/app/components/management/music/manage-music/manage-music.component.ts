@@ -10,7 +10,7 @@ import { Music, PagedMusic } from 'src/app/models/Music';
   styleUrls: ['./manage-music.component.css']
 })
 export class ManageMusicComponent {
-  loading = true
+  isLoading = true
   musics!: PagedMusic
   currentPage: number = 1
 
@@ -26,7 +26,7 @@ export class ManageMusicComponent {
       console.log(error)
     }
     finally {
-      this.loading = false
+      this.isLoading = false
     }
   }
 

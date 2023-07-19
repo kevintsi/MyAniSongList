@@ -27,6 +27,7 @@ import { SharedModule } from './modules/shared/shared.module';
 import { CommunityListComponent } from './components/community-list/community-list.component';
 import { RankingMusicComponent } from './components/music/ranking-music/ranking-music.component';
 import { FavoriteListComponent } from './components/favorite-list/favorite-list.component';
+import { ProfileEditComponent } from './components/profile-edit/profile-edit.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { FavoriteListComponent } from './components/favorite-list/favorite-list.
     CommunityListComponent,
     RankingMusicComponent,
     FavoriteListComponent,
+    ProfileEditComponent,
   ],
   imports: [
     HttpClientModule,

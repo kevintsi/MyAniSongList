@@ -10,7 +10,7 @@ import { Artist, PagedArtist } from 'src/app/models/Artist';
   styleUrls: ['./manage-artist.component.css']
 })
 export class ManageArtistComponent {
-  loading = true
+  isLoading = true
   artists!: PagedArtist
 
   currentPage: number = 1
@@ -28,7 +28,7 @@ export class ManageArtistComponent {
       console.log(error)
     }
     finally {
-      this.loading = false
+      this.isLoading = false
     }
   }
 

@@ -10,15 +10,14 @@ import { firstValueFrom } from 'rxjs';
   styleUrls: ['./anime-list.component.css']
 })
 export class AnimeListComponent implements OnInit {
-  loading = true
+  isLoading = true
   animes!: PagedAnime
 
   currentPage: number = 1
 
 
-  constructor(private service: AnimeService, private title: Title) { }
+  constructor(private service: AnimeService) { }
   ngOnInit(): void {
-    this.title.setTitle("Liste d'animés")
     this.fetchData()
   }
 
@@ -30,7 +29,7 @@ export class AnimeListComponent implements OnInit {
       console.log(error)
     }
     finally {
-      this.loading = false
+      this.isLoading = false
     }
   }
 
