@@ -2,7 +2,7 @@ from fastapi import (
     APIRouter,
     Depends,
 )
-from db.schemas import *
+from db.schemas.types import *
 from services.types import (
     TypeService,
     get_service,

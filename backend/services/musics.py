@@ -1,12 +1,18 @@
+from enum import Enum
 from sqlalchemy.orm import Session
 from fastapi import Depends, UploadFile
-from db.schemas import MusicCreate, MusicUpdate, OrderMusicBy
+from db.schemas.musics import MusicCreate, MusicUpdate
 from starlette.exceptions import HTTPException
 from db.models import Music, Author, User
 from .base import BaseService
 from db.session import get_session
 import sqlalchemy
 from firebase import bucket
+
+
+class OrderMusicBy(str, Enum):
+    AVG_NOTE = "avg_note"
+    NAME = "name"
 
 
 class MusicService(BaseService[Music, MusicCreate, MusicUpdate]):
@@ -97,6 +103,13 @@ class MusicService(BaseService[Music, MusicCreate, MusicUpdate]):
         print("End add to favorite")
 
     def get_favorites(self, user: User):
+        return user.favorites
+
+    def get_user_favorites(self, id: int):
+        user = self.db_session.get(User, id)
+        if user is None:
+            raise HTTPException(status_code=404, detail="User not found")
+
         return user.favorites
 
     def remove_from_favorite(self, id: str, user: User):

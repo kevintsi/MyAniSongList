@@ -1,7 +1,7 @@
 from datetime import datetime
 from sqlalchemy.orm import Session
 from fastapi import Depends
-from db.schemas import ReviewCreate, ReviewUpdate
+from db.schemas.reviews import ReviewCreate, ReviewUpdate
 from starlette.exceptions import HTTPException
 from db.models import Music, Review, User
 from .base import BaseService

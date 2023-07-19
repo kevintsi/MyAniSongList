@@ -9,7 +9,8 @@ from typing import Optional
 
 from fastapi_pagination import Page
 from fastapi_pagination.ext.sqlalchemy import paginate
-from db.schemas import *
+from db.models import User
+from db.schemas.authors import *
 from routers.users import get_current_user
 from services.authors import (
     AuthorService,

@@ -9,7 +9,7 @@ from fastapi import (
 from fastapi_pagination import Page
 from fastapi_pagination.ext.sqlalchemy import paginate
 from db.models import User
-from db.schemas import Anime, AnimeCreate, AnimeUpdate
+from db.schemas.animes import Anime, AnimeCreate, AnimeUpdate
 from typing import List, Optional
 from routers.users import get_current_user
 from services.animes import (

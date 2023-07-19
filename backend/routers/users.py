@@ -1,4 +1,4 @@
-from datetime import timedelta, timezone
+from datetime import datetime, timedelta, timezone
 from os import getenv
 import os
 from fastapi import (
@@ -13,14 +13,16 @@ from fastapi import (
     Body,
     UploadFile
 )
+from fastapi_pagination import Page
 import jwt
 import redis
-from db.schemas import *
+from db.schemas.users import *
 from utils import (
     authenticate_user,
     create_access_token,
 )
 from sqlalchemy.orm import Session
+from fastapi_pagination.ext.sqlalchemy import paginate
 from services.users import (
     UserService,
     UserCreate,
@@ -53,6 +55,14 @@ async def get_current_user(token: str = Depends(HTTPBearer()), user_service: Use
         return user_service.get(user["id"])
     except jwt.InvalidTokenError:
         raise credentials_exception
+
+
+@router.get("/search", response_model=Page[UserPublic])
+async def search(
+    query: str,
+    service: UserService = Depends(get_service)
+):
+    return paginate(service.search(query))
 
 
 @router.post("/register")
@@ -188,6 +198,15 @@ async def profile(
 ):
     print(f"User : {current_user.id} {type(current_user)}")
     return service.get(current_user.id)
+
+
+@router.get("/{id}", response_model=UserPublic)
+async def get_user(
+    id: int,
+    service: UserService = Depends(get_service)
+
+):
+    return service.get(id)
 
 
 @router.delete("/delete")

@@ -8,7 +8,9 @@ from fastapi import (
 )
 from fastapi_pagination import Page
 from fastapi_pagination.ext.sqlalchemy import paginate
-from db.schemas import *
+from db.models import User
+from services.musics import OrderMusicBy
+from db.schemas.musics import *
 from typing import Optional
 from routers.users import get_current_user
 from services.musics import (

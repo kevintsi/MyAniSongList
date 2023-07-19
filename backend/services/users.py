@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import update
 from fastapi import Depends, UploadFile
-from db.schemas import UserUpdate, UserCreate
+from db.schemas.users import UserUpdate, UserCreate
 from db.models import User
 from .base import BaseService
 from db.session import get_session
@@ -15,6 +15,9 @@ from firebase import bucket
 class UserService(BaseService[User, UserCreate, UserUpdate]):
     def __init__(self, db_session: Session):
         super(UserService, self).__init__(User, db_session)
+
+    def search(self, term: str):
+        return self.db_session.query(User).filter(User.username.like(f"%{term}%"))
 
     def create(self, obj: UserCreate):
         db_obj: User = User(

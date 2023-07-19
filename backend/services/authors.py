@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from fastapi import Depends, UploadFile
-from db.schemas import AuthorCreate, AuthorUpdate
+from db.schemas.authors import AuthorCreate, AuthorUpdate
 from starlette.exceptions import HTTPException
 from db.models import Author, User
 from .base import BaseService

@@ -3,8 +3,9 @@ from fastapi import (
     Depends,
 )
 from fastapi_pagination import Page
+from db.models import User
 from fastapi_pagination.ext.sqlalchemy import paginate
-from db.schemas import *
+from db.schemas.reviews import *
 from routers.users import get_current_user
 from services.reviews import (
     ReviewService,

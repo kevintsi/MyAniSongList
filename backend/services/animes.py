@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from fastapi import Depends, UploadFile
-from db.schemas import AnimeCreate, AnimeUpdate
+from db.schemas.animes import AnimeCreate, AnimeUpdate
 from starlette.exceptions import HTTPException
 from db.models import Anime, User
 from .base import BaseService
