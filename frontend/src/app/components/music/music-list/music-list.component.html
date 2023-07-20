@@ -1,23 +1,28 @@
 <div class="container mx-auto pt-20 md:pt-40">
-    <div class="flex justify-center" *ngIf="loading">
+    <div class="flex justify-center" *ngIf="isLoading">
         <span class="loading loading-bars loading-lg"></span>
     </div>
-    <div *ngIf="!loading">
-        <div class="grid grid-cols-2 gap-8">
-            <div class="bg-base-100 hover:cursor-pointer rounded-lg" *ngFor="let music of musics.items"
-                [routerLink]="['/musics', music.id]">
-                <div class="text-center font-bold text-sm pb-4 overflow-hidden text-ellipsis whitespace-nowrap">
-                    {{ music.name }}
-                </div>
-                <div class="flex justify-center text-center">
-                    <img class="hover:shadow-xl hover:shadow-blue-400/40 rounded-3xl w-28 h-36 object-fill"
-                        [src]="music.poster_img" [alt]="music.name" />
+    <div *ngIf="!isLoading">
+        <ng-container *ngIf="musics.items.length > 0;else elseBlock">
+            <div class="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-5 gap-8 text-center w-full">
+                <div class="bg-base-100 hover:cursor-pointer rounded-lg" *ngFor="let music of musics.items"
+                    [routerLink]="['/musics', music.id]">
+                    <div class="text-center font-bold text-sm pb-4 overflow-hidden text-ellipsis whitespace-nowrap">
+                        {{ music.name }}
+                    </div>
+                    <div class="flex justify-center text-center">
+                        <img class="hover:shadow-xl hover:shadow-blue-400/40 rounded-3xl md:w-36 md:h-48 w-28 h-36 object-fill"
+                            [src]="music.poster_img" [alt]="music.name" />
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="pt-4">
-            <app-pagination (onPageChange)="onPageChange($event)" [currentPage]="currentPage"
-                [pagedObject]="musics"></app-pagination>
-        </div>
+            <div class="pt-4">
+                <app-pagination (onPageChange)="onPageChange($event)" [currentPage]="currentPage"
+                    [pagedObject]="musics"></app-pagination>
+            </div>
+        </ng-container>
+        <ng-template #elseBlock>
+            <div class="text-2xl text-center">Aucune musiques</div>
+        </ng-template>
     </div>
 </div>

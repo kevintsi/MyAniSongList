@@ -1,31 +1,30 @@
-<div class="container mx-auto pt-20 md:pt-40">
+<div class="container pt-20 md:pt-40">
     <div class="flex justify-center" *ngIf="isLoading">
         <span class="loading loading-bars loading-lg"></span>
     </div>
     <div *ngIf="!isLoading">
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-8">
-            <ng-container *ngIf="animes.items.length > 0;else elseBlock">
+
+        <ng-container *ngIf="animes.items.length > 0;else elseBlock">
+            <div class="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-5 gap-8 text-center w-full">
                 <div class="bg-base-100 hover:cursor-pointer rounded-lg" *ngFor="let anime of animes.items"
                     [routerLink]="['/animes', anime.id]">
                     <div class="text-center font-bold text-sm pb-4 overflow-hidden text-ellipsis whitespace-nowrap">
                         {{ anime.name }}
                     </div>
                     <div class="flex justify-center text-justify">
-                        <img class="hover:shadow-xl hover:shadow-base-300 rounded-3xl w-28 h-36 object-fill"
+                        <img class="hover:shadow-xl hover:shadow-base-300 rounded-3xl md:w-36 md:h-48 w-28 h-36 object-fill"
                             [src]="anime.poster_img" [alt]="anime.name" />
-                        <div class="hidden md:block overflow-auto text-ellipsis whitespace-nowrap w-10 h-10">
-                            {{anime.description }}
-                        </div>
                     </div>
                 </div>
-            </ng-container>
-            <ng-template #elseBlock>
-                <div>Aucun animés</div>
-            </ng-template>
-        </div>
-        <div class="pt-4">
-            <app-pagination (onPageChange)="onPageChange($event)" [currentPage]="currentPage"
-                [pagedObject]="animes"></app-pagination>
-        </div>
+            </div>
+            <div class="pt-4">
+                <app-pagination (onPageChange)="onPageChange($event)" [currentPage]="currentPage"
+                    [pagedObject]="animes"></app-pagination>
+            </div>
+        </ng-container>
+
+        <ng-template #elseBlock>
+            <div class="text-2xl">Aucun animés</div>
+        </ng-template>
     </div>
 </div>

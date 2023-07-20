@@ -10,6 +10,8 @@ export class PaginationComponent {
   @Input() currentPage!: number
   @Output() onPageChange: EventEmitter<number> = new EventEmitter<number>()
 
+
+
   onClick(value: number) {
     this.onPageChange.emit(value)
   }

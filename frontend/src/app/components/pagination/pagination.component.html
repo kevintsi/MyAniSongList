@@ -1,8 +1,8 @@
 <div class="join grid grid-cols-2 pt-4">
-    <ng-container *ngIf="pagedObject.total != 0">
+    <ng-container *ngIf="pagedObject.page != 1 || pagedObject.pages != 1">
         <button class="join-item btn btn-outline" [disabled]="pagedObject.page == 1"
             (click)="onClick(currentPage -1)">Précedente</button>
-        <button [disabled]="currentPage == pagedObject.pages || pagedObject.pages == 0"
-            class="join-item btn btn-outline" (click)="onClick(currentPage + 1)">Suivante</button>
+        <button [disabled]="currentPage == pagedObject.pages" class="join-item btn btn-outline"
+            (click)="onClick(currentPage + 1)">Suivante</button>
     </ng-container>
 </div>

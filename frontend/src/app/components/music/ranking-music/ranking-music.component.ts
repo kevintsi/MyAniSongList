@@ -33,7 +33,7 @@ export class RankingMusicComponent {
   }
 
   fetchMusics() {
-    return firstValueFrom(this.service.getAll(this.currentPage, 10, 'avg_note'))
+    return firstValueFrom(this.service.getAll(this.currentPage, 'avg_note'))
   }
 
   onPageChange(page: number) {

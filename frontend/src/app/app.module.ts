@@ -28,6 +28,7 @@ import { CommunityListComponent } from './components/community-list/community-li
 import { RankingMusicComponent } from './components/music/ranking-music/ranking-music.component';
 import { FavoriteListComponent } from './components/favorite-list/favorite-list.component';
 import { ProfileEditComponent } from './components/profile-edit/profile-edit.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { ProfileEditComponent } from './components/profile-edit/profile-edit.com
     RankingMusicComponent,
     FavoriteListComponent,
     ProfileEditComponent,
+    NotFoundComponent,
   ],
   imports: [
     HttpClientModule,

@@ -10,14 +10,13 @@ import { Music, PagedMusic } from 'src/app/models/Music';
   styleUrls: ['./music-list.component.css']
 })
 export class MusicListComponent {
-  loading = true
+  isLoading = true
   musics!: PagedMusic
 
   currentPage: number = 1
 
-  constructor(private service: MusicService, private title: Title) { }
+  constructor(private service: MusicService) { }
   ngOnInit(): void {
-    this.title.setTitle("Liste de musiques")
     this.fetchData()
   }
 
@@ -28,7 +27,7 @@ export class MusicListComponent {
       console.log(error)
     }
     finally {
-      this.loading = false
+      this.isLoading = false
     }
   }
 

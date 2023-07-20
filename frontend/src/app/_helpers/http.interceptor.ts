@@ -47,6 +47,8 @@ export class AuthInterceptor implements HttpInterceptor {
                             return throwError(() => new Error('Error when calling refresh token, cleaning cookies and local storage'))
                         })
                     )
+                } else if (error.status === 404 && error.error.detail != "Invalid username or password") {
+                    this.router.navigateByUrl("/404", { skipLocationChange: true })
                 }
                 // For other errors, propagate the error
                 return throwError(() => new Error(error.message));

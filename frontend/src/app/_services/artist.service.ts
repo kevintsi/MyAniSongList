@@ -15,8 +15,8 @@ export class ArtistService {
     return this.http.get<PagedArtist>(this.endpoint + '/authors/search?query=' + term)
   }
 
-  public getAll(page: number, size: number = 10) {
-    return this.http.get<PagedArtist>(this.endpoint + '/authors/all?page=' + page + "&size=" + size)
+  public getAll(page: number) {
+    return this.http.get<PagedArtist>(this.endpoint + '/authors/all?page=' + page)
   }
 
   public get(id: number) {
