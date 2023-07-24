@@ -97,7 +97,7 @@ async def login(
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Invalid username or password")
     print(user)
-    access_token_expires = timedelta(minutes=1)
+    access_token_expires = timedelta(minutes=15)
     print(access_token_expires)
     access_token = create_access_token(
         data={"sub": {"id": user.id, "username": user.username, "is_manager": user.is_manager, 'profile_picture': user.profile_picture}}, expires_delta=access_token_expires)
@@ -143,7 +143,7 @@ def refresh_access_token(response: Response, refresh_token: str = Cookie(None)):
                 user = decoded_token.get("sub")
                 print(user)
                 # Generate a new access token
-                access_token_expires = timedelta(minutes=1)
+                access_token_expires = timedelta(minutes=15)
                 new_access_token = create_access_token(
                     data={"sub": {"id": user['id'], "username": user["username"], "is_manager": user['is_manager'], 'profile_picture': user['profile_picture']}}, expires_delta=access_token_expires
                 )

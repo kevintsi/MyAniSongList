@@ -23,8 +23,7 @@ class UserService(BaseService[User, UserCreate, UserUpdate]):
         db_obj: User = User(
             username=obj.username,
             email=obj.email,
-            password=get_password_hash(obj.password),
-            creation_date=datetime.now()
+            password=get_password_hash(obj.password)
         )
         print(f"converted to User model : ${db_obj}")
         self.db_session.add(db_obj)

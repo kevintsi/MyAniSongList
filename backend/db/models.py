@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import List
 from sqlalchemy import (
     BigInteger,
@@ -10,6 +11,7 @@ from sqlalchemy import (
     String,
     Table,
     Text,
+    func,
 )
 from sqlalchemy.orm import DeclarativeBase, relationship, mapped_column, Mapped
 
@@ -23,8 +25,10 @@ t_chante = Table(
     Column('music_id', BigInteger, primary_key=True, nullable=False),
     Column('author_id', BigInteger, primary_key=True,
            nullable=False, index=True),
-    ForeignKeyConstraint(['author_id'], ['author.id'], name='chante_ibfk_1'),
-    ForeignKeyConstraint(['music_id'], ['music.id'], name='chante_ibfk_2'),
+    ForeignKeyConstraint(['author_id'], ['author.id'],
+                         name='chante_ibfk_1', ondelete="CASCADE"),
+    ForeignKeyConstraint(['music_id'], ['music.id'],
+                         name='chante_ibfk_2', ondelete="CASCADE"),
     Index('ix_chante_author_id', 'author_id')
 )
 
@@ -33,8 +37,10 @@ t_favorite = Table(
     Column('music_id', BigInteger, primary_key=True, nullable=False),
     Column('user_id', BigInteger, primary_key=True,
            nullable=False, index=True),
-    ForeignKeyConstraint(['user_id'], ['user.id'], name='favorite_ibfk_1'),
-    ForeignKeyConstraint(['music_id'], ['music.id'], name='favorite_ibfk_2'),
+    ForeignKeyConstraint(['user_id'], ['user.id'],
+                         name='favorite_ibfk_1', ondelete="CASCADE"),
+    ForeignKeyConstraint(['music_id'], ['music.id'],
+                         name='favorite_ibfk_2', ondelete="CASCADE"),
     Index('ix_favorite_user_id', 'user_id')
 )
 
@@ -49,12 +55,13 @@ class User(Base):
     password = mapped_column(String(250), nullable=False)
     is_manager = mapped_column(Integer, nullable=False, default=False)
     profile_picture = mapped_column(String(250))
-    creation_date = mapped_column(DateTime)
+    creation_date = mapped_column(
+        DateTime, nullable=False,  default=func.now())
 
     reviews: Mapped[List["Review"]] = relationship(
-        'Review', back_populates='user')
+        'Review', back_populates='user', cascade="all, delete")
     favorites: Mapped[List["Music"]] = relationship(
-        'Music', secondary=t_favorite)
+        'Music', secondary=t_favorite, cascade="all, delete")
 
     def __repr__(self):
         return f"User({self.id},{self.username},{self.email}, {self.creation_date}, {self.profile_picture}, {self.is_manager})"
@@ -106,8 +113,10 @@ class Type(Base):
 class Music(Base):
     __tablename__ = 'music'
     __table_args__ = (
-        ForeignKeyConstraint(['anime_id'], ['anime.id'], name='music_ibfk_1'),
-        ForeignKeyConstraint(['type_id'], ['type.id'], name='music_ibfk_2')
+        ForeignKeyConstraint(['anime_id'], ['anime.id'],
+                             name='music_ibfk_1'),
+        ForeignKeyConstraint(['type_id'], ['type.id'],
+                             name='music_ibfk_2')
     )
 
     id = mapped_column(BigInteger, primary_key=True)
@@ -118,15 +127,16 @@ class Music(Base):
     type_id = mapped_column(BigInteger, nullable=False, index=True)
     poster_img = mapped_column(String(250))
     id_video = mapped_column(String(25))
+    creation_date = mapped_column(DateTime, nullable=False, default=func.now())
 
     authors: Mapped[List["Author"]] = relationship(
         'Author', secondary=t_chante, back_populates='musics')
     anime: Mapped["Anime"] = relationship(
-        'Anime', uselist=False, back_populates='musics')
+        'Anime', uselist=False, back_populates='musics',)
     type: Mapped["Type"] = relationship(
         'Type', uselist=False, back_populates='musics')
     reviews: Mapped[List["Review"]] = relationship(
-        'Review', back_populates='music')
+        'Review', back_populates='music', cascade="all, delete")
 
     def __repr__(self):
         return f"Music({self.id},{self.name},{self.release_date},{self.anime_id},{self.type_id},{self.poster_img})"
@@ -136,8 +146,9 @@ class Review(Base):
     __tablename__ = 'review'
     __table_args__ = (
         ForeignKeyConstraint(
-            ['user_id'], ['user.id'], name='review_ibfk_1'),
-        ForeignKeyConstraint(['music_id'], ['music.id'], name='review_ibfk_2')
+            ['user_id'], ['user.id'], name='review_ibfk_1', ondelete="CASCADE"),
+        ForeignKeyConstraint(['music_id'], ['music.id'],
+                             name='review_ibfk_2', ondelete="CASCADE")
     )
 
     id = mapped_column(BigInteger, primary_key=True)
