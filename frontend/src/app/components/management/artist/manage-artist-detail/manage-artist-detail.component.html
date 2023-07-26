@@ -2,9 +2,6 @@
     <div class="flex justify-center" *ngIf="isLoading">
         <span class="loading loading-bars loading-lg"></span>
     </div>
-    <div *ngIf="successMessage" class="alert alert-success flex flex-col items-center">
-        <div>{{successMessage}}</div>
-    </div>
     <app-form-artist *ngIf="!isLoading" class="w-full" [artist]=artist [isUpdate]=true
         (submitForm)="onSubmit($event)"></app-form-artist>
 </div>
