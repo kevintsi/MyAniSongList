@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { AnimeService } from 'src/app/_services/anime.service';
 
 @Component({
@@ -11,6 +10,7 @@ import { AnimeService } from 'src/app/_services/anime.service';
 export class ManageCreateAnimeComponent {
   constructor(
     private service: AnimeService,
+    private toastr: ToastrService
   ) { }
 
   onSubmit(formData: any) {
@@ -18,7 +18,10 @@ export class ManageCreateAnimeComponent {
     this.service.create(formData)
       .subscribe({
         next: () => {
-          alert("Animé ajouté")
+          this.toastr.success("Animé ajouté avec succès", 'Ajout', {
+            progressBar: true,
+            timeOut: 3000
+          })
         },
         error: (err) => console.log(err)
       })

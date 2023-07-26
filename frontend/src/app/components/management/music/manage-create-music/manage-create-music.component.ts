@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 import { MusicService } from 'src/app/_services/music.service';
 
 @Component({
@@ -7,9 +8,9 @@ import { MusicService } from 'src/app/_services/music.service';
   styleUrls: ['./manage-create-music.component.css']
 })
 export class ManageCreateMusicComponent {
-
   constructor(
     private music_service: MusicService,
+    private toastr: ToastrService
   ) { }
 
 
@@ -18,7 +19,10 @@ export class ManageCreateMusicComponent {
     this.music_service.create(formData)
       .subscribe({
         next: () => {
-          alert("Musique ajouté")
+          this.toastr.success("Musique ajoutée avec succès", 'Ajout', {
+            progressBar: true,
+            timeOut: 3000
+          })
         },
         error: (err) => console.log(err)
       })

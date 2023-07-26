@@ -3,8 +3,8 @@
     <div class="flex justify-center" *ngIf="isLoading">
         <span class="loading loading-bars loading-lg"></span>
     </div>
-    <div *ngIf="!isLoading" class="container mx-auto">
-        <div class="flex flex-col items-center">
+    <div *ngIf="!isLoading" class="flex flex-col items-center">
+        <ng-container *ngIf="reviews.items.length > 0;else elseBlock">
             <div *ngFor="let review of reviews.items" class="pt-8 w-full">
                 <div class="flex flex-row justify-start ">
                     <div class="w-14">
@@ -33,8 +33,11 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <app-pagination (onPageChange)="onPageChange($event)" [currentPage]="currentPage"
-            [pagedObject]="reviews"></app-pagination>
+            <app-pagination (onPageChange)="onPageChange($event)" [currentPage]="currentPage"
+                [pagedObject]="reviews"></app-pagination>
+        </ng-container>
+        <ng-template #elseBlock>
+            <div>Aucun commentaire </div>
+        </ng-template>
     </div>
 </div>

@@ -28,6 +28,7 @@
                         <div>{{ music.type.type_name }}</div>
                     </div>
                 </div>
+                <div *ngIf="musics.length == 0" class="pt-4">Il n'y a pas d'openings/endings liés à cet artiste</div>
             </div>
 
         </div>

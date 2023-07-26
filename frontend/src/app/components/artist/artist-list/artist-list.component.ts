@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Title } from '@angular/platform-browser';
 import { firstValueFrom } from 'rxjs';
 import { ArtistService } from 'src/app/_services/artist.service';
-import { Artist, PagedArtist } from 'src/app/models/Artist';
+import { PagedArtist } from 'src/app/models/Artist';
 
 @Component({
   selector: 'app-artist-list',
@@ -15,9 +14,8 @@ export class ArtistListComponent implements OnInit {
 
   currentPage: number = 1
 
-  constructor(private service: ArtistService, private title: Title) { }
+  constructor(private service: ArtistService) { }
   ngOnInit(): void {
-    this.title.setTitle("Liste d'artistes")
     this.fetchData()
   }
 

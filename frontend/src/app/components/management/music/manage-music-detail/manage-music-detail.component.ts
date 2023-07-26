@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { firstValueFrom } from 'rxjs';
 import { MusicService } from 'src/app/_services/music.service';
 import { Music } from 'src/app/models/Music';
@@ -11,9 +12,11 @@ import { Music } from 'src/app/models/Music';
 export class ManageMusicDetailComponent {
   isLoading = true
   music!: Music
+
   constructor(
     private music_service: MusicService,
     private route: ActivatedRoute,
+    private toastr: ToastrService
   ) { }
 
   async ngOnInit() {
@@ -39,7 +42,10 @@ export class ManageMusicDetailComponent {
     this.music_service.update(id, formData)
       .subscribe({
         next: () => {
-          alert("Informations mises à jour")
+          this.toastr.success("Informations de la musique mis à jour avec succès", 'Modification', {
+            progressBar: true,
+            timeOut: 3000
+          })
         },
         error: (err) => console.log(err)
       })

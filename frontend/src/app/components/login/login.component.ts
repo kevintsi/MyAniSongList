@@ -1,18 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from "@angular/forms"
 import { AuthService } from '../../_services/auth.service';
 import { Router } from '@angular/router';
 import { User } from '../../models/User';
-import { Title } from '@angular/platform-browser';
 import { TokenService } from 'src/app/_services/token.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
   isLoading: boolean = false
+  errorLogin?: string
   loginForm = this.formBuilder.group({
     email: new FormControl("", [Validators.email, Validators.required]),
     password: new FormControl("", [Validators.required]),
@@ -22,18 +23,12 @@ export class LoginComponent implements OnInit {
     private authService: AuthService,
     private tokenService: TokenService,
     private router: Router,
-    private title: Title
   ) {
     console.log("In constructor");
   }
-  ngOnInit(): void {
-    this.title.setTitle("Se connecter")
-  }
 
-  onSubmit() {
+  async onSubmit() {
     console.log("onSubmit")
-    this.isLoading = true
-
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value
       let user: User = {
@@ -41,19 +36,20 @@ export class LoginComponent implements OnInit {
         password: password?.toString()
       }
 
-      this.authService.login(user)
-        .subscribe({
-          next: data => {
-            this.tokenService.setToken(data)
-            this.router.navigateByUrl("/")
-          },
-          error: err => {
-            console.log(err)
-          },
-          complete: () => {
-            this.isLoading = false
-          },
-        })
+      try {
+        this.isLoading = true
+        let token = await this.loggingIn(user)
+        this.tokenService.setToken(token)
+        this.router.navigateByUrl("/")
+      } catch (error) {
+        console.log(error)
+        this.errorLogin = "Email ou mot de passe incorrect"
+      } finally {
+        this.isLoading = false
+      }
     }
+  }
+  loggingIn(user: User) {
+    return firstValueFrom(this.authService.login(user))
   }
 }

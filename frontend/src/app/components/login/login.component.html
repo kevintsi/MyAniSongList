@@ -4,7 +4,9 @@
     </div>
     <ng-container *ngIf="!isLoading">
         <h1 class="text-center text-2xl font-medium p-4">Connexion</h1>
-
+        <div *ngIf="errorLogin" class="alert alert-error flex flex-col items-center">
+            <div>{{errorLogin}}</div>
+        </div>
         <form *ngIf="!isLoading" [formGroup]="loginForm" class="w-full flex flex-col items-center"
             (ngSubmit)="onSubmit()">
             <label for="email" class="label">Adresse e-mail :</label>

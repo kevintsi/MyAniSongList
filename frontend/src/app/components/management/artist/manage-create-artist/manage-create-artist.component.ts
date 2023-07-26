@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { ArtistService } from 'src/app/_services/artist.service';
 
 @Component({
@@ -9,9 +8,9 @@ import { ArtistService } from 'src/app/_services/artist.service';
   styleUrls: ['./manage-create-artist.component.css']
 })
 export class ManageCreateArtistComponent {
-
   constructor(
     private service: ArtistService,
+    private toastr: ToastrService
   ) { }
 
   onSubmit(formData: any) {
@@ -19,7 +18,10 @@ export class ManageCreateArtistComponent {
     this.service.create(formData)
       .subscribe({
         next: () => {
-          alert("Artiste ajouté")
+          this.toastr.success("Artiste ajouté(e) avec succès", 'Ajout', {
+            progressBar: true,
+            timeOut: 3000
+          })
         },
         error: (err) => console.log(err)
       })

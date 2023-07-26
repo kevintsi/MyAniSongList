@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ArtistService } from 'src/app/_services/artist.service';
 import { Artist } from 'src/app/models/Artist';
 import { firstValueFrom } from 'rxjs'
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-manage-artist-detail',
@@ -13,10 +14,12 @@ import { firstValueFrom } from 'rxjs'
 export class ManageArtistDetailComponent {
   artist!: Artist
   isLoading: boolean = true
+  successMessage?: string
 
   constructor(
     private service: ArtistService,
     private route: ActivatedRoute,
+    private toastr: ToastrService
   ) { }
 
   async ngOnInit() {
@@ -40,7 +43,10 @@ export class ManageArtistDetailComponent {
     this.service.update(id, formData)
       .subscribe({
         next: () => {
-          alert("Informations mises à jour")
+          this.toastr.success("Informations de l'artiste mis à jour avec succès", 'Modification', {
+            progressBar: true,
+            timeOut: 3000
+          })
         },
         error: (err) => console.log(err)
       })

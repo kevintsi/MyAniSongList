@@ -29,6 +29,7 @@ import { RankingMusicComponent } from './components/music/ranking-music/ranking-
 import { FavoriteListComponent } from './components/favorite-list/favorite-list.component';
 import { ProfileEditComponent } from './components/profile-edit/profile-edit.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -64,6 +65,7 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
     BrowserAnimationsModule,
     MatIconModule,
     SharedModule,
+    ToastrModule.forRoot()
   ],
   providers: [
     httpInterceptorProviders

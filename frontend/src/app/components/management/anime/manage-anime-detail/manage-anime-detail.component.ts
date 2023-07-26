@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AnimeService } from 'src/app/_services/anime.service';
 import { Anime } from 'src/app/models/Anime';
-import { firstValueFrom } from 'rxjs'
+import { firstValueFrom, timeout } from 'rxjs'
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-manage-anime-detail',
   templateUrl: './manage-anime-detail.component.html',
@@ -12,10 +13,10 @@ export class ManageAnimeDetailComponent {
   isLoading = true
   anime!: Anime
 
-
   constructor(
     private service: AnimeService,
     private route: ActivatedRoute,
+    private toastr: ToastrService
   ) { }
 
   async ngOnInit() {
@@ -40,7 +41,10 @@ export class ManageAnimeDetailComponent {
     this.service.update(id, formData)
       .subscribe({
         next: () => {
-          alert("Informations mises à jour")
+          this.toastr.success("Informations de l'animé mis à jour avec succès", 'Modification', {
+            progressBar: true,
+            timeOut: 3000
+          })
         },
         error: (err) => console.log(err)
       })
