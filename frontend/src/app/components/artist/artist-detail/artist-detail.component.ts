@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { firstValueFrom } from 'rxjs'
 import { ArtistService } from 'src/app/_services/artist.service';
@@ -18,7 +19,8 @@ export class ArtistDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private musicService: MusicService,
-    private artistService: ArtistService
+    private artistService: ArtistService,
+    private title: Title
   ) { }
 
   ngOnInit(): void {
@@ -30,6 +32,7 @@ export class ArtistDetailComponent implements OnInit {
     try {
       this.artist = await this.fetchArtist(id_artist)
       this.musics = await this.fetchMusicsArtist(id_artist)
+      this.title.setTitle("MyAniSongList - " + this.artist.name)
     } catch (error) {
       console.log(error)
     } finally {

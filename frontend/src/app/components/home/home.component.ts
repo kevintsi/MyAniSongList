@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../../_services/auth.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-home',
@@ -8,6 +8,8 @@ import { AuthService } from '../../_services/auth.service';
 })
 export class HomeComponent {
 
-  constructor(private authService: AuthService) { }
+  constructor(private title: Title) {
+    this.title.setTitle("MyAniSongList - Accueil")
+  }
 
 }

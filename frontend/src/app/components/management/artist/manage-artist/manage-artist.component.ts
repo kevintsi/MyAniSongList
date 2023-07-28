@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { ArtistService } from 'src/app/_services/artist.service';
@@ -15,7 +16,7 @@ export class ManageArtistComponent {
 
   currentPage: number = 1
 
-  constructor(private service: ArtistService, private router: Router) { }
+  constructor(private service: ArtistService, private title: Title) { }
 
   ngOnInit(): void {
     this.fetchData()
@@ -24,6 +25,7 @@ export class ManageArtistComponent {
   async fetchData() {
     try {
       this.artists = await this.fetchArtists()
+      this.title.setTitle("MyAniSongList - Gestion - Artiste")
     } catch (error) {
       console.log(error)
     }

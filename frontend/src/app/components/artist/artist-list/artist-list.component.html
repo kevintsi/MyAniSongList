@@ -2,7 +2,7 @@
     <div class="flex justify-center" *ngIf="isLoading">
         <span class="loading loading-bars loading-lg"></span>
     </div>
-    <div *ngIf="!isLoading">
+    <div *ngIf="!isLoading" class="flex flex-col items-center">
         <ng-container *ngIf="artists.items.length > 0;else elseBlock">
             <div class="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-5 gap-8 text-center w-full">
                 <div class="bg-base-100 hover:cursor-pointer rounded-lg" *ngFor="let artist of artists.items"
@@ -11,7 +11,7 @@
                         {{ artist.name }}
                     </div>
                     <div class="flex justify-center text-center">
-                        <img class="hover:shadow-xl hover:shadow-blue-400/40 rounded-3xl md:w-36 md:h-48 w-28 h-36 object-fill"
+                        <img class="hover:shadow-xl hover:bg-base-300 rounded-3xl md:w-36 md:h-48 w-28 h-36 object-fill"
                             [src]="artist.poster_img" [alt]="artist.name" />
                     </div>
                 </div>
@@ -23,7 +23,7 @@
         </ng-container>
 
         <ng-template #elseBlock>
-            Aucun artistes
+            <div class="text-2xl p-4">Aucun artistes</div>
         </ng-template>
     </div>
 </div>

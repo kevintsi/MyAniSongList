@@ -1,43 +1,48 @@
 <div class="container mx-auto pt-20 text-center md:pt-40">
     <h1 class="p-4">Classement des meilleurs musiques</h1>
-    <div class="flex justify-center" *ngIf="loading">
+    <div class="flex justify-center" *ngIf="isLoading">
         <span class="loading loading-bars loading-lg"></span>
     </div>
-    <div *ngIf="!loading">
-        <div class="overflow-x-auto">
-            <table class="table table-zebra table-fixed text-center">
-                <!-- head -->
-                <thead>
-                    <tr>
-                        <th>Classement</th>
-                        <th>Titre</th>
-                        <th>Note</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- row 1 -->
-                    <tr class="cursor-pointer" *ngFor="let music of musics.items; let i = index"
-                        [routerLink]="['/musics', music.id]">
-                        <th>{{i+1}}</th>
-                        <td>{{music.name}}</td>
-                        <td>
-                            <div class="flex flex-row justify-center items-center"
-                                *ngIf="music.avg_note;else elseBlock">
-                                <div class=" text-orange-500">
-                                    <mat-icon>star</mat-icon>
+    <div *ngIf="!isLoading" class="flex flex-col items-center">
+        <ng-container *ngIf="musics.items.length > 0;else elseBlock">
+            <div class="overflow-x-auto">
+                <table class="table table-zebra table-fixed text-center">
+                    <!-- head -->
+                    <thead>
+                        <tr>
+                            <th>Classement</th>
+                            <th>Titre</th>
+                            <th>Note</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- row 1 -->
+                        <tr class="cursor-pointer" *ngFor="let music of musics.items; let i = index"
+                            [routerLink]="['/musics', music.id]">
+                            <th>{{i+1}}</th>
+                            <td>{{music.name}}</td>
+                            <td>
+                                <div class="flex flex-row justify-center items-center"
+                                    *ngIf="music.avg_note;else elseBlock">
+                                    <div class=" text-orange-500">
+                                        <mat-icon>star</mat-icon>
+                                    </div>
+                                    <div class="pl-2">{{music.avg_note}}</div>
                                 </div>
-                                <div class="pl-2">{{music.avg_note}}</div>
-                            </div>
-                            <ng-template #elseBlock>N/A</ng-template>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                                <ng-template #elseBlock>N/A</ng-template>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
 
-            <div class="pt-4">
-                <app-pagination (onPageChange)="onPageChange($event)" [currentPage]="currentPage"
-                    [pagedObject]="musics"></app-pagination>
+                <div class="pt-4">
+                    <app-pagination (onPageChange)="onPageChange($event)" [currentPage]="currentPage"
+                        [pagedObject]="musics"></app-pagination>
+                </div>
             </div>
-        </div>
+        </ng-container>
+        <ng-template #elseBlock>
+            <div class="text-2xl p-4">Aucune musiques</div>
+        </ng-template>
     </div>
 </div>

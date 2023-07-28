@@ -26,11 +26,10 @@ export class RegistrationComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private title: Title
-  ) {
-    console.log("In constructor");
-  }
+  ) { }
+
   ngOnInit(): void {
-    this.title.setTitle("S'enregistrer")
+    this.title.setTitle("MyAniSongList - S'incrire")
   }
 
   onSubmit(): void {

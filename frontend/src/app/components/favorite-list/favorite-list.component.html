@@ -1,21 +1,25 @@
 <div class="container mx-auto pt-20 md:pt-40">
     <h1 class="text-center font-medium text-2xl pb-4">Vos favoris</h1>
-    <div class="flex justify-center" *ngIf="loading">
+    <div class="flex justify-center" *ngIf="isLoading">
         <span class="loading loading-bars loading-lg"></span>
     </div>
-    <div *ngIf="!loading">
-        <div class="grid grid-cols-2 gap-8">
-            <div class="bg-base-100 hover:cursor-pointer rounded-lg" *ngFor="let music of musics"
-                [routerLink]="['/musics', music.id]">
-                <div class="text-center font-bold text-sm pb-4 overflow-hidden text-ellipsis whitespace-nowrap">
-                    {{ music.name }}
-                </div>
-                <div class="flex justify-center text-center">
-                    <img class="hover:shadow-xl hover:shadow-blue-400/40 rounded-3xl w-28 h-36 object-fill"
-                        [src]="music.poster_img" [alt]="music.name" />
-                    <!-- <div class="synopsis overflow-auto">{{ anime.description }}</div> -->
+    <div *ngIf="!isLoading" class="flex flex-col items-center">
+        <ng-container *ngIf="musics.length ;else elseBlock">
+            <div class="grid grid-cols-2 gap-8">
+                <div class="bg-base-100 hover:cursor-pointer rounded-lg" *ngFor="let music of musics"
+                    [routerLink]="['/musics', music.id]">
+                    <div class="text-center font-bold text-sm pb-4 overflow-hidden text-ellipsis whitespace-nowrap">
+                        {{ music.name }}
+                    </div>
+                    <div class="flex justify-center text-center">
+                        <img class="hover:shadow-xl hover:shadow-blue-400/40 rounded-3xl w-28 h-36 object-fill"
+                            [src]="music.poster_img" [alt]="music.name" />
+                    </div>
                 </div>
             </div>
-        </div>
+        </ng-container>
+        <ng-template #elseBlock>
+            <div class="text-2xl p-4">Aucune musique favorite</div>
+        </ng-template>
     </div>
 </div>

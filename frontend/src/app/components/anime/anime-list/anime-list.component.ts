@@ -16,7 +16,9 @@ export class AnimeListComponent implements OnInit, OnChanges {
   currentPage: number = 1
 
 
-  constructor(private service: AnimeService) { }
+  constructor(
+    private service: AnimeService,
+    private title: Title) { }
   ngOnInit(): void {
     this.fetchData()
   }
@@ -32,7 +34,7 @@ export class AnimeListComponent implements OnInit, OnChanges {
   async fetchData() {
     try {
       this.animes = await this.fetchAnimes()
-      console.log("Animes : ", this.animes)
+      this.title.setTitle("MyAniSongList - Animes")
     } catch (error) {
       console.log(error)
     }

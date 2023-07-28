@@ -4,6 +4,7 @@ import { AnimeService } from 'src/app/_services/anime.service';
 import { Anime } from 'src/app/models/Anime';
 import { firstValueFrom, timeout } from 'rxjs'
 import { ToastrService } from 'ngx-toastr';
+import { Title } from '@angular/platform-browser';
 @Component({
   selector: 'app-manage-anime-detail',
   templateUrl: './manage-anime-detail.component.html',
@@ -16,7 +17,8 @@ export class ManageAnimeDetailComponent {
   constructor(
     private service: AnimeService,
     private route: ActivatedRoute,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private title: Title
   ) { }
 
   async ngOnInit() {
@@ -24,6 +26,7 @@ export class ManageAnimeDetailComponent {
     let id = Number(this.route.snapshot.paramMap.get('id'))
     try {
       this.anime = await this.get(id)
+      this.title.setTitle("MyAniSongList - Gestion - Modifier un anime")
     } catch (error) {
       console.log(error)
     } finally {

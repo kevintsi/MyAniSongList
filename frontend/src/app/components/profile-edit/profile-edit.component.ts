@@ -3,6 +3,7 @@ import { AuthService } from '../../_services/auth.service';
 import { User } from '../../models/User';
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 
 @Component({
@@ -25,10 +26,10 @@ export class ProfileEditComponent {
   constructor(
     private authService: AuthService,
     private formBuilder: FormBuilder,
-    private router: Router,
+    private title: Title,
 
   ) {
-
+    this.title.setTitle("MyAniSongList - Mon profil")
   }
 
   ngOnInit(): void {

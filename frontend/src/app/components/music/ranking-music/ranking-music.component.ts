@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { Title } from '@angular/platform-browser';
 import { MusicService } from 'src/app/_services/music.service';
 import { PagedMusic } from 'src/app/models/Music';
 import { firstValueFrom } from 'rxjs'
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-ranking-music',
@@ -10,25 +10,25 @@ import { firstValueFrom } from 'rxjs'
   styleUrls: ['./ranking-music.component.css']
 })
 export class RankingMusicComponent {
-  loading = true
+  isLoading = true
   musics!: PagedMusic
 
   currentPage: number = 1
 
   constructor(private service: MusicService, private title: Title) { }
   ngOnInit(): void {
-    this.title.setTitle("Classement des musiques")
     this.fetchData()
   }
 
   async fetchData() {
     try {
       this.musics = await this.fetchMusics()
+      this.title.setTitle("MyAniSongList - Classement des musiques")
     } catch (error) {
       console.log(error)
     }
     finally {
-      this.loading = false
+      this.isLoading = false
     }
   }
 

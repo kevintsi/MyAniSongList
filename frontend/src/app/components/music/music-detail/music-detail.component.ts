@@ -7,7 +7,7 @@ import { MusicService } from 'src/app/_services/music.service';
 import { ReviewService } from 'src/app/_services/review.service';
 import { Music } from 'src/app/models/Music';
 import { Review } from 'src/app/models/Review';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-music-detail',
@@ -33,7 +33,8 @@ export class MusicDetailComponent {
     private musicService: MusicService,
     private reviewService: ReviewService,
     private authService: AuthService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private title: Title
   ) { }
 
   ngOnInit(): void {
@@ -55,7 +56,7 @@ export class MusicDetailComponent {
     let id_music = Number(this.route.snapshot.paramMap.get("id"))
     try {
       this.music = await this.getMusic(id_music);
-      console.log(this.music)
+      this.title.setTitle("MyAniSongList - " + this.music.name)
       this.reviews = (await this.getMusicReviews(id_music)).items
       if (this.isLoggedIn()) {
         this.userReview = await this.getUserReview(id_music)

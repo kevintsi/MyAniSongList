@@ -5,6 +5,7 @@ import { ArtistService } from 'src/app/_services/artist.service';
 import { Artist } from 'src/app/models/Artist';
 import { firstValueFrom } from 'rxjs'
 import { ToastrService } from 'ngx-toastr';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-manage-artist-detail',
@@ -19,7 +20,8 @@ export class ManageArtistDetailComponent {
   constructor(
     private service: ArtistService,
     private route: ActivatedRoute,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private title: Title
   ) { }
 
   async ngOnInit() {
@@ -27,6 +29,7 @@ export class ManageArtistDetailComponent {
     let id = Number(this.route.snapshot.paramMap.get('id'))
     try {
       this.artist = await this.get(id)
+      this.title.setTitle("MyAniSongList - Gestion - Modifier un(e) artiste")
     } catch (error) {
       console.log(error)
     } finally {

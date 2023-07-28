@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
 import { ArtistService } from 'src/app/_services/artist.service';
 
@@ -10,8 +11,11 @@ import { ArtistService } from 'src/app/_services/artist.service';
 export class ManageCreateArtistComponent {
   constructor(
     private service: ArtistService,
-    private toastr: ToastrService
-  ) { }
+    private toastr: ToastrService,
+    private title: Title
+  ) {
+    this.title.setTitle("MyAniSongList - Gestion - Ajouter un(e) artiste")
+  }
 
   onSubmit(formData: any) {
     console.log(formData)

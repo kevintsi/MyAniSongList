@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { Subject, firstValueFrom } from 'rxjs';
 import { MusicService } from 'src/app/_services/music.service';
@@ -14,7 +15,7 @@ export class ManageMusicComponent {
   musics!: PagedMusic
   currentPage: number = 1
 
-  constructor(private service: MusicService, private router: Router) { }
+  constructor(private service: MusicService, private title: Title) { }
   ngOnInit(): void {
     this.fetchData()
   }
@@ -22,6 +23,7 @@ export class ManageMusicComponent {
   async fetchData() {
     try {
       this.musics = await this.fetchMusics()
+      this.title.setTitle("MyAniSongList - Gestion - Musique")
     } catch (error) {
       console.log(error)
     }

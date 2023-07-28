@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-manage',
@@ -6,6 +7,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./manage.component.css']
 })
 export class ManageComponent {
-  constructor() { }
+  constructor(private title: Title) {
+    this.title.setTitle("MyAniSongList - Gestion")
+  }
 
 }

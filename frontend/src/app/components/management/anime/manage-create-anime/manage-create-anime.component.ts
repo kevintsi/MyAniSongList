@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
 import { AnimeService } from 'src/app/_services/anime.service';
 
@@ -10,8 +11,12 @@ import { AnimeService } from 'src/app/_services/anime.service';
 export class ManageCreateAnimeComponent {
   constructor(
     private service: AnimeService,
-    private toastr: ToastrService
-  ) { }
+    private toastr: ToastrService,
+    private title: Title
+  ) {
+
+    this.title.setTitle("MyAniSongList - Gestion - Ajouter un anime")
+  }
 
   onSubmit(formData: any) {
     console.log(formData)

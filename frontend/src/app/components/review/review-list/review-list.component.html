@@ -1,35 +1,40 @@
-<div class="container mx-auto pt-20">
+<div class="container mx-auto pt-20 md:pt-40">
     <h1>Avis</h1>
     <div class="flex justify-center" *ngIf="isLoading">
         <span class="loading loading-bars loading-lg"></span>
     </div>
-    <div *ngIf="!isLoading" class="container mx-auto">
-        <div class="flex flex-col items-center">
-            <div *ngFor="let review of reviews.items" class="pt-8 w-full">
-                <div class="flex flex-row justify-start ">
-                    <div class="w-14">
-                        <img class="w-10 h-10 object-contain" [routerLink]="['/profile', review.user.id]"
-                            [src]="review.user.profile_picture? review.user.profile_picture : '/assets/images/default_image.jpg' " />
-                    </div>
-                    <div class="flex flex-col w-full">
-                        <div class="flex flex-row justify-between">
-                            <div class="font-bold">{{ review.user.username}}</div>
-                            <div>{{ review.creation_date | date}}</div>
+    <div *ngIf="!isLoading" class="flex flex-col items-center">
+        <ng-container *ngIf="reviews.items.length > 0;else elseBlock">
+            <div class="flex flex-col items-center">
+                <div *ngFor="let review of reviews.items" class="pt-8 w-full">
+                    <div class="flex flex-row justify-start ">
+                        <div class="w-14">
+                            <img class="w-10 h-10 object-contain" [routerLink]="['/profile', review.user.id]"
+                                [src]="review.user.profile_picture? review.user.profile_picture : '/assets/images/default_image.jpg' " />
                         </div>
-                        <div class="flex flex-col items-start pt-2">
-                            <h3>Note du visuel :</h3>
-                            <app-rating-stars [isStatic]="true" [rate]="review.note_visual*2"></app-rating-stars>
+                        <div class="flex flex-col w-full">
+                            <div class="flex flex-row justify-between">
+                                <div class="font-bold">{{ review.user.username}}</div>
+                                <div>{{ review.creation_date | date}}</div>
+                            </div>
+                            <div class="flex flex-col items-start pt-2">
+                                <h3>Note du visuel :</h3>
+                                <app-rating-stars [isStatic]="true" [rate]="review.note_visual*2"></app-rating-stars>
+                            </div>
+                            <div class="flex flex-col items-start pt-2">
+                                <h3>Note de la musique :</h3>
+                                <app-rating-stars [isStatic]="true" [rate]="review.note_music*2"></app-rating-stars>
+                            </div>
+                            <div class="pt-2 italic">{{ review.description}}</div>
                         </div>
-                        <div class="flex flex-col items-start pt-2">
-                            <h3>Note de la musique :</h3>
-                            <app-rating-stars [isStatic]="true" [rate]="review.note_music*2"></app-rating-stars>
-                        </div>
-                        <div class="pt-2 italic">{{ review.description}}</div>
                     </div>
                 </div>
             </div>
-        </div>
-        <app-pagination (onPageChange)="onPageChange($event)" [currentPage]="currentPage"
-            [pagedObject]="reviews"></app-pagination>
+            <app-pagination (onPageChange)="onPageChange($event)" [currentPage]="currentPage"
+                [pagedObject]="reviews"></app-pagination>
+        </ng-container>
+        <ng-template #elseBlock>
+            <div class="text-2xl p-4">Aucun avis</div>
+        </ng-template>
     </div>
 </div>

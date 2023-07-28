@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { Subject, firstValueFrom } from 'rxjs';
 import { AnimeService } from 'src/app/_services/anime.service';
@@ -14,7 +15,7 @@ export class ManageAnimeComponent implements OnInit {
   animes!: PagedAnime
   currentPage: number = 1
 
-  constructor(private service: AnimeService, private router: Router) { }
+  constructor(private service: AnimeService, private title: Title) { }
 
   ngOnInit(): void {
     this.fetchData()
@@ -23,6 +24,7 @@ export class ManageAnimeComponent implements OnInit {
   async fetchData() {
     try {
       this.animes = await this.fetchAnimes()
+      this.title.setTitle("MyAniSongList - Gestion - Anime")
     } catch (error) {
       console.log(error)
     }

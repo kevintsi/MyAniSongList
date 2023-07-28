@@ -2,7 +2,7 @@
     <div class="flex justify-center" *ngIf="isLoading">
         <span class="loading loading-bars loading-lg"></span>
     </div>
-    <div *ngIf="!isLoading">
+    <div *ngIf="!isLoading" class="flex flex-col items-center">
 
         <ng-container *ngIf="animes.items.length > 0;else elseBlock">
             <div class="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-5 gap-8 text-center w-full">
@@ -24,7 +24,7 @@
         </ng-container>
 
         <ng-template #elseBlock>
-            <div class="text-2xl">Aucun animés</div>
+            <div class="text-2xl p-4">Aucun animés</div>
         </ng-template>
     </div>
 </div>

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { firstValueFrom } from 'rxjs';
 import { MusicService } from 'src/app/_services/music.service';
 import { Music } from 'src/app/models/Music';
@@ -9,12 +10,12 @@ import { Music } from 'src/app/models/Music';
   styleUrls: ['./favorite-list.component.css']
 })
 export class FavoriteListComponent {
-  loading = true
+  isLoading = true
   musics!: Music[]
 
   currentPage: number = 1
 
-  constructor(private service: MusicService) { }
+  constructor(private service: MusicService, private title: Title) { }
   ngOnInit(): void {
     this.fetchData()
   }
@@ -22,11 +23,12 @@ export class FavoriteListComponent {
   async fetchData() {
     try {
       this.musics = await this.fetchFavoritesMusics()
+      this.title.setTitle("MyAniSongList - Mes musiques favorites")
     } catch (error) {
       console.log(error)
     }
     finally {
-      this.loading = false
+      this.isLoading = false
     }
   }
 

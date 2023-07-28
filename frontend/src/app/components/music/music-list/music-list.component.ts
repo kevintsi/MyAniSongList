@@ -15,7 +15,7 @@ export class MusicListComponent {
 
   currentPage: number = 1
 
-  constructor(private service: MusicService) { }
+  constructor(private service: MusicService, private title: Title) { }
   ngOnInit(): void {
     this.fetchData()
   }
@@ -23,6 +23,7 @@ export class MusicListComponent {
   async fetchData() {
     try {
       this.musics = await this.fetchMusics()
+      this.title.setTitle("MyAniSongList - Musiques")
     } catch (error) {
       console.log(error)
     }

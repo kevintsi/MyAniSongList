@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { firstValueFrom } from 'rxjs';
@@ -16,7 +17,8 @@ export class ManageMusicDetailComponent {
   constructor(
     private music_service: MusicService,
     private route: ActivatedRoute,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private title: Title
   ) { }
 
   async ngOnInit() {
@@ -24,6 +26,7 @@ export class ManageMusicDetailComponent {
     let id = Number(this.route.snapshot.paramMap.get('id'))
     try {
       this.music = await this.get(id)
+      this.title.setTitle("MyAniSongList - Gestion - Modifier une musique")
     } catch (error) {
       console.log(error)
     } finally {

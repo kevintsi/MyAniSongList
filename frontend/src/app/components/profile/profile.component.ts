@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { UserService } from 'src/app/_services/user.service';
@@ -15,7 +16,7 @@ export class ProfileComponent implements OnInit {
   userInfo!: User
   favorites!: Music[]
 
-  constructor(private userService: UserService, private route: ActivatedRoute) { }
+  constructor(private userService: UserService, private route: ActivatedRoute, private title: Title) { }
 
   ngOnInit(): void {
     console.log("Profile")
@@ -28,6 +29,7 @@ export class ProfileComponent implements OnInit {
       this.userInfo = await this.fetchUser(id)
       this.favorites = await this.fetchFavorites(id)
       console.log(this.userInfo, this.favorites)
+      this.title.setTitle("MyAniSongList - Profil - " + this.userInfo.username)
     } catch (error) {
       console.log(error)
     }

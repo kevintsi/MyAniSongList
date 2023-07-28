@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { User } from '../../models/User';
 import { TokenService } from 'src/app/_services/token.service';
 import { firstValueFrom } from 'rxjs';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-login',
@@ -23,8 +24,9 @@ export class LoginComponent {
     private authService: AuthService,
     private tokenService: TokenService,
     private router: Router,
+    private title: Title
   ) {
-    console.log("In constructor");
+    this.title.setTitle("MyAniSongList - Se connecter")
   }
 
   async onSubmit() {

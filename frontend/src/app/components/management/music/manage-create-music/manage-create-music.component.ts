@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
 import { MusicService } from 'src/app/_services/music.service';
 
@@ -10,8 +11,11 @@ import { MusicService } from 'src/app/_services/music.service';
 export class ManageCreateMusicComponent {
   constructor(
     private music_service: MusicService,
-    private toastr: ToastrService
-  ) { }
+    private toastr: ToastrService,
+    private title: Title
+  ) {
+    this.title.setTitle("MyAniSongList - Gestion - Ajouter une musique")
+  }
 
 
   onSubmit(formData: any) {
