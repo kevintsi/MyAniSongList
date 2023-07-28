@@ -2,11 +2,11 @@
 <div class="flex flex-col items-center">
     <div *ngFor="let review of reviews" class="pt-8 w-full">
         <div class="flex flex-row justify-start ">
-            <div class="w-14">
-                <img class="w-10 h-10 object-contain" [routerLink]="['/profile', review.user.id]"
+            <div class="w-14 cursor-pointer">
+                <img class="w-10 h-10 lg:w-full object-contain" [routerLink]="['/profile', review.user.id]"
                     [src]="review.user.profile_picture? review.user.profile_picture : '/assets/images/default_image.jpg' " />
             </div>
-            <div class="flex flex-col w-full">
+            <div class="flex flex-col w-full pl-4">
                 <div class="flex flex-row justify-between">
                     <div class="font-bold">{{ review.user.username}}</div>
                     <div>{{ review.creation_date | date}}</div>

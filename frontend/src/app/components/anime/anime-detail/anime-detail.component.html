@@ -2,31 +2,32 @@
     <div class="flex justify-center" *ngIf="isLoading">
         <span class="loading loading-bars loading-lg"></span>
     </div>
-    <div *ngIf="!isLoading">
-        <div class="flex flex-col items-center">
-            <div class="text-center flex flex-col items-center p-4">
+    <div *ngIf="!isLoading" class="flex flex-col lg:flex-row justify-start">
+        <div class="w-full">
+            <div class="text-center flex flex-col items-center">
                 <h1 class="font-bold pb-5">{{ anime.name}}</h1>
                 <img class="rounded-3xl w-44 pb-4" src="{{anime.poster_img}}" alt="{{anime.name}}" />
             </div>
-            <div class="pl-5 p-4">
-                <h2 class="font-bold pb-3 text-center">Synopsis</h2>
-                <p class="text-justify">{{ anime.description}}</p>
-            </div>
         </div>
-
-        <div class="p-4 flex flex-col items-center">
-            <h2 class="font-bold text-center">Openings et Endings</h2>
-            <div class="flex flex-col">
-                <div [routerLink]="['/musics', music?.id]"
-                    class="flex flex-row p-4 hover:shadow-xl hover:bg-base-300 rounded-lg hover:cursor-pointer items-center"
-                    *ngFor="let music of musics">
-                    <img [src]="music.poster_img" class="rounded-full object-fill w-20 h-20" />
-                    <div class="pl-4 w-40">
-                        <div class="overflow-hidden text-ellipsis whitespace-nowrap">{{ music.name }}</div>
-                        <div>{{ music.release_date | date: 'dd-MM-YYYY' }}</div>
-                        <div>{{ music.type.type_name }}</div>
-                        <div *ngFor="let artist of music.authors">
-                            <div class="overflow-hidden text-ellipsis whitespace-nowrap">{{ artist.name }}</div>
+        <div>
+            <div>
+                <h2 class="font-bold pb-3 text-center">Synopsis</h2>
+                <p class="text-justify p-8">{{ anime.description}}</p>
+            </div>
+            <div class="p-4">
+                <h2 class="font-bold text-center pb-4">Openings et Endings</h2>
+                <div class="flex flex-col lg:flex-row justify-center">
+                    <div [routerLink]="['/musics', music?.id]"
+                        class="flex flex-row p-4 hover:shadow-xl hover:bg-base-300 rounded-lg hover:cursor-pointer items-center"
+                        *ngFor="let music of musics">
+                        <img [src]="music.poster_img" class="rounded-full object-fill w-20 h-20" />
+                        <div class="pl-4 w-40 md:w-full">
+                            <div class="overflow-hidden text-ellipsis whitespace-nowrap">{{ music.name }}</div>
+                            <div>{{ music.release_date | date: 'dd-MM-YYYY' }}</div>
+                            <div>{{ music.type.type_name }}</div>
+                            <div *ngFor="let artist of music.authors">
+                                <div class="overflow-hidden text-ellipsis whitespace-nowrap">{{ artist.name }}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
