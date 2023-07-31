@@ -18,8 +18,8 @@ export class MusicDetailComponent {
 
   isLoading: boolean = true
   music!: Music
-  favorites!: Music[]
-  reviews!: Review[]
+  favorites: Music[] = []
+  reviews: Review[] = []
   userReview!: Review | null
 
   noteVisual: number = 0
