@@ -50,6 +50,9 @@ export class AuthInterceptor implements HttpInterceptor {
                 } else if (error.status === 404 && error.error.detail != "Invalid username or password") {
                     this.router.navigateByUrl("/404", { skipLocationChange: true })
                 }
+                else if (error.status === 403) {
+                    this.router.navigateByUrl("/login")
+                }
                 // For other errors, propagate the error
                 return throwError(() => new Error(error.message));
             })
