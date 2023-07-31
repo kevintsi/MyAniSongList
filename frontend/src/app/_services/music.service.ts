@@ -22,6 +22,14 @@ export class MusicService {
     return this.http.get<PagedMusic>(this.endpoint + '/musics/all?order_by=' + filter + '&page=' + page)
   }
 
+  public getPopular() {
+    return this.http.get<Music[]>(this.endpoint + '/musics/popular')
+  }
+
+  public getLatest() {
+    return this.http.get<Music[]>(this.endpoint + '/musics/latest')
+  }
+
   public getFavorites() {
     return this.http.get<Music[]>(this.endpoint + '/favorites/all')
   }
