@@ -23,7 +23,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="hover:bg-base-300" [routerLink]="['/manage/animes', anime.id]"
+                    <tr class="hover:bg-base-300 cursor-pointer" [routerLink]="['/manage/animes', anime.id]"
                         *ngFor="let anime of animes.items">
                         <td class="flex justify-center items-center">
                             <div class="h-full w-20 md:w-40">

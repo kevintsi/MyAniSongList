@@ -22,7 +22,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="hover:bg-base-300" [routerLink]="['/manage/artists', artist.id]"
+                    <tr class="hover:bg-base-300 cursor-pointer" [routerLink]="['/manage/artists', artist.id]"
                         *ngFor="let artist of artists.items">
                         <td class="flex justify-center items-center">
                             <div class="w-20 md:w-40 h-full">

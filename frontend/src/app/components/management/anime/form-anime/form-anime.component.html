@@ -1,8 +1,8 @@
 <form [formGroup]="form" class="flex flex-col items-center p-10" (ngSubmit)="onSubmit()">
     <div (click)="imageInput.click()"
-        class="flex hover:bg-slate-100  border-2 border-base-300 justify-center items-center h-80 w-60">
+        class="flex hover:bg-slate-100 cursor-pointer border-2 border-base-300 justify-center items-center h-80 w-60">
         <ng-container *ngIf="previewImage;else elseBlock">
-            <img class="h-full w-full object-cover" [src]="previewImage" alt="Image animé" />
+            <img class="h-full w-full object-contain" [src]="previewImage" alt="Image animé" />
         </ng-container>
         <ng-template #elseBlock>
             <div class="text-8xl">

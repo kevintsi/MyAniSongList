@@ -1,5 +1,5 @@
 <div class="container mx-auto pt-20 text-center md:pt-40">
-    <h1 class="p-4">Classement des meilleurs musiques</h1>
+    <h1 class="p-4 text-3xl">Classement des meilleurs musiques</h1>
     <div class="flex justify-center" *ngIf="isLoading">
         <span class="loading loading-bars loading-lg"></span>
     </div>
@@ -20,7 +20,12 @@
                         <tr class="cursor-pointer" *ngFor="let music of musics.items; let i = index"
                             [routerLink]="['/musics', music.id]">
                             <th>{{i+1}}</th>
-                            <td>{{music.name}}</td>
+                            <td>
+                                <div class="flex flex-row items-center">
+                                    <img [src]="music.poster_img" class="w-12 h-12 object-contain mr-4" />
+                                    {{music.name}}
+                                </div>
+                            </td>
                             <td>
                                 <div class="flex flex-row justify-center items-center"
                                     *ngIf="music.avg_note;else elseBlock">
