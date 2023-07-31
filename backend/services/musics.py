@@ -22,8 +22,8 @@ class MusicService(BaseService[Music, MusicCreate, MusicUpdate]):
     def get_most_popular(self):
         return self.db_session.query(Music).order_by(Music.avg_note.desc()).limit(5).all()
 
-    def get_last_added(self):
-        return self.db_session.query(Music).order_by(Music.creation_date.desc()).limit(5).all()
+    def get_latest(self):
+        return self.db_session.query(Music).order_by(Music.release_date.desc()).limit(5).all()
 
     def list(self, order_by):
         if order_by:

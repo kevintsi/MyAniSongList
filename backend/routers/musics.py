@@ -34,14 +34,14 @@ async def get_all(
     return paginate(service.list(order_by))
 
 
-@router.get("/lastAdded", response_model=List[Music])
+@router.get("/latest", response_model=List[Music])
 async def get_all(
     service: MusicService = Depends(get_service)
 ):
-    return service.get_last_added()
+    return service.get_latest()
 
 
-@router.get("/mostPopular", response_model=List[Music])
+@router.get("/popular", response_model=List[Music])
 async def get_most_popular(
     service: MusicService = Depends(get_service)
 ):
