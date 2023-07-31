@@ -1,0 +1,12 @@
+.text-wrap {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 2;
+    /* Number of lines to show before truncating with ellipsis */
+    /* Adjust the height and line-height to control the space occupied by the container */
+    height: 3em;
+    line-height: 1.5em;
+    width: 8em;
+}

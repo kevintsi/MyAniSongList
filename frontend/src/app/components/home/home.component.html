@@ -1,10 +1,55 @@
-<div class="hero min-h-screen bg-base-200">
-    <div class="hero-content z-auto text-center">
-        <div class="max-w-md">
-            <h1 class="text-5xl font-bold">Bienvenue</h1>
-            <p class="py-6">Bienvenue sur MyAniSongList, l'application web où tu vas pouvoir donner ton avis sur les
-                openings et endings de tes
-                animés préférés.</p>
+<div class="w-full pt-20 md:pt-40">
+    <div class="hero bg-base-200">
+        <div class="hero-content z-auto text-center">
+            <div class="max-w-md">
+                <h1 class="text-5xl font-bold">Bienvenue</h1>
+                <p class="py-6">Bienvenue sur MyAniSongList, l'application web où tu vas pouvoir donner ton avis sur les
+                    openings et endings de tes
+                    animés préférés.</p>
+            </div>
         </div>
     </div>
-</div>
+    <div class="container mx-auto">
+        <div class="flex justify-center" *ngIf="isLoading">
+            <span class="loading loading-bars loading-lg"></span>
+        </div>
+        <ng-container *ngIf="!isLoading">
+            <div class="pt-4">
+                <h1 class="text-2xl font-bold p-4">Dernières musiques sorties</h1>
+                <div *ngIf="latestMusics.length > 0;else elseBlock"
+                    class=" overflow-auto w-full flex flex-row items-center">
+                    <div class="hover:cursor-pointer w-40  flex flex-col m-2 items-center"
+                        *ngFor="let music of latestMusics" [routerLink]="['/musics', music.id]">
+                        <div class="text-center font-bold text-sm text-wrap">
+                            {{ music.name }}
+                        </div>
+                        <div>
+                            <img class="hover:opacity-80 rounded-3xl md:w-36 md:h-48 w-18 h-28 object-fill"
+                                [src]="music.poster_img" [alt]="music.name" />
+                        </div>
+                    </div>
+                </div>
+                <ng-template #elseBlock>
+                    <div>Aucune musique</div>
+                </ng-template>
+            </div>
+            <div class="pt-4">
+                <h1 class="text-2xl font-bold p-4">Musiques les plus populaires</h1>
+                <div *ngIf="popularMusics.length > 0;else elseBlock" class="overflow-auto w-full flex flex-row">
+                    <div class="hover:cursor-pointer w-40 flex flex-col m-2 items-center"
+                        *ngFor="let music of popularMusics" [routerLink]="['/musics', music.id]">
+                        <div class="text-center font-bold text-sm text-wrap">
+                            {{ music.name }}
+                        </div>
+                        <div>
+                            <img class="hover:opacity-80 rounded-3xl md:w-36 md:h-48 w-18 h-28 object-fill"
+                                [src]="music.poster_img" [alt]="music.name" />
+                        </div>
+                    </div>
+                </div>
+                <ng-template #elseBlock>
+                    <div>Aucune musique</div>
+                </ng-template>
+            </div>
+        </ng-container>
+    </div>
