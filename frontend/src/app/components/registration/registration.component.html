@@ -5,7 +5,8 @@
     <form [formGroup]="registrationForm" class="w-full flex flex-col  items-center" (ngSubmit)="onSubmit()">
 
         <label for="username" class="label">Nom d'utilisateur :</label>
-        <input type="text" formControlName="username" class="input input-bordered w-full" required>
+        <input type="text" formControlName="username" class="input input-bordered w-full"
+            placeholder="Entrez votre nom d'utilisateur..." required>
         <div class="flex flex-col items-center alert alert-error mt-4 pb-4"
             *ngIf="registrationForm.get('username')?.invalid && (registrationForm.get('username')?.dirty || registrationForm.get('username')?.touched)">
             <div *ngIf="registrationForm.get('username')?.errors?.['required']">
@@ -16,7 +17,8 @@
             </div>
         </div>
         <label for="email" class="label">Adresse e-mail :</label>
-        <input type="email" id="email" formControlName="email" class="input input-bordered w-full" required>
+        <input type="email" id="email" formControlName="email" class="input input-bordered w-full"
+            placeholder="Entrez votre adresse email..." required>
         <div class="flex flex-col items-center alert alert-error mt-4 pb-4"
             *ngIf="registrationForm.get('email')?.invalid && (registrationForm.get('email')?.dirty || registrationForm.get('email')?.touched)">
             <div *ngIf="registrationForm.get('email')?.errors?.['email']">
@@ -27,11 +29,12 @@
             </div>
         </div>
         <label for="password" class="label">Mot de passe :</label>
-        <input type="password" id="password" formControlName="password" class="input input-bordered w-full" required>
+        <input type="password" id="password" formControlName="password" class="input input-bordered w-full"
+            placeholder="Entrez votre mot de passe..." required>
 
         <label for="confirm-password" class="label">Confirmer le mot de passe :</label>
-        <input type="password" id="confirm-password" formControlName="confirmPassword"
-            class="input input-bordered w-full " required>
+        <input type="password" id="confirm-password" placeholder="Confirmez votre mot de passe..."
+            formControlName="confirmPassword" class="input input-bordered w-full " required>
 
         <div class="flex flex-col items-center alert alert-error mt-4 pb-4"
             *ngIf="registrationForm.get('password')?.invalid && (registrationForm.get('password')?.dirty || registrationForm.get('password')?.touched)">
