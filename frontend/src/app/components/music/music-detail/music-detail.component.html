@@ -1,197 +1,121 @@
-<div class="flex flex-col container mx-auto pt-20 md:pt-40">
+<div class="flex flex-col container mx-auto pt-20 md:pt-40 h-full">
     <div class="flex justify-center" *ngIf="isLoading">
         <span class="loading loading-bars loading-lg"></span>
     </div>
-    <div *ngIf="!isLoading" class="flex flex-col lg:flex-row justify-start">
-        <div class="flex flex-col items-center">
-            <div class="text-center flex flex-col items-center p-4">
-                <h1 class="font-bold pb-5 text-center">{{ music.name}}</h1>
-                <img class="rounded-3xl w-44 pb-4" src="{{music.poster_img}}" alt="{{music.name}}" />
-                <ng-container *ngIf="music?.avg_note">
-                    <app-rating-stars [isStatic]=true [rate]=music.avg_note*2 />
-                </ng-container>
-                <div *ngIf="isLoggedIn()" class="p-4 cursor-pointer" (click)="my_modal.showModal()">Donne/Modifie ton
-                    avis</div>
-                <dialog #my_modal class="modal">
-                    <form method="dialog" class="modal-box flex flex-col" (ngSubmit)="onSubmit()">
-                        <h1 class="p-2 text-xl font-bold">Avis</h1>
-                        <label class="label">Note visuel : *</label>
-                        <app-rating-stars [isStatic]=false type="visual" [(rate)]="noteVisual" />
-                        <label class="label">Note musique : *</label>
-                        <app-rating-stars [isStatic]=false type="music" [(rate)]=noteMusic />
-                        <label class="label">Description :</label>
-                        <textarea [formControl]="description" class="textarea textarea-bordered"></textarea>
-                        <div class="flex justify-center p-2">
-                            <button type="submit" class="btn">Valider</button>
+    <div *ngIf="!isLoading" class="flex flex-col justify-start">
+        <div class="w-full border-b border-gray-400/60 bg-base-200">
+            <h1 class="font-bold p-4 text-start">{{ music.name}}</h1>
+        </div>
+        <div class="flex flex-col lg:flex-row border-l border-r border-b border-gray-400/10">
+            <div class="flex flex-col items-center border-r border-gray-400/10">
+                <div class="flex flex-col p-4 items-center justify-center">
+                    <img class="rounded-3xl md:w-80 w-44" src="{{music.poster_img}}" alt="{{music.name}}" />
+                    <ng-container *ngIf="music?.avg_note else notRated">
+                        <div class="flex flex-row justify-center p-4">
+                            <app-rating-stars [isStatic]=true [rate]=music.avg_note*2 />
+                            <label class="text-2xl pl-2 font-bold">{{music.avg_note*2}}</label>
                         </div>
-                    </form>
-                    <form method="dialog" class="modal-backdrop">
-                        <button>close</button>
-                    </form>
-                </dialog>
-                <div class="flex flex-row bg-base-300 items-center rounded-lg border border-base-300 p-1 pr-2 pl-2 cursor-pointer"
-                    (click)="toggleFavorite()">
-                    <ng-container *ngIf="isFavorite();else elseBlock">
-                        <div class="text-2xl pt-2 pr-1">
-                            <mat-icon [inline]="true">favorite</mat-icon>
-                        </div>
-                        <div>Supprimer des favoris</div>
                     </ng-container>
-                    <ng-template #elseBlock>
-                        <div class="text-2xl pt-2 pr-1">
-                            <mat-icon [inline]="true">favorite_outline</mat-icon>
-                        </div>
-                        <div>Ajouter au favoris</div>
+                    <ng-template #notRated>
+                        <div class="p-4">N/A</div>
                     </ng-template>
+                    <div *ngIf="isLoggedIn()" class="p-4 cursor-pointer" (click)="my_modal.showModal()">
+                        Donne/Modifie ton avis
+                    </div>
+                    <dialog #my_modal class="modal">
+                        <form method="dialog" class="modal-box flex flex-col" (ngSubmit)="onSubmit()">
+                            <h1 class="p-2 text-xl font-bold">Avis</h1>
+                            <label class="label">Note visuel : *</label>
+                            <app-rating-stars [isStatic]=false type="visual" [(rate)]="noteVisual" />
+                            <label class="label">Note musique : *</label>
+                            <app-rating-stars [isStatic]=false type="music" [(rate)]=noteMusic />
+                            <label class="label">Description :</label>
+                            <textarea [formControl]="description" class="textarea textarea-bordered"></textarea>
+                            <div class="flex justify-center p-2">
+                                <button type="submit" class="btn">Valider</button>
+                            </div>
+                        </form>
+                        <form method="dialog" class="modal-backdrop">
+                            <button>close</button>
+                        </form>
+                    </dialog>
+                    <div class="flex flex-row bg-base-300 justify-center items-center rounded-lg border border-base-300 p-1 pr-2 pl-2 cursor-pointer"
+                        (click)="toggleFavorite()">
+                        <ng-container *ngIf="isFavorite();else elseBlock">
+                            <div class="text-2xl pt-2 pr-1">
+                                <mat-icon [inline]="true">favorite</mat-icon>
+                            </div>
+                            <div>Supprimer des favoris</div>
+                        </ng-container>
+                        <ng-template #elseBlock>
+                            <div class="text-2xl pt-2 pr-1">
+                                <mat-icon [inline]="true">favorite_outline</mat-icon>
+                            </div>
+                            <div>Ajouter au favoris</div>
+                        </ng-template>
 
+                    </div>
                 </div>
-                <div class="pt-4">
-                    <iframe [src]="getSafeUrl(music.id_video)" frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowfullscreen></iframe>
+                <div class="w-full p-4">
+                    <h2 class="font-bold border-b border-gray-400/60">Informations</h2>
+                    <div class="flex flex-col pt-4">
+                        <div><label class="font-bold">Date de sortie : </label> {{ music.release_date | date :
+                            "dd-MM-YYYY"}}</div>
+                        <div><label class="font-bold">Type :</label> {{ music.type.type_name}} </div>
+                    </div>
                 </div>
-                <div class="pl-5 p-4">
-                    <h2 class="font-bold pb-3 text-center">Informations</h2>
+            </div>
+            <div class="flex flex-col w-full">
+                <h2 class="font-bold text-start m-4 w-full-2 border-b border-gray-400/60">Vidéo</h2>
+                <div class="p-4 flex flex-col items-center">
+                    <div class="pt-4">
+                        <iframe [src]="getSafeUrl(music.id_video)" frameborder="0" class="md:w-96 md:h-56"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowfullscreen></iframe>
+                    </div>
+                </div>
+                <div>
+                    <h2 class="font-bold text-start m-4 w-full-2 border-b border-gray-400/60">Anime</h2>
                     <div class="flex flex-col">
-                        <div>Date de sortie : {{ music.release_date | date : "dd-MM-YYYY"}}</div>
-                        <div>Type : {{ music.type.type_name}} </div>
+                        <div [routerLink]="['/animes', music.anime.id]"
+                            class="flex flex-row p-4 rounded-lg hover:cursor-pointer items-center">
+                            <img [src]="music.anime.poster_img"
+                                class="hover:opacity-80 rounded-full object-fill w-20 h-20" />
+                            <div class="pl-4 w-40">
+                                <div class="overflow-hidden text-ellipsis whitespace-nowrap">{{ music.anime.name }}
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
-            </div>
-        </div>
-        <div class="flex flex-col w-full">
-            <div class="p-4 flex flex-col items-center">
-                <h2 class="font-bold text-center">Anime</h2>
-                <div class="flex flex-col">
-                    <div [routerLink]="['/animes', music.anime.id]"
-                        class="flex flex-row p-4 rounded-lg hover:cursor-pointer items-center">
-                        <img [src]="music.anime.poster_img"
-                            class="hover:opacity-80 rounded-full object-fill w-20 h-20" />
-                        <div class="pl-4 w-40">
-                            <div class="overflow-hidden text-ellipsis whitespace-nowrap">{{ music.anime.name }}</div>
+
+                <div>
+                    <h2 class="font-bold text-start m-4 w-full-2 border-b border-gray-400/60">Artistes</h2>
+                    <div class="flex flex-col lg:flex-row">
+                        <div [routerLink]="['/artists', author?.id]"
+                            class="flex flex-row p-4 rounded-lg hover:cursor-pointer items-center justify-center"
+                            *ngFor="let author of music?.authors">
+                            <img [src]="author.poster_img"
+                                class="hover:opacity-80 rounded-full object-fill w-20 h-20" />
+                            <div class="pl-4 w-40 md:w-full">
+                                <div class="overflow-hidden text-ellipsis whitespace-nowrap">{{ author.name }}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-            </div>
-
-            <div>
-                <h2 class="font-bold text-center">Artistes</h2>
-                <div class="flex flex-col lg:flex-row justify-center">
-                    <div [routerLink]="['/artists', author?.id]"
-                        class="flex flex-row p-4 rounded-lg hover:cursor-pointer items-center justify-center"
-                        *ngFor="let author of music?.authors">
-                        <img [src]="author.poster_img" class="hover:opacity-80 rounded-full object-fill w-20 h-20" />
-                        <div class="pl-4 w-40 md:w-full">
-                            <div class="overflow-hidden text-ellipsis whitespace-nowrap">{{ author.name }}</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="p-4 flex flex-col items-center lg:w-full">
-                <h2 class="font-bold text-center">Avis</h2>
-                <div class="flex flex-col lg:w-full lg:p-4">
-                    <app-review-short-list [reviews]=reviews></app-review-short-list>
-                    <div *ngIf="reviews.length == 10" class="text-center pt-4"><a
-                            [routerLink]="['/reviews', music.id]">Voir
-                            plus</a></div>
-                </div>
-            </div>
-        </div>
-        <!-- <div class="flex flex-col items-center">
-            <div class="text-center flex flex-col items-center p-4">
-                <h1 class="font-bold pb-5 text-center">{{ music.name}}</h1>
-                <img class="rounded-3xl w-44 pb-4" src="{{music.poster_img}}" alt="{{music.name}}" />
-                <ng-container *ngIf="music?.avg_note">
-                    <app-rating-stars [isStatic]=true [rate]=music.avg_note*2 />
-                </ng-container>
-                <div *ngIf="isLoggedIn()" class="p-4" (click)="my_modal.showModal()">Donne/Modifie ton avis</div>
-                <dialog #my_modal class="modal">
-                    <form method="dialog" class="modal-box flex flex-col" (ngSubmit)="onSubmit()">
-                        <h1 class="p-2 text-xl font-bold">Avis</h1>
-                        <label class="label">Note visuel : *</label>
-                        <app-rating-stars [isStatic]=false type="visual" [(rate)]="noteVisual" />
-                        <label class="label">Note musique : *</label>
-                        <app-rating-stars [isStatic]=false type="music" [(rate)]=noteMusic />
-                        <label class="label">Description :</label>
-                        <textarea [formControl]="description" class="textarea textarea-bordered"></textarea>
-                        <div class="flex justify-center p-2">
-                            <button type="submit" class="btn">Valider</button>
-                        </div>
-                    </form>
-                    <form method="dialog" class="modal-backdrop">
-                        <button>close</button>
-                    </form>
-                </dialog>
-                <div class="flex flex-row bg-base-300 items-center rounded-lg border border-base-300 p-1 pr-2 pl-2 cursor-pointer"
-                    (click)="toggleFavorite()">
-                    <ng-container *ngIf="isFavorite();else elseBlock">
-                        <div class="text-2xl pt-2 pr-1">
-                            <mat-icon [inline]="true">favorite</mat-icon>
-                        </div>
-                        <div>Supprimer des favoris</div>
-                    </ng-container>
-                    <ng-template #elseBlock>
-                        <div class="text-2xl pt-2 pr-1">
-                            <mat-icon [inline]="true">favorite_outline</mat-icon>
-                        </div>
-                        <div>Ajouter au favoris</div>
-                    </ng-template>
-
-                </div>
-            </div>
-            <div>
-                <iframe [src]="getSafeUrl(music.id_video)" frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowfullscreen></iframe>
-            </div>
-            <div class="pl-5 p-4">
-                <h2 class="font-bold pb-3 text-center">Informations</h2>
-                <div class="flex flex-col">
-                    <div>Date de sortie : {{ music.release_date | date : "dd-MM-YYYY"}}</div>
-                    <div>Type : {{ music.type.type_name}} </div>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="p-4 flex flex-col items-center">
-            <h2 class="font-bold text-center">Anime</h2>
-            <div class="flex flex-col">
-                <div [routerLink]="['/animes', music.anime.id]"
-                    class="flex flex-row p-4 hover:shadow-xl hover:shadow-blue-400/40 rounded-lg hover:cursor-pointer items-center">
-                    <img [src]="music.anime.poster_img" class="rounded-full object-fill w-20 h-20" />
-                    <div class="pl-4 w-40">
-                        <div class="overflow-hidden text-ellipsis whitespace-nowrap">{{ music.anime.name }}</div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-        <div class="p-4 flex flex-col items-center">
-            <h2 class="font-bold text-center">Artistes</h2>
-            <div class="flex flex-col">
-                <div [routerLink]="['/artists', author?.id]"
-                    class="flex flex-row p-4 hover:shadow-xl hover:shadow-blue-400/40 rounded-lg hover:cursor-pointer items-center"
-                    *ngFor="let author of music?.authors">
-                    <img [src]="author.poster_img" class="rounded-full object-fill w-20 h-20" />
-                    <div class="pl-4 w-40">
-                        <div class="overflow-hidden text-ellipsis whitespace-nowrap">{{ author.name }}</div>
+                <div>
+                    <h2 class="font-bold text-start m-4 w-full-2 border-b border-gray-400/60">Avis</h2>
+                    <div class="flex flex-col lg:w-full lg:p-4">
+                        <app-review-short-list [reviews]=reviews></app-review-short-list>
+                        <div *ngIf="reviews.length == 10" class="text-center pt-4"><a
+                                [routerLink]="['/reviews', music.id]">Voir
+                                plus</a></div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div class="p-4 flex flex-col items-center">
-            <h2 class="font-bold text-center ">Avis</h2>
-            <div class="flex flex-col">
-                <app-review-short-list [reviews]=reviews></app-review-short-list>
-                <div *ngIf="reviews.length == 10" class="text-center pt-4"><a [routerLink]="['/reviews', music.id]">Voir
-                        plus</a></div>
-            </div>
-        </div> -->
     </div>
 
 

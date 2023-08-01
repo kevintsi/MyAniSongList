@@ -1,12 +1,12 @@
-<div class="container pt-20 md:pt-40">
+<div class="container pt-20 md:pt-40 h-full">
     <div class="flex justify-center" *ngIf="isLoading">
         <span class="loading loading-bars loading-lg"></span>
     </div>
-    <div *ngIf="!isLoading" class="flex flex-col items-center">
+    <div *ngIf="!isLoading" class="h-full flex flex-col items-center p-4 border-l border-r border-b border-gray-400/10">
 
         <ng-container *ngIf="animes.items.length > 0;else elseBlock">
-            <div class="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-5 gap-8 text-center w-full">
-                <div class="bg-base-100 hover:cursor-pointer rounded-lg" *ngFor="let anime of animes.items"
+            <div class="grid  grid-cols-2 md:grid-cols-4 xl:grid-cols-5 gap-8 text-center w-full">
+                <div class="bg-base-100 hover:cursor-pointer rounded-lg  p-4" *ngFor="let anime of animes.items"
                     [routerLink]="['/animes', anime.id]">
                     <div class="text-center font-bold text-sm pb-4 overflow-hidden text-ellipsis whitespace-nowrap">
                         {{ anime.name }}

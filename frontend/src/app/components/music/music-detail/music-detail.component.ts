@@ -8,6 +8,7 @@ import { ReviewService } from 'src/app/_services/review.service';
 import { Music } from 'src/app/models/Music';
 import { Review } from 'src/app/models/Review';
 import { DomSanitizer, Title } from '@angular/platform-browser';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-music-detail',
@@ -34,7 +35,8 @@ export class MusicDetailComponent {
     private reviewService: ReviewService,
     private authService: AuthService,
     private sanitizer: DomSanitizer,
-    private title: Title
+    private title: Title,
+    private toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -107,6 +109,10 @@ export class MusicDetailComponent {
     this.musicService.addToFavorites(this.music.id).subscribe({
       next: () => {
         this.favorites.push(this.music);
+        this.toastr.success("Ajoutée aux favoris", 'Ajout', {
+          progressBar: true,
+          timeOut: 3000
+        })
       }
     });
   }
@@ -115,6 +121,10 @@ export class MusicDetailComponent {
     this.musicService.removeFromFavorites(this.music.id).subscribe({
       next: () => {
         this.favorites = this.favorites.filter((favItem) => favItem.id !== this.music.id);
+        this.toastr.success("Supprimée des favoris", 'Suppression', {
+          progressBar: true,
+          timeOut: 3000
+        })
       }
     });
   }
@@ -163,7 +173,10 @@ export class MusicDetailComponent {
 
     this.reviewService.create(review).subscribe({
       next: () => {
-        alert("Avis ajouté/modifié avec succès")
+        this.toastr.success("Avis ajouté/modifié avec succès", 'Avis', {
+          progressBar: true,
+          timeOut: 3000
+        })
         this.reviewService.reviewAdded.next(true)
       },
       error: (err) => {

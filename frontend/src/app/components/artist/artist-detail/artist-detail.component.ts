@@ -15,7 +15,7 @@ import { Music } from 'src/app/models/Music';
 export class ArtistDetailComponent implements OnInit {
   isLoading: boolean = true
   musics: Music[] = []
-  artist?: Artist
+  artist!: Artist
   constructor(
     private route: ActivatedRoute,
     private musicService: MusicService,

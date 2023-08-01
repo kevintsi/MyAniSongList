@@ -1,22 +1,54 @@
 <div class="container mx-auto pt-20 md:pt-40">
-    <h1 class="text-center md:text-xl">Communautés - Tous les avis récents</h1>
-    <div class="flex justify-center" *ngIf="isLoading">
+    <h1 class="md:text-xl text-center w-full border-b pb-4 border-gray-400/10 font-bold">
+        Communautés - Tous les avis
+    </h1>
+    <div class="flex justify-center p-4" *ngIf="isLoading">
         <span class="loading loading-bars loading-lg"></span>
     </div>
-    <div *ngIf="!isLoading" class="flex flex-col items-center">
+    <div *ngIf="!isLoading" class="flex flex-col items-center border-l border-r border-b p-2 border-gray-400/10">
         <ng-container *ngIf="reviews.items.length > 0;else elseBlock">
-            <div *ngFor="let review of reviews.items" class="pt-8 w-full">
-                <div class="flex flex-row justify-start ">
-                    <div class="w-14">
-                        <img class="w-10 h-10 object-contain cursor-pointer" [routerLink]="['/profile', review.user.id]"
+            <div *ngFor="let review of reviews.items" class="border-b border-gray-400/10 w-full pb-4">
+                <!-- <div class="flex flex-row justify-start">
+                    <div>
+                        <img class="w-20 object-contain cursor-pointer" [routerLink]="['/profile', review.user.id]"
                             [src]="review.user.profile_picture? review.user.profile_picture : '/assets/images/default_image.jpg' " />
                     </div>
-                    <div class="flex flex-col w-full">
+                    <label class="pl-2 font-bold">
+                        {{ review.user.username}}
+                    </label>
+                </div>
+                <div class="flex flex-row border justify-between">
+                    <div class="flex flex-col items-start">
+                        <div class="flex flex-col w-full border">
+                            <div class="flex flex-col items-start pt-2">
+                                <h3>Note du visuel :</h3>
+                                <app-rating-stars [isStatic]="true" [rate]="review.note_visual*2"></app-rating-stars>
+                            </div>
+                            <div class="flex flex-col items-start pt-2">
+                                <h3>Note de la musique :</h3>
+                                <app-rating-stars [isStatic]="true" [rate]="review.note_music*2"></app-rating-stars>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="pt-2 italic">{{ review.description}}</div>
+                        </div>
+                        <div class="pt-4">{{ review.creation_date | date}}</div>
+                    </div>
+                    <label class="overflow-hidden text-ellipsis whitespace-nowrap">
+                        De <a class="underline" [routerLink]="['/musics',review.music.id]">{{review.music.name}}</a>
+                    </label>
+                </div> -->
+                <div class="flex flex-row justify-start">
+                    <div>
+                        <img class="w-20 object-contain cursor-pointer" [routerLink]="['/profile', review.user.id]"
+                            [src]="review.user.profile_picture? review.user.profile_picture : '/assets/images/default_image.jpg' " />
+                    </div>
+                    <div class="flex flex-col w-full pl-4">
                         <div class="flex flex-row justify-between">
                             <div class="font-bold">{{ review.user.username}}</div>
                             <div>{{ review.creation_date | date}}</div>
                         </div>
-                        <div class="flex flex-col items-start pt-2">
+                        <div class="flex flex-col items-start justify-start pt-2">
                             <h3>Note du visuel :</h3>
                             <app-rating-stars [isStatic]="true" [rate]="review.note_visual*2"></app-rating-stars>
                         </div>
@@ -24,10 +56,10 @@
                             <h3>Note de la musique :</h3>
                             <app-rating-stars [isStatic]="true" [rate]="review.note_music*2"></app-rating-stars>
                         </div>
-                        <div class="pt-2 italic">{{ review.description}}</div>
+                        <div class="pt-2 italic ">{{ review.description}}</div>
                     </div>
                 </div>
-                <div class="pt-4 pr-4 italic flex justify-end">
+                <div class="pt-4 italic flex justify-end">
                     <div class="overflow-hidden text-ellipsis whitespace-nowrap">
                         De <a class="underline" [routerLink]="['/musics',review.music.id]">{{review.music.name}}</a>
                     </div>

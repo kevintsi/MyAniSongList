@@ -1,8 +1,8 @@
-<div class="container mx-auto pt-20 md:pt-40">
+<div class="container mx-auto pt-20 md:pt-40 h-full">
     <div class="flex justify-center" *ngIf="isLoading">
         <span class="loading loading-bars loading-lg"></span>
     </div>
-    <div *ngIf="!isLoading" class="flex flex-col items-center">
+    <div *ngIf="!isLoading" class="flex flex-col h-full items-center p-4 border-l border-r border-b border-gray-400/10">
         <ng-container *ngIf="artists.items.length > 0;else elseBlock">
             <div class="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-5 gap-8 text-center w-full">
                 <div class="bg-base-100 hover:cursor-pointer rounded-lg" *ngFor="let artist of artists.items"
