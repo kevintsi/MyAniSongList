@@ -94,7 +94,7 @@
                     <h2 class="font-bold text-start m-4 w-full-2 border-b border-gray-400/60">Artistes</h2>
                     <div class="flex flex-col lg:flex-row">
                         <div [routerLink]="['/artists', author?.id]"
-                            class="flex flex-row p-4 rounded-lg hover:cursor-pointer items-center justify-center"
+                            class="flex flex-row p-4 rounded-lg hover:cursor-pointer justify-start items-center"
                             *ngFor="let author of music?.authors">
                             <img [src]="author.poster_img"
                                 class="hover:opacity-80 rounded-full object-fill w-20 h-20" />
