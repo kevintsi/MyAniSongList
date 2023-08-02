@@ -45,7 +45,6 @@ export class MusicDetailComponent {
   }
 
   getSafeUrl(id_video: string) {
-    console.log("https://www.youtube.com/embed/" + id_video)
     return this.sanitizer.bypassSecurityTrustResourceUrl("https://www.youtube.com/embed/" + id_video)
   }
 
@@ -62,7 +61,6 @@ export class MusicDetailComponent {
       this.reviews = (await this.getMusicReviews(id_music)).items
       if (this.isLoggedIn()) {
         this.userReview = await this.getUserReview(id_music)
-        console.log(this.userReview)
         if (this.userReview) {
           this.description.setValue(this.userReview.description)
           this.noteMusic = this.userReview.note_music * 2
@@ -70,7 +68,6 @@ export class MusicDetailComponent {
         }
         this.favorites = await this.getFavorites()
       }
-      console.log(this.reviews)
     } catch (error) {
       console.error(error)
     } finally {
@@ -150,15 +147,7 @@ export class MusicDetailComponent {
     return Array.from({ length: end - start + 1 }, (_, index) => start + index);
   }
 
-  onRating(value: string) {
-    console.log(value)
-  }
-
   onSubmit() {
-    console.log("On submit")
-    console.log(this.description)
-    console.log(this.noteMusic)
-    console.log(this.noteVisual)
     if (this.noteMusic == 0 || this.noteVisual == 0) {
       return
     }

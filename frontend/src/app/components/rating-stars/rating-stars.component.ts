@@ -5,7 +5,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
   templateUrl: './rating-stars.component.html',
   styleUrls: ['./rating-stars.component.css']
 })
-export class RatingStarsComponent implements OnInit {
+export class RatingStarsComponent {
   @Input() rate!: number
   @Input() isStatic!: boolean
   @Input() type!: string
@@ -13,10 +13,6 @@ export class RatingStarsComponent implements OnInit {
   maxStar: number = 10
 
   constructor() { }
-
-  ngOnInit() {
-    console.log(this.rate)
-  }
 
   getRange(start: number, end: number): number[] {
     return Array.from({ length: end - start + 1 }, (_, index) => start + index);
@@ -27,7 +23,6 @@ export class RatingStarsComponent implements OnInit {
   }
 
   onChange(value: string) {
-    console.log(value)
     this.rate = parseInt(value)
     this.rateChange.emit(this.rate)
   }

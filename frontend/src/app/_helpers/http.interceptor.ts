@@ -11,7 +11,6 @@ export class AuthInterceptor implements HttpInterceptor {
     constructor(private tokenService: TokenService, private router: Router) { }
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        console.log('Intercept...')
         let token = this.tokenService.getToken()
         if (!!token) {
             req = req.clone({
@@ -21,17 +20,12 @@ export class AuthInterceptor implements HttpInterceptor {
             })
         }
 
-        console.log("Request : ", req)
-
         return next.handle(req).pipe(
             catchError((error: any) => {
                 if (error instanceof HttpErrorResponse && error.status === 401 && error.error.detail == "Token has expired") {
                     console.log('Error when calling API access token probably expired')
-                    console.log("CALL REFRESH TOKEN API")
                     return this.tokenService.getRefreshToken().pipe(
                         switchMap((token: Token) => {
-                            // Update the original request with the new token
-                            console.log("New access token gotten")
                             const updatedRequest = req.clone({
                                 setHeaders: {
                                     Authorization: `Bearer ${token.access_token}`

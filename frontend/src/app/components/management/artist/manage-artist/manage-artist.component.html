@@ -4,7 +4,7 @@
     </div>
     <ng-container *ngIf="!isLoading">
         <div class="flex flex-row items-center pt-4">
-            <div class="text-4xl">
+            <div class="text-4xl cursor-pointer">
                 <mat-icon [inline]="true" routerLink="/manage/artists/create">add</mat-icon>
             </div>
             <app-search-bar placeholder="Tapez l'artiste que vous recherchez" (searchEvent)="performSearch($event)"

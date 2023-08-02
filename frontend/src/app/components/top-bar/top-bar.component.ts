@@ -46,7 +46,6 @@ export class TopBarComponent implements OnInit {
             let decodedToken: any = jwtDecode(String(this.tokenService.getToken()))
             this.user_pfp = decodedToken.sub.profile_picture
             this.username = decodedToken.sub.username
-            console.log(decodedToken.sub.username)
           }
         }
       }

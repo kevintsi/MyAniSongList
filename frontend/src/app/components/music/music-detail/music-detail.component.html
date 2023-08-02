@@ -24,7 +24,7 @@
                     </div>
                     <dialog #my_modal class="modal">
                         <form method="dialog" class="modal-box flex flex-col" (ngSubmit)="onSubmit()">
-                            <h1 class="p-2 text-xl font-bold">Avis</h1>
+                            <h1 class="p-2 text-xl text-center font-bold">Avis</h1>
                             <label class="label">Note visuel : *</label>
                             <app-rating-stars [isStatic]=false type="visual" [(rate)]="noteVisual" />
                             <label class="label">Note musique : *</label>
@@ -61,7 +61,13 @@
                     <div class="flex flex-col pt-4">
                         <div><label class="font-bold">Date de sortie : </label> {{ music.release_date | date :
                             "dd-MM-YYYY"}}</div>
-                        <div><label class="font-bold">Type :</label> {{ music.type.type_name}} </div>
+                        <div>
+                            <label class="font-bold">Type :</label>
+                            <div class="badge badge-outline ml-2"
+                                [ngClass]="music.type.type_name == 'Opening' ? 'badge-primary'  : 'badge-secondary'">
+                                {{ music.type.type_name}}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

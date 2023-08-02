@@ -1,10 +1,10 @@
-<div class="container flex flex-col justify-center text-center pt-20 md:pt-40">
+<div class="container flex flex-col justify-center text-center pt-20 md:pt-40 h-full">
     <div class="flex justify-center" *ngIf="isLoading">
         <span class="loading loading-bars loading-lg"></span>
     </div>
-    <ng-container *ngIf="!isLoading">
+    <div *ngIf="!isLoading" class="flex flex-col items-center h-full border-l border-r border-b border-gray-400/10">
         <h1 class="text-center text-2xl font-medium p-4">Informations</h1>
-        <form [formGroup]="updateForm" class="w-full flex flex-col items-center" (ngSubmit)="onSubmit()">
+        <form [formGroup]="updateForm" class="md:w-1/2 flex flex-col items-center" (ngSubmit)="onSubmit()">
             <div (click)="imageInput.click()"
                 class="flex hover:bg-slate-100  border-2 border-base-300 justify-center items-center h-80 w-60">
                 <ng-container *ngIf="previewImage;else elseBlock">
@@ -36,6 +36,6 @@
 
             <input [hidden]="true" #imageInput type="file" (change)="processFile(imageInput)" />
         </form>
-    </ng-container>
+    </div>
 
 </div>
