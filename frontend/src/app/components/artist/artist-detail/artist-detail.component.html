@@ -1,9 +1,9 @@
-<div class="flex flex-col container mx-auto pt-20 md:pt-40">
+<div class="flex flex-col container mx-auto">
     <div class="flex justify-center" *ngIf="isLoading">
         <span class="loading loading-bars loading-lg"></span>
     </div>
     <div *ngIf="!isLoading" class="flex flex-col justify-start">
-        <div class="w-full border-b border-gray-400/60 bg-base-200">
+        <div class="w-full border-b border-gray-400/60 bg-base-200 pt-20 md:pt-40 pb-2">
             <h1 class="font-bold p-4 text-start">{{ artist.name}}</h1>
         </div>
         <div class="flex flex-col md:flex-row w-full border-l border-r border-b border-gray-400/10">
