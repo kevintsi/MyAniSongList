@@ -8,7 +8,7 @@
         </div>
         <div *ngIf="isSearchBarOpen" class="block fixed z-50 w-full top-16 h-full bg-black/20">
             <div class="w-full join">
-                <select class="select rounded-none join-item !outline-none grow w-1/2" [(ngModel)]="category">
+                <select class="select border-base-content join-item !outline-none grow w-1/2" [(ngModel)]="category">
                     <option value="musics">Musique</option>
                     <option value="artists">Artiste</option>
                     <option value="animes">Anime</option>
@@ -122,25 +122,23 @@
             </ng-template>
         </div>
     </div>
-    <div class="hidden pb-3  sm:flex bg-base-200 flex-row items-center justify-between">
-        <div>
-            <ul tabindex="0" class="flex flex-row mt-3 p-2">
-                <li><a routerLink="/animes">Animes</a></li>
-                <li><a routerLink="/artists">Artistes</a></li>
-                <li class="relative cursor-pointer hover:bg-base-300">
-                    <a>Musiques</a>
-                    <ul class="hidden absolute pt-2 left-0 w-40">
-                        <li class="bg-base-100 hover:bg-base-300"><a routerLink="/musics">Liste de musiques</a></li>
-                        <li class="bg-base-100 hover:bg-base-300"><a routerLink="/musics/ranking">Classement</a></li>
-                    </ul>
-                </li>
+    <div class="hidden sm:flex bg-base-100 flex-row  justify-between">
+        <ul class="flex flex-row">
+            <li class="!p-4"><a routerLink="/animes">Animes</a></li>
+            <li class="!p-4"><a routerLink="/artists">Artistes</a></li>
+            <li class="relative cursor-pointer  !p-4 hover:bg-base-300">
+                <a>Musiques</a>
+                <ul class="hidden absolute pt-2 left-0 w-40">
+                    <li class="bg-base-100 hover:bg-base-300"><a routerLink="/musics">Liste de musiques</a></li>
+                    <li class="bg-base-100 hover:bg-base-300"><a routerLink="/musics/ranking">Classement</a></li>
+                </ul>
+            </li>
 
-                <li><a routerLink="/community">Communauté</a></li>
-            </ul>
-        </div>
-        <div class="pr-14 w-96">
+            <li class="!p-4"><a routerLink="/community">Communauté</a></li>
+        </ul>
+        <div class="pr-14 pt-2">
             <div class="flex flex-row ">
-                <select class="select select-bordered mr-4 !outline-none " [(ngModel)]="category">
+                <select class="select mr-4 !outline-none border-base-content" [(ngModel)]="category">
                     <option value="musics">Musique</option>
                     <option value="artists">Artiste</option>
                     <option value="animes">Anime</option>
