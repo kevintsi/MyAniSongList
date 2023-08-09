@@ -30,7 +30,8 @@
                             <label class="label">Note musique : *</label>
                             <app-rating-stars [isStatic]=false type="music" [(rate)]=noteMusic />
                             <label class="label">Description :</label>
-                            <textarea [formControl]="description" class="textarea textarea-bordered"></textarea>
+                            <textarea [formControl]="description" placeholder="Description..."
+                                class="textarea textarea-bordered"></textarea>
                             <div class="flex justify-center p-2">
                                 <button type="submit" class="btn">Valider</button>
                             </div>
@@ -83,10 +84,9 @@
                 <div>
                     <h2 class="font-bold text-start m-4 w-full-2 border-b border-gray-400/60">Anime</h2>
                     <div class="flex flex-col">
-                        <div [routerLink]="['/animes', music.anime.id]"
-                            class="flex flex-row p-4 rounded-lg hover:cursor-pointer items-center">
-                            <img [src]="music.anime.poster_img"
-                                class="hover:opacity-80 rounded-full object-fill w-20 h-20" />
+                        <div class="flex flex-row p-4 rounded-lg  items-center">
+                            <img [src]="music.anime.poster_img" [routerLink]="['/animes', music.anime.id]"
+                                class="hover:opacity-80 hover:cursor-pointer rounded-full object-fill w-20 h-20" />
                             <div class="pl-4 w-40">
                                 <div class="overflow-hidden text-ellipsis whitespace-nowrap">{{ music.anime.name }}
                                 </div>
@@ -99,11 +99,10 @@
                 <div>
                     <h2 class="font-bold text-start m-4 w-full-2 border-b border-gray-400/60">Artistes</h2>
                     <div class="flex flex-col lg:flex-row">
-                        <div [routerLink]="['/artists', author?.id]"
-                            class="flex flex-row p-4 rounded-lg hover:cursor-pointer justify-start items-center"
+                        <div class="flex flex-row p-4 rounded-lg  justify-start items-center"
                             *ngFor="let author of music?.authors">
-                            <img [src]="author.poster_img"
-                                class="hover:opacity-80 rounded-full object-fill w-20 h-20" />
+                            <img [src]="author.poster_img" [routerLink]="['/artists', author?.id]"
+                                class="hover:opacity-80 rounded-full hover:cursor-pointer object-fill w-20 h-20" />
                             <div class="pl-4 w-40 md:w-full">
                                 <div class="overflow-hidden text-ellipsis whitespace-nowrap">{{ author.name }}</div>
                             </div>

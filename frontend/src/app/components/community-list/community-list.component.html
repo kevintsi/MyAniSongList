@@ -3,41 +3,11 @@
         Communautés - Tous les avis
     </h1>
     <div class="flex justify-center p-4" *ngIf="isLoading">
-        <span class="loading loading-bars loading-lg"></span>
+        <span class="loading loading-bars loading-lg -z-10"></span>
     </div>
     <div *ngIf="!isLoading" class="flex flex-col items-center border-l border-r border-b p-2 border-gray-400/10">
         <ng-container *ngIf="reviews.items.length > 0;else elseBlock">
-            <div *ngFor="let review of reviews.items" class="border-b border-gray-400/10 w-full pb-4">
-                <!-- <div class="flex flex-row justify-start">
-                    <div>
-                        <img class="w-20 object-contain cursor-pointer" [routerLink]="['/profile', review.user.id]"
-                            [src]="review.user.profile_picture? review.user.profile_picture : '/assets/images/default_image.jpg' " />
-                    </div>
-                    <label class="pl-2 font-bold">
-                        {{ review.user.username}}
-                    </label>
-                </div>
-                <div class="flex flex-row border justify-between">
-                    <div class="flex flex-col items-start">
-                        <div class="flex flex-col w-full border">
-                            <div class="flex flex-col items-start pt-2">
-                                <h3>Note du visuel :</h3>
-                                <app-rating-stars [isStatic]="true" [rate]="review.note_visual*2"></app-rating-stars>
-                            </div>
-                            <div class="flex flex-col items-start pt-2">
-                                <h3>Note de la musique :</h3>
-                                <app-rating-stars [isStatic]="true" [rate]="review.note_music*2"></app-rating-stars>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="pt-2 italic">{{ review.description}}</div>
-                        </div>
-                        <div class="pt-4">{{ review.creation_date | date}}</div>
-                    </div>
-                    <label class="overflow-hidden text-ellipsis whitespace-nowrap">
-                        De <a class="underline" [routerLink]="['/musics',review.music.id]">{{review.music.name}}</a>
-                    </label>
-                </div> -->
+            <div *ngFor="let review of reviews.items" class="border-b border-gray-400/10 w-full pb-4 mt-4">
                 <div class="flex flex-row justify-start">
                     <div>
                         <img class="w-20 object-contain cursor-pointer" [routerLink]="['/profile', review.user.id]"
