@@ -67,6 +67,7 @@ class MusicService(BaseService[Music, MusicCreate, MusicUpdate]):
                 anime_id=obj.anime_id,
                 type_id=obj.type_id,
                 poster_img=blob.public_url,
+                id_video=obj.id_video
             )
 
             print(db_obj)
