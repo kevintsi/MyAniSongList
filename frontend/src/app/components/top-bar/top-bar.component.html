@@ -106,10 +106,12 @@
                         <li><a routerLink="/favorites">Favoris</a></li>
                         <li *ngIf="isManager()"> <a routerLink="/manage">Gestion</a> </li>
                         <li (click)="logout()" class="flex flex-row items-center">
-                            <div class="text-2xl">
-                                <mat-icon [inline]="true">logout</mat-icon>
-                            </div>
-                            <a class="pl-2">Se déconnecter</a>
+                            <a class="pl-2">
+                                <div class="text-2xl">
+                                    <mat-icon [inline]="true">logout</mat-icon>
+                                </div>
+                                Se déconnecter
+                            </a>
                         </li>
                     </ul>
                 </div>

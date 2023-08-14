@@ -4,6 +4,7 @@ import { User } from '../../models/User';
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -27,6 +28,7 @@ export class ProfileEditComponent {
     private authService: AuthService,
     private formBuilder: FormBuilder,
     private title: Title,
+    private toastr: ToastrService
 
   ) {
     this.title.setTitle("MyAniSongList - Mon profil")
@@ -65,7 +67,10 @@ export class ProfileEditComponent {
     this.authService.update(user, this.file)
       .subscribe({
         next: () => {
-          alert("Informations mises à jour ")
+          this.toastr.success("Mise à jour du profil", 'Update', {
+            progressBar: true,
+            timeOut: 3000
+          })
         },
         error: err => {
           console.log(err)

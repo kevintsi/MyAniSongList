@@ -9,7 +9,8 @@
         <div class="flex flex-col lg:flex-row border-l border-r border-b border-gray-400/10">
             <div class="flex flex-col items-center border-r border-gray-400/10">
                 <div class="flex flex-col p-4 items-center justify-center">
-                    <img class="rounded-3xl md:w-80 w-44" src="{{music.poster_img}}" alt="{{music.name}}" />
+                    <img class="rounded-3xl h-60 w-60  md:w-80 md:h-80 object-cover" src="{{music.poster_img}}"
+                        alt="{{music.name}}" />
                     <ng-container *ngIf="music?.avg_note else notRated">
                         <div class="flex flex-row justify-center p-4">
                             <app-rating-stars [isStatic]=true [rate]=music.avg_note*2 />
@@ -19,8 +20,12 @@
                     <ng-template #notRated>
                         <div class="p-4">N/A</div>
                     </ng-template>
-                    <div *ngIf="isLoggedIn()" class="p-4 cursor-pointer" (click)="my_modal.showModal()">
-                        Donne/Modifie ton avis
+                    <div *ngIf="isLoggedIn()" class="pb-4 cursor-pointer flex flex-row items-center">
+                        <button (click)="my_modal.showModal()" class="btn bg-base-300">Donne/Modifie ton avis
+                            <div class="text-2xl pl-2">
+                                <mat-icon [inline]="true">edit</mat-icon>
+                            </div>
+                        </button>
                     </div>
                     <dialog #my_modal class="modal">
                         <form method="dialog" class="modal-box flex flex-col" (ngSubmit)="onSubmit()">
@@ -40,22 +45,23 @@
                             <button>close</button>
                         </form>
                     </dialog>
-                    <div class="flex flex-row bg-base-300 justify-center items-center rounded-lg border border-base-300 p-1 pr-2 pl-2 cursor-pointer"
-                        (click)="toggleFavorite()">
-                        <ng-container *ngIf="isFavorite();else elseBlock">
+                    <ng-container *ngIf="isFavorite();else elseBlock">
+                        <button (click)="toggleFavorite()" class="btn bg-base-300">
                             <div class="text-2xl pt-2 pr-1">
                                 <mat-icon [inline]="true">favorite</mat-icon>
                             </div>
                             <div>Supprimer des favoris</div>
-                        </ng-container>
-                        <ng-template #elseBlock>
+                        </button>
+                    </ng-container>
+                    <ng-template #elseBlock>
+                        <button (click)="toggleFavorite()" class="btn bg-base-300">
                             <div class="text-2xl pt-2 pr-1">
                                 <mat-icon [inline]="true">favorite_outline</mat-icon>
                             </div>
                             <div>Ajouter au favoris</div>
-                        </ng-template>
+                        </button>
+                    </ng-template>
 
-                    </div>
                 </div>
                 <div class="w-full p-4">
                     <h2 class="font-bold border-b border-gray-400/60">Informations</h2>
@@ -86,7 +92,7 @@
                     <div class="flex flex-col">
                         <div class="flex flex-row p-4 rounded-lg  items-center">
                             <img [src]="music.anime.poster_img" [routerLink]="['/animes', music.anime.id]"
-                                class="hover:opacity-80 hover:cursor-pointer rounded-full object-fill w-20 h-20" />
+                                class="hover:opacity-80 hover:cursor-pointer rounded-full object-cover w-20 h-20" />
                             <div class="pl-4 w-40">
                                 <div class="overflow-hidden text-ellipsis whitespace-nowrap">{{ music.anime.name }}
                                 </div>
@@ -102,8 +108,8 @@
                         <div class="flex flex-row p-4 rounded-lg  justify-start items-center"
                             *ngFor="let author of music?.authors">
                             <img [src]="author.poster_img" [routerLink]="['/artists', author?.id]"
-                                class="hover:opacity-80 rounded-full hover:cursor-pointer object-fill w-20 h-20" />
-                            <div class="pl-4 w-40 md:w-full">
+                                class="hover:opacity-80 rounded-full hover:cursor-pointer w-20 h-20" />
+                            <div class="ml-4 w-40 md:w-full">
                                 <div class="overflow-hidden text-ellipsis whitespace-nowrap">{{ author.name }}</div>
                             </div>
                         </div>
