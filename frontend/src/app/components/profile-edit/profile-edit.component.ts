@@ -1,25 +1,25 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../_services/auth.service';
 import { User } from '../../models/User';
-import { FormBuilder } from '@angular/forms';
-import { Router } from '@angular/router';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
-
+import { passwordMatchingValidator } from 'src/app/utils/utils';
 
 @Component({
   selector: 'app-profile-edit',
   templateUrl: './profile-edit.component.html',
   styleUrls: ['./profile-edit.component.css']
 })
+
 export class ProfileEditComponent {
   isLoading: boolean = true
   updateForm = this.formBuilder.group({
-    username: "",
-    email: "",
-    password: "",
-    confirmPassword: ""
-  });
+    username: new FormControl("", [Validators.required]),
+    email: new FormControl("", [Validators.email, Validators.required]),
+    password: new FormControl("", [Validators.required]),
+    confirmPassword: new FormControl("", [Validators.required])
+  }, { validators: passwordMatchingValidator });
 
   previewImage?: any
   file: any
@@ -33,6 +33,8 @@ export class ProfileEditComponent {
   ) {
     this.title.setTitle("MyAniSongList - Mon profil")
   }
+
+
 
   ngOnInit(): void {
     this.authService.get().subscribe({

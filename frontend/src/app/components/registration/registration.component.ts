@@ -4,6 +4,8 @@ import { User } from '../../models/User';
 import { AuthService } from '../../_services/auth.service';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
+import { passwordMatchingValidator } from 'src/app/utils/utils';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-registration',
@@ -19,13 +21,14 @@ export class RegistrationComponent implements OnInit {
     email: new FormControl("", [Validators.email, Validators.required]),
     password: new FormControl("", [Validators.required]),
     confirmPassword: new FormControl("", [Validators.required])
-  });
+  }, { validators: passwordMatchingValidator });
 
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private title: Title
+    private title: Title,
+    private toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -34,6 +37,7 @@ export class RegistrationComponent implements OnInit {
 
   onSubmit(): void {
     console.log("onSubmit")
+    console.log(this.registrationForm)
     const { username, email, password, confirmPassword } = this.registrationForm.value
     if (this.registrationForm.valid && password === confirmPassword) {
       let user: User = {
@@ -45,6 +49,10 @@ export class RegistrationComponent implements OnInit {
       this.authService.register(user)
         .subscribe({
           next: () => {
+            this.toastr.success("Inscription réussie", 'Ajout', {
+              progressBar: true,
+              timeOut: 3000
+            })
             this.router.navigateByUrl("/login")
           },
           error: err => {
