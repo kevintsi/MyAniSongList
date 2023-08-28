@@ -21,7 +21,6 @@ import { MusicListComponent } from './components/music/music-list/music-list.com
 import { MusicDetailComponent } from './components/music/music-detail/music-detail.component';
 import { RatingStarsComponent } from './components/rating-stars/rating-stars.component';
 import { ReviewShortListComponent } from './components/review/review-short-list/review-short-list.component';
-import { ReviewDetailComponent } from './components/review/review-detail/review-detail.component';
 import { ReviewListComponent } from './components/review/review-list/review-list.component';
 import { SharedModule } from './modules/shared/shared.module';
 import { CommunityListComponent } from './components/community-list/community-list.component';
@@ -48,7 +47,6 @@ import { ToastrModule } from 'ngx-toastr';
     MusicDetailComponent,
     RatingStarsComponent,
     ReviewShortListComponent,
-    ReviewDetailComponent,
     ReviewListComponent,
     CommunityListComponent,
     RankingMusicComponent,

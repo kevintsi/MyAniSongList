@@ -1,6 +1,6 @@
 <div *ngIf="reviews.length == 0" class=" p-4 text-center">Pas encore d'avis sur cet opening ou ending</div>
 <div class="flex flex-col items-center p-4 md:p-2">
-    <div *ngFor="let review of reviews" class="mt-4 pb-10 border-b border-gray-400/60 w-full">
+    <div *ngFor="let review of reviews; trackBy: trackByReviewId" class="mt-4 pb-10 border-b border-gray-400/60 w-full">
         <div class="flex flex-row justify-start ">
             <div class="w-14 cursor-pointer">
                 <img class="w-10 h-10 lg:w-full object-contain" [routerLink]="['/profile', review.user.id]"

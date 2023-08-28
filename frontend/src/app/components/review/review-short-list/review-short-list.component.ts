@@ -8,4 +8,8 @@ import { Review } from 'src/app/models/Review';
 })
 export class ReviewShortListComponent {
   @Input() reviews!: Review[]
+
+  trackByReviewId(index: number, review: Review) {
+    return review.id;
+  }
 }

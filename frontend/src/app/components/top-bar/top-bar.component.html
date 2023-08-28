@@ -25,7 +25,7 @@
             </div>
             <ng-container *ngIf="!isLoading">
                 <div class="flex flex-col bg-base-200" *ngFor="let item of result_search">
-                    <div (click)="goToItem(item.id)" class="flex flex-row items-center">
+                    <div (click)="goToItem(item.id)" class="flex flex-row items-center cursor-pointer">
                         <img [src]="item.poster_img ? item.poster_img : item.profile_picture ? item.profile_picture : '/assets/images/default_image.jpg'"
                             class="w-14 h-14 object-fill rounded-full" />
                         <div class="pl-2">{{ item.name ? item.name : item.username}}</div>
@@ -155,7 +155,7 @@
             </div>
             <ng-container *ngIf="!isLoading">
                 <div class="absolute w-80 mt-2 bg-base-200" *ngFor="let item of result_search">
-                    <div (click)="goToItem(item.id)" class="flex flex-row items-center">
+                    <div (click)="goToItem(item.id)" class="flex flex-row items-center cursor-pointer">
                         <img [src]="item.poster_img ? item.poster_img : item.profile_picture ? item.profile_picture : '/assets/images/default_image.jpg'"
                             class="w-14 h-14 object-fill rounded-full" />
                         <div class="pl-2">{{ item.name ? item.name : item.username}}</div>
