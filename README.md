@@ -45,7 +45,7 @@ Avant de commencer, assurez-vous d'avoir installé Docker
 2. A la racine du projet et exécutez les commandes suivantes :
 
    ```
-   docker compose run build
+   docker compose build
    docker compose start
    ```
 
