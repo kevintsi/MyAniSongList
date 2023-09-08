@@ -80,4 +80,5 @@ class AnimeService(BaseService[Anime, AnimeCreate, AnimeUpdate]):
 
 
 def get_service(db_session: Session = Depends(get_session)) -> AnimeService:
+    print("Get service...")
     return AnimeService(db_session)

@@ -1,10 +1,11 @@
+from contextlib import contextmanager
 from functools import lru_cache
 import time
 from typing import Generator
 
 from sqlalchemy import create_engine
 import sqlalchemy
-from sqlalchemy.orm import scoped_session, sessionmaker
+from sqlalchemy.orm import scoped_session, sessionmaker, Session
 
 from config import get_settings
 
@@ -34,16 +35,19 @@ engine = create_engine(get_settings().database_url)
 
 
 @lru_cache
-def create_session() -> scoped_session:
-    Session = scoped_session(
-        sessionmaker(autocommit=False, autoflush=False, bind=engine)
-    )
+def create_session():
+    Session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
     return Session
 
 
-def get_session() -> Generator[scoped_session, None, None]:
-    Session = create_session()
-    try:
-        yield Session
-    finally:
-        Session.remove()
+def get_session():
+    with create_session().begin() as session:
+        try:
+            yield session
+        except Exception as e:
+            print("Error occured, rollback")
+            print(e)
+            session.rollback()
+        finally:
+            print("Close the session")
+            session.close()

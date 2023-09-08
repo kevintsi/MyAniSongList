@@ -29,6 +29,7 @@ async def get_all(
 ):
     # fake_data = service.list()*100
     # return paginate(fake_data)
+    print("Begin get list anime...")
     return paginate(service.list())
 
 
