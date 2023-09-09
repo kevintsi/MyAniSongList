@@ -31,7 +31,8 @@ from config import get_settings
 #     return conn
 
 
-engine = create_engine(get_settings().database_url)
+engine = create_engine(get_settings().database_url,
+                       pool_pre_ping=True, pool_recycle=1800)
 
 
 @lru_cache
