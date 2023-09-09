@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, firstValueFrom } from 'rxjs';
 import { AuthService } from 'src/app/_services/auth.service';
 import { MusicService } from 'src/app/_services/music.service';
@@ -31,6 +31,7 @@ export class MusicDetailComponent {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private musicService: MusicService,
     private reviewService: ReviewService,
     private authService: AuthService,
@@ -86,6 +87,10 @@ export class MusicDetailComponent {
   }
 
   toggleFavorite() {
+    if (!this.isLoggedIn()) {
+      this.router.navigateByUrl("/login")
+      return
+    }
     if (this.isFavorite()) {
       this.removeFromFavorites();
     } else {
