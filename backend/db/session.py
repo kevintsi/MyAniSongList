@@ -36,19 +36,21 @@ engine = create_engine(get_settings().database_url,
 
 
 @lru_cache
-def create_session():
-    Session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+def create_session() -> scoped_session:
+    Session = scoped_session(
+        sessionmaker(autocommit=False, autoflush=False, bind=engine))
+
     return Session
 
 
-def get_session():
-    with create_session().begin() as session:
-        try:
-            yield session
-        except Exception as e:
-            print("Error occured, rollback")
-            print(e)
-            session.rollback()
-        finally:
-            print("Close the session")
-            session.close()
+def get_session() -> Generator[scoped_session, None, None]:
+    Session = create_session()
+    try:
+        yield Session
+    except Exception as e:
+        print("Error occured, rollback")
+        print(e)
+        Session.rollback()
+    finally:
+        print("Remove the session")
+        Session.remove()
