@@ -32,7 +32,7 @@ from config import get_settings
 
 
 engine = create_engine(get_settings().database_url,
-                       pool_pre_ping=True, pool_recycle=1800)
+                       pool_pre_ping=True)
 
 
 @lru_cache
@@ -47,10 +47,6 @@ def get_session() -> Generator[scoped_session, None, None]:
     Session = create_session()
     try:
         yield Session
-    except Exception as e:
-        print("Error occured, rollback")
-        print(e)
-        Session.rollback()
     finally:
         print("Remove the session")
         Session.remove()
