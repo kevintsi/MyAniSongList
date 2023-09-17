@@ -1,11 +1,8 @@
-from contextlib import contextmanager
 from functools import lru_cache
-import time
 from typing import Generator
 
 from sqlalchemy import create_engine
-import sqlalchemy
-from sqlalchemy.orm import scoped_session, sessionmaker, Session
+from sqlalchemy.orm import scoped_session, sessionmaker
 
 from config import get_settings
 
@@ -32,7 +29,7 @@ from config import get_settings
 
 
 engine = create_engine(get_settings().database_url,
-                       pool_pre_ping=True)
+                       pool_pre_ping=True, pool_recycle=3600)
 
 
 @lru_cache
