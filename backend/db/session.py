@@ -41,9 +41,13 @@ def create_session() -> scoped_session:
 
 
 def get_session() -> Generator[scoped_session, None, None]:
+    print("Create the session")
     Session = create_session()
     try:
         yield Session
+    except Exception as e:
+        print("Error occured, rollback")
+        Session.rollback()
     finally:
-        print("Remove the session")
-        Session.remove()
+        print("Close the session")
+        Session.close()
