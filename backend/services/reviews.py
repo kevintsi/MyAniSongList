@@ -35,13 +35,14 @@ class ReviewService(BaseService[Review, ReviewCreate, ReviewUpdate]):
                 user_review.note_visual = obj.note_visual
                 user_review.note_music = obj.note_music
                 user_review.description = obj.description
+                self.db_session.commit()
                 self.calculate_note(user_review)
             else:
                 print(f"converted to Review model : {db_obj}")
                 self.db_session.add(db_obj)
+                self.db_session.commit()
                 self.calculate_note(db_obj)
 
-            self.db_session.commit()
             print("NEW REVIEW MUSIC UPDATED : ", db_obj.music)
             print("End create or update review successfully")
 
@@ -66,10 +67,7 @@ class ReviewService(BaseService[Review, ReviewCreate, ReviewUpdate]):
         print(f"Music avg note empy ? {total_sum is None}")
         print(f"Total sum = {total_sum}")
 
-        if total_sum is None:
-            new_avg_note = obj.note_visual + obj.note_music / 2
-        else:
-            new_avg_note = total_sum/(reviews_count * 2)
+        new_avg_note = total_sum/(reviews_count * 2)
 
         print(f"New avg_note : {new_avg_note}")
 
