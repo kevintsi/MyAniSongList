@@ -35,7 +35,7 @@ async def get_all(
 
 
 @router.get("/latest", response_model=List[Music])
-async def get_all(
+async def get_latest(
     service: MusicService = Depends(get_service)
 ):
     return service.get_latest()

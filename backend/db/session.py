@@ -1,5 +1,4 @@
 from functools import lru_cache
-import time
 from typing import Generator
 from fastapi import HTTPException
 from pymysql import OperationalError
@@ -47,19 +46,13 @@ def create_session() -> scoped_session:
 
 def get_session() -> Generator[scoped_session, None, None]:
     print("Create the session")
-    retries = 5
-    for _ in range(retries):
-        try:
-            Session = create_session()
-            yield Session
-            return
-        except OperationalError as e:
-            print("Error occured, rollback")
-            Session.rollback()
-            time.sleep(5)
-        finally:
-            print("Close the session")
-            Session.close()
-
-    # If all retries fail, raise an HTTPException.
-    raise HTTPException(status_code=500, detail="Database connection error")
+    Session = create_session()
+    try:
+        Session.rollback()
+        yield Session
+    except OperationalError as e:
+        print("Error occured, rollback")
+        Session.rollback()
+    finally:
+        print("Close the session")
+        Session.close()
