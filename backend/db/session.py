@@ -44,7 +44,7 @@ def create_session() -> scoped_session:
     return Session
 
 
-def get_session() -> Generator[scoped_session, None, None]:
+async def get_session() -> Generator[scoped_session, None, None]:
     print("Create the session")
     Session = create_session()
     try:
