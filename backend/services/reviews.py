@@ -43,6 +43,7 @@ class ReviewService(BaseService[Review, ReviewCreate, ReviewUpdate]):
                 self.db_session.commit()
                 self.calculate_note(db_obj)
 
+            self.db_session.commit()
             print("NEW REVIEW MUSIC UPDATED : ", db_obj.music)
             print("End create or update review successfully")
 
