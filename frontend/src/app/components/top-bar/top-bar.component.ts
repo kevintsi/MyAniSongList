@@ -4,7 +4,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { MusicService } from 'src/app/_services/music.service';
 import { ArtistService } from 'src/app/_services/artist.service';
 import { AnimeService } from 'src/app/_services/anime.service';
-import { Subject } from 'rxjs';
+import { Subject, firstValueFrom } from 'rxjs';
 import { TokenService } from 'src/app/_services/token.service';
 import jwtDecode from 'jwt-decode';
 import { UserService } from 'src/app/_services/user.service';
@@ -22,8 +22,8 @@ export class TopBarComponent implements OnInit {
   isSearchBarOpen: boolean = false
   category: string = "animes"
   result_search?: any[] = []
-  user_pfp: string = ""
-  username: string = ""
+  user_pfp?: string = ""
+  username?: string = ""
 
   constructor(
     private authService: AuthService,
@@ -38,14 +38,15 @@ export class TopBarComponent implements OnInit {
 
   ngOnInit() {
     this.router.events.subscribe({
-      next: (ev) => {
+      next: async (ev) => {
         if (ev instanceof NavigationEnd) {
           this.isMenuOpen = false
           this.isSearchBarOpen = false
           if (!!this.tokenService.getToken()) {
-            let decodedToken: any = jwtDecode(String(this.tokenService.getToken()))
-            this.user_pfp = decodedToken.sub.profile_picture
-            this.username = decodedToken.sub.username
+            // let decodedToken: any = jwtDecode(String(this.tokenService.getToken()))
+            let userInfo = await this.getProfile()
+            this.user_pfp = userInfo.profile_picture
+            this.username = userInfo.username
           }
         }
       }
@@ -147,6 +148,10 @@ export class TopBarComponent implements OnInit {
       error: (err) => console.log(err),
       complete: () => this.tokenService.clean()
     })
+  }
+
+  getProfile() {
+    return firstValueFrom(this.authService.get())
   }
 
 }
