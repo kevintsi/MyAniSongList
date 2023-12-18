@@ -13,15 +13,18 @@
             </div>
         </div>
         <div class="w-full flex flex-col">
-            <h2 class="font-bold pt-4 w-full-2 m-4 text-start border-b border-gray-400/60">Musiques favorites</h2>
-            <div class="flex flex-col lg:flex-row justify-start">
+            <h2 class="font-bold pt-4 pb-4 w-full-2 m-4 text-start border-b border-gray-400/60">Musiques favorites</h2>
+            <div class="flex flex-wrap justify-start p-5">
                 <ng-container *ngIf="favorites.length > 0;else elseBlock">
-                    <div class="flex flex-row rounded-lg p-4 items-center justify-start" *ngFor="let fav of favorites">
+                    <div class="flex flex-row w-full rounded-lg p-4 justify-center items-center md:flex-col md:w-36"
+                        *ngFor="let fav of favorites">
                         <img [src]="fav.poster_img" [routerLink]="['/musics', fav.id]"
                             class="hover:opacity-80 hover:cursor-pointer  rounded-full object-fill w-20 h-20"
                             alt="Poster du single" />
-                        <div class="pl-4 w-40 md:w-full">
-                            <div class="text-start overflow-hidden text-ellipsis whitespace-nowrap">{{ fav.name }}</div>
+                        <div class="w-40 pl-5 md:w-full md:pl-0 md:pt-2">
+                            <div class="text-start overflow-hidden text-ellipsis whitespace-nowrap md:text-center">{{
+                                fav.name }}
+                            </div>
                         </div>
                     </div>
                 </ng-container>
