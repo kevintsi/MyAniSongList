@@ -62,7 +62,6 @@ export class ManageMusicComponent implements OnDestroy, OnInit {
     this.deleteSubscription = this.service.delete(Number(selected_music.id)).subscribe({
       next: () => {
         this.musics.items = this.musics.items.filter(music => music.id != selected_music.id)
-        console.log(this.musics)
       },
       error: (err) => console.log(err.message)
     })
