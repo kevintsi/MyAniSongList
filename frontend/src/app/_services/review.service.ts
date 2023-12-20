@@ -28,8 +28,6 @@ export class ReviewService {
   public create(review: any) {
     const headers = new HttpHeaders().set('Content-Type', 'application/json')
 
-    console.log(review)
-
     return this.http.post(
       this.endpoint + '/reviews/add',
       JSON.stringify(review),

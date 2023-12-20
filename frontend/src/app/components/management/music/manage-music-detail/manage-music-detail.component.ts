@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -10,7 +10,7 @@ import { Music } from 'src/app/models/Music';
   templateUrl: './manage-music-detail.component.html',
   styleUrls: ['./manage-music-detail.component.css']
 })
-export class ManageMusicDetailComponent {
+export class ManageMusicDetailComponent implements OnInit {
   isLoading = true
   music!: Music
 
@@ -22,7 +22,6 @@ export class ManageMusicDetailComponent {
   ) { }
 
   async ngOnInit() {
-    console.log(`Music id : ${this.route.snapshot.paramMap.get('id')}`)
     let id = Number(this.route.snapshot.paramMap.get('id'))
     try {
       this.music = await this.get(id)
@@ -40,7 +39,6 @@ export class ManageMusicDetailComponent {
 
 
   onSubmit(formData: any) {
-    console.log(formData)
     let id = Number(this.route.snapshot.paramMap.get('id'))
     this.music_service.update(id, formData)
       .subscribe({
@@ -50,7 +48,13 @@ export class ManageMusicDetailComponent {
             timeOut: 3000
           })
         },
-        error: (err) => console.log(err)
+        error: (err) => {
+          console.log(err)
+          this.toastr.error("Echec mise à jour des information de la musique", 'Modification', {
+            progressBar: true,
+            timeOut: 3000
+          })
+        }
       })
 
   }

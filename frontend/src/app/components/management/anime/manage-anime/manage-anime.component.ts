@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { Router } from '@angular/router';
-import { Subject, firstValueFrom } from 'rxjs';
+import { Subscription, firstValueFrom } from 'rxjs';
 import { AnimeService } from 'src/app/_services/anime.service';
 import { Anime, PagedAnime } from 'src/app/models/Anime';
 
@@ -10,16 +9,24 @@ import { Anime, PagedAnime } from 'src/app/models/Anime';
   templateUrl: './manage-anime.component.html',
   styleUrls: ['./manage-anime.component.css']
 })
-export class ManageAnimeComponent implements OnInit {
+export class ManageAnimeComponent implements OnInit, OnDestroy {
   isLoading = true
   animes!: PagedAnime
   currentPage: number = 1
+  searchSubscription?: Subscription
+  deleteSubscription?: Subscription
 
   constructor(private service: AnimeService, private title: Title) { }
 
   ngOnInit(): void {
     this.fetchData()
   }
+
+  ngOnDestroy(): void {
+    this.searchSubscription?.unsubscribe();
+    this.deleteSubscription?.unsubscribe();
+  }
+
 
   async fetchData() {
     try {
@@ -34,9 +41,9 @@ export class ManageAnimeComponent implements OnInit {
   }
 
   performSearch(searchTerm: string) {
-    this.service.search(searchTerm).subscribe({
-      next: (anime) => {
-        this.animes = anime
+    this.searchSubscription = this.service.search(searchTerm).subscribe({
+      next: (animes) => {
+        this.animes = animes
       },
       error: (err) => console.error(err.message)
     })
@@ -52,10 +59,9 @@ export class ManageAnimeComponent implements OnInit {
   }
 
   delete(selected: Anime) {
-    this.service.delete(Number(selected.id)).subscribe({
+    this.deleteSubscription = this.service.delete(selected.id).subscribe({
       next: () => {
         this.animes.items = this.animes.items?.filter(anime => anime.id != selected.id)
-        console.log(this.animes)
       },
       error: (err) => console.log(err.message)
     })

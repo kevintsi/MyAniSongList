@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, firstValueFrom } from 'rxjs';
@@ -15,7 +15,7 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './music-detail.component.html',
   styleUrls: ['./music-detail.component.css']
 })
-export class MusicDetailComponent {
+export class MusicDetailComponent implements OnDestroy, OnInit {
 
   isLoading: boolean = true
   music!: Music
@@ -28,6 +28,9 @@ export class MusicDetailComponent {
   description = new FormControl("")
 
   reviewAddedSubscription!: Subscription
+  addFavoriteSubscription?: Subscription
+  deleteFavoriteSubscription?: Subscription
+  createReviewSubscription?: Subscription
 
   constructor(
     private route: ActivatedRoute,
@@ -51,6 +54,9 @@ export class MusicDetailComponent {
 
   ngOnDestroy() {
     this.reviewAddedSubscription.unsubscribe();
+    this.addFavoriteSubscription?.unsubscribe();
+    this.deleteFavoriteSubscription?.unsubscribe();
+    this.createReviewSubscription?.unsubscribe();
   }
 
 
@@ -106,12 +112,18 @@ export class MusicDetailComponent {
   getMusic(id: number) {
     return firstValueFrom(this.musicService.get(id))
   }
-
   addToFavorites(): void {
-    this.musicService.addToFavorites(this.music.id).subscribe({
+    this.addFavoriteSubscription = this.musicService.addToFavorites(this.music.id).subscribe({
       next: () => {
         this.favorites.push(this.music);
         this.toastr.success("Ajoutée aux favoris", 'Ajout', {
+          progressBar: true,
+          timeOut: 3000
+        })
+      },
+      error: (err) => {
+        console.error(err.message)
+        this.toastr.error("Echec ajout au favoris", 'Ajout', {
           progressBar: true,
           timeOut: 3000
         })
@@ -120,10 +132,17 @@ export class MusicDetailComponent {
   }
 
   removeFromFavorites(): void {
-    this.musicService.removeFromFavorites(this.music.id).subscribe({
+    this.deleteFavoriteSubscription = this.musicService.removeFromFavorites(this.music.id).subscribe({
       next: () => {
         this.favorites = this.favorites.filter((favItem) => favItem.id !== this.music.id);
         this.toastr.success("Supprimée des favoris", 'Suppression', {
+          progressBar: true,
+          timeOut: 3000
+        })
+      },
+      error: (err) => {
+        console.error(err.message)
+        this.toastr.error("Echec suppression des favoris", 'Ajout', {
           progressBar: true,
           timeOut: 3000
         })
@@ -165,7 +184,7 @@ export class MusicDetailComponent {
       music_id: id_music
     }
 
-    this.reviewService.create(review).subscribe({
+    this.createReviewSubscription = this.reviewService.create(review).subscribe({
       next: () => {
         this.toastr.success("Avis ajouté/modifié avec succès", 'Avis', {
           progressBar: true,
@@ -175,6 +194,10 @@ export class MusicDetailComponent {
       },
       error: (err) => {
         console.error(err.message)
+        this.toastr.error("Echec modification/ajout de l'avis", 'Avis', {
+          progressBar: true,
+          timeOut: 3000
+        })
       },
     })
 

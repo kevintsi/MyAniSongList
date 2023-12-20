@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { Subject, firstValueFrom } from 'rxjs';
+import { Subject, Subscription, firstValueFrom } from 'rxjs';
 import { MusicService } from 'src/app/_services/music.service';
 import { Music, PagedMusic } from 'src/app/models/Music';
 
@@ -10,12 +10,19 @@ import { Music, PagedMusic } from 'src/app/models/Music';
   templateUrl: './manage-music.component.html',
   styleUrls: ['./manage-music.component.css']
 })
-export class ManageMusicComponent {
+export class ManageMusicComponent implements OnDestroy, OnInit {
   isLoading = true
   musics!: PagedMusic
   currentPage: number = 1
+  searchSubscription?: Subscription
+  deleteSubscription?: Subscription
 
   constructor(private service: MusicService, private title: Title) { }
+
+  ngOnDestroy(): void {
+    this.searchSubscription?.unsubscribe()
+    this.deleteSubscription?.unsubscribe()
+  }
   ngOnInit(): void {
     this.fetchData()
   }
@@ -38,7 +45,7 @@ export class ManageMusicComponent {
 
 
   performSearch(searchTerm: string) {
-    this.service.search(searchTerm).subscribe({
+    this.searchSubscription = this.service.search(searchTerm).subscribe({
       next: (music) => {
         this.musics = music
       },
@@ -52,7 +59,7 @@ export class ManageMusicComponent {
   }
 
   delete(selected_music: Music) {
-    this.service.delete(Number(selected_music.id)).subscribe({
+    this.deleteSubscription = this.service.delete(Number(selected_music.id)).subscribe({
       next: () => {
         this.musics.items = this.musics.items.filter(music => music.id != selected_music.id)
         console.log(this.musics)

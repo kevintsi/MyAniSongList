@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from '../../_services/auth.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { MusicService } from 'src/app/_services/music.service';
 import { ArtistService } from 'src/app/_services/artist.service';
 import { AnimeService } from 'src/app/_services/anime.service';
-import { Subject, firstValueFrom } from 'rxjs';
+import { Subject, Subscription, firstValueFrom } from 'rxjs';
 import { TokenService } from 'src/app/_services/token.service';
 import jwtDecode from 'jwt-decode';
 import { UserService } from 'src/app/_services/user.service';
@@ -16,10 +16,13 @@ import { UserService } from 'src/app/_services/user.service';
 })
 
 
-export class TopBarComponent implements OnInit {
+export class TopBarComponent implements OnInit, OnDestroy {
   isLoading = false
   isMenuOpen: boolean = false;
   isSearchBarOpen: boolean = false
+  routerSubscription?: Subscription
+  searchSubscription?: Subscription
+  logOutSubscription?: Subscription
   category: string = "animes"
   result_search?: any[] = []
   user_pfp?: string = ""
@@ -37,27 +40,30 @@ export class TopBarComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.router.events.subscribe({
+    this.routerSubscription = this.router.events.subscribe({
       next: async (ev) => {
         if (ev instanceof NavigationEnd) {
           this.isMenuOpen = false
           this.isSearchBarOpen = false
           if (!!this.tokenService.getToken()) {
-            // let decodedToken: any = jwtDecode(String(this.tokenService.getToken()))
             let userInfo = await this.getProfile()
             this.user_pfp = userInfo.profile_picture
             this.username = userInfo.username
           }
         }
       }
-    });
+    })
 
+  }
+
+  ngOnDestroy() {
+    this.routerSubscription?.unsubscribe();
+    this.searchSubscription?.unsubscribe();
+    this.logOutSubscription?.unsubscribe();
   }
 
   performSearch(searchTerm: string) {
     this.isLoading = true
-    console.log("New search : ", this.category)
-    console.log("Term : " + !searchTerm)
     if (!searchTerm) {
       this.result_search = []
       this.isLoading = false
@@ -65,7 +71,7 @@ export class TopBarComponent implements OnInit {
     }
     switch (this.category) {
       case "animes": {
-        this.animeService.search(searchTerm).subscribe({
+        this.searchSubscription = this.animeService.search(searchTerm).subscribe({
           next: (anime) => {
             this.result_search = anime.items
           },
@@ -75,7 +81,7 @@ export class TopBarComponent implements OnInit {
       }
         break
       case "musics": {
-        this.musiService.search(searchTerm).subscribe({
+        this.searchSubscription = this.musiService.search(searchTerm).subscribe({
           next: (music) => {
             this.result_search = music.items
           },
@@ -85,7 +91,7 @@ export class TopBarComponent implements OnInit {
       }
         break
       case "artists": {
-        this.artistService.search(searchTerm).subscribe({
+        this.searchSubscription = this.artistService.search(searchTerm).subscribe({
           next: (artist) => {
             this.result_search = artist.items
           },
@@ -95,7 +101,7 @@ export class TopBarComponent implements OnInit {
       }
         break
       case "profile": {
-        this.userService.search(searchTerm).subscribe({
+        this.searchSubscription = this.userService.search(searchTerm).subscribe({
           next: (users) => {
             this.result_search = users.items
           },
@@ -108,7 +114,6 @@ export class TopBarComponent implements OnInit {
   }
 
   goToItem(id: string) {
-    console.log("Id : ", id)
     this.router.navigate(["/", this.category, id]).then((ok) => {
       if (ok) {
         this.isSearchBarOpen = false
@@ -119,7 +124,6 @@ export class TopBarComponent implements OnInit {
   }
 
   toggleMenu() {
-    console.log('Menu toggled')
     this.isMenuOpen = !this.isMenuOpen;
     this.isSearchBarOpen = false;
   }
@@ -139,10 +143,8 @@ export class TopBarComponent implements OnInit {
   }
 
   logout() {
-    console.log("Logout function called")
-    this.authService.logout().subscribe({
+    this.logOutSubscription = this.authService.logout().subscribe({
       next: () => {
-        this.tokenService.clean()
         this.router.navigate(["/login"])
       },
       error: (err) => console.log(err),

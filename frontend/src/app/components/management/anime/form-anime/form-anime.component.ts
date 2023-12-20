@@ -43,8 +43,6 @@ export class FormAnimeComponent {
   }
 
   onSubmit() {
-    console.log(this.form)
-    console.log(this.form.valid)
     if (this.form.valid) {
       const formData = this.form.value;
       this.submitForm.emit(formData);
@@ -55,7 +53,6 @@ export class FormAnimeComponent {
     const file = imageInput.files[0];
     if (file) {
       if (["image/jpeg", "image/png", "image/svg+xml"].includes(file.type)) {
-        console.log("Image selected : ", file)
         this.form.patchValue({
           poster_img: file
         })

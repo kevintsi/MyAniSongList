@@ -54,7 +54,6 @@ export class MusicService {
 
   public update(id: number, data: any) {
     const headers = new HttpHeaders()
-    console.log(data.release_date)
     let artists_id = data.selected_artists.map((artist: Artist) => artist.id)
 
     let music = {
@@ -67,7 +66,6 @@ export class MusicService {
     }
 
     const form_data = new FormData()
-    console.log(music)
     form_data.append("music", JSON.stringify(music))
     if (data.poster_img != null)
       form_data.append('poster_img', data.poster_img)
@@ -103,7 +101,6 @@ export class MusicService {
       id_video: data.id_video
     }
 
-    console.log(music)
 
     const form_data = new FormData()
 

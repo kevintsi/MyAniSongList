@@ -19,7 +19,6 @@ export class ProfileComponent implements OnInit {
   constructor(private userService: UserService, private route: ActivatedRoute, private title: Title) { }
 
   ngOnInit(): void {
-    console.log("Profile")
     this.fetchData()
   }
 
@@ -28,7 +27,6 @@ export class ProfileComponent implements OnInit {
       let id = Number(this.route.snapshot.paramMap.get("id"))
       this.userInfo = await this.fetchUser(id)
       this.favorites = await this.fetchFavorites(id)
-      console.log(this.userInfo, this.favorites)
       this.title.setTitle("MyAniSongList - Profil - " + this.userInfo.username)
     } catch (error) {
       console.log(error)

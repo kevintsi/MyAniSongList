@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { User } from '../../models/User';
 import { AuthService } from '../../_services/auth.service';
@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { passwordMatchingValidator } from 'src/app/utils/utils';
 import { ToastrService } from 'ngx-toastr';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-registration',
@@ -14,7 +15,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 
 
-export class RegistrationComponent implements OnInit {
+export class RegistrationComponent implements OnInit, OnDestroy {
 
   registrationForm = this.formBuilder.group({
     username: new FormControl("", [Validators.required, Validators.minLength(4)]),
@@ -23,6 +24,8 @@ export class RegistrationComponent implements OnInit {
     confirmPassword: new FormControl("", [Validators.required])
   }, { validators: passwordMatchingValidator });
 
+  registerSubscription?: Subscription
+
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
@@ -30,14 +33,15 @@ export class RegistrationComponent implements OnInit {
     private title: Title,
     private toastr: ToastrService
   ) { }
+  ngOnDestroy(): void {
+    this.registerSubscription?.unsubscribe()
+  }
 
   ngOnInit(): void {
     this.title.setTitle("MyAniSongList - S'incrire")
   }
 
   onSubmit(): void {
-    console.log("onSubmit")
-    console.log(this.registrationForm)
     const { username, email, password, confirmPassword } = this.registrationForm.value
     if (this.registrationForm.valid && password === confirmPassword) {
       let user: User = {
@@ -46,7 +50,7 @@ export class RegistrationComponent implements OnInit {
         password: password?.toString(),
       }
 
-      this.authService.register(user)
+      this.registerSubscription = this.authService.register(user)
         .subscribe({
           next: () => {
             this.toastr.success("Inscription réussie", 'Ajout', {
@@ -57,6 +61,10 @@ export class RegistrationComponent implements OnInit {
           },
           error: err => {
             console.log(err)
+            this.toastr.error("Inscription echouée", 'Ajout', {
+              progressBar: true,
+              timeOut: 3000
+            })
           }
         })
     }

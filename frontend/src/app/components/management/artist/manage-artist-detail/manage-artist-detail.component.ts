@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ArtistService } from 'src/app/_services/artist.service';
 import { Artist } from 'src/app/models/Artist';
-import { firstValueFrom } from 'rxjs'
+import { Subscription, firstValueFrom } from 'rxjs'
 import { ToastrService } from 'ngx-toastr';
 import { Title } from '@angular/platform-browser';
 
@@ -12,11 +12,11 @@ import { Title } from '@angular/platform-browser';
   templateUrl: './manage-artist-detail.component.html',
   styleUrls: ['./manage-artist-detail.component.css']
 })
-export class ManageArtistDetailComponent {
+export class ManageArtistDetailComponent implements OnDestroy, OnInit {
   artist!: Artist
   isLoading: boolean = true
   successMessage?: string
-
+  updateSubscription?: Subscription
   constructor(
     private service: ArtistService,
     private route: ActivatedRoute,
@@ -24,8 +24,11 @@ export class ManageArtistDetailComponent {
     private title: Title
   ) { }
 
+  ngOnDestroy(): void {
+    this.updateSubscription?.unsubscribe()
+  }
+
   async ngOnInit() {
-    console.log(`Artist id : ${this.route.snapshot.paramMap.get('id')}`)
     let id = Number(this.route.snapshot.paramMap.get('id'))
     try {
       this.artist = await this.get(id)
@@ -43,7 +46,7 @@ export class ManageArtistDetailComponent {
 
   onSubmit(formData: any) {
     let id = Number(this.route.snapshot.paramMap.get('id'))
-    this.service.update(id, formData)
+    this.updateSubscription = this.service.update(id, formData)
       .subscribe({
         next: () => {
           this.toastr.success("Informations de l'artiste mis à jour avec succès", 'Modification', {
@@ -51,7 +54,13 @@ export class ManageArtistDetailComponent {
             timeOut: 3000
           })
         },
-        error: (err) => console.log(err)
+        error: (err) => {
+          console.log(err)
+          this.toastr.error("Echec mise à jour des informations de l'artiste", 'Modification', {
+            progressBar: true,
+            timeOut: 3000
+          })
+        }
       })
   }
 

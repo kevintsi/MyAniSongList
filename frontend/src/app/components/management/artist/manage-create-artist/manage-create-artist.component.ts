@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
+import { Subscription } from 'rxjs';
 import { ArtistService } from 'src/app/_services/artist.service';
 
 @Component({
@@ -8,7 +9,8 @@ import { ArtistService } from 'src/app/_services/artist.service';
   templateUrl: './manage-create-artist.component.html',
   styleUrls: ['./manage-create-artist.component.css']
 })
-export class ManageCreateArtistComponent {
+export class ManageCreateArtistComponent implements OnDestroy {
+  createSubscription?: Subscription
   constructor(
     private service: ArtistService,
     private toastr: ToastrService,
@@ -17,8 +19,11 @@ export class ManageCreateArtistComponent {
     this.title.setTitle("MyAniSongList - Gestion - Ajouter un(e) artiste")
   }
 
+  ngOnDestroy(): void {
+    this.createSubscription?.unsubscribe()
+  }
+
   onSubmit(formData: any) {
-    console.log(formData)
     this.service.create(formData)
       .subscribe({
         next: () => {
@@ -27,7 +32,13 @@ export class ManageCreateArtistComponent {
             timeOut: 3000
           })
         },
-        error: (err) => console.log(err)
+        error: (err) => {
+          console.log(err)
+          this.toastr.success("Echec de l'ajout de l'artiste", 'Ajout', {
+            progressBar: true,
+            timeOut: 3000
+          })
+        }
       })
   }
 }

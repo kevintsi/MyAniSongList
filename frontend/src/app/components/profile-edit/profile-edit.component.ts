@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from '../../_services/auth.service';
 import { User } from '../../models/User';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
 import { passwordMatchingValidator } from 'src/app/utils/utils';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-profile-edit',
@@ -12,7 +13,7 @@ import { passwordMatchingValidator } from 'src/app/utils/utils';
   styleUrls: ['./profile-edit.component.css']
 })
 
-export class ProfileEditComponent {
+export class ProfileEditComponent implements OnInit, OnDestroy {
   isLoading: boolean = true
   updateForm = this.formBuilder.group({
     username: new FormControl("", [Validators.required]),
@@ -24,6 +25,8 @@ export class ProfileEditComponent {
   previewImage?: any
   file: any
 
+  authSubscription?: Subscription
+  updateSubscription?: Subscription
   constructor(
     private authService: AuthService,
     private formBuilder: FormBuilder,
@@ -33,11 +36,15 @@ export class ProfileEditComponent {
   ) {
     this.title.setTitle("MyAniSongList - Mon profil")
   }
+  ngOnDestroy(): void {
+    this.authSubscription?.unsubscribe();
+    this.updateSubscription?.unsubscribe();
+  }
 
 
 
   ngOnInit(): void {
-    this.authService.get().subscribe({
+    this.authSubscription = this.authService.get().subscribe({
       next: (user) => {
         this.updateForm.patchValue({
           username: user.username,
@@ -53,8 +60,6 @@ export class ProfileEditComponent {
 
 
   onSubmit(): void {
-    console.log("onSubmit")
-    console.log(this.updateForm.value)
     const { username, email, password, confirmPassword } = this.updateForm.value
 
     if (username?.length == 0 || password?.length == 0 || email?.length == 0 || confirmPassword?.length == 0) return;
@@ -66,7 +71,7 @@ export class ProfileEditComponent {
       password: password?.toString(),
     }
 
-    this.authService.update(user, this.file)
+    this.updateSubscription = this.authService.update(user, this.file)
       .subscribe({
         next: () => {
           this.toastr.success("Mise à jour du profil", 'Update', {
@@ -76,6 +81,10 @@ export class ProfileEditComponent {
         },
         error: err => {
           console.log(err)
+          this.toastr.error("Echec mise à jour du profil", 'Update', {
+            progressBar: true,
+            timeOut: 3000
+          })
         }
       })
   }
@@ -84,7 +93,6 @@ export class ProfileEditComponent {
     this.file = imageInput.files[0];
     if (this.file) {
       if (["image/jpeg", "image/png", "image/svg+xml"].includes(this.file.type)) {
-        console.log("Image selected : ", this.file)
         let fileReader = new FileReader();
         fileReader.readAsDataURL(this.file);
         fileReader.addEventListener('load', event => {

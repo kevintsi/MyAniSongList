@@ -1,5 +1,6 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { AnimeService } from 'src/app/_services/anime.service';
 import { ArtistService } from 'src/app/_services/artist.service';
 import { MusicService } from 'src/app/_services/music.service';
@@ -14,7 +15,7 @@ import { Type } from 'src/app/models/Type';
   templateUrl: './form-music.component.html',
   styleUrls: ['./form-music.component.css']
 })
-export class FormMusicComponent {
+export class FormMusicComponent implements OnDestroy {
   @Input() isUpdate!: boolean; // Indicates if it's an update operation
   @Input() music!: Music; // Existing data for update operation
 
@@ -25,20 +26,29 @@ export class FormMusicComponent {
   types?: Type[]
   artists!: PagedArtist
   animes!: PagedAnime
-  artist_name: string = ""
+  artistName: string = ""
+  searchAnimeSubscription?: Subscription
+  searchArtistSubscription?: Subscription
+  searchTypeSubscription?: Subscription
 
   constructor(
-    private type_service: TypeService,
-    private anime_service: AnimeService,
-    private artist_service: ArtistService,
+    private typeService: TypeService,
+    private animeService: AnimeService,
+    private artistService: ArtistService,
     private formBuilder: FormBuilder) { }
+
+  ngOnDestroy(): void {
+    this.searchAnimeSubscription?.unsubscribe()
+    this.searchArtistSubscription?.unsubscribe()
+    this.searchTypeSubscription?.unsubscribe();
+  }
 
   ngOnInit() {
     this.initForm();
     if (this.isUpdate) {
       this.populateForm();
     }
-    this.get_type_list()
+    this.getTypes()
   }
 
   initForm() {
@@ -55,7 +65,6 @@ export class FormMusicComponent {
 
   validateArrayNotEmpty(control: AbstractControl) {
     const array = control.value;
-    console.log("Check array ", Array.isArray(array) && array.length === 0)
     if (Array.isArray(array) && array.length === 0) {
       return { arrayEmpty: true };
     }
@@ -76,8 +85,6 @@ export class FormMusicComponent {
   }
 
   onSubmit() {
-    console.log(this.form)
-    console.log(this.form.valid)
     if (this.form.valid) {
       const formData = this.form.value;
       this.submitForm.emit(formData);
@@ -85,14 +92,12 @@ export class FormMusicComponent {
   }
 
   performSearchAnime(searchTerm: string) {
-    console.log("NEW TERM ANIME : " + searchTerm + " ", searchTerm.trim().length == 0)
     if (searchTerm.trim().length == 0) {
-      console.log("EMPTY STRING RESET")
       this.animes.items = []
       return
     }
 
-    this.anime_service.search(searchTerm).subscribe({
+    this.searchAnimeSubscription = this.animeService.search(searchTerm).subscribe({
       next: (animes) => {
         this.animes = animes
       },
@@ -101,14 +106,12 @@ export class FormMusicComponent {
   }
 
   performSearchArtist(searchTerm: string) {
-    console.log("NEW TERM ARTIST : " + searchTerm + " ", searchTerm.trim().length == 0)
     if (searchTerm.trim().length == 0) {
-      console.log("EMPTY STRING RESET")
       this.artists.items = []
       return
     }
 
-    this.artist_service.search(searchTerm).subscribe({
+    this.searchArtistSubscription = this.artistService.search(searchTerm).subscribe({
       next: (artists) => {
         this.artists = artists
       },
@@ -120,8 +123,8 @@ export class FormMusicComponent {
     return (event.target as HTMLInputElement).value;
   }
 
-  get_type_list() {
-    this.type_service.getAll()
+  getTypes() {
+    this.searchTypeSubscription = this.typeService.getAll()
       .subscribe({
         next: (types) => {
           this.types = types
@@ -136,45 +139,35 @@ export class FormMusicComponent {
   }
 
   onselectartist(artist: Artist) {
-    console.log("Selected : ", artist)
     if (this.form.value.selected_artists && !this.form.value.selected_artists.some((_: Artist) => _.id === artist.id)) {
       this.form.patchValue({
         selected_artists: [...this.form.value.selected_artists, artist]
       })
     }
-    console.log("Selected artists : ", this.form.value.selected_artists)
     this.artists.items = []
   }
 
   onunselectartist(artist: Artist) {
-    console.log("Selected : ", artist)
     let selected_artists = this.form.value.selected_artists.filter((item: Artist) => item.id != Number(artist.id))
     this.form.patchValue({
       selected_artists: selected_artists
     })
-    console.log("Selected artists : ", this.form.value.selected_artists)
-    // this.resetData()
   }
 
 
   onselectanime(anime: Anime) {
-    console.log("Selected : ", anime)
     if (this.form.value.selected_anime?.id != anime.id) {
       this.form.patchValue({
         selected_anime: anime
       })
     }
-    console.log("Selected anime : ", this.form.value.selected_anime)
     this.animes.items = []
   }
 
-  onunselectanime(anime: any) {
-    console.log("Selected : ", anime.target?.id)
+  onunselectanime() {
     this.form.patchValue({
       selected_anime: null
     })
-    console.log("Selected anime : ", this.form.value.selected_anime)
-    // this.resetData()
   }
 
 
@@ -182,7 +175,6 @@ export class FormMusicComponent {
     const file = imageInput.files[0];
     if (file) {
       if (["image/jpeg", "image/png", "image/svg+xml"].includes(file.type)) {
-        console.log("Image selected : ", file)
         this.form.patchValue({
           poster_img: file
         })

@@ -1,7 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { Router } from '@angular/router';
-import { firstValueFrom } from 'rxjs';
+import { Subscription, firstValueFrom } from 'rxjs';
 import { ArtistService } from 'src/app/_services/artist.service';
 import { Artist, PagedArtist } from 'src/app/models/Artist';
 
@@ -10,13 +9,18 @@ import { Artist, PagedArtist } from 'src/app/models/Artist';
   templateUrl: './manage-artist.component.html',
   styleUrls: ['./manage-artist.component.css']
 })
-export class ManageArtistComponent {
+export class ManageArtistComponent implements OnDestroy {
   isLoading = true
   artists!: PagedArtist
-
+  searchSubscription?: Subscription
+  deleteSubscription?: Subscription
   currentPage: number = 1
 
   constructor(private service: ArtistService, private title: Title) { }
+  ngOnDestroy(): void {
+    this.searchSubscription?.unsubscribe()
+    this.deleteSubscription?.unsubscribe()
+  }
 
   ngOnInit(): void {
     this.fetchData()
@@ -39,7 +43,7 @@ export class ManageArtistComponent {
   }
 
   performSearch(searchTerm: string) {
-    this.service.search(searchTerm).subscribe({
+    this.searchSubscription = this.service.search(searchTerm).subscribe({
       next: (artists) => {
         this.artists = artists
       },
@@ -53,10 +57,9 @@ export class ManageArtistComponent {
   }
 
   delete(artist: Artist) {
-    this.service.delete(Number(artist.id)).subscribe({
+    this.deleteSubscription = this.service.delete(artist.id).subscribe({
       next: () => {
         this.artists.items = this.artists.items.filter(artist => artist.id != artist.id)
-        console.log(this.artists)
       },
       error: (err) => console.log(err.message)
     })

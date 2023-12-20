@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AnimeService } from 'src/app/_services/anime.service';
 import { Anime } from 'src/app/models/Anime';
-import { firstValueFrom, timeout } from 'rxjs'
+import { Subscription, firstValueFrom } from 'rxjs'
 import { ToastrService } from 'ngx-toastr';
 import { Title } from '@angular/platform-browser';
 @Component({
@@ -10,9 +10,10 @@ import { Title } from '@angular/platform-browser';
   templateUrl: './manage-anime-detail.component.html',
   styleUrls: ['./manage-anime-detail.component.css']
 })
-export class ManageAnimeDetailComponent {
+export class ManageAnimeDetailComponent implements OnInit, OnDestroy {
   isLoading = true
   anime!: Anime
+  animeSubscription = new Subscription()
 
   constructor(
     private service: AnimeService,
@@ -21,8 +22,11 @@ export class ManageAnimeDetailComponent {
     private title: Title
   ) { }
 
+  ngOnDestroy(): void {
+    this.animeSubscription.unsubscribe()
+  }
+
   async ngOnInit() {
-    console.log(`Anime id : ${this.route.snapshot.paramMap.get('id')}`)
     let id = Number(this.route.snapshot.paramMap.get('id'))
     try {
       this.anime = await this.get(id)
@@ -40,8 +44,7 @@ export class ManageAnimeDetailComponent {
 
   onSubmit(formData: any) {
     let id = Number(this.route.snapshot.paramMap.get('id'))
-    console.log(formData)
-    this.service.update(id, formData)
+    this.animeSubscription = this.service.update(id, formData)
       .subscribe({
         next: () => {
           this.toastr.success("Informations de l'animé mis à jour avec succès", 'Modification', {
@@ -49,7 +52,13 @@ export class ManageAnimeDetailComponent {
             timeOut: 3000
           })
         },
-        error: (err) => console.log(err)
+        error: (err) => {
+          console.log(err)
+          this.toastr.error("Echec de mise à jour des informations", 'Modification', {
+            progressBar: true,
+            timeOut: 3000
+          })
+        }
       })
   }
 

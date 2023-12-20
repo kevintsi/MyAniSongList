@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
+import { Subscription } from 'rxjs';
 import { AnimeService } from 'src/app/_services/anime.service';
 
 @Component({
@@ -8,7 +9,8 @@ import { AnimeService } from 'src/app/_services/anime.service';
   templateUrl: './manage-create-anime.component.html',
   styleUrls: ['./manage-create-anime.component.css']
 })
-export class ManageCreateAnimeComponent {
+export class ManageCreateAnimeComponent implements OnDestroy {
+  createSubscription?: Subscription
   constructor(
     private service: AnimeService,
     private toastr: ToastrService,
@@ -17,9 +19,11 @@ export class ManageCreateAnimeComponent {
 
     this.title.setTitle("MyAniSongList - Gestion - Ajouter un anime")
   }
+  ngOnDestroy(): void {
+    this.createSubscription?.unsubscribe();
+  }
 
   onSubmit(formData: any) {
-    console.log(formData)
     this.service.create(formData)
       .subscribe({
         next: () => {
@@ -28,7 +32,13 @@ export class ManageCreateAnimeComponent {
             timeOut: 3000
           })
         },
-        error: (err) => console.log(err)
+        error: (err) => {
+          console.log(err)
+          this.toastr.error("Echec de l'ajout de l'anime", 'Ajout', {
+            progressBar: true,
+            timeOut: 3000
+          })
+        }
       })
   }
 

@@ -24,7 +24,6 @@ export class AnimeListComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log("Cahnge : ", changes)
     // When the 'data' property changes, scroll to the top
     if (changes['currentPage'] && !changes['currentPage'].firstChange) {
       window.scrollTo(0, 0);
