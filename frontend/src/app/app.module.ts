@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TopBarComponent } from './components/top-bar/top-bar.component';
@@ -29,6 +29,9 @@ import { FavoriteListComponent } from './components/favorite-list/favorite-list.
 import { ProfileEditComponent } from './components/profile-edit/profile-edit.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { ToastrModule } from 'ngx-toastr';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { LanguageDropDownComponent } from './components/language-drop-down/language-drop-down.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +56,7 @@ import { ToastrModule } from 'ngx-toastr';
     FavoriteListComponent,
     ProfileEditComponent,
     NotFoundComponent,
+    LanguageDropDownComponent
   ],
   imports: [
     HttpClientModule,
@@ -63,7 +67,17 @@ import { ToastrModule } from 'ngx-toastr';
     BrowserAnimationsModule,
     MatIconModule,
     SharedModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    HttpClientModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [HttpClient]
+      },
+      defaultLanguage: "fr"
+    }
+    )
   ],
   providers: [
     httpInterceptorProviders
@@ -71,3 +85,6 @@ import { ToastrModule } from 'ngx-toastr';
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+export function createTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http, "./assets/i18n/", ".json")
+}
