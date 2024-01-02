@@ -1,0 +1,19 @@
+<div class="dropdown" (click)="toggleDropdown()">
+    <div tabindex="0" role="button" class="btn m-1">
+        <div class="flex flex-column items-center">
+            <img [src]="'assets/images/flags/' + selectedLanguage.id + '_flag.jpg'" class="h-6 w-6"
+                [alt]="selectedLanguage.name">
+            <div class="hidden sm:block pl-2">{{ selectedLanguage.name }}</div>
+        </div>
+    </div>
+    <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-auto">
+        <ng-container *ngFor="let lang of languages">
+            <li *ngIf="lang.id != selectedLanguage.id" (click)="selectLanguage(lang)">
+                <div class="flex flex-column items-center">
+                    <img [src]="'assets/images/flags/' + lang.id + '_flag.jpg'" class="h-6 w-6" alt="{{ lang.name }}">
+                    <div class="hidden sm:block mr-2">{{ lang.name }}</div>
+                </div>
+            </li>
+        </ng-container>
+    </ul>
+</div>
