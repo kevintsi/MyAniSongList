@@ -1,0 +1,36 @@
+{
+    "TopBar": {
+        "LogIn": "Log in",
+        "Register": "Register",
+        "LogOut": "Log out",
+        "Favorites": "Favorites",
+        "Profile": "Profile",
+        "Management": "Management"
+    },
+    "NavigationBar": {
+        "Animes": "Animes",
+        "Artists": "Artists",
+        "Musics": {
+            "Nav": "Musics",
+            "MusicsList": "Musics list",
+            "Ranking": "Ranking"
+        },
+        "Community": "Community",
+        "DropDownCategory": {
+            "Anime": "Anime",
+            "Artist": "Artist",
+            "Music": "Music",
+            "User": "User"
+        },
+        "Search": "Search..."
+    },
+    "HomePage": {
+        "HomeMessage": {
+            "HomeMessageTitle": "Welcome",
+            "HomeMessageMain": "Welcome to MyAniSongList, the web application where you will be able to give reviews on your favorites openings and endings from your favorites animes."
+        },
+        "HomeLastReleasedMusics": "Last musics released",
+        "HomeMostPopularMusics": "Most popular musics",
+        "HomeNoMusics": "No musics"
+    }
+}

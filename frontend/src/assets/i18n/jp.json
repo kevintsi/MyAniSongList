@@ -1,0 +1,36 @@
+{
+    "TopBar": {
+        "LogIn": "ログイン",
+        "Register": "登録",
+        "LogOut": "ログアウト",
+        "Favorites": "気に入り",
+        "Profile": "プロファイル",
+        "Management": "経営"
+    },
+    "NavigationBar": {
+        "Animes": "アニメ",
+        "Artists": "アーティスト",
+        "Musics": {
+            "Nav": "音楽",
+            "MusicsList": "音楽リスト",
+            "Ranking": "ランキング"
+        },
+        "Community": "コミュニティ",
+        "DropDownCategory": {
+            "Anime": "アニメ",
+            "Artist": "アーティスト",
+            "Music": "音楽",
+            "User": "ユーザー"
+        },
+        "Search": "検索..."
+    },
+    "HomePage": {
+        "HomeMessage": {
+            "HomeMessageTitle": "ようこそ",
+            "HomeMessageMain": "MyAniSongListへようこそ、好きなオープニングとエンディングに評価できるウェブアプリ。"
+        },
+        "HomeLastReleasedMusics": "最新リリース",
+        "HomeMostPopularMusics": "ポピュラー音楽",
+        "HomeNoMusics": "音楽なし"
+    }
+}

@@ -1,0 +1,36 @@
+{
+    "TopBar": {
+        "LogIn": "Se connecter",
+        "Register": "S'inscrire",
+        "LogOut": "Se déconnecter",
+        "Favorites": "Favoris",
+        "Profile": "Profil",
+        "Management": "Gestion"
+    },
+    "NavigationBar": {
+        "Animes": "Animes",
+        "Artists": "Artistes",
+        "Musics": {
+            "Nav": "Musiques",
+            "MusicsList": "Liste de musiques",
+            "Ranking": "Top musiques"
+        },
+        "Community": "Communauté",
+        "DropDownCategory": {
+            "Anime": "Anime",
+            "Artist": "Artiste",
+            "Music": "Musique",
+            "User": "Utilisateur"
+        },
+        "Search": "Recherche..."
+    },
+    "HomePage": {
+        "HomeMessage": {
+            "HomeMessageTitle": "Bienvenue",
+            "HomeMessageMain": "Bienvenue sur MyAniSongList, l'application web où tu vas pouvoir donner ton avis sur les openings et endings de tes animés préférés."
+        },
+        "HomeLastReleasedMusics": "Dernières musiques sorties",
+        "HomeMostPopularMusics": "Musiques les plus populaires",
+        "HomeNoMusics": "Aucune musiques"
+    }
+}
