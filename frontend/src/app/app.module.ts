@@ -31,7 +31,7 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { ToastrModule } from 'ngx-toastr';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { LanguageDropDownComponent } from './components/language-drop-down/language-drop-down.component';
+// import { LanguageDropDownComponent } from './components/language-drop-down/language-drop-down.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +56,7 @@ import { LanguageDropDownComponent } from './components/language-drop-down/langu
     FavoriteListComponent,
     ProfileEditComponent,
     NotFoundComponent,
-    LanguageDropDownComponent
+    // LanguageDropDownComponent
   ],
   imports: [
     HttpClientModule,
