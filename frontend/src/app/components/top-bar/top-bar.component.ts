@@ -8,6 +8,8 @@ import { Subject, Subscription, firstValueFrom } from 'rxjs';
 import { TokenService } from 'src/app/_services/token.service';
 import jwtDecode from 'jwt-decode';
 import { UserService } from 'src/app/_services/user.service';
+import { Language } from 'src/app/models/Language';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-top-bar',
@@ -27,6 +29,19 @@ export class TopBarComponent implements OnInit, OnDestroy {
   result_search?: any[] = []
   user_pfp?: string = ""
   username?: string = ""
+  languages: Array<Language> = [{
+    "id": "fr",
+    "name": "Français",
+  },
+  {
+    "id": "en",
+    "name": "English",
+  },
+  {
+    "id": "jp",
+    "name": "日本語",
+  }
+  ]
 
   constructor(
     private authService: AuthService,
@@ -35,7 +50,8 @@ export class TopBarComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private animeService: AnimeService,
     private router: Router,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private translateService: TranslateService
   ) {
   }
 
@@ -60,6 +76,10 @@ export class TopBarComponent implements OnInit, OnDestroy {
     this.routerSubscription?.unsubscribe();
     this.searchSubscription?.unsubscribe();
     this.logOutSubscription?.unsubscribe();
+  }
+
+  onLanguageSelect(lang: Language) {
+    this.translateService.use(lang.id)
   }
 
   performSearch(searchTerm: string) {

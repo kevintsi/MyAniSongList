@@ -3,16 +3,18 @@
         <div class="flex-1">
             <a routerLink="/" class="btn btn-ghost normal-case text-xl">MyAniSongList</a>
         </div>
+        <app-language-drop-down [languages]="languages"
+            (languageSelected)="onLanguageSelect($event)"></app-language-drop-down>
         <div class="sm:hidden text-3xl flex items-center pr-3">
             <mat-icon (click)="toggleSearchBar()" [inline]="true">search</mat-icon>
         </div>
         <div *ngIf="isSearchBarOpen" class="block fixed z-50 w-full top-16 h-full bg-black/20">
             <div class="w-full join">
                 <select class="select border-base-content join-item !outline-none grow w-1/2" [(ngModel)]="category">
-                    <option value="musics">Musique</option>
-                    <option value="artists">Artiste</option>
-                    <option value="animes">Anime</option>
-                    <option value="profile">Utilisateur</option>
+                    <option value="musics">{{'NavigationBar.DropDownCategory.Anime' | translate}}</option>
+                    <option value="artists">{{'NavigationBar.DropDownCategory.Artist' | translate}}</option>
+                    <option value="animes">{{'NavigationBar.DropDownCategory.Music' | translate}}</option>
+                    <option value="profile">{{'NavigationBar.DropDownCategory.User' | translate}}</option>
                 </select>
                 <div class="w-full h-full">
                     <app-search-bar (searchEvent)="performSearch($event)"></app-search-bar>
@@ -50,36 +52,36 @@
                             <div class="font-bold">{{username}}</div>
                         </li>
                         <ul class="collapse-content p-0">
-                            <li><a routerLink="/editProfile">Profil</a></li>
-                            <li><a routerLink="/favorites">Favoris</a></li>
+                            <li><a routerLink="/editProfile">{{'TopBar.Profile' | translate}}</a></li>
+                            <li><a routerLink="/favorites">{{'TopBar.Favorites' | translate}}</a></li>
                         </ul>
                     </ul>
                 </ng-template>
                 <ng-template #elseBlock>
-                    <li><a routerLink="/register">S'inscrire</a></li>
-                    <li><a routerLink="/login">Se connecter</a></li>
+                    <li><a routerLink="/register">{{'TopBar.Register' | translate}}</a></li>
+                    <li><a routerLink="/login">{{'TopBar.LogIn' | translate}}</a></li>
                 </ng-template>
-                <li><a routerLink="/animes">Animes</a></li>
-                <li><a routerLink="/artists">Artistes</a></li>
+                <li><a routerLink="/animes">{{'NavigationBar.Animes' | translate}}</a></li>
+                <li><a routerLink="/artists">{{'NavigationBar.Artists' | translate}}</a></li>
                 <ul tabindex="0" class="collapse collapse-arrow">
                     <input type="checkbox" />
                     <li class="flex items-center collapse-title">
-                        <a>Musiques</a>
+                        <a>{{'NavigationBar.Musics.Nav' | translate}}</a>
                     </li>
                     <ul class="collapse-content p-0">
-                        <li><a routerLink="/musics">Liste musiques</a></li>
-                        <li><a routerLink="/musics/ranking">Top musique</a></li>
+                        <li><a routerLink="/musics">{{'NavigationBar.Musics.MusicsList' | translate}}</a></li>
+                        <li><a routerLink="/musics/ranking">{{'NavigationBar.Musics.Ranking' | translate}}</a></li>
                     </ul>
                 </ul>
 
-                <li><a routerLink="/community">Communauté</a></li>
+                <li><a routerLink="/community">{{'NavigationBar.Community' | translate}}</a></li>
                 <ng-container *ngIf="isLoggedIn()">
-                    <li *ngIf="isManager()"> <a routerLink="/manage">Gestion</a> </li>
+                    <li *ngIf="isManager()"> <a routerLink="/manage">{{'TopBar.Management' | translate}}</a> </li>
                     <li (click)="logout()" class="flex flex-row items-center">
                         <div class="text-2xl">
                             <mat-icon [inline]="true">logout</mat-icon>
                         </div>
-                        <a class="pl-2">Se déconnecter</a>
+                        <a class="pl-2">{{'TopBar.LogOut' | translate}}</a>
                     </li>
                 </ng-container>
             </ul>
@@ -102,49 +104,51 @@
                     </div>
                     <ul tabindex="0"
                         class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
-                        <li><a routerLink="/editProfile">Profil</a></li>
-                        <li><a routerLink="/favorites">Favoris</a></li>
-                        <li *ngIf="isManager()"> <a routerLink="/manage">Gestion</a> </li>
+                        <li><a routerLink="/editProfile">{{'TopBar.Profile' | translate}}</a></li>
+                        <li><a routerLink="/favorites">{{'TopBar.Favorites' | translate}}</a></li>
+                        <li *ngIf="isManager()"> <a routerLink="/manage">{{'TopBar.Management' | translate}}</a> </li>
                         <li (click)="logout()" class="flex flex-row items-center">
                             <a class="pl-2">
                                 <div class="text-2xl">
                                     <mat-icon [inline]="true">logout</mat-icon>
                                 </div>
-                                Se déconnecter
+                                {{'TopBar.LogOut' | translate}}
                             </a>
                         </li>
                     </ul>
                 </div>
             </ng-container>
             <ng-template #elseBlock>
-                <ul tabindex="0" class="flex flex-row mt-3 p-2 ">
-                    <li><a routerLink="/register">S'inscrire</a></li>
-                    <li><a routerLink="/login">Se connecter</a></li>
+                <ul tabindex="0" class="flex flex-row p-2 ">
+                    <li><a routerLink="/register">{{'TopBar.Register' | translate}}</a></li>
+                    <li><a routerLink="/login">{{'TopBar.LogIn' | translate}}</a></li>
                 </ul>
             </ng-template>
         </div>
     </div>
     <div class="hidden sm:flex bg-base-100 flex-row  justify-between">
         <ul class="flex flex-row">
-            <li class="!p-4"><a routerLink="/animes">Animes</a></li>
-            <li class="!p-4"><a routerLink="/artists">Artistes</a></li>
+            <li class="!p-4"><a routerLink="/animes">{{'NavigationBar.Animes' | translate}}</a></li>
+            <li class="!p-4"><a routerLink="/artists">{{'NavigationBar.Artists' | translate}}</a></li>
             <li class="relative cursor-pointer  !p-4 hover:bg-base-300">
-                <a>Musiques</a>
+                <a>{{'NavigationBar.Musics.Nav' | translate}}</a>
                 <ul class="hidden absolute pt-2 left-0 w-40">
-                    <li class="bg-base-100 hover:bg-base-300"><a routerLink="/musics">Liste de musiques</a></li>
-                    <li class="bg-base-100 hover:bg-base-300"><a routerLink="/musics/ranking">Classement</a></li>
+                    <li class="bg-base-100 hover:bg-base-300"><a
+                            routerLink="/musics">{{'NavigationBar.Musics.MusicsList' | translate}}</a></li>
+                    <li class="bg-base-100 hover:bg-base-300"><a
+                            routerLink="/musics/ranking">{{'NavigationBar.Musics.Ranking' | translate}}</a></li>
                 </ul>
             </li>
 
-            <li class="!p-4"><a routerLink="/community">Communauté</a></li>
+            <li class="!p-4"><a routerLink="/community">{{'NavigationBar.Community' | translate}}</a></li>
         </ul>
         <div class="pr-14 pt-2">
             <div class="flex flex-row ">
                 <select class="select mr-4 !outline-none border-base-content" [(ngModel)]="category">
-                    <option value="musics">Musique</option>
-                    <option value="artists">Artiste</option>
-                    <option value="animes">Anime</option>
-                    <option value="profile">Utilisateur</option>
+                    <option value="musics">{{'NavigationBar.DropDownCategory.Music' | translate}}</option>
+                    <option value="artists">{{'NavigationBar.DropDownCategory.Artist' | translate}}</option>
+                    <option value="animes">{{'NavigationBar.DropDownCategory.Anime' | translate}}</option>
+                    <option value="profile">{{'NavigationBar.DropDownCategory.User' | translate}}</option>
                 </select>
                 <app-search-bar (searchEvent)="performSearch($event)"></app-search-bar>
             </div>
