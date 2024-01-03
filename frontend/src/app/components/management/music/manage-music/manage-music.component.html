@@ -8,8 +8,7 @@
             <div class="text-4xl cursor-pointer">
                 <mat-icon [inline]="true" routerLink="/manage/musics/create">add</mat-icon>
             </div>
-            <app-search-bar placeholder="Tapez la musique que vous recherchez" (searchEvent)="performSearch($event)"
-                class="w-full"></app-search-bar>
+            <app-search-bar (searchEvent)="performSearch($event)" class="w-full"></app-search-bar>
         </div>
         <div *ngIf="musics.items.length == 0">Il n'y a pas de musiques</div>
         <div *ngIf="musics.items.length > 0">

@@ -10,7 +10,8 @@ export class LanguageDropDownComponent {
   @Input() languages: Language[] = [];
   @Output() languageSelected = new EventEmitter<Language>();
 
-  selectedLanguage: Language = { id: 'fr', name: 'Français' };
+  selectedLanguage: Language = localStorage.getItem("lang") ?
+    JSON.parse(String(localStorage.getItem("lang"))) : { id: "fr", name: "Français" }
   isDropdownOpen = false;
 
   toggleDropdown() {

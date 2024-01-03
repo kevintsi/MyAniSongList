@@ -80,6 +80,7 @@ export class TopBarComponent implements OnInit, OnDestroy {
 
   onLanguageSelect(lang: Language) {
     this.translateService.use(lang.id)
+    localStorage.setItem("lang", lang.toString())
   }
 
   performSearch(searchTerm: string) {
