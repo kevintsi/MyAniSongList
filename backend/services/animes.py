@@ -1,11 +1,11 @@
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from fastapi import Depends, UploadFile
-from db.schemas.animes import AnimeCreate, AnimeUpdate
+from db.schemas.animes import AnimeCreate, AnimeTranslationCreate, AnimeUpdate, Anime as AnimeSchema
 from starlette.exceptions import HTTPException
-from db.models import Anime, User
+from db.models import Anime, AnimeTranslation, Language, User
 from .base import BaseService
 from db.session import get_session
-import sqlalchemy
+from sqlalchemy import select, exc
 from firebase import bucket
 
 
@@ -13,60 +13,142 @@ class AnimeService(BaseService[Anime, AnimeCreate, AnimeUpdate]):
     def __init__(self, db_session: Session):
         super(AnimeService, self).__init__(Anime, db_session)
 
-    def list(self):
-        return self.db_session.query(Anime).order_by(Anime.name)
+    def list(self, lang):
+        obj_lang = self.db_session.query(Language).filter(
+            Language.code == lang).first()
+        if obj_lang:
+            return self.db_session.query(AnimeTranslation, Anime).join(Anime.anime_translations).where(AnimeTranslation.id_language == obj_lang.id)
+        else:
+            raise HTTPException(
+                status_code=404, detail="Error language")
 
-    def search(self, term: str):
-        return self.db_session.query(Anime).filter(Anime.name.like(f"%{term}%"))
+    def get(self, id: int, lang: str):
+        obj_lang = self.db_session.query(Language).filter(
+            Language.code == lang).first()
+
+        anime = self.db_session.query(Anime).where(Anime.id == id).first()
+        if obj_lang and anime:
+            obj = self.db_session.query(AnimeTranslation, Anime).join(
+                Anime.anime_translations).where(AnimeTranslation.id_language == obj_lang.id, AnimeTranslation.id_anime == anime.id).first()
+            if obj is None:
+                return None
+            return AnimeSchema(id=obj.AnimeTranslation.id_anime, name=obj.AnimeTranslation.name, description=obj.AnimeTranslation.description, poster_img=obj.Anime.poster_img)
+        else:
+            raise HTTPException(
+                status_code=404, detail="Error language or anime id")
+
+    def search(self, term: str, lang: str):
+        lang: Language = self.db_session.query(
+            Language).filter(Language.code == lang).first()
+        if lang:
+            return self.db_session.query(AnimeTranslation, Anime).join(Anime.anime_translations).filter(AnimeTranslation.name.like(f"%{term}%"), AnimeTranslation.id_language == lang.id)
+        else:
+            raise HTTPException(
+                status_code=404, detail="Error language")
 
     def create(self, obj: AnimeCreate, poster_img: UploadFile, user: User):
-
         if user.is_manager:
-            blob = bucket.blob(f"anime_poster_images/{poster_img.filename}")
-            blob.upload_from_file(poster_img.file, content_type="image/png")
-            blob.make_public()
+            lang_obj: Language = self.db_session.query(
+                Language).filter(Language.code == "fr").first()
 
-            db_obj: Anime = Anime(
-                name=obj.name,
-                poster_img=blob.public_url,
-                description=obj.description
-            )
-
-            print(f"converted to Anime model : {db_obj}")
-            self.db_session.add(db_obj)
-            try:
-                self.db_session.commit()
-            except sqlalchemy.exc.IntegrityError as e:
-                self.db_session.rollback()
-                if "Duplicate entry" in str(e):
-                    raise HTTPException(
-                        status_code=409, detail="Conflict Error")
-                else:
-                    raise e
-            print("End create")
-        else:
-            raise HTTPException(status_code=401, detail="Forbidden")
-
-    def update(self, id, obj: AnimeUpdate, poster_img: UploadFile, user: User):
-
-        if user.is_manager:
-            print(f"Data : {obj}, img : {poster_img}")
-
-            db_obj = self.db_session.get(Anime, id)
-
-            for column, value in obj.dict(exclude_unset=True).items():
-                setattr(db_obj, column, value)
-            print(poster_img is not None)
-            if poster_img is not None:
+            if lang_obj:
                 blob = bucket.blob(
                     f"anime_poster_images/{poster_img.filename}")
                 blob.upload_from_file(
                     poster_img.file, content_type="image/png")
                 blob.make_public()
+                try:
+                    anime: Anime = self.db_session.query(Anime).filter(
+                        Anime.poster_img == blob.public_url).first()
 
-                setattr(db_obj, "poster_img", blob.public_url)
+                    if not anime:
+                        anime: Anime = Anime(poster_img=blob.public_url)
 
-            self.db_session.commit()
+                    anime_translation: AnimeTranslation = AnimeTranslation(
+                        anime=anime,
+                        name=obj.name,
+                        description=obj.description,
+                        language=lang_obj
+                    )
+
+                    print(f"converted to Anime model : {anime_translation}")
+                    self.db_session.add(anime_translation)
+                    self.db_session.commit()
+                except exc.IntegrityError as e:
+                    self.db_session.rollback()
+                    if "Duplicate entry" in str(e):
+                        raise HTTPException(
+                            status_code=409, detail="Conflict Error")
+                    else:
+                        raise e
+            else:
+                raise HTTPException(
+                    status_code=404, detail="Error language")
+        else:
+            raise HTTPException(status_code=401, detail="Forbidden")
+
+    def create_translation(self, obj: AnimeTranslationCreate, id: int,  lang: str, user: User):
+        if user.is_manager:
+            lang_obj: Language = self.db_session.query(
+                Language).filter(Language.code == lang).first()
+
+            anime: Anime = self.db_session.query(Anime).filter(
+                Anime.id == id).first()
+
+            if lang_obj and anime:
+                try:
+                    anime_translation: AnimeTranslation = AnimeTranslation(
+                        anime=anime,
+                        name=obj.name,
+                        description=obj.description,
+                        language=lang_obj
+                    )
+
+                    print(
+                        f"converted to AnimeTranslation model : {anime_translation}")
+                    self.db_session.add(anime_translation)
+                    self.db_session.commit()
+                except exc.IntegrityError as e:
+                    self.db_session.rollback()
+                    if "Duplicate entry" in str(e):
+                        raise HTTPException(
+                            status_code=409, detail="Conflict Error")
+                    else:
+                        raise e
+            else:
+                raise HTTPException(
+                    status_code=404, detail="Error language or anime id")
+        else:
+            raise HTTPException(status_code=401, detail="Forbidden")
+
+    def update(self, id, obj: AnimeUpdate, poster_img: UploadFile, lang: str, user: User):
+
+        if user.is_manager:
+
+            obj_lang: Language = self.db_session.query(
+                Language).filter(Language.code == lang).first()
+
+            anime: Anime = self.db_session.get(Anime, id)
+
+            if anime and obj_lang:
+                if poster_img:
+                    blob = bucket.blob(
+                        f"anime_poster_images/{poster_img.filename}")
+                    blob.upload_from_file(
+                        poster_img.file, content_type="image/png")
+                    blob.make_public()
+
+                    anime.poster_img = blob.public_url
+
+                anime_translation: AnimeTranslation = self.db_session.query(AnimeTranslation).filter(
+                    AnimeTranslation.id_anime == anime.id, AnimeTranslation.id_language == obj_lang.id).first()
+
+                for col, value in obj.dict(exclude_unset=True).items():
+                    setattr(anime_translation, col, value)
+
+                self.db_session.commit()
+            else:
+                raise HTTPException(404, "Error language or anime id")
         else:
             raise HTTPException(status_code=401, detail="Forbidden")
 

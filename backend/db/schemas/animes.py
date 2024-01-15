@@ -6,6 +6,9 @@ class AnimeBase(BaseModel):
     name: str
     description: str
 
+    class Config:
+        orm_mode = True
+
 
 class AnimeCreate(AnimeBase):
     @classmethod
@@ -19,6 +22,10 @@ class AnimeCreate(AnimeBase):
         return value
 
 
+class AnimeTranslationCreate(AnimeBase):
+    pass
+
+
 class AnimeUpdate(AnimeCreate):
     pass
 
@@ -26,6 +33,3 @@ class AnimeUpdate(AnimeCreate):
 class Anime(AnimeUpdate):
     id: int
     poster_img: str
-
-    class Config:
-        orm_mode = True
