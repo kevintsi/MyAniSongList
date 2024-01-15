@@ -10,7 +10,8 @@ from routers import (
     authors,
     types,
     reviews,
-    favorites
+    favorites,
+    languages
 )
 
 app = FastAPI()
@@ -32,5 +33,12 @@ app.include_router(authors.router)
 app.include_router(types.router)
 app.include_router(reviews.router)
 app.include_router(favorites.router)
+app.include_router(languages.router)
+
+
+@app.get("/")
+def index():
+    return {"detail": "Works fine"}
+
 
 add_pagination(app)
