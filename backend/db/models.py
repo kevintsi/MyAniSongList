@@ -2,11 +2,13 @@ from datetime import datetime
 from typing import List
 from sqlalchemy import (
     BigInteger,
+    Column,
     DateTime,
     Float,
     ForeignKey,
     Integer,
     String,
+    Table,
     Text,
     func,
 )
@@ -17,32 +19,23 @@ class Base(DeclarativeBase):
     pass
 
 
-class Chante(Base):
+chante_table = Table(
+    "chante",
+    Base.metadata,
+    Column("music_id", ForeignKey(
+        "music.id", ondelete="CASCADE"), primary_key=True, index=True),
+    Column("author_id", ForeignKey(
+        "author.id", ondelete="CASCADE"), primary_key=True, index=True)
+)
 
-    __tablename__ = 'chante'
-
-    music_id = mapped_column(ForeignKey('music.id', ondelete="CASCADE"),
-                             primary_key=True)
-    author_id = mapped_column(ForeignKey('author.id', ondelete="CASCADE"),
-                              nullable=False, unique=True, index=True)
-
-    author: Mapped["Author"] = relationship(
-        uselist=False, back_populates="chantes")
-    music: Mapped["Music"] = relationship(
-        uselist=False, back_populates="chantes")
-
-
-class Favorite(Base):
-
-    __tablename__ = 'favorite'
-
-    music_id = mapped_column(ForeignKey('music.id', ondelete="CASCADE"),
-                             primary_key=True)
-    user_id = mapped_column(ForeignKey('user.id'),
-                            nullable=False, unique=True, index=True)
-
-    user: Mapped["User"] = relationship(back_populates="favorites")
-    music: Mapped["Music"] = relationship(back_populates="favorites")
+favorite_table = Table(
+    "favorite",
+    Base.metadata,
+    Column("music_id", ForeignKey(
+        "music.id", ondelete="CASCADE"), primary_key=True, index=True),
+    Column("user_id", ForeignKey(
+        "user.id", ondelete="CASCADE"), primary_key=True, unique=True, index=True)
+)
 
 
 class AnimeTranslation(Base):
@@ -139,8 +132,8 @@ class User(Base):
 
     reviews: Mapped[List["Review"]] = relationship(
         back_populates='user', cascade="all, delete")
-    favorites: Mapped[List[Favorite]] = relationship(
-        cascade="all, delete", back_populates="user")
+    favorites: Mapped[List["Music"]] = relationship(
+        secondary=favorite_table, cascade="all, delete")
 
     def __repr__(self):
         return f"User({self.id},{self.username},{self.email}, {self.creation_date}, {self.profile_picture}, {self.is_manager})"
@@ -154,8 +147,8 @@ class Author(Base):
     poster_img = mapped_column(String(250), nullable=False)
     creation_year = mapped_column(String(50), nullable=True)
 
-    chantes: Mapped[List[Chante]] = relationship(
-        back_populates="author", cascade="all, delete", passive_deletes=True)
+    musics: Mapped[List["Music"]] = relationship(secondary=chante_table,
+                                                 back_populates="authors", cascade="all, delete", passive_deletes=True)
 
     def __repr__(self):
         return f"Author({self.id},{self.name},{self.poster_img})"
@@ -182,13 +175,10 @@ class Music(Base):
     reviews: Mapped[List["Review"]] = relationship(
         back_populates='music', cascade="all, delete",
         passive_deletes=True,)
-    favorites: Mapped[List[Favorite]] = relationship(
-        back_populates="music", cascade="all, delete",
-        passive_deletes=True,)
 
-    chantes: Mapped[List[Chante]] = relationship(
-        back_populates="music", cascade="all, delete",
-        passive_deletes=True,)
+    authors: Mapped[List[Author]] = relationship(secondary=chante_table,
+                                                 back_populates="musics", cascade="all, delete",
+                                                 passive_deletes=True,)
 
     def __repr__(self):
         return f"Music({self.id},{self.name},{self.release_date},{self.anime_id},{self.type_id},{self.poster_img})"
