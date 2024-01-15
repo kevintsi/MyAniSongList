@@ -42,7 +42,7 @@ class AnimeTranslation(Base):
 
     __tablename__ = 'anime_translation'
 
-    id_anime = mapped_column(ForeignKey('anime.id'),
+    id_anime = mapped_column(ForeignKey('anime.id', ondelete="CASCADE"),
                              primary_key=True, index=True)
     id_language = mapped_column(ForeignKey('supported_language.id', ondelete="CASCADE"), primary_key=True,
                                 nullable=False, unique=True, index=True)
@@ -65,7 +65,7 @@ class Anime(Base):
     poster_img = mapped_column(String(250), nullable=False)
 
     anime_translations: Mapped[List[AnimeTranslation]
-                               ] = relationship(back_populates='anime')
+                               ] = relationship(back_populates='anime', cascade="delete, all")
     musics: Mapped[List["Music"]] = relationship(back_populates='anime')
 
     def __repr__(self):
@@ -76,7 +76,7 @@ class TypeTranslation(Base):
 
     __tablename__ = 'type_translation'
 
-    id_type = mapped_column(ForeignKey('type.id'),
+    id_type = mapped_column(ForeignKey('type.id', ondelete="CASCADE"),
                             primary_key=True, index=True)
     id_language = mapped_column(ForeignKey('supported_language.id', ondelete="CASCADE"),
                                 nullable=False, unique=True, index=True)
@@ -94,7 +94,7 @@ class Type(Base):
     name = mapped_column(String(length=250), nullable=False)
 
     type_translations: Mapped[List[TypeTranslation]] = relationship(
-        back_populates='type')
+        back_populates='type', cascade="all, delete")
     musics: Mapped[List["Music"]] = relationship(back_populates='type')
 
     def __repr__(self):
