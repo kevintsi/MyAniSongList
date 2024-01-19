@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+
+  backend-test:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.test
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/usr/src/app
+    depends_on:
+      # - db-test
+      - redis-test
+    env_file:
+      - ./backend/.env.test
+
+  # frontend:
+  #   build:
+  #     context: ./frontend
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "4200:4200"
+  #   volumes:
+  #     - ./frontend:/app
+  #   depends_on:
+  #     - backend
+
+  # db-test:
+  #   image: mysql:8.0
+  #   container_name: mysql_container_test
+  #   ports:
+  #     - "3306:3306"
+  #   environment:
+  #     - MYSQL_ROOT_PASSWORD=root
+  #     - MYSQL_DATABASE=anisong
+
+  redis-test:
+    image: redis/redis-stack-server:latest
+    container_name: redis_container_test
+    ports:
+      - "6379:6379"
