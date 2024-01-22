@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from sqlalchemy import update
+from sqlalchemy import select, update
 from fastapi import Depends, UploadFile
 from app.db.schemas.users import UserUpdate, UserCreate
 from app.db.models import User
@@ -17,7 +17,8 @@ class UserService(BaseService[User, UserCreate, UserUpdate]):
         super(UserService, self).__init__(User, db_session)
 
     def search(self, term: str):
-        return self.db_session.query(User).filter(User.username.like(f"%{term}%"))
+        stmt = select(User).filter(User.username.like(f"%{term}%"))
+        return stmt
 
     def create(self, obj: UserCreate):
         db_obj: User = User(
@@ -38,30 +39,20 @@ class UserService(BaseService[User, UserCreate, UserUpdate]):
                 raise e
 
     def update(self, id, obj: UserUpdate, pfp: UploadFile):
-        # if not os.path.exists("static/profile_pictures"):
-        #     os.makedirs("static/profile_pictures")
-
-        # with open(f"static/profile_pictures/{pfp.filename}", "wb") as f:
-        #     f.write(pfp.file.read())
-
+        print(f"Profile picture sent : {pfp}")
         blob = bucket.blob(f"profile_pictures/{pfp.filename}")
         blob.upload_from_file(pfp.file, content_type="image/png")
         blob.make_public()
 
-        stmt = (
-            update(User)
-            .where(User.id == id)
-            .values(
-                username=obj.username,
-                email=obj.email,
-                password=get_password_hash(obj.password),
-                profile_picture=blob.public_url
-            )
-        )
-        print(stmt)
+        user: User = self.db_session.get(User, id)
+        user.profile_picture = blob.public_url
 
-        self.db_session.execute(stmt)
+        for col, value in obj.dict(exclude_unset=True).items():
+            setattr(user, col, value)
+
         self.db_session.commit()
+
+        return user
 
 
 def get_service(db_session: Session = Depends(get_session)) -> UserService:

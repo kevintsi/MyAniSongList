@@ -62,10 +62,10 @@ async def search(
     query: str,
     service: UserService = Depends(get_service)
 ):
-    return paginate(service.search(query))
+    return paginate(service.db_session, service.search(query))
 
 
-@router.post("/register", response_model=User, status_code=201)
+@router.post("/register", response_model=User, status_code=status.HTTP_201_CREATED)
 async def register(
     user: UserCreate,
     service: UserService = Depends(get_service)
@@ -73,7 +73,7 @@ async def register(
     return service.create(user)
 
 
-@router.put("/update")
+@router.put("/update", response_model=User, status_code=status.HTTP_200_OK)
 async def update(
     profile_picture: UploadFile = File(...),
     service: UserService = Depends(get_service),
@@ -116,8 +116,6 @@ async def login(
                             timezone.utc)+refresh_token_expires
                         )
 
-    # Générez également un refresh token et stockez-le dans votre système de stockage
-    # Vous pouvez utiliser votre propre logique de génération et de stockage du refresh token ici
     return {"access_token": access_token}
 
 
