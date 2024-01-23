@@ -52,6 +52,6 @@ class BaseService(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         return db_obj
 
     def delete(self, id: Any) -> None:
-        db_obj = self.db_session.query(self.model, id)
+        db_obj = self.db_session.get(self.model, id)
         self.db_session.delete(db_obj)
         self.db_session.commit()

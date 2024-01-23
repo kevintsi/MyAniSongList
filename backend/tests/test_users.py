@@ -73,6 +73,17 @@ def test_get_user(test_app_with_db):
     )
 
 
+def test_get_my_profile(test_app_with_db):
+    user = UserLogin(email="marie.doe@gmail.com", password="motdepasse")
+    response_login = test_app_with_db.post("/users/login", json=user.dict())
+    assert response_login.status_code == 200
+    response_me = test_app_with_db.get("/users/me", headers={
+        "Authorization": f"Bearer {response_login.json()['access_token']}"
+    })
+    assert response_me.status_code == 200
+    assert response_me.json()["email"] == user.email
+
+
 def test_delete_user(test_app_with_db):
     user = UserLogin(email="arthur.johns@gmail.com", password="motdepasse")
     response_login = test_app_with_db.post("/users/login", json=user.dict())
