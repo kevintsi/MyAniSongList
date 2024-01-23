@@ -1,5 +1,5 @@
 from typing import Any, Generic, List, Optional, Type, TypeVar
-
+from fastapi import status
 import sqlalchemy
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
@@ -23,7 +23,8 @@ class BaseService(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
             f"Result get : {self.db_session.get(self.model, id)}")
         obj: Optional[ModelType] = self.db_session.get(self.model, id)
         if obj is None:
-            raise HTTPException(status_code=404, detail="Not Found")
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, detail="Not Found")
         return obj
 
     def list(self):
@@ -38,7 +39,8 @@ class BaseService(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         except sqlalchemy.exc.IntegrityError as e:
             self.db_session.rollback()
             if "Duplicate entry" in str(e):
-                raise HTTPException(status_code=409, detail="Conflict Error")
+                raise HTTPException(
+                    status_code=status.HTTP_409_CONFLICT, detail="Conflict Error")
             else:
                 raise e
         return db_obj
