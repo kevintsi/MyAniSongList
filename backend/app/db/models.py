@@ -78,7 +78,7 @@ class TypeTranslation(Base):
     id_type = mapped_column(ForeignKey('type.id', ondelete="CASCADE"),
                             primary_key=True, index=True)
     id_language = mapped_column(ForeignKey('supported_language.id', ondelete="CASCADE"),
-                                nullable=False, unique=True, index=True)
+                                nullable=False, index=True)
     name = mapped_column(String(length=250), nullable=False)
 
     type: Mapped["Type"] = relationship(back_populates="type_translations")
