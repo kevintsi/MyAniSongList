@@ -1,6 +1,7 @@
 from fastapi import (
     APIRouter,
     Depends,
+    status
 )
 from app.db.models import User
 from app.db.schemas.languages import Language, LanguageCreate, LanguageUpdate
@@ -36,7 +37,7 @@ async def get_languages_by_anime(
     return service.get_languages_by_anime(id)
 
 
-@router.post("/add")
+@router.post("/add", response_model=Language, status_code=status.HTTP_201_CREATED)
 async def add(
     language: LanguageCreate,
     service: LanguageService = Depends(get_service),
@@ -45,7 +46,7 @@ async def add(
     return service.create(language, current_user)
 
 
-@router.put("/update/{id}")
+@router.put("/update/{id}", response_model=Language)
 async def update(
     id: int,
     language: LanguageUpdate,

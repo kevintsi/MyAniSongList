@@ -1,10 +1,10 @@
 from sqlalchemy.orm import Session
-from fastapi import Depends, HTTPException
+from fastapi import Depends, HTTPException, status
 from app.db.schemas.languages import LanguageCreate, LanguageUpdate
 from app.db.models import AnimeTranslation, Language, User
 from .base import BaseService
 from app.db.session import get_session
-from sqlalchemy import exc
+from sqlalchemy import exc, select
 
 
 class LanguageService(BaseService[Language, LanguageCreate, LanguageUpdate]):
@@ -23,7 +23,7 @@ class LanguageService(BaseService[Language, LanguageCreate, LanguageUpdate]):
                 self.db_session.rollback()
                 if "Duplicate entry" in str(e):
                     raise HTTPException(
-                        status_code=409, detail="Conflict Error")
+                        status_code=status.HTTP_409_CONFLICT, detail="Conflict Error")
                 else:
                     raise e
             return db_obj
@@ -43,14 +43,14 @@ class LanguageService(BaseService[Language, LanguageCreate, LanguageUpdate]):
 
     def delete(self, id: int, current_user: User):
         if current_user.is_manager:
-            db_obj = self.db_session.query(self.model).get(id)
+            db_obj = self.db_session.get(self.model, id)
             self.db_session.delete(db_obj)
             self.db_session.commit()
         else:
             raise HTTPException(status_code=401, detail="Forbidden")
 
     def get_languages_by_anime(self, id):
-        return self.db_session.query(Language).join(Language.anime_translations).where(AnimeTranslation.id_anime == id).all()
+        return self.db_session.scalars(select(Language).join(Language.anime_translations).where(AnimeTranslation.id_anime == id).all())
 
 
 def get_service(db_session: Session = Depends(get_session)) -> LanguageService:
