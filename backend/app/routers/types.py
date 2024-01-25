@@ -1,6 +1,7 @@
 from fastapi import (
     APIRouter,
     Depends,
+    status
 )
 from .users import get_current_user
 from app.db.models import User
@@ -24,7 +25,7 @@ async def get_all(
     return service.list(lang)
 
 
-@router.post("/add")
+@router.post("/add", response_model=Type, status_code=status.HTTP_201_CREATED)
 async def add(
     type: TypeCreate,
     service: TypeService = Depends(get_service),
@@ -33,7 +34,7 @@ async def add(
     return service.create(type, current_user)
 
 
-@router.post("/{id}/add_translation")
+@router.post("/{id}/add_translation", status_code=status.HTTP_201_CREATED)
 async def add_translation(
     id: str,
     type: TypeCreate,
@@ -54,7 +55,7 @@ async def update(
     return service.update(id, type, current_user)
 
 
-@router.put("/{id}/update_translation", response_model=Type)
+@router.put("/{id}/update_translation")
 async def update_translation(
     lang: str,
     id: int,
@@ -80,3 +81,12 @@ async def get(
     service: TypeService = Depends(get_service),
 ):
     return service.get(id)
+
+
+@router.get("/{id}", response_model=Type)
+async def get(
+    lang: str,
+    id: int,
+    service: TypeService = Depends(get_service),
+):
+    return service.get_translation(id, lang)
