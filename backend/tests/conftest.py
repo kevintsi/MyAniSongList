@@ -1,6 +1,7 @@
+import os
 from fastapi.testclient import TestClient
 import pytest
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, sessionmaker
 from app.main import app
 from app.db.session import engine
 from app.db.models import Base, User
@@ -8,24 +9,26 @@ from app.utils import get_password_hash
 from app.db.schemas.users import UserLogin
 
 
-@pytest.fixture(scope="package")
+@pytest.fixture(scope="module")
 def test_app():
     with TestClient(app) as test_client:
         # testing
         yield test_client
 
 
-@pytest.fixture(scope="package")
+@pytest.fixture(scope="module")
 def test_app_with_db():
     # Create table in database following the models
+    print("Create database for test...")
     Base.metadata.create_all(bind=engine)
-    with Session(engine) as session:
-        session.add(User(username="test_manager", email="test_manager@gmail.com",
-                    password=get_password_hash("motdepasse"), is_manager=True))
-        session.commit()
-    with TestClient(app) as test_client:
-        # testing
-        yield test_client
+    Session = sessionmaker(bind=engine)
+    session = Session()
+    session.add(User(username="test_manager", email="test_manager@gmail.com",
+                password=get_password_hash("motdepasse"), is_manager=True))
+    session.commit()
+    yield TestClient(app)
+    print("Delete tables when done with")
+    Base.metadata.drop_all(bind=engine)
 
 
 @pytest.fixture(scope="module")
