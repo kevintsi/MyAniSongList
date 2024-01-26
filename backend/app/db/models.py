@@ -33,7 +33,7 @@ favorite_table = Table(
     Column("music_id", ForeignKey(
         "music.id", ondelete="CASCADE"), primary_key=True, index=True),
     Column("user_id", ForeignKey(
-        "user.id", ondelete="CASCADE"), primary_key=True, unique=True, index=True)
+        "user.id", ondelete="CASCADE"), primary_key=True, index=True)
 )
 
 
@@ -43,8 +43,8 @@ class AnimeTranslation(Base):
 
     id_anime = mapped_column(ForeignKey('anime.id', ondelete="CASCADE"),
                              primary_key=True, index=True)
-    id_language = mapped_column(ForeignKey('supported_language.id', ondelete="CASCADE"), primary_key=True,
-                                nullable=False, unique=True, index=True)
+    id_language = mapped_column(ForeignKey('supported_language.id', ondelete="CASCADE"),
+                                primary_key=True, index=True)
     name = mapped_column(String(length=250), nullable=False)
     description = mapped_column(Text(), nullable=False)
 
@@ -78,7 +78,7 @@ class TypeTranslation(Base):
     id_type = mapped_column(ForeignKey('type.id', ondelete="CASCADE"),
                             primary_key=True, index=True)
     id_language = mapped_column(ForeignKey('supported_language.id', ondelete="CASCADE"),
-                                nullable=False, index=True)
+                                primary_key=True, index=True)
     name = mapped_column(String(length=250), nullable=False)
 
     type: Mapped["Type"] = relationship(back_populates="type_translations")
