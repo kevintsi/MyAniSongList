@@ -1,5 +1,6 @@
 
 from app.db.schemas.types import Type, TypeCreate, TypeUpdate
+from app.db.schemas.languages import LanguageCreate
 
 
 class TestTypes():
@@ -22,6 +23,11 @@ class TestTypes():
         assert response.json() == type
 
     def test_create_type_translation(self, test_app_with_db, get_token_manager):
+        lang = LanguageCreate(code="jp")
+        response = test_app_with_db.post("/languages/add", json=lang.dict(), headers={
+            "Authorization": f"Bearer {get_token_manager}"
+        })
+
         types = [TypeCreate(name="オープニング"), TypeCreate(name="エンディン")]
         for idx, type in enumerate(types):
             print(f"Index : {idx+1}")
