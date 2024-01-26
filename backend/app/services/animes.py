@@ -1,6 +1,6 @@
-from sqlalchemy.orm import Session, joinedload
-from fastapi import Depends, UploadFile
-from app.db.schemas.animes import AnimeCreate, AnimeTranslationCreate, AnimeUpdate, Anime as AnimeSchema
+from sqlalchemy.orm import Session
+from fastapi import Depends, UploadFile, status
+from app.db.schemas.animes import AnimeCreate,  AnimeUpdate, Anime as AnimeSchema, AnimeTranslationCreate
 from starlette.exceptions import HTTPException
 from app.db.models import Anime, AnimeTranslation, Language, User
 from .base import BaseService
@@ -48,8 +48,8 @@ class AnimeService(BaseService[Anime, AnimeCreate, AnimeUpdate]):
 
     def create(self, obj: AnimeCreate, poster_img: UploadFile, user: User):
         if user.is_manager:
-            lang_obj: Language = self.db_session.query(
-                Language).filter(Language.code == "fr").first()
+            lang_obj: Language = self.db_session.scalars(
+                select(Language).filter(Language.code == "fr")).first()
 
             if lang_obj:
                 blob = bucket.blob(
@@ -58,8 +58,8 @@ class AnimeService(BaseService[Anime, AnimeCreate, AnimeUpdate]):
                     poster_img.file, content_type="image/png")
                 blob.make_public()
                 try:
-                    anime: Anime = self.db_session.query(Anime).filter(
-                        Anime.poster_img == blob.public_url).first()
+                    anime: Anime = self.db_session.scalars(select(Anime).filter(
+                        Anime.poster_img == blob.public_url)).first()
 
                     if not anime:
                         anime: Anime = Anime(poster_img=blob.public_url)
@@ -74,18 +74,20 @@ class AnimeService(BaseService[Anime, AnimeCreate, AnimeUpdate]):
                     print(f"converted to Anime model : {anime_translation}")
                     self.db_session.add(anime_translation)
                     self.db_session.commit()
+                    return AnimeSchema(id=anime.id, name=anime_translation.name, description=anime_translation.description, poster_img=anime.poster_img)
                 except exc.IntegrityError as e:
                     self.db_session.rollback()
                     if "Duplicate entry" in str(e):
                         raise HTTPException(
-                            status_code=409, detail="Conflict Error")
+                            status_code=status.HTTP_409_CONFLICT, detail="Conflict Error")
                     else:
                         raise e
             else:
                 raise HTTPException(
-                    status_code=404, detail="Error language")
+                    status_code=status.HTTP_404_NOT_FOUND, detail="Error language")
         else:
-            raise HTTPException(status_code=401, detail="Forbidden")
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED, detail="Forbidden")
 
     def create_translation(self, obj: AnimeTranslationCreate, id: int,  lang: str, user: User):
         if user.is_manager:

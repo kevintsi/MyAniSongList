@@ -5,6 +5,7 @@ from fastapi import (
     Body,
     Form,
     UploadFile,
+    status
 )
 from fastapi_pagination import Page
 from fastapi_pagination.ext.sqlalchemy import paginate
@@ -56,7 +57,7 @@ async def search(
                     ])
 
 
-@router.post("/add")
+@router.post("/add", response_model=Anime, status_code=status.HTTP_201_CREATED)
 async def add(
     anime: AnimeCreate = Body(...),
     poster_img: UploadFile = File(...),
