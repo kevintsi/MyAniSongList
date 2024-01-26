@@ -1,6 +1,7 @@
 import os
 from app.db.schemas.users import User, UserCreate, UserLogin, UserUpdate
 from app.firebase import bucket
+from app.db.schemas.users import UserLogin
 
 
 class TestUsers():
@@ -23,7 +24,7 @@ class TestUsers():
         user = UserUpdate(email="testUpdate@gmail.com",
                           username="testUpdate", password="motdepasseUpdate")
         response_update = None
-        with open("/usr/src/app/tests/naruto.jpg", "rb") as f:
+        with open("/usr/src/app/tests/images_test/naruto.jpg", "rb") as f:
             response_update = test_app_with_db.put(f"{self.ENDPOINT_BASE}/update", data={"user": user.json()}, headers={
                 "Authorization": f"Bearer {get_token_not_manager}",
             }, files={"profile_picture": (f"{os.path.basename(f.name)}", f, "image/jpeg")})
