@@ -30,13 +30,13 @@ async def get_all(
     service: AnimeService = Depends(get_service),
 ):
     res = service.list(lang)
-    return paginate(res,
+    return paginate(service.db_session, res,
                     transformer=lambda items: [
                         Anime(
-                            id=row.AnimeTranslation.id_anime,
-                            description=row.AnimeTranslation.description,
-                            poster_img=row.Anime.poster_img,
-                            name=row.AnimeTranslation.name).dict() for row in items
+                            id=row.id_anime,
+                            description=row.description,
+                            poster_img=row.anime.poster_img,
+                            name=row.name).dict() for row in items
                     ])
 
 
@@ -47,13 +47,13 @@ async def search(
     service: AnimeService = Depends(get_service),
 ):
     res = service.search(query, lang)
-    return paginate(res,
+    return paginate(service.db_session, res,
                     transformer=lambda items: [
                         Anime(
-                            id=row.AnimeTranslation.id_anime,
-                            description=row.AnimeTranslation.description,
-                            poster_img=row.Anime.poster_img,
-                            name=row.AnimeTranslation.name).dict() for row in items
+                            id=row.id_anime,
+                            description=row.description,
+                            poster_img=row.anime.poster_img,
+                            name=row.name).dict() for row in items
                     ])
 
 
@@ -67,7 +67,7 @@ async def add(
     return service.create(anime, poster_img, current_user)
 
 
-@router.post("/{id}/add_translation/")
+@router.post("/{id}/add_translation/", status_code=status.HTTP_201_CREATED)
 async def add_translation(
     id: int,
     lang: str,
@@ -78,11 +78,11 @@ async def add_translation(
     return service.create_translation(anime, id, lang, current_user)
 
 
-@router.put("/update/{id}")
+@router.put("/update/{id}", response_model=Anime)
 async def update(
     lang: str,
     id: int,
-    anime: AnimeUpdate = Form(...),
+    anime: AnimeUpdate = Body(...),
     poster_img: Optional[UploadFile] = File(None),
     service: AnimeService = Depends(get_service),
     current_user: User = Depends(get_current_user)
