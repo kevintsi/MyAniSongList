@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
-from fastapi import Depends, UploadFile
+from sqlalchemy import select
+from fastapi import Depends, UploadFile, status
 from app.db.schemas.authors import AuthorCreate, AuthorUpdate
 from starlette.exceptions import HTTPException
 from app.db.models import Author, User
@@ -14,10 +15,10 @@ class AuthorService(BaseService[Author, AuthorCreate, AuthorUpdate]):
         super(AuthorService, self).__init__(Author, db_session)
 
     def list(self):
-        return self.db_session.query(Author).order_by(Author.name)
+        return select(Author).order_by(Author.name)
 
     def search(self, term: str):
-        return self.db_session.query(Author).filter(Author.name.like(f"%{term}%"))
+        return select(Author).filter(Author.name.like(f"%{term}%"))
 
     def create(self, obj: AuthorCreate, poster_img: UploadFile, user: User):
         if user.is_manager:
@@ -35,16 +36,17 @@ class AuthorService(BaseService[Author, AuthorCreate, AuthorUpdate]):
             self.db_session.add(db_obj)
             try:
                 self.db_session.commit()
+                return db_obj
             except sqlalchemy.exc.IntegrityError as e:
                 self.db_session.rollback()
                 if "Duplicate entry" in str(e):
                     raise HTTPException(
-                        status_code=409, detail="Conflict Error")
+                        status_code=status.HTTP_409_CONFLICT, detail="Conflict Error")
                 else:
                     raise e
-            print("End create")
         else:
-            raise HTTPException(status_code=401, detail="Forbidden")
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED, detail="Forbidden")
 
     def update(self, id, obj: AuthorUpdate, poster_img: UploadFile, user: User):
         if user.is_manager:
@@ -63,16 +65,19 @@ class AuthorService(BaseService[Author, AuthorCreate, AuthorUpdate]):
                 setattr(db_obj, "poster_img", blob.public_url)
 
             self.db_session.commit()
+            return db_obj
         else:
-            raise HTTPException(status_code=401, detail="Forbidden")
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED, detail="Forbidden")
 
     def delete(self, id: int, user: User):
         if user.is_manager:
-            db_obj = self.db_session.query(Author).get(id)
+            db_obj = self.db_session.get(Author, id)
             self.db_session.delete(db_obj)
             self.db_session.commit()
         else:
-            raise HTTPException(status_code=401, detail="Forbidden")
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED, detail="Forbidden")
 
 
 def get_service(db_session: Session = Depends(get_session)) -> AuthorService:

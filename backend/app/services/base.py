@@ -1,6 +1,7 @@
 from typing import Any, Generic, List, Optional, Type, TypeVar
 from fastapi import status
-import sqlalchemy
+from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from starlette.exceptions import HTTPException
@@ -19,8 +20,6 @@ class BaseService(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         self.db_session = db_session
 
     def get(self, id: Any) -> Optional[ModelType]:
-        print(
-            f"Result get : {self.db_session.get(self.model, id)}")
         obj: Optional[ModelType] = self.db_session.get(self.model, id)
         if obj is None:
             raise HTTPException(
@@ -28,7 +27,7 @@ class BaseService(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         return obj
 
     def list(self):
-        return self.db_session.query(self.model)
+        return self.db_session.scalars(select(self.model))
 
     def create(self, obj: CreateSchemaType) -> ModelType:
         db_obj: ModelType = self.model(**obj.dict())
@@ -36,7 +35,7 @@ class BaseService(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         self.db_session.add(db_obj)
         try:
             self.db_session.commit()
-        except sqlalchemy.exc.IntegrityError as e:
+        except IntegrityError as e:
             self.db_session.rollback()
             if "Duplicate entry" in str(e):
                 raise HTTPException(

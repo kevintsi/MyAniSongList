@@ -4,6 +4,7 @@ from fastapi import (
     File,
     Body,
     UploadFile,
+    status
 )
 from typing import Optional
 
@@ -27,9 +28,7 @@ router = APIRouter(
 async def get_all(
     service: AuthorService = Depends(get_service),
 ):
-    # fake_data = service.list()*100
-    # return paginate(fake_data)
-    return paginate(service.list())
+    return paginate(service.db_session, service.list())
 
 
 @router.get("/search", response_model=Page[Author])
@@ -37,10 +36,10 @@ async def search(
     query: str,
     service: AuthorService = Depends(get_service),
 ):
-    return paginate(service.search(query))
+    return paginate(service.db_session, service.search(query))
 
 
-@router.post("/add")
+@router.post("/add", response_model=Author, status_code=status.HTTP_201_CREATED)
 async def add(
     author: AuthorCreate = Body(...),
     poster_img: UploadFile = File(...),
@@ -50,7 +49,7 @@ async def add(
     return service.create(author, poster_img, current_user)
 
 
-@router.put("/update/{id}")
+@router.put("/update/{id}", response_model=Author)
 async def update(
     id: int,
     author: AuthorUpdate = Body(...),
