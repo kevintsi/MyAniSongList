@@ -1,10 +1,12 @@
 from enum import Enum
 from sqlalchemy.orm import Session
-from fastapi import Depends, UploadFile
+from sqlalchemy import select
+from fastapi import Depends, UploadFile, status
 from app.db.schemas.musics import MusicAnime, MusicArtist, MusicCreate, MusicUpdate, Music as MusicSchema
+from app.db.schemas.animes import Anime as AnimeSchema
 from app.db.schemas.types import Type as TypeSchema
 from starlette.exceptions import HTTPException
-from app.db.models import Language, Music, Author, Type, TypeTranslation, User
+from app.db.models import Anime, AnimeTranslation, Language, Music, Author, Type, TypeTranslation, User
 from .base import BaseService
 from app.db.session import get_session
 import sqlalchemy
@@ -20,18 +22,43 @@ class MusicService(BaseService[Music, MusicCreate, MusicUpdate]):
     def __init__(self, db_session: Session):
         super(MusicService, self).__init__(Music, db_session)
 
+    def get(self, id, lang):
+        lang = self.db_session.scalars(
+            select(Language).filter(Language.code == lang)).first()
+
+        obj = self.db_session.execute(select(Music,
+                                             AnimeTranslation,
+                                             TypeTranslation
+                                             ).join(Anime,
+                                                    Anime.id == Music.anime_id).join(Type, Type.id == Music.type_id).join(Anime.anime_translations).join(Type.type_translations).filter(AnimeTranslation.id_language == lang.id, TypeTranslation.id_language == lang.id,  Music.id == id)).first()
+        if lang and obj:
+            return MusicSchema(name=obj.Music.name,
+                               release_date=obj.Music.release_date,
+                               id=obj.Music.id, poster_img=obj.Music.poster_img,
+                               authors=obj.Music.authors,
+                               avg_note=obj.Music.avg_note,
+                               anime=AnimeSchema(id=obj.AnimeTranslation.id_anime, description=obj.AnimeTranslation.description,
+                                                 poster_img=obj.AnimeTranslation.anime.poster_img, name=obj.AnimeTranslation.name),
+                               type=TypeSchema(
+                                   id=obj.TypeTranslation.id_type, name=obj.TypeTranslation.name),
+                               id_video=obj.Music.id_video
+                               )
+        else:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                                detail="language id or music id not found")
+
     def get_most_popular(self):
-        return self.db_session.query(Music).order_by(Music.avg_note.desc()).limit(5).all()
+        return self.db_session.scalars(select(Music).order_by(Music.avg_note.desc()).limit(5)).all()
 
     def get_latest(self):
-        return self.db_session.query(Music).order_by(Music.release_date.desc()).limit(5).all()
+        return self.db_session.scalars(select(Music).order_by(Music.release_date.desc()).limit(5)).all()
 
     def list(self, order_by):
         if order_by:
             if order_by == OrderMusicBy.AVG_NOTE:
-                return self.db_session.query(Music).order_by(Music.avg_note.desc())
+                return self.db_session.scalars(select(Music).order_by(Music.avg_note.desc()))
 
-        return self.db_session.query(Music).order_by(Music.name)
+        return self.db_session.scalars(select(Music).order_by(Music.name))
 
     def search(self, term: str):
         return self.db_session.query(Music).filter(Music.name.like(f"%{term}%"))
@@ -79,41 +106,45 @@ class MusicService(BaseService[Music, MusicCreate, MusicUpdate]):
             blob.upload_from_file(poster_img.file, content_type="image/png")
             blob.make_public()
 
-            list_author = []
+            anime = self.db_session.get(Anime, obj.anime_id)
+            type = self.db_session.get(Type, obj.type_id)
+
+            list_authors = []
 
             for id in obj.authors:
-                list_author.append(self.db_session.get(Author, id))
+                list_authors.append(self.db_session.get(Author, id))
 
-            print(list_author)
+            print(anime, type, list_authors)
 
-            db_obj: Music = Music(
-                name=obj.name,
-                release_date=obj.release_date,
-                anime_id=obj.anime_id,
-                type_id=obj.type_id,
-                poster_img=blob.public_url,
-                id_video=obj.id_video
-            )
+            if anime and type and len(list_authors) > 0:
+                db_obj: Music = Music(
+                    name=obj.name,
+                    release_date=obj.release_date,
+                    type=type,
+                    anime=anime,
+                    poster_img=blob.public_url,
+                    id_video=obj.id_video,
+                    authors=list_authors
+                )
 
-            print(db_obj)
-
-            db_obj.authors = list_author
-
-            print(f"converted to Music model : ${db_obj}")
-            self.db_session.add(db_obj)
-            try:
-                self.db_session.commit()
-            except sqlalchemy.exc.IntegrityError as e:
-                self.db_session.rollback()
-                if "Duplicate entry" in str(e):
-                    raise HTTPException(
-                        status_code=409, detail="Conflict Error")
-                else:
-                    raise e
-            print("End create")
-            return db_obj.id
+                print(f"converted to Music model : ${db_obj}")
+                self.db_session.add(db_obj)
+                try:
+                    self.db_session.commit()
+                    return db_obj
+                except sqlalchemy.exc.IntegrityError as e:
+                    self.db_session.rollback()
+                    if "Duplicate entry" in str(e):
+                        raise HTTPException(
+                            status_code=status.HTTP_409_CONFLICT, detail="Conflict Error")
+                    else:
+                        raise e
+            else:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND, detail="Anime or Type or Authors not found")
         else:
-            raise HTTPException(status_code=401, detail="Forbidden")
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED, detail="Forbidden")
 
     def add_to_favorite(self, id: str, user: User):
         music = self.db_session.get(Music, id)
@@ -188,8 +219,13 @@ class MusicService(BaseService[Music, MusicCreate, MusicUpdate]):
                 setattr(db_obj, "poster_img", blob.public_url)
 
             self.db_session.commit()
+
+            print(f"Music {db_obj}")
+
+            return db_obj
         else:
-            raise HTTPException(status_code=401, detail="Forbidden")
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED, detail="Forbidden")
 
     def delete(self, id: int, user: User):
         if user.is_manager:

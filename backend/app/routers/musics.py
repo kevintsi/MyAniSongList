@@ -5,6 +5,7 @@ from fastapi import (
     Body,
     Query,
     UploadFile,
+    status
 )
 from fastapi_pagination import Page
 from fastapi_pagination.ext.sqlalchemy import paginate
@@ -29,9 +30,7 @@ async def get_all(
     service: MusicService = Depends(get_service),
     order_by: OrderMusicBy = Query(None, description="Order items by")
 ):
-    # fake_data = service.list()*100
-    # return paginate(fake_data)
-    return paginate(service.list(order_by))
+    return paginate(service.db_session, service.list(order_by))
 
 
 @router.get("/latest", response_model=list[MusicShort])
@@ -74,7 +73,7 @@ async def get_musics_by_id_artist(
     return service.get_musics_artist(id_artist, lang)
 
 
-@router.post("/add")
+@router.post("/add", status_code=status.HTTP_201_CREATED, response_model=Music)
 async def add(
     music: MusicCreate = Body(...),
     poster_img: UploadFile = File(...),
@@ -84,7 +83,7 @@ async def add(
     return service.create(music, poster_img, current_user)
 
 
-@router.put("/update/{id}")
+@router.put("/update/{id}", response_model=Music)
 async def update(
     id: int,
     music: MusicUpdate = Body(...),
@@ -106,7 +105,8 @@ async def delete(
 
 @router.get("/{id}", response_model=Music)
 async def get(
+    lang: str,
     id: int,
     service: MusicService = Depends(get_service),
 ):
-    return service.get(id)
+    return service.get(id, lang)
