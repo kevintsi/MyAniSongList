@@ -115,66 +115,66 @@ class TestMusics():
         assert response_update.json()["id_video"] == response_get.json()[
             "id_video"]
 
-    # def test_create_anime_translation(self, test_app_with_db, get_token_manager):
-    #     lang = LanguageCreate(code="jp")
-    #     test_app_with_db.post("/languages/add", json=lang.dict(), headers={
-    #         "Authorization": f"Bearer {get_token_manager}"
-    #     })
+    def test_get_musics_by_id_anime(self, test_app_with_db, get_token_manager):
+        type_ = TypeCreate(name="Ending")
+        author = AuthorCreate(name="Milet", creation_year="2004")
+        music = MusicCreate(name="Koi kogare", release_date=datetime(
+            2023, 10, 1), authors=[2], type_id=2, id_video="x45dsF", anime_id=1)
 
-    #     animes = [AnimeCreate(name="ナルト", description="ナルト、説明"), AnimeCreate(
-    #         name="ワンピース", description="ワンピース、説明")]
-    #     for idx, anime in enumerate(animes):
-    #         print(f"Index : {idx+1}")
-    #         response = test_app_with_db.post(f"{self.ENDPOINT_BASE}/{idx+1}/add_translation?lang=jp", json=anime.dict(), headers={
-    #             "Authorization": f"Bearer {get_token_manager}"
-    #         })
-    #         assert response.status_code == 201
-    #         assert response.json()["name"] == anime.name
-    #         assert response.json()["description"] == anime.description
+        response_post_type = test_app_with_db.post("/types/add", json=type_.dict(), headers={
+            "Authorization": f"Bearer {get_token_manager}"
+        })
 
-    # def test_get_animes(self, test_app_with_db):
-    #     response = test_app_with_db.get(f"{self.ENDPOINT_BASE}/all?lang=jp")
-    #     assert response.status_code == 200
-    #     assert response.json()["total"] == 2
-    #     assert type(response.json()["items"]) is list
+        assert response_post_type.status_code == 201
 
-    # def test_update_anime(self, test_app_with_db, get_token_manager):
-    #     anime = AnimeUpdate(
-    #         name="One Piece", description="description fr one piece updated")
-    #     response_put = test_app_with_db.put(
-    #         f"{self.ENDPOINT_BASE}/update/2?lang=fr", data={"anime": anime.json()}, headers={
-    #             "Authorization": f"Bearer {get_token_manager}"
-    #         })
-    #     response_get = test_app_with_db.get(f"{self.ENDPOINT_BASE}/2?lang=fr")
-    #     assert response_put.status_code == 200
-    #     assert response_get.status_code == 200
-    #     assert response_put.json() == response_get.json()
+        response_post_type_translation = test_app_with_db.post("/types/2/add_translation?lang=fr", json=type_.dict(), headers={
+            "Authorization": f"Bearer {get_token_manager}"
+        })
 
-    # def test_search_anime(self, test_app_with_db):
-    #     response_search = test_app_with_db.get(
-    #         f"{self.ENDPOINT_BASE}/search?query=ナル&lang=jp")
-    #     assert response_search.status_code == 200
-    #     response_get_id = test_app_with_db.get(
-    #         f"{self.ENDPOINT_BASE}/1?lang=jp")
-    #     response_search.status_code == 200
-    #     response_get_id.status_code == 200
-    #     response_search.json()["total"] == 1
-    #     response_search.json()["items"][0] == response_get_id.json()
+        assert response_post_type_translation.status_code == 201
 
-    # def test_delete_anime(self, test_app_with_db, get_token_manager):
-    #     anime = {"anime":  AnimeCreate(
-    #         name="Narut", description="A SUPPRIMER"), "poster_img": "naruto.jpg"}
+        file_author = open(
+            "/usr/src/app/tests/images_test/milet.jpg", mode="rb")
+        response_post_author = test_app_with_db.post("/authors/add", data={"author": author.json()}, headers={
+            "Authorization": f"Bearer {get_token_manager}"
+        }, files={"poster_img": (os.path.basename(file_author.name), file_author, "image/jpeg")})
 
-    #     with open(f"/usr/src/app/tests/images_test/{anime['poster_img']}", "rb") as f:
-    #         response_post = test_app_with_db.post(f"{self.ENDPOINT_BASE}/add", data={"anime": anime["anime"].json()}, headers={
-    #             "Authorization": f"Bearer {get_token_manager}"
-    #         }, files={"poster_img": (os.path.basename(f.name), f, "image/jpeg")})
-    #         response_post.status_code == 201
-    #     response_delete = test_app_with_db.delete(
-    #         f"{self.ENDPOINT_BASE}/delete/{response_post.json()['id']}", headers={
-    #             "Authorization": f"Bearer {get_token_manager}"
-    #         })
-    #     response_delete.status_code == 200
-    #     response_get = test_app_with_db.get(
-    #         f"{self.ENDPOINT_BASE}/{response_post.json()['id']}")
-    #     response_get.status_code == 404
+        assert response_post_author.status_code == 201
+
+        file_music = open(
+            "/usr/src/app/tests/images_test/koi_kogare_ending_kny.jpg", mode="rb")
+
+        response_post_music = test_app_with_db.post(f"{self.ENDPOINT_BASE}/add", data={"music": music.json()}, headers={
+            "Authorization": f"Bearer {get_token_manager}"
+        }, files={"poster_img": (os.path.basename(file_music.name), file_music, "image/jpeg")})
+
+        assert response_post_music.status_code == 201
+
+        response_get_musics_by_id_anime = test_app_with_db.get(
+            f"{self.ENDPOINT_BASE}/anime/{music.anime_id}?lang=fr")
+
+        assert type(response_get_musics_by_id_anime.json()) is list
+        assert len(response_get_musics_by_id_anime.json()) == 2
+
+    def test_get_musics_by_id_artist(self, test_app_with_db):
+        response_get = test_app_with_db.get(
+            f"{self.ENDPOINT_BASE}/artist/1?lang=fr")
+        assert response_get.status_code == 200
+        assert type(response_get.json()) is list
+        assert len(response_get.json()) == 1
+
+    def test_search(self, test_app_with_db):
+        response_get = test_app_with_db.get(
+            f"{self.ENDPOINT_BASE}/search?query=Gur")
+        assert response_get.status_code == 200
+        assert response_get.json()["items"][0]["name"] == "Gurenge"
+        assert response_get.json()["items"][0]["id"] == 1
+
+    def test_delete(self, test_app_with_db, get_token_manager):
+        response_delete = test_app_with_db.delete(f"{self.ENDPOINT_BASE}/delete/1", headers={
+            "Authorization": f"Bearer {get_token_manager}"
+        })
+        response_get = test_app_with_db.get(f"{self.ENDPOINT_BASE}/1?lang=fr")
+
+        assert response_delete.status_code == 200
+        assert response_get.status_code == 404
