@@ -52,7 +52,7 @@ async def search(
     query: str,
     service: MusicService = Depends(get_service),
 ):
-    return paginate(service.search(query))
+    return paginate(service.db_session, service.search(query))
 
 
 @router.get("/anime/{id_anime}", response_model=list[MusicAnime])

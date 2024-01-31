@@ -61,44 +61,55 @@ class MusicService(BaseService[Music, MusicCreate, MusicUpdate]):
         return self.db_session.scalars(select(Music).order_by(Music.name))
 
     def search(self, term: str):
-        return self.db_session.query(Music).filter(Music.name.like(f"%{term}%"))
+        return select(Music).filter(Music.name.like(f"%{term}%"))
 
     def get_musics_anime(self, id_anime: int, lang: str):
-        lang: Language = self.db_session.query(
-            Language).filter(Language.code == lang).first()
-        musics = self.db_session.query(
-            Music, TypeTranslation).join(
-            TypeTranslation,
-            TypeTranslation.id_type == Music.type_id).join(Language,
-                                                           Language.id ==
-                                                           TypeTranslation.id_language).filter(Music.anime_id == id_anime,
-                                                                                               TypeTranslation.id_language == lang.id).order_by(Music.release_date.desc()).all()
+        lang: Language = self.db_session.scalars(
+            select(Language).filter(Language.code == lang)).first()
 
-        return [MusicAnime(
-            id=m.Music.id,
-            poster_img=m.Music.poster_img,
-            authors=m.Music.authors,
-            type=TypeSchema(id=m.TypeTranslation.id_type,
-                            name=m.TypeTranslation.name),
-            name=m.Music.name,
-            release_date=m.Music.release_date) for m in musics]
+        if lang:
+
+            musics = self.db_session.execute(select(
+                Music, TypeTranslation).join(
+                TypeTranslation,
+                TypeTranslation.id_type == Music.type_id).join(Language,
+                                                               Language.id ==
+                                                               TypeTranslation.id_language).filter(Music.anime_id == id_anime,
+                                                                                                   TypeTranslation.id_language == lang.id).order_by(Music.release_date.desc())).all()
+
+            return [MusicAnime(
+                id=m.Music.id,
+                poster_img=m.Music.poster_img,
+                authors=m.Music.authors,
+                type=TypeSchema(id=m.TypeTranslation.id_type,
+                                name=m.TypeTranslation.name),
+                name=m.Music.name,
+                release_date=m.Music.release_date) for m in musics]
+        else:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                                detail="language id not found")
 
     def get_musics_artist(self, id_artist: int, lang: str):
         lang: Language = self.db_session.query(
             Language).filter(Language.code == lang).first()
-        musics = self.db_session.query(Music, TypeTranslation).join(
-            TypeTranslation,
-            TypeTranslation.id_type == Music.type_id).join(Music.authors).join(Language,
-                                                                               Language.id ==
-                                                                               TypeTranslation.id_language).filter(Author.id == id_artist, TypeTranslation.id_language == lang.id).order_by(Music.release_date.desc())
 
-        return [MusicArtist(
-            id=m.Music.id,
-            poster_img=m.Music.poster_img,
-            type=TypeSchema(id=m.TypeTranslation.id_type,
-                            name=m.TypeTranslation.name),
-            name=m.Music.name,
-            release_date=m.Music.release_date) for m in musics]
+        if lang:
+            musics = self.db_session.query(Music, TypeTranslation).join(
+                TypeTranslation,
+                TypeTranslation.id_type == Music.type_id).join(Music.authors).join(Language,
+                                                                                   Language.id ==
+                                                                                   TypeTranslation.id_language).filter(Author.id == id_artist, TypeTranslation.id_language == lang.id).order_by(Music.release_date.desc())
+
+            return [MusicArtist(
+                id=m.Music.id,
+                poster_img=m.Music.poster_img,
+                type=TypeSchema(id=m.TypeTranslation.id_type,
+                                name=m.TypeTranslation.name),
+                name=m.Music.name,
+                release_date=m.Music.release_date) for m in musics]
+        else:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                                detail="language id not found")
 
     def create(self, obj: MusicCreate, poster_img: UploadFile, user: User):
         if user.is_manager:
@@ -150,7 +161,8 @@ class MusicService(BaseService[Music, MusicCreate, MusicUpdate]):
         music = self.db_session.get(Music, id)
 
         if music is None:
-            raise HTTPException(status_code=404, detail="Music not found")
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, detail="Music not found")
 
         user.favorites.append(music)
 
@@ -160,7 +172,7 @@ class MusicService(BaseService[Music, MusicCreate, MusicUpdate]):
             self.db_session.rollback()
             if "Duplicate entry" in str(e):
                 raise HTTPException(
-                    status_code=409, detail="Conflict Error")
+                    status_code=status.HTTP_409_CONFLICT, detail="Conflict Error")
             else:
                 raise e
         print("End add to favorite")
@@ -171,7 +183,8 @@ class MusicService(BaseService[Music, MusicCreate, MusicUpdate]):
     def get_user_favorites(self, id: int):
         user = self.db_session.get(User, id)
         if user is None:
-            raise HTTPException(status_code=404, detail="User not found")
+            raise HTTPException(status.HTTP_404_NOT_FOUND,
+                                detail="User not found")
 
         return user.favorites
 
@@ -179,7 +192,8 @@ class MusicService(BaseService[Music, MusicCreate, MusicUpdate]):
         music = self.db_session.get(Music, id)
 
         if music is None:
-            raise HTTPException(status_code=404, detail="Music not found")
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, detail="Music not found")
 
         user.favorites.remove(music)
 
@@ -189,7 +203,7 @@ class MusicService(BaseService[Music, MusicCreate, MusicUpdate]):
             self.db_session.rollback()
             if "Duplicate entry" in str(e):
                 raise HTTPException(
-                    status_code=409, detail="Conflict Error")
+                    status_code=status.HTTP_409_CONFLICT, detail="Conflict Error")
             else:
                 raise e
         print("End remove from favorite")
@@ -229,11 +243,12 @@ class MusicService(BaseService[Music, MusicCreate, MusicUpdate]):
 
     def delete(self, id: int, user: User):
         if user.is_manager:
-            db_obj = self.db_session.query(Music).get(id)
+            db_obj = self.db_session.get(Music, id)
             self.db_session.delete(db_obj)
             self.db_session.commit()
         else:
-            raise HTTPException(status_code=401, detail="Forbidden")
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED, detail="Forbidden")
 
 
 def get_service(db_session: Session = Depends(get_session)) -> MusicService:
