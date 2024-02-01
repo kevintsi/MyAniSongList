@@ -1,6 +1,7 @@
 from fastapi import (
     APIRouter,
     Depends,
+    status
 )
 from fastapi_pagination import Page
 from app.db.models import User
@@ -22,9 +23,7 @@ router = APIRouter(
 async def get_all(
     service: ReviewService = Depends(get_service),
 ):
-    # fake_data = service.list()*100
-    # return paginate(fake_data)
-    return paginate(service.list())
+    return paginate(service.db_session, service.list())
 
 
 @router.get("/{id}", response_model=Review)
@@ -49,12 +48,10 @@ async def get_music_reviews(
     id_music: int,
     service: ReviewService = Depends(get_service),
 ):
-    # fake_data = service.get_music_review(id_music)*100
-    # return paginate(fake_data)
-    return paginate(service.get_music_review(id_music))
+    return paginate(service.db_session, service.get_music_review(id_music))
 
 
-@router.post("/add")
+@router.post("/add", status_code=status.HTTP_201_CREATED, response_model=Review)
 async def add(
     review: ReviewCreate,
     service: ReviewService = Depends(get_service),
@@ -63,7 +60,7 @@ async def add(
     return service.create(review, current_user.id)
 
 
-@router.put("/update/{id}")
+@router.put("/update/{id}", response_model=Review)
 async def update(
     id: int,
     review: ReviewUpdate,
