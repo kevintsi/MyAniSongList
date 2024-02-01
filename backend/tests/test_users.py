@@ -9,8 +9,8 @@ class TestUsers():
 
     def test_create_user(self, test_app_with_db):
         user = UserCreate(
-            email="test@gmail.com",
-            username="test",
+            email="test2@gmail.com",
+            username="test2",
             password="motdepasse"
         )
         response = test_app_with_db.post(
@@ -20,13 +20,18 @@ class TestUsers():
         assert response.json()["email"] == user.email
         assert response.json()["profile_picture"] == None
 
-    def test_update_profile(self, test_app_with_db, get_token_not_manager):
-        user = UserUpdate(email="testUpdate@gmail.com",
-                          username="testUpdate", password="motdepasseUpdate")
+    def test_update_profile(self, test_app_with_db):
+
+        user = UserLogin(email="test2@gmail.com", password="motdepasse")
+        token = test_app_with_db.post(
+            f"{self.ENDPOINT_BASE}/login", json=user.dict()).json()["access_token"]
+
+        user_update = UserUpdate(email="test2Update@gmail.com",
+                                 username="test2Update", password="motdepasseUpdate")
         response_update = None
         with open("/usr/src/app/tests/images_test/naruto.jpg", "rb") as f:
-            response_update = test_app_with_db.put(f"{self.ENDPOINT_BASE}/update", data={"user": user.json()}, headers={
-                "Authorization": f"Bearer {get_token_not_manager}",
+            response_update = test_app_with_db.put(f"{self.ENDPOINT_BASE}/update", data={"user": user_update.json()}, headers={
+                "Authorization": f"Bearer {token}",
             }, files={"profile_picture": (f"{os.path.basename(f.name)}", f, "image/jpeg")})
 
         blob = bucket.blob(
@@ -34,7 +39,7 @@ class TestUsers():
         blob.make_public()
 
         response_get = test_app_with_db.get(f"{self.ENDPOINT_BASE}/me", headers={
-            "Authorization": f"Bearer {get_token_not_manager}"})
+            "Authorization": f"Bearer {token}"})
 
         assert response_get.status_code == 200
         assert response_update.status_code == 200
@@ -64,15 +69,15 @@ class TestUsers():
         assert response.json()["total"] == 2
 
     def test_get_user(self, test_app_with_db):
-        response = test_app_with_db.get(f"{self.ENDPOINT_BASE}/2")
+        response = test_app_with_db.get(f"{self.ENDPOINT_BASE}/3")
         blob = bucket.blob(
             "profile_pictures/naruto.jpg")
         blob.make_public()
         assert response.status_code == 200
         assert response.json() == User(
-            id=2,
-            email="testUpdate@gmail.com",
-            username="testUpdate",
+            id=3,
+            email="test2Update@gmail.com",
+            username="test2Update",
             profile_picture=blob.public_url
         )
 
@@ -99,5 +104,5 @@ class TestUsers():
 
         assert response.status_code == 200
 
-        response_get = test_app_with_db.get(f"{self.ENDPOINT_BASE}/5")
+        response_get = test_app_with_db.get(f"{self.ENDPOINT_BASE}/6")
         assert response_get.status_code == 404

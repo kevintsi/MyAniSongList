@@ -25,6 +25,8 @@ def test_app_with_db():
     session = Session()
     session.add(User(username="test_manager", email="test_manager@gmail.com",
                 password=get_password_hash("motdepasse"), is_manager=True))
+    session.add(User(username="test", email="test@gmail.com",
+                password=get_password_hash("motdepasse"), is_manager=False))
     session.commit()
     yield TestClient(app)
     print("Delete tables when done with")
