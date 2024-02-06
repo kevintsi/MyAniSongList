@@ -26,14 +26,17 @@ class AnimeService(BaseService[Anime, AnimeCreate, AnimeUpdate]):
         obj_lang = self.db_session.scalars(select(Language).filter(
             Language.code == lang)).first()
 
-        anime = self.db_session.scalars(
-            select(Anime).where(Anime.id == id)).first()
+        anime = self.db_session.get(Anime, id)
+
         if obj_lang and anime:
+
             obj: AnimeTranslation = self.db_session.scalars(select(AnimeTranslation).where(
                 AnimeTranslation.id_language == obj_lang.id, AnimeTranslation.id_anime == anime.id)).first()
 
             if obj is None:
-                return None
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND, detail="Error no translation found for this language")
+
             return AnimeSchema(id=obj.id_anime, name=obj.name, description=obj.description, poster_img=obj.anime.poster_img)
         else:
             raise HTTPException(
