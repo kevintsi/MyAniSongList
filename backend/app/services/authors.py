@@ -52,6 +52,10 @@ class AuthorService(BaseService[Author, AuthorCreate, AuthorUpdate]):
         if user.is_manager:
             db_obj = self.db_session.get(Author, id)
 
+            if db_obj is None:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND, detail="Author with this id not found")
+
             for column, value in obj.dict(exclude_unset=True).items():
                 setattr(db_obj, column, value)
 

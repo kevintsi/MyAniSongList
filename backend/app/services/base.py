@@ -19,8 +19,8 @@ class BaseService(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         self.model = model
         self.db_session = db_session
 
-    def get(self, id: Any) -> Optional[ModelType]:
-        obj: Optional[ModelType] = self.db_session.get(self.model, id)
+    def get(self, id: Any) -> ModelType:
+        obj: ModelType | None = self.db_session.get(self.model, id)
         if obj is None:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND, detail="Not Found")
