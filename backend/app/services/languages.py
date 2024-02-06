@@ -28,26 +28,39 @@ class LanguageService(BaseService[Language, LanguageCreate, LanguageUpdate]):
                     raise e
             return db_obj
         else:
-            raise HTTPException(status_code=401, detail="Forbidden")
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED, detail="Forbidden")
 
     def update(self, id: int, obj: LanguageUpdate, current_user: User):
         if current_user.is_manager:
             db_obj = self.db_session.get(Language, id)
+
+            if db_obj is None:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND, detail="Language id not found")
+
             print(f"Update : {db_obj}")
             for column, value in obj.dict(exclude_unset=True).items():
                 setattr(db_obj, column, value)
             self.db_session.commit()
             return db_obj
         else:
-            raise HTTPException(status_code=401, detail="Forbidden")
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED, detail="Forbidden")
 
     def delete(self, id: int, current_user: User):
         if current_user.is_manager:
             db_obj = self.db_session.get(self.model, id)
+
+            if db_obj is None:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND, detail="Language id not found")
+
             self.db_session.delete(db_obj)
             self.db_session.commit()
         else:
-            raise HTTPException(status_code=401, detail="Forbidden")
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED, detail="Forbidden")
 
     def get_languages_by_anime(self, id):
         return self.db_session.scalars(select(Language).join(Language.anime_translations).where(AnimeTranslation.id_anime == id).all())
