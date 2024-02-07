@@ -1,15 +1,14 @@
 from datetime import datetime, timedelta, timezone
 from os import getenv
 import os
+from typing import Annotated
 from fastapi import (
     APIRouter,
     Cookie,
     Depends,
     HTTPException,
-    Request,
     Response,
     status,
-    File,
     Body,
     UploadFile
 )
@@ -32,13 +31,35 @@ from app.services.users import (
 )
 from fastapi.security import HTTPBearer
 
+from app.db.schemas.token import Token
+
 router = APIRouter(
     prefix='/users',
     tags=["Users"]
 )
 
 
-async def get_current_user(token: str = Depends(HTTPBearer()), user_service: UserService = Depends(get_service)):
+async def get_current_user(
+        token: Annotated[str, Depends(HTTPBearer())],
+        user_service: Annotated[UserService, Depends(get_service)]
+) -> User:
+    """
+
+    **Function to get current user logged in with the token given in the header**
+
+    **Args:**
+
+        token (Annotated[str, Depends]): token retrieved from the header
+        user_service (Annotated[UserService, Depends]): User service
+
+    **Raises:**
+
+        credentials_exception: Raised when token has expired
+
+    **Returns:**
+
+        User: User retrieved with token
+    """
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Token has expired",
@@ -60,36 +81,95 @@ async def get_current_user(token: str = Depends(HTTPBearer()), user_service: Use
 @router.get("/search", response_model=Page[User])
 async def search(
     query: str,
-    service: UserService = Depends(get_service)
-):
+    service: Annotated[UserService, Depends(get_service)]
+) -> Page[User]:
+    """
+
+    **Route to search for an user matching query parameter**
+
+    **Args:**
+
+        query (str): User searched 
+        service (Annotated[UserService, Depends]): User service
+
+    **Returns:**
+
+        Page[User]: List of users matching the query parameter using pages format 
+    """
     return paginate(service.db_session, service.search(query))
 
 
 @router.post("/register", response_model=User, status_code=status.HTTP_201_CREATED)
 async def register(
     user: UserCreate,
-    service: UserService = Depends(get_service)
-):
+    service: Annotated[UserService, Depends(get_service)]
+) -> User:
+    """
+
+    **Route to create a new user**
+
+    **Args:**
+
+        user (UserCreate): User create schema
+        service (Annotated[UserService, Depends]): User service
+
+    **Returns:**
+
+        User: Created user
+    """
     return service.create(user)
 
 
 @router.put("/update", response_model=User, status_code=status.HTTP_200_OK)
 async def update(
-    profile_picture: UploadFile = File(...),
-    service: UserService = Depends(get_service),
-    user: UserUpdate = Body(...),
-    current_user: User = Depends(get_current_user)
-):
+    profile_picture: UploadFile,
+    service: Annotated[UserService, Depends(get_service)],
+    user: Annotated[UserUpdate, Body(embed=True)],
+    current_user: Annotated[User, Depends(get_current_user)]
+) -> User:
+    """
+
+    **Route to update a given user**
+
+    **Args:**
+
+        profile_picture (UploadFile): Profile picture
+        service (Annotated[UserService, Depends): User service
+        current_user (Annotated[User, Depends): Get user using the token in the header
+        user (Annotated[UserUpdate, Body]): User update schema
+
+    **Returns:**
+
+        User: Updated user
+    """
     print(f"Current user : {current_user}")
     return service.update(current_user.id, user, profile_picture)
 
 
-@router.post('/login', summary="Create access tokens for user")
+@router.post('/login', summary="Create access tokens for user", response_model=Token)
 async def login(
     response: Response,
     form_data: UserLogin,
-    db_session: Session = Depends(get_session),
-):
+    db_session: Annotated[Session, Depends(get_session)],
+) -> Token:
+    """
+
+    **Route to log in an user**
+
+    **Args:**
+
+        response (Response): Response to add refresh token to cookie
+        form_data (UserLogin): User login schema
+        db_session (Annotated[Session, Depends): Session 
+
+    **Raises:**
+
+        HTTPException: Raised when credentials incorrect
+
+    **Returns:**
+
+        Token: Created access token
+    """
     user = authenticate_user(
         db_session, form_data.email, form_data.password)
 
@@ -116,11 +196,31 @@ async def login(
                             timezone.utc)+refresh_token_expires
                         )
 
-    return {"access_token": access_token}
+    return Token(access_token=access_token)
 
 
-@router.post("/refresh_token")
-def refresh_access_token(response: Response, refresh_token: str = Cookie(None)):
+@router.post("/refresh_token", response_model=Token)
+def refresh_access_token(
+        response: Response,
+        refresh_token: str = Cookie(None)
+) -> Token:
+    """
+    **Route to refresh access token**
+
+    **Args:**
+
+        response (Response): Response to add new cookie with new refresh token
+        refresh_token (str, optional): Refresh token Defaults to Cookie(None).
+
+    **Raises:**
+
+        HTTPException: Raised when given refresh token is blacklisted
+        HTTPException: Raised when given refresh token is missing
+
+    **Returns:**
+
+        Token: New access token
+    """
     try:
         r = redis.Redis(
             host=os.getenv("REDIS_HOST"),
@@ -162,7 +262,7 @@ def refresh_access_token(response: Response, refresh_token: str = Cookie(None)):
 
                 r.sadd("token_blacklist", refresh_token)
                 # Return the new access token
-                return {"access_token": new_access_token}
+                return Token(access_token=new_access_token)
         else:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
@@ -175,6 +275,18 @@ def refresh_access_token(response: Response, refresh_token: str = Cookie(None)):
 
 @router.post('/logout')
 def logout(response: Response, refresh_token: str = Cookie(default=None)):
+    """
+
+    **Route to logout**
+
+    **Args:**
+
+        response (Response): Response to delete cookie
+        refresh_token (str, optional): Refresh token in cookie Defaults to Cookie(default=None).
+
+    Returns:
+        JSON: Success message
+    """
     r = redis.Redis(
         host=os.getenv("REDIS_HOST"),
         port=os.getenv("REDIS_PORT"),
@@ -190,10 +302,23 @@ def logout(response: Response, refresh_token: str = Cookie(default=None)):
 
 @router.get("/me", response_model=User)
 async def profile(
-    current_user: User = Depends(get_current_user),
-    service: UserService = Depends(get_service)
+    current_user: Annotated[User, Depends(get_current_user)],
+    service: Annotated[UserService, Depends(get_service)]
 
-):
+) -> User:
+    """
+
+    **Route to get current user logged in profile**
+
+    **Args:**
+
+        current_user (Annotated[User, Depends]): Get user using the token in the header
+        service (Annotated[UserService, Depends]): User service
+
+    **Returns:**
+
+        User: User profile
+    """
     print(f"User : {current_user.id} {type(current_user)}")
     return service.get(current_user.id)
 
@@ -201,15 +326,37 @@ async def profile(
 @router.get("/{id}", response_model=User)
 async def get_user(
     id: int,
-    service: UserService = Depends(get_service)
+    service: Annotated[UserService, Depends(get_service)]
 
-):
+) -> User:
+    """
+
+    **Route to get an user**
+
+    **Args:**
+
+        id (int): User id
+        service (Annotated[UserService, Depends]): User service
+
+    **Returns:**
+
+        User: Retrieved user
+    """
     return service.get(id)
 
 
 @router.delete("/delete")
 async def delete(
-    service: UserService = Depends(get_service),
-    current_user: User = Depends(get_current_user)
+    service: Annotated[UserService, Depends(get_service)],
+    current_user: Annotated[User, Depends(get_current_user)]
 ):
-    return service.delete(current_user.id)
+    """
+
+    **Route to delete current logged in user**
+
+    **Args:**
+
+        service (Annotated[UserService, Depends]): User service
+        current_user (Annotated[User, Depends]):  Get user using the token in the header
+    """
+    service.delete(current_user.id)
