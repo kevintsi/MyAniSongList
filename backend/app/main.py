@@ -7,11 +7,11 @@ from app.routers import (
     users,
     animes,
     musics,
-    authors,
     types,
     reviews,
     favorites,
-    languages
+    languages,
+    artists
 )
 
 app = FastAPI()
@@ -29,7 +29,7 @@ app.add_middleware(
 app.include_router(users.router)
 app.include_router(animes.router)
 app.include_router(musics.router)
-app.include_router(authors.router)
+app.include_router(artists.router)
 app.include_router(types.router)
 app.include_router(reviews.router)
 app.include_router(favorites.router)

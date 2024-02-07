@@ -5,7 +5,7 @@ from pydantic import BaseModel
 from .types import Type
 
 from .animes import Anime
-from .authors import Author
+from .artists import Artist
 
 
 class MusicBase(BaseModel):
@@ -14,7 +14,7 @@ class MusicBase(BaseModel):
 
 
 class MusicCreate(MusicBase):
-    authors: list[int]
+    artists: list[int]
     anime_id: int
     type_id: int
     id_video: str
@@ -55,7 +55,7 @@ class MusicShort(BaseModel):
 class MusicAnime(MusicBase):
     id: int
     poster_img: str
-    authors: list[Author]
+    artists: list[Artist]
     type: Type
 
     class Config:
@@ -65,7 +65,7 @@ class MusicAnime(MusicBase):
 class Music(MusicBase):
     id: int
     poster_img: str
-    authors: List[Author]
+    artists: List[Artist]
     avg_note: float = None
     anime: Anime
     type: Type

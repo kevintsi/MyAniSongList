@@ -53,7 +53,7 @@ def upgrade() -> None:
     op.create_index('ix_anime_translation_id_language', 'anime_translation',
                     ['id_language'], unique=False)
 
-    op.create_table('author',
+    op.create_table('artist',
                     sa.Column('id', sa.Integer(), nullable=False),
                     sa.Column('name', sa.String(length=250), nullable=False),
                     sa.Column('poster_img', sa.String(
@@ -137,16 +137,16 @@ def upgrade() -> None:
 
     op.create_table('chante',
                     sa.Column('music_id', sa.Integer(), nullable=False),
-                    sa.Column('author_id', sa.Integer(), nullable=False),
+                    sa.Column('artist_id', sa.Integer(), nullable=False),
                     sa.ForeignKeyConstraint(
-                        ['author_id'], ['author.id'], name='chante_ibfk_1',  ondelete="CASCADE"),
+                        ['artist_id'], ['artist.id'], name='chante_ibfk_1',  ondelete="CASCADE"),
                     sa.ForeignKeyConstraint(
                         ['music_id'], ['music.id'], name='chante_ibfk_2',  ondelete="CASCADE"),
-                    sa.PrimaryKeyConstraint('music_id', 'author_id')
+                    sa.PrimaryKeyConstraint('music_id', 'artist_id')
                     )
 
-    op.create_index('ix_chante_author_id', 'chante',
-                    ['author_id'], unique=False)
+    op.create_index('ix_chante_artist_id', 'chante',
+                    ['artist_id'], unique=False)
 
     op.create_table('review',
                     sa.Column('id', sa.Integer(), nullable=False),
@@ -193,7 +193,7 @@ def downgrade() -> None:
     op.drop_table('review')
     op.drop_constraint("chante_ibfk_2", "chante", type_="foreignkey")
     op.drop_constraint("chante_ibfk_1", "chante", type_="foreignkey")
-    op.drop_index('ix_chante_author_id', table_name='chante')
+    op.drop_index('ix_chante_artist_id', table_name='chante')
     op.drop_table('chante')
     op.drop_constraint("music_ibfk_2", "music", type_="foreignkey")
     op.drop_constraint("music_ibfk_1", "music", type_="foreignkey")
@@ -223,7 +223,7 @@ def downgrade() -> None:
     op.drop_table('supported_language')
     op.drop_table('type_translation')
     op.drop_table('type')
-    op.drop_table('author')
+    op.drop_table('artist')
     op.drop_table('anime_translation')
     op.drop_table('anime')
     # ### end Alembic commands ###

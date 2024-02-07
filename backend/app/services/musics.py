@@ -6,7 +6,7 @@ from app.db.schemas.musics import MusicAnime, MusicArtist, MusicCreate, MusicUpd
 from app.db.schemas.animes import Anime as AnimeSchema
 from app.db.schemas.types import Type as TypeSchema
 from starlette.exceptions import HTTPException
-from app.db.models import Anime, AnimeTranslation, Language, Music, Author, Type, TypeTranslation, User
+from app.db.models import Anime, AnimeTranslation, Language, Music, Artist, Type, TypeTranslation, User
 from .base import BaseService
 from app.db.session import get_session
 import sqlalchemy
@@ -35,7 +35,7 @@ class MusicService(BaseService[Music, MusicCreate, MusicUpdate]):
             return MusicSchema(name=obj.Music.name,
                                release_date=obj.Music.release_date,
                                id=obj.Music.id, poster_img=obj.Music.poster_img,
-                               authors=obj.Music.authors,
+                               artists=obj.Music.artists,
                                avg_note=obj.Music.avg_note,
                                anime=AnimeSchema(id=obj.AnimeTranslation.id_anime, description=obj.AnimeTranslation.description,
                                                  poster_img=obj.AnimeTranslation.anime.poster_img, name=obj.AnimeTranslation.name),
@@ -80,7 +80,7 @@ class MusicService(BaseService[Music, MusicCreate, MusicUpdate]):
             return [MusicAnime(
                 id=m.Music.id,
                 poster_img=m.Music.poster_img,
-                authors=m.Music.authors,
+                artists=m.Music.artists,
                 type=TypeSchema(id=m.TypeTranslation.id_type,
                                 name=m.TypeTranslation.name),
                 name=m.Music.name,
@@ -96,9 +96,9 @@ class MusicService(BaseService[Music, MusicCreate, MusicUpdate]):
         if lang:
             musics = self.db_session.query(Music, TypeTranslation).join(
                 TypeTranslation,
-                TypeTranslation.id_type == Music.type_id).join(Music.authors).join(Language,
+                TypeTranslation.id_type == Music.type_id).join(Music.artists).join(Language,
                                                                                    Language.id ==
-                                                                                   TypeTranslation.id_language).filter(Author.id == id_artist, TypeTranslation.id_language == lang.id).order_by(Music.release_date.desc())
+                                                                                   TypeTranslation.id_language).filter(Artist.id == id_artist, TypeTranslation.id_language == lang.id).order_by(Music.release_date.desc())
 
             return [MusicArtist(
                 id=m.Music.id,
@@ -120,14 +120,14 @@ class MusicService(BaseService[Music, MusicCreate, MusicUpdate]):
             anime = self.db_session.get(Anime, obj.anime_id)
             type = self.db_session.get(Type, obj.type_id)
 
-            list_authors = []
+            list_artists = []
 
-            for id in obj.authors:
-                list_authors.append(self.db_session.get(Author, id))
+            for id in obj.artists:
+                list_artists.append(self.db_session.get(Artist, id))
 
-            print(anime, type, list_authors)
+            print(anime, type, list_artists)
 
-            if anime and type and len(list_authors) > 0:
+            if anime and type and len(list_artists) > 0:
                 db_obj: Music = Music(
                     name=obj.name,
                     release_date=obj.release_date,
@@ -135,7 +135,7 @@ class MusicService(BaseService[Music, MusicCreate, MusicUpdate]):
                     anime=anime,
                     poster_img=blob.public_url,
                     id_video=obj.id_video,
-                    authors=list_authors
+                    artists=list_artists
                 )
 
                 print(f"converted to Music model : ${db_obj}")
@@ -152,7 +152,7 @@ class MusicService(BaseService[Music, MusicCreate, MusicUpdate]):
                         raise e
             else:
                 raise HTTPException(
-                    status_code=status.HTTP_404_NOT_FOUND, detail="Anime or Type or Authors not found")
+                    status_code=status.HTTP_404_NOT_FOUND, detail="Anime or Type or Artists not found")
         else:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED, detail="Forbidden")
@@ -212,14 +212,18 @@ class MusicService(BaseService[Music, MusicCreate, MusicUpdate]):
         if user.is_manager:
             db_obj = self.db_session.get(Music, id)
 
-            list_author = []
+            if db_obj is None:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND, detail="Music id not found")
 
-            for id in obj.authors:
-                list_author.append(self.db_session.get(Author, id))
+            list_artist = []
+
+            for id in obj.artists:
+                list_artist.append(self.db_session.get(Artist, id))
 
             for column, value in obj.dict(exclude_unset=True).items():
-                if column == "authors":
-                    db_obj.authors = list_author
+                if column == "artists":
+                    db_obj.artists = list_artist
                 else:
                     setattr(db_obj, column, value)
 

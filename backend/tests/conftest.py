@@ -2,14 +2,14 @@ from datetime import datetime
 import os
 from fastapi.testclient import TestClient
 import pytest
-from sqlalchemy.orm import Session, sessionmaker
+from sqlalchemy.orm import sessionmaker
 from app.main import app
 from app.db.session import engine
 from app.db.models import Base, User
 from app.utils import get_password_hash
 from app.db.schemas.users import UserLogin
 from app.db.schemas.animes import AnimeCreate
-from app.db.schemas.authors import AuthorCreate
+from app.db.schemas.artists import ArtistCreate
 from app.db.schemas.languages import LanguageCreate
 from app.db.schemas.musics import MusicCreate
 from app.db.schemas.types import TypeCreate
@@ -66,9 +66,9 @@ def setUp(test_app_with_db, get_token_manager):
     type = TypeCreate(name="Opening")
     anime = AnimeCreate(name="Kimetsu no Yaiba",
                         description="description fr")
-    author = AuthorCreate(name="LiSA", creation_year="2005")
+    artist = ArtistCreate(name="LiSA", creation_year="2005")
     music = MusicCreate(name="Gurenge", release_date=datetime(
-        2018, 10, 1), authors=[1], type_id=1, id_video="x45dsF", anime_id=1)
+        2018, 10, 1), artists=[1], type_id=1, id_video="x45dsF", anime_id=1)
 
     response_post_lang = test_app_with_db.post("/languages/add", json=lang.dict(), headers={
         "Authorization": f"Bearer {get_token_manager}"
@@ -97,13 +97,13 @@ def setUp(test_app_with_db, get_token_manager):
 
     response_post_anime.status_code == 201
 
-    file_author = open(
+    file_artist = open(
         "/usr/src/app/tests/images_test/LiSA.jpg", mode="rb")
-    response_post_author = test_app_with_db.post("/authors/add", data={"author": author.json()}, headers={
+    response_post_artist = test_app_with_db.post("/artists/add", data={"artist": artist.json()}, headers={
         "Authorization": f"Bearer {get_token_manager}"
-    }, files={"poster_img": (os.path.basename(file_author.name), file_author, "image/jpeg")})
+    }, files={"poster_img": (os.path.basename(file_artist.name), file_artist, "image/jpeg")})
 
-    assert response_post_author.status_code == 201
+    assert response_post_artist.status_code == 201
 
     file_music = open(
         "/usr/src/app/tests/images_test/Gurenge.jpg", mode="rb")

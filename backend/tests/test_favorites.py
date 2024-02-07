@@ -1,19 +1,11 @@
-from datetime import datetime
-import os
-
 import pytest
-from app.db.schemas.languages import LanguageCreate
-from app.db.schemas.types import TypeCreate
-from app.db.schemas.animes import AnimeCreate
-from app.db.schemas.authors import AuthorCreate
-from app.db.schemas.musics import MusicCreate
 
 
 @pytest.mark.usefixtures("setUp")
 class TestFavorites():
     ENDPOINT_BASE = "/favorites"
 
-    def test_add_favorite(self, test_app_with_db, get_token_not_manager, get_token_manager):
+    def test_add_favorite(self, test_app_with_db, get_token_not_manager):
         id_music = 1
         response_post = test_app_with_db.post(f"{self.ENDPOINT_BASE}/{id_music}", headers={
             "Authorization": f"Bearer {get_token_not_manager}"

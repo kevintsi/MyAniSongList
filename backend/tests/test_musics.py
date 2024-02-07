@@ -1,7 +1,7 @@
 from datetime import datetime
 import os
 from app.db.schemas.musics import Music, MusicCreate, MusicUpdate
-from app.db.schemas.authors import Author, AuthorCreate
+from app.db.schemas.artists import Artist, ArtistCreate
 from app.db.schemas.types import Type, TypeCreate
 from app.db.schemas.animes import Anime, AnimeCreate
 from app.db.schemas.languages import LanguageCreate
@@ -16,9 +16,9 @@ class TestMusics():
         type = TypeCreate(name="Opening")
         anime = AnimeCreate(name="Kimetsu no Yaiba",
                             description="description fr")
-        author = AuthorCreate(name="LiSA", creation_year="2005")
+        artist = ArtistCreate(name="LiSA", creation_year="2005")
         music = MusicCreate(name="GurengezzzzzFAIL", release_date=datetime(
-            2018, 10, 1), authors=[1], type_id=1, id_video="x45dsF", anime_id=1)
+            2018, 10, 1), artists=[1], type_id=1, id_video="x45dsF", anime_id=1)
 
         response_post_lang = test_app_with_db.post("/languages/add", json=lang.dict(), headers={
             "Authorization": f"Bearer {get_token_manager}"
@@ -47,13 +47,13 @@ class TestMusics():
 
         response_post_anime.status_code == 201
 
-        file_author = open(
+        file_artist = open(
             "/usr/src/app/tests/images_test/LiSA.jpg", mode="rb")
-        response_post_author = test_app_with_db.post("/authors/add", data={"author": author.json()}, headers={
+        response_post_artist = test_app_with_db.post("/artists/add", data={"artist": artist.json()}, headers={
             "Authorization": f"Bearer {get_token_manager}"
-        }, files={"poster_img": (os.path.basename(file_author.name), file_author, "image/jpeg")})
+        }, files={"poster_img": (os.path.basename(file_artist.name), file_artist, "image/jpeg")})
 
-        assert response_post_author.status_code == 201
+        assert response_post_artist.status_code == 201
 
         file_music = open(
             "/usr/src/app/tests/images_test/Gurenge.jpg", mode="rb")
@@ -83,12 +83,12 @@ class TestMusics():
             f"anime_poster_images/demon_slayer.jpg")
         blob_anime.make_public()
 
-        blob_author = bucket.blob(
+        blob_artist = bucket.blob(
             f"artist_poster_images/LiSA.jpg")
         blob_anime.make_public()
 
         music = Music(id=1, name="GurengezzzzzFAIL", avg_note=None,  poster_img=blob_music.public_url, release_date=datetime(
-            2018, 10, 1), authors=[Author(id=1, name="LiSA", creation_year="2005", poster_img=blob_author.public_url)], type=Type(id=1, name="Opening"), id_video="x45dsF", anime=Anime(id=1, name="Kimetsu no Yaiba",
+            2018, 10, 1), artists=[Artist(id=1, name="LiSA", creation_year="2005", poster_img=blob_artist.public_url)], type=Type(id=1, name="Opening"), id_video="x45dsF", anime=Anime(id=1, name="Kimetsu no Yaiba",
                                                                                                                                                                                         description="description fr", poster_img=blob_anime.public_url))
 
         response = test_app_with_db.get(
@@ -99,7 +99,7 @@ class TestMusics():
 
     def test_update_music(self, test_app_with_db, get_token_manager):
         music = MusicUpdate(name="Gurenge", release_date=datetime(
-            2018, 10, 1), authors=[1], anime_id=1, type_id=1, id_video="xpdo5d")
+            2018, 10, 1), artists=[1], anime_id=1, type_id=1, id_video="xpdo5d")
 
         response_update = test_app_with_db.put(f"{self.ENDPOINT_BASE}/update/1", data={"music": music.json()}, headers={
             "Authorization": f"Bearer {get_token_manager}"
@@ -117,9 +117,9 @@ class TestMusics():
 
     def test_get_musics_by_id_anime(self, test_app_with_db, get_token_manager):
         type_ = TypeCreate(name="Ending")
-        author = AuthorCreate(name="Milet", creation_year="2004")
+        artist = ArtistCreate(name="Milet", creation_year="2004")
         music = MusicCreate(name="Koi kogare", release_date=datetime(
-            2023, 10, 1), authors=[2], type_id=2, id_video="x45dsF", anime_id=1)
+            2023, 10, 1), artists=[2], type_id=2, id_video="x45dsF", anime_id=1)
 
         response_post_type = test_app_with_db.post("/types/add", json=type_.dict(), headers={
             "Authorization": f"Bearer {get_token_manager}"
@@ -133,13 +133,13 @@ class TestMusics():
 
         assert response_post_type_translation.status_code == 201
 
-        file_author = open(
+        file_artist = open(
             "/usr/src/app/tests/images_test/milet.jpg", mode="rb")
-        response_post_author = test_app_with_db.post("/authors/add", data={"author": author.json()}, headers={
+        response_post_artist = test_app_with_db.post("/artists/add", data={"artist": artist.json()}, headers={
             "Authorization": f"Bearer {get_token_manager}"
-        }, files={"poster_img": (os.path.basename(file_author.name), file_author, "image/jpeg")})
+        }, files={"poster_img": (os.path.basename(file_artist.name), file_artist, "image/jpeg")})
 
-        assert response_post_author.status_code == 201
+        assert response_post_artist.status_code == 201
 
         file_music = open(
             "/usr/src/app/tests/images_test/koi_kogare_ending_kny.jpg", mode="rb")

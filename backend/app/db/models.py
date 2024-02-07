@@ -23,8 +23,8 @@ chante_table = Table(
     Base.metadata,
     Column("music_id", ForeignKey(
         "music.id", ondelete="CASCADE"), primary_key=True, index=True),
-    Column("author_id", ForeignKey(
-        "author.id", ondelete="CASCADE"), primary_key=True, index=True)
+    Column("artist_id", ForeignKey(
+        "artist.id", ondelete="CASCADE"), primary_key=True, index=True)
 )
 
 favorite_table = Table(
@@ -138,8 +138,8 @@ class User(Base):
         return f"User({self.id},{self.username},{self.email}, {self.creation_date}, {self.profile_picture}, {self.is_manager})"
 
 
-class Author(Base):
-    __tablename__ = 'author'
+class Artist(Base):
+    __tablename__ = 'artist'
 
     id = mapped_column(Integer, primary_key=True)
     name = mapped_column(String(250), nullable=False, unique=True)
@@ -147,10 +147,10 @@ class Author(Base):
     creation_year = mapped_column(String(50), nullable=True)
 
     musics: Mapped[List["Music"]] = relationship(secondary=chante_table,
-                                                 back_populates="authors", cascade="all, delete", passive_deletes=True)
+                                                 back_populates="artists", cascade="all, delete", passive_deletes=True)
 
     def __repr__(self):
-        return f"Author({self.id},{self.name},{self.poster_img})"
+        return f"Artist({self.id},{self.name},{self.poster_img})"
 
 
 class Music(Base):
@@ -175,7 +175,7 @@ class Music(Base):
         back_populates='music', cascade="all, delete",
         passive_deletes=True,)
 
-    authors: Mapped[List[Author]] = relationship(secondary=chante_table,
+    artists: Mapped[List[Artist]] = relationship(secondary=chante_table,
                                                  back_populates="musics", cascade="all, delete",
                                                  passive_deletes=True,)
 

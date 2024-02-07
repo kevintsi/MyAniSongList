@@ -1,12 +1,4 @@
-from datetime import datetime
-import os
-
 import pytest
-from app.db.schemas.languages import LanguageCreate
-from app.db.schemas.types import TypeCreate
-from app.db.schemas.animes import AnimeCreate
-from app.db.schemas.authors import AuthorCreate
-from app.db.schemas.musics import MusicCreate
 from app.db.schemas.reviews import ReviewCreate, ReviewUpdate
 
 
