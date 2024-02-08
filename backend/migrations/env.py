@@ -6,7 +6,7 @@ from sqlalchemy import pool
 
 from alembic import context
 
-from db.models import Base
+from app.db.models import Base
 from os import getenv
 
 # this is the Alembic Config object, which provides
@@ -61,7 +61,7 @@ def run_migrations_online() -> None:
 
     """
 
-    from db.session import engine
+    from app.db.session import engine
 
     connectable = engine
 
@@ -89,7 +89,7 @@ def run_migrations_online() -> None:
                 time.sleep(RETRY_DELAY)
             else:
                 print("Max retry attempts reached. Exiting...")
-                exit()
+                exit(1)
 
 
 if context.is_offline_mode():

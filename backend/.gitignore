@@ -11,6 +11,7 @@ static/poster_images/
 
 .env.*
 data/
+anisong.db
 
 # C extensions
 *.so
