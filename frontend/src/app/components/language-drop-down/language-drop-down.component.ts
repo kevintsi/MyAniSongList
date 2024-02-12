@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Language } from 'src/app/models/Language';
 
 @Component({
   selector: 'app-language-drop-down',
@@ -7,18 +6,18 @@ import { Language } from 'src/app/models/Language';
   styleUrls: ['./language-drop-down.component.css']
 })
 export class LanguageDropDownComponent {
-  @Input() languages: Language[] = [];
-  @Output() languageSelected = new EventEmitter<Language>();
+  @Input() languages: any[] = [];
+  @Output() languageSelected = new EventEmitter<any>();
 
-  selectedLanguage: Language = localStorage.getItem("lang") ?
-    JSON.parse(String(localStorage.getItem("lang"))) : { id: "fr", name: "Français" }
+  selectedLanguage: any = localStorage.getItem("lang") ?
+    JSON.parse(String(localStorage.getItem("lang"))) : JSON.stringify({ id: "fr", code: "Français" })
   isDropdownOpen = false;
 
   toggleDropdown() {
     this.isDropdownOpen = !this.isDropdownOpen;
   }
 
-  selectLanguage(lang: Language) {
+  selectLanguage(lang: any) {
     this.selectedLanguage = lang;
     this.isDropdownOpen = false;
     this.languageSelected.emit(lang);
