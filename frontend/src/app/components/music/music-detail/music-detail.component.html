@@ -71,8 +71,8 @@
                         <div>
                             <label class="font-bold">Type :</label>
                             <div class="badge badge-outline ml-2"
-                                [ngClass]="music.type.type_name == 'Opening' ? 'badge-primary'  : 'badge-secondary'">
-                                {{ music.type.type_name}}
+                                [ngClass]="music.type.id == 1 ? 'badge-primary'  : 'badge-secondary'">
+                                {{ music.type.name}}
                             </div>
                         </div>
                     </div>

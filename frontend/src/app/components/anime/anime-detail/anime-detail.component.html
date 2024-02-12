@@ -21,8 +21,8 @@
                                 <div class="overflow-hidden text-ellipsis whitespace-nowrap">{{ music.name }}</div>
                                 <div>{{ music.release_date | date: 'dd-MM-YYYY' }}</div>
                                 <div class="badge badge-outline"
-                                    [ngClass]="music.type.type_name == 'Opening' ? 'badge-primary'  : 'badge-secondary'">
-                                    {{ music.type.type_name}}
+                                    [ngClass]="music.type.id == 1 ? 'badge-primary'  : 'badge-secondary'">
+                                    {{ music.type.name}}
                                 </div>
                                 <div *ngFor="let artist of music.authors">
                                     <div class="overflow-hidden text-ellipsis whitespace-nowrap">{{ artist.name }}</div>
