@@ -29,17 +29,17 @@ export class TopBarComponent implements OnInit, OnDestroy {
   result_search?: any[] = []
   user_pfp?: string = ""
   username?: string = ""
-  languages: Array<Language> = [{
+  languages: Array<any> = [{
     "id": "fr",
-    "name": "Français",
+    "code": "Français",
   },
   {
     "id": "en",
-    "name": "English",
+    "code": "English",
   },
   {
     "id": "jp",
-    "name": "日本語",
+    "code": "日本語",
   }
   ]
 
@@ -78,9 +78,9 @@ export class TopBarComponent implements OnInit, OnDestroy {
     this.logOutSubscription?.unsubscribe();
   }
 
-  onLanguageSelect(lang: Language) {
+  onLanguageSelect(lang: any) {
     this.translateService.use(lang.id)
-    localStorage.setItem("lang", lang.toString())
+    localStorage.setItem("lang", JSON.stringify(lang))
   }
 
   performSearch(searchTerm: string) {
