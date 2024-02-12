@@ -15,9 +15,18 @@ class TypeService(BaseService[Type, TypeCreate, TypeUpdate]):
     def create(self, obj: TypeCreate, user: User):
         if user.is_manager:
             db_obj: Type = self.model(**obj.dict())
-            print(
-                f"In BaseService : before {type(obj)} and after {type(db_obj)}")
-            self.db_session.add(db_obj)
+
+            lang_obj: Language | None = self.db_session.scalars(
+                select(Language).filter(Language.code == "fr")).first()
+
+            if lang_obj is None:
+                raise HTTPException(
+                    status=status.HTTP_404_NOT_FOUND, detail="Default language missing (fr)")
+
+            type_translation: TypeTranslation = TypeTranslation(
+                name=db_obj.name, type=db_obj, language=lang_obj)
+
+            self.db_session.add(type_translation)
             try:
                 self.db_session.commit()
                 return db_obj
@@ -37,9 +46,10 @@ class TypeService(BaseService[Type, TypeCreate, TypeUpdate]):
             select(Language).filter(Language.code == lang)).first()
         type_obj: Type = self.db_session.get(Type, id)
         if lang_obj and type_obj:
-            res = self.db_session.execute(select(TypeTranslation, Type).join(Type.type_translations).filter(
-                TypeTranslation.id_language == lang_obj.id, Type.id == type_obj.id)).first()
-            return Type(id=res.Type.id, name=res.TypeTranslation.name)
+            res = self.db_session.scalars(select(TypeTranslation).filter(
+                TypeTranslation.id_language == lang_obj.id, TypeTranslation.type.id == type_obj.id)).first()
+
+            return Type(id=res.type.id, name=res.name)
         else:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND, detail="Error language or id type")
@@ -49,10 +59,10 @@ class TypeService(BaseService[Type, TypeCreate, TypeUpdate]):
             select(Language).filter(Language.code == lang)).first()
 
         if lang_obj:
-            res = self.db_session.execute(select(TypeTranslation, Type).join(Type.type_translations).filter(
+            res = self.db_session.scalars(select(TypeTranslation).filter(
                 TypeTranslation.id_language == lang_obj.id)).all()
             print(res)
-            return [Type(id=row.Type.id, name=row.TypeTranslation.name)for row in res]
+            return [Type(id=row.type.id, name=row.name) for row in res]
         else:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND, detail="Error language")
