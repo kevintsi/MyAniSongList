@@ -72,7 +72,7 @@ async def add_translation(
 ) -> Type:
     """
 
-    **Route to add a new translation for a type of music
+    **Route to add a new translation for a type of music**
 
     **Args:**
 
@@ -98,7 +98,7 @@ async def update(
 ) -> Type:
     """
 
-    **Route to update a music type
+    **Route to update a music type**
 
     **Args:**
 
@@ -158,26 +158,6 @@ async def delete(
         current_user (Annotated[User, Depends]): Get user using the token in the header
     """
     return service.delete(id, current_user)
-
-
-@router.get("/{id}", response_model=Type)
-async def get(
-    id: int,
-    service: Annotated[TypeService, Depends(get_service)],
-) -> Type:
-    """
-    **Route to get type by id**
-
-    **Args:**
-
-        id (int): Type id
-        service (Annotated[TypeService, Depends]): Get user using the token in the header
-
-    **Returns:**
-
-        Type: Retrieved type
-    """
-    return service.get(id)
 
 
 @router.get("/{id}", response_model=Type)
