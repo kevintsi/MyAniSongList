@@ -18,6 +18,14 @@ import { SharedModule } from '../shared/shared.module';
 import { FormAnimeComponent } from 'src/app/components/management/anime/form-anime/form-anime.component';
 import { FormMusicComponent } from 'src/app/components/management/music/form-music/form-music.component';
 import { FormArtistComponent } from 'src/app/components/management/artist/form-artist/form-artist.component';
+import { FormTypeComponent } from 'src/app/components/management/type/form-type/form-type.component';
+import { ManageCreateTypeComponent } from 'src/app/components/management/type/manage-create-type/manage-create-type.component';
+import { ManageTypeDetailComponent } from 'src/app/components/management/type/manage-type-detail/manage-type-detail.component';
+import { ManageTypeComponent } from 'src/app/components/management/type/manage-type/manage-type.component';
+import { FormLanguageComponent } from 'src/app/components/management/language/form-language/form-language.component';
+import { ManageLanguageComponent } from 'src/app/components/management/language/manage-language/manage-language.component';
+import { ManageLanguageDetailComponent } from 'src/app/components/management/language/manage-language-detail/manage-language-detail.component';
+import { ManageCreateLanguageComponent } from 'src/app/components/management/language/manage-create-language/manage-create-language.component';
 
 @NgModule({
   declarations: [
@@ -30,9 +38,18 @@ import { FormArtistComponent } from 'src/app/components/management/artist/form-a
     ManageMusicComponent,
     ManageMusicDetailComponent,
     ManageCreateMusicComponent,
+    ManageTypeComponent,
+    ManageTypeDetailComponent,
+    ManageCreateTypeComponent,
     FormAnimeComponent,
     FormMusicComponent,
     FormArtistComponent,
+    FormTypeComponent,
+    FormLanguageComponent,
+    ManageLanguageComponent,
+    ManageLanguageDetailComponent,
+    ManageCreateLanguageComponent,
+
   ],
   imports: [
     CommonModule,

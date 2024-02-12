@@ -9,8 +9,28 @@ import { ManageArtistDetailComponent } from 'src/app/components/management/artis
 import { ManageMusicComponent } from 'src/app/components/management/music/manage-music/manage-music.component';
 import { ManageCreateMusicComponent } from 'src/app/components/management/music/manage-create-music/manage-create-music.component';
 import { ManageMusicDetailComponent } from 'src/app/components/management/music/manage-music-detail/manage-music-detail.component';
+import { ManageLanguageComponent } from 'src/app/components/management/language/manage-language/manage-language.component';
+import { ManageCreateLanguageComponent } from 'src/app/components/management/language/manage-create-language/manage-create-language.component';
+import { ManageLanguageDetailComponent } from 'src/app/components/management/language/manage-language-detail/manage-language-detail.component';
+import { ManageTypeComponent } from 'src/app/components/management/type/manage-type/manage-type.component';
+import { ManageCreateTypeComponent } from 'src/app/components/management/type/manage-create-type/manage-create-type.component';
+import { ManageTypeDetailComponent } from 'src/app/components/management/type/manage-type-detail/manage-type-detail.component';
 
 const routes: Routes = [
+  {
+    path: 'languages', children: [
+      { path: '', component: ManageLanguageComponent, pathMatch: 'full' },
+      { path: 'create', component: ManageCreateLanguageComponent },
+      { path: ':id', component: ManageLanguageDetailComponent },
+    ],
+  },
+  {
+    path: 'types', children: [
+      { path: '', component: ManageTypeComponent, pathMatch: 'full' },
+      { path: 'create', component: ManageCreateTypeComponent },
+      { path: ':id', component: ManageTypeDetailComponent },
+    ],
+  },
   {
     path: 'animes', children: [
       { path: '', component: ManageAnimeComponent, pathMatch: 'full' },
