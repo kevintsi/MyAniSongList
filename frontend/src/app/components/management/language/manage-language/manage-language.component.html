@@ -1,0 +1,36 @@
+<div class="container mx-auto overflow-hidden">
+    <div class="flex justify-center -z-10" *ngIf="isLoading">
+        <span class="loading loading-bars loading-lg"></span>
+    </div>
+    <ng-container *ngIf="!isLoading">
+        <div class="flex flex-row items-center pt-4">
+            <div class="text-4xl cursor-pointer">
+                <mat-icon [inline]="true" routerLink="/manage/languages/create">add</mat-icon>
+            </div>
+        </div>
+        <div *ngIf="languages.length == 0">Il n'y a pas de langues</div>
+
+        <div *ngIf="languages.length > 0" class="h-full overflow-y-auto">
+            <table class="table table-fixed text-center font-semibold">
+                <thead class="md:text-xl">
+                    <tr>
+                        <th>Code</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="hover:bg-base-300 cursor-pointer" [routerLink]="['/manage/languages', lang.id]"
+                        *ngFor="let lang of languages">
+                        <td class="overflow-hidden text-ellipsis whitespace-nowrap">
+                            {{ lang.code | uppercase }}
+                        </td>
+                        <td class="md:text-6xl text-4xl text-center" (click)="delete(lang)">
+                            <mat-icon [inline]="true"> delete</mat-icon>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </ng-container>
+
+</div>
