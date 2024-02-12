@@ -12,15 +12,15 @@ export class ArtistService {
   constructor(private http: HttpClient) { }
 
   public search(term: string) {
-    return this.http.get<PagedArtist>(this.endpoint + '/authors/search?query=' + term)
+    return this.http.get<PagedArtist>(this.endpoint + '/artists/search?query=' + term)
   }
 
   public getAll(page: number) {
-    return this.http.get<PagedArtist>(this.endpoint + '/authors/all?page=' + page)
+    return this.http.get<PagedArtist>(this.endpoint + '/artists/all?page=' + page)
   }
 
   public get(id: number) {
-    return this.http.get<Artist>(this.endpoint + '/authors/' + id)
+    return this.http.get<Artist>(this.endpoint + '/artists/' + id)
   }
 
   public update(id: number, data: any) {
@@ -38,7 +38,7 @@ export class ArtistService {
       form_data.append('poster_img', data.file)
 
     return this.http.put(
-      this.endpoint + '/authors/update/' + id,
+      this.endpoint + '/artists/update/' + id,
       form_data,
       {
         headers: headers,
@@ -56,11 +56,11 @@ export class ArtistService {
 
     const form_data = new FormData()
 
-    form_data.append("author", JSON.stringify(artist))
+    form_data.append("artist", JSON.stringify(artist))
     form_data.append('poster_img', data.poster_img)
 
     return this.http.post(
-      this.endpoint + '/authors/add',
+      this.endpoint + '/artists/add',
       form_data,
       {
         headers: headers,
@@ -70,6 +70,6 @@ export class ArtistService {
 
   public delete(id: number) {
     return this.http.delete(
-      this.endpoint + '/authors/delete/' + id)
+      this.endpoint + '/artists/delete/' + id)
   }
 }
