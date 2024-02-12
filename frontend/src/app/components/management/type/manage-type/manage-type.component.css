@@ -1,0 +1,11 @@
+.table {
+    position: static;
+}
+
+.row {
+    cursor: pointer;
+}
+
+.row:hover {
+    background-color: azure;
+}
