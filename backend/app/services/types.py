@@ -44,10 +44,12 @@ class TypeService(BaseService[Type, TypeCreate, TypeUpdate]):
     def get_translation(self, id: int, lang: str):
         lang_obj = self.db_session.scalars(
             select(Language).filter(Language.code == lang)).first()
+
         type_obj: Type = self.db_session.get(Type, id)
+
         if lang_obj and type_obj:
             res = self.db_session.scalars(select(TypeTranslation).filter(
-                TypeTranslation.id_language == lang_obj.id, TypeTranslation.type.id == type_obj.id)).first()
+                TypeTranslation.id_language == lang_obj.id, TypeTranslation.id_type == type_obj.id)).first()
 
             return Type(id=res.type.id, name=res.name)
         else:
