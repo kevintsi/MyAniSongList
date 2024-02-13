@@ -75,6 +75,27 @@ async def get_languages_by_anime(
     return service.get_languages_by_anime(id)
 
 
+@router.get("/types/{id}", response_model=list[Language])
+async def get_languages_by_anime(
+    id: int,
+    service: Annotated[LanguageService, Depends(get_service)]
+) -> list[Language]:
+    """
+
+    **Route to get supported languages by type**
+
+    **Args:**
+
+        id (int): Type id
+        service (Annotated[LanguageService, Depends]): Language service
+
+    **Returns:**
+
+        list[Language]: List of supported languages
+    """
+    return service.get_languages_by_type(id)
+
+
 @router.post("/add", response_model=Language, status_code=status.HTTP_201_CREATED)
 async def add(
     language: LanguageCreate,
