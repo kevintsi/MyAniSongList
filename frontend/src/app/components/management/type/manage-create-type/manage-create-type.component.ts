@@ -24,7 +24,10 @@ export class ManageCreateTypeComponent implements OnDestroy {
     this.createSubscription?.unsubscribe();
   }
 
-  onSubmit(type: Type) {
+  onSubmit(form: any) {
+    let type: Type = {
+      name: form.name
+    }
     this.service.add(type)
       .subscribe({
         next: () => {

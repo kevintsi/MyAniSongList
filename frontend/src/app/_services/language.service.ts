@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Language } from '../models/Language';
 import { Anime } from '../models/Anime';
+import { Type } from '../models/Type';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,11 @@ export class LanguageService {
   }
 
   public getSupportedLanguagesByAnime(anime: Anime) {
-    return this.http.get<Language[]>(this.endpoint + '/languages/animes' + anime.id)
+    return this.http.get<Language[]>(this.endpoint + '/languages/animes/' + anime.id)
+  }
+
+  public getSupportedLanguagesByType(type: Type) {
+    return this.http.get<Language[]>(this.endpoint + '/languages/types/' + type.id)
   }
 
   public add(lang: Language) {
