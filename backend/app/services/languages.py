@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from fastapi import Depends, HTTPException, status
 from app.db.schemas.languages import LanguageCreate, LanguageUpdate
-from app.db.models import AnimeTranslation, Language, User
+from app.db.models import AnimeTranslation, Language, TypeTranslation, User
 from .base import BaseService
 from app.db.session import get_session
 from sqlalchemy import exc, select
@@ -62,8 +62,11 @@ class LanguageService(BaseService[Language, LanguageCreate, LanguageUpdate]):
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED, detail="Forbidden")
 
-    def get_languages_by_anime(self, id):
-        return self.db_session.scalars(select(Language).join(Language.anime_translations).where(AnimeTranslation.id_anime == id).all())
+    def get_languages_by_anime(self, id: int):
+        return self.db_session.scalars(select(Language).join(Language.anime_translations).where(AnimeTranslation.id_anime == id)).all()
+
+    def get_languages_by_type(self, id: int):
+        return self.db_session.scalars(select(Language).join(Language.type_translations).where(TypeTranslation.id_type == id)).all()
 
 
 def get_service(db_session: Session = Depends(get_session)) -> LanguageService:
