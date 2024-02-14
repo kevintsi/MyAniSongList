@@ -56,9 +56,9 @@ class MusicService(BaseService[Music, MusicCreate, MusicUpdate]):
     def list(self, order_by):
         if order_by:
             if order_by == OrderMusicBy.AVG_NOTE:
-                return self.db_session.scalars(select(Music).order_by(Music.avg_note.desc()))
+                return select(Music).order_by(Music.avg_note.desc())
 
-        return self.db_session.scalars(select(Music).order_by(Music.name))
+        return select(Music).order_by(Music.name)
 
     def search(self, term: str):
         return select(Music).filter(Music.name.like(f"%{term}%"))
