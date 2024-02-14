@@ -1,18 +1,19 @@
-<div class="container mx-auto overflow-hidden">
+<div class="container mx-auto overflow-hidden ">
     <div class="flex justify-center -z-10" *ngIf="isLoading">
         <span class="loading loading-bars loading-lg"></span>
     </div>
     <ng-container *ngIf="!isLoading">
         <div class="flex flex-row items-center pt-4">
-            <div class="text-4xl cursor-pointer">
-                <mat-icon [inline]="true" routerLink="/manage/types/create">add</mat-icon>
-            </div>
+            <button type="button" class="btn outline outline-1 text-center ml-2" title="Ajouter un type de musique">
+                <mat-icon routerLink="/manage/types/create">add</mat-icon>
+                <label>Ajouter</label>
+            </button>
         </div>
         <div *ngIf="types.length == 0">Il n'y a pas de types</div>
 
-        <div *ngIf="types.length > 0" class="h-full overflow-y-auto">
-            <table class="table table-fixed text-justify font-semibold">
-                <thead class="md:text-xl">
+        <div *ngIf="types.length > 0" class="h-full overflow-y-auto border mt-2">
+            <table class="table table-fixed text-center font-semibold">
+                <thead class="md:text-xl text-center">
                     <tr>
                         <th>Nom</th>
                         <th>Action</th>
