@@ -26,6 +26,7 @@ import { FormLanguageComponent } from 'src/app/components/management/language/fo
 import { ManageLanguageComponent } from 'src/app/components/management/language/manage-language/manage-language.component';
 import { ManageLanguageDetailComponent } from 'src/app/components/management/language/manage-language-detail/manage-language-detail.component';
 import { ManageCreateLanguageComponent } from 'src/app/components/management/language/manage-create-language/manage-create-language.component';
+import { ManageCreateTypeTranslationComponent } from 'src/app/components/management/type/manage-create-type-translation/manage-create-type-translation.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import { ManageCreateLanguageComponent } from 'src/app/components/management/lan
     ManageLanguageComponent,
     ManageLanguageDetailComponent,
     ManageCreateLanguageComponent,
+    ManageCreateTypeTranslationComponent,
 
   ],
   imports: [

@@ -15,6 +15,7 @@ import { ManageLanguageDetailComponent } from 'src/app/components/management/lan
 import { ManageTypeComponent } from 'src/app/components/management/type/manage-type/manage-type.component';
 import { ManageCreateTypeComponent } from 'src/app/components/management/type/manage-create-type/manage-create-type.component';
 import { ManageTypeDetailComponent } from 'src/app/components/management/type/manage-type-detail/manage-type-detail.component';
+import { ManageCreateTypeTranslationComponent } from 'src/app/components/management/type/manage-create-type-translation/manage-create-type-translation.component';
 
 const routes: Routes = [
   {
@@ -28,7 +29,13 @@ const routes: Routes = [
     path: 'types', children: [
       { path: '', component: ManageTypeComponent, pathMatch: 'full' },
       { path: 'create', component: ManageCreateTypeComponent },
-      { path: ':id', component: ManageTypeDetailComponent },
+      {
+        path: ':id', children: [
+          { path: '', component: ManageTypeDetailComponent, pathMatch: 'full' },
+          { path: 'createTranslation', component: ManageCreateTypeTranslationComponent }
+        ]
+      },
+
     ],
   },
   {
