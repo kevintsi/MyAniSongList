@@ -16,7 +16,12 @@ export class ManageAnimeComponent implements OnInit, OnDestroy {
   searchSubscription?: Subscription
   deleteSubscription?: Subscription
 
-  constructor(private service: AnimeService, private title: Title) { }
+  constructor(
+    private service: AnimeService,
+    private title: Title,
+  ) {
+    this.title.setTitle("MyAniSongList - Gestion - Animes")
+  }
 
   ngOnInit(): void {
     this.fetchData()
@@ -31,7 +36,6 @@ export class ManageAnimeComponent implements OnInit, OnDestroy {
   async fetchData() {
     try {
       this.animes = await this.fetchAnimes()
-      this.title.setTitle("MyAniSongList - Gestion - Anime")
     } catch (error) {
       console.log(error)
     }
@@ -59,7 +63,7 @@ export class ManageAnimeComponent implements OnInit, OnDestroy {
   }
 
   delete(selected: Anime) {
-    this.deleteSubscription = this.service.delete(selected.id).subscribe({
+    this.deleteSubscription = this.service.delete(selected).subscribe({
       next: () => {
         this.animes.items = this.animes.items?.filter(anime => anime.id != selected.id)
       },

@@ -2,6 +2,6 @@
     <div class="flex justify-center -z-10" *ngIf="isLoading">
         <span class="loading loading-bars loading-lg"></span>
     </div>
-    <app-form-anime *ngIf="!isLoading" class="w-full" [isUpdate]=true [anime]=anime
-        (submitForm)="onSubmit($event)"></app-form-anime>
+    <app-form-anime *ngIf="!isLoading" class="flex justify-center" [isUpdate]=true [anime]=anime
+        (submitForm)="onSubmit($event)" [languages]="languages" [languagesAnime]="languagesAnime"></app-form-anime>
 </div>
