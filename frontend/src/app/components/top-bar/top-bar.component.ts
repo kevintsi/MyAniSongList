@@ -92,7 +92,7 @@ export class TopBarComponent implements OnInit, OnDestroy {
     }
     switch (this.category) {
       case "animes": {
-        this.searchSubscription = this.animeService.search(searchTerm).subscribe({
+        this.searchSubscription = this.animeService.search(searchTerm, this.translateService.currentLang).subscribe({
           next: (anime) => {
             this.result_search = anime.items
           },

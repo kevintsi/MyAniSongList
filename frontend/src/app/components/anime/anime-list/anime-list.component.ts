@@ -4,6 +4,7 @@ import { AnimeService } from '../../../_services/anime.service';
 import { Title } from '@angular/platform-browser';
 import { firstValueFrom } from 'rxjs';
 import { LanguageService } from 'src/app/_services/language.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-anime-list',
@@ -20,10 +21,17 @@ export class AnimeListComponent implements OnInit, OnChanges {
   constructor(
     private service: AnimeService,
     private languageService: LanguageService,
-    private title: Title) { }
+    private translateService: TranslateService,
+    private title: Title) {
+
+    this.title.setTitle("MyAniSongList - Animes")
+  }
 
   ngOnInit(): void {
     this.fetchData()
+    this.translateService.onLangChange.subscribe(() => {
+      this.fetchData()
+    })
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -36,7 +44,6 @@ export class AnimeListComponent implements OnInit, OnChanges {
   async fetchData() {
     try {
       this.animes = await this.fetchAnimes()
-      this.title.setTitle("MyAniSongList - Animes")
     } catch (error) {
       console.log(error)
     }
@@ -46,8 +53,10 @@ export class AnimeListComponent implements OnInit, OnChanges {
   }
 
   fetchAnimes() {
-    return firstValueFrom(this.service.getAll(this.currentPage, this.languageService.getLanguage()))
+    return firstValueFrom(this.service.getAll(this.currentPage, this.translateService.currentLang))
   }
+
+
 
   onPageChange(page: number) {
     this.currentPage = page;

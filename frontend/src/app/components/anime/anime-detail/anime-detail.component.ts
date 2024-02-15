@@ -6,7 +6,7 @@ import { AnimeService } from 'src/app/_services/anime.service';
 import { Anime } from 'src/app/models/Anime';
 import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
-import { LanguageService } from 'src/app/_services/language.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-anime-detail',
@@ -21,20 +21,24 @@ export class AnimeDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private musicService: MusicService,
     private animeService: AnimeService,
-    private languageService: LanguageService,
+    private translateService: TranslateService,
     private title: Title
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     this.fetchData()
+    this.translateService.onLangChange.subscribe(() => {
+      this.fetchData()
+    })
   }
 
   async fetchData() {
     let id_anime = Number(this.route.snapshot.paramMap.get("id"))
     try {
       this.anime = await this.fetchAnime(id_anime)
-      this.musics = await this.fetchMusics(id_anime)
       this.title.setTitle("MyAniSongList - " + this.anime.name)
+      this.musics = await this.fetchMusics(id_anime)
     } catch (error) {
       console.log(error)
     } finally {
@@ -43,7 +47,8 @@ export class AnimeDetailComponent implements OnInit {
   }
 
   async fetchAnime(id: number) {
-    return firstValueFrom(this.animeService.get(id))
+    console.log(this.translateService.currentLang)
+    return firstValueFrom(this.animeService.get(id, this.translateService.currentLang))
   }
 
   async fetchMusics(id: number) {
