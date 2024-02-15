@@ -7,8 +7,8 @@ export interface PagedAnime {
 }
 
 export interface Anime {
-    id: number;
+    id?: number;
     name: string;
     description: string;
-    poster_img: string;
+    poster_img?: string;
 }

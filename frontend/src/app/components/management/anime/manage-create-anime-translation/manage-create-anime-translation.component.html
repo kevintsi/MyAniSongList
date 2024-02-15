@@ -1,0 +1,54 @@
+<div class="container mx-auto flex flex-col items-center justify-center border">
+
+    <div class="flex justify-center -z-10" *ngIf="isLoading">
+        <span class="loading loading-bars loading-lg"></span>
+    </div>
+
+    <form *ngIf="!isLoading" [formGroup]="formAnimeGroup" class=" flex flex-col items-center p-10">
+        <h1 class="font-bold text-lg md:text-2xl">Ajouter une traduction </h1>
+        <div class="w-full flex flex-col items-center mt-4 ">
+
+            <div class="flex flex-col items-center justify-center md:flex-row mt-4">
+                <label class="label">Choisir la langue : </label>
+                <div class="flex flex-row items-center">
+                    <select class="select w-full max-w-xs !outline-none border-base-content"
+                        (change)="onChange($event)">
+                        <option *ngFor="let lang of languages" [value]="lang.code"
+                            [selected]="formAnimeGroup.get('language')?.value == lang.code">{{ lang.code | uppercase}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="flex flex-col items-center justify-center md:flex-row mt-4">
+                <label class="label">Traduction titre : </label>
+                <div>
+                    <input type="text" placeholder="Nom de l'anime" formControlName="name"
+                        class="input border-base-content w-full !outline-none" />
+                </div>
+            </div>
+
+            <div class="flex flex-col items-center justify-center md:flex-row mt-4">
+                <label class="label mt-4">Description : </label>
+                <div>
+                    <textarea class="textarea border-base-content w-full mt-4 !outline-none"
+                        placeholder="Description de l'animé" formControlName="description"></textarea>
+                </div>
+            </div>
+
+            <div class="flex flex-col items-center justify-center alert alert-error mt-4"
+                *ngIf="formAnimeGroup.get('name')?.invalid && (formAnimeGroup.get('name')?.dirty || formAnimeGroup.get('name')?.touched)">
+                <label *ngIf="formAnimeGroup.get('name')?.errors?.['required']">
+                    Le nom est obligatoire
+                </label>
+            </div>
+            <div class="flex flex-col items-center alert alert-error mt-4 pb-4"
+                *ngIf="formAnimeGroup.get('description')?.invalid && (formAnimeGroup.get('description')?.dirty || formAnimeGroup.get('description')?.touched)">
+                <div *ngIf="formAnimeGroup.get('description')?.errors?.['required']">
+                    La description est obligatoire
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="btn mt-4" (click)="onSubmit()">Ajouter</button>
+    </form>
+</div>

@@ -27,6 +27,7 @@ import { ManageLanguageComponent } from 'src/app/components/management/language/
 import { ManageLanguageDetailComponent } from 'src/app/components/management/language/manage-language-detail/manage-language-detail.component';
 import { ManageCreateLanguageComponent } from 'src/app/components/management/language/manage-create-language/manage-create-language.component';
 import { ManageCreateTypeTranslationComponent } from 'src/app/components/management/type/manage-create-type-translation/manage-create-type-translation.component';
+import { ManageCreateAnimeTranslationComponent } from 'src/app/components/management/anime/manage-create-anime-translation/manage-create-anime-translation.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { ManageCreateTypeTranslationComponent } from 'src/app/components/managem
     ManageLanguageDetailComponent,
     ManageCreateLanguageComponent,
     ManageCreateTypeTranslationComponent,
+    ManageCreateAnimeTranslationComponent,
 
   ],
   imports: [

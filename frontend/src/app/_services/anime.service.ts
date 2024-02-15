@@ -11,33 +11,38 @@ export class AnimeService {
 
   constructor(private http: HttpClient) { }
 
-  public search(term: string) {
-    return this.http.get<PagedAnime>(this.endpoint + '/animes/search?query=' + term)
+  public search(term: string, lang: string = "fr") {
+    return this.http.get<PagedAnime>(this.endpoint + '/animes/search?query=' + term + "&lang=" + lang)
   }
 
-  public getAll(page: number) {
-    return this.http.get<PagedAnime>(this.endpoint + '/animes/all?page=' + page)
+  public getAll(page: number, lang: string = "fr") {
+    return this.http.get<PagedAnime>(this.endpoint + '/animes/all?page=' + page + "&lang=" + lang)
   }
 
-  public get(id: number) {
-    return this.http.get<Anime>(this.endpoint + '/animes/' + id)
+  public get(id: number, lang: string = "fr") {
+    return this.http.get<Anime>(this.endpoint + '/animes/' + id + "?lang=" + lang)
   }
-
-  public update(id: number, data: any) {
+  public addTranslation(anime: Anime, lang: string) {
+    const headers = new HttpHeaders().set('Content-Type', 'application/json')
+    return this.http.post<Anime>(this.endpoint + "/animes/" + anime.id + "/add_translation?lang=" + lang, JSON.stringify(anime), {
+      headers: headers
+    })
+  }
+  public update(id: number, data: any, lang: string) {
     const headers = new HttpHeaders()
 
     const form_data = new FormData()
 
-    let anime = {
+    let anime: Anime = {
       name: data.name,
       description: data.description
     }
 
     form_data.append("anime", JSON.stringify(anime))
-    form_data.append('poster_img', data.poster_img ? data.poster_img : "")
+    data?.poster_img ? form_data.append('poster_img', data?.poster_img) : null
 
     return this.http.put(
-      this.endpoint + '/animes/update/' + id,
+      this.endpoint + '/animes/update/' + id + "?lang=" + lang,
       form_data,
       {
         headers: headers,
@@ -67,8 +72,8 @@ export class AnimeService {
     )
   }
 
-  public delete(id: number) {
+  public delete(anime: Anime) {
     return this.http.delete(
-      this.endpoint + '/animes/delete/' + id)
+      this.endpoint + '/animes/delete/' + anime.id)
   }
 }

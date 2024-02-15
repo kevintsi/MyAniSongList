@@ -16,6 +16,7 @@ import { ManageTypeComponent } from 'src/app/components/management/type/manage-t
 import { ManageCreateTypeComponent } from 'src/app/components/management/type/manage-create-type/manage-create-type.component';
 import { ManageTypeDetailComponent } from 'src/app/components/management/type/manage-type-detail/manage-type-detail.component';
 import { ManageCreateTypeTranslationComponent } from 'src/app/components/management/type/manage-create-type-translation/manage-create-type-translation.component';
+import { ManageCreateAnimeTranslationComponent } from 'src/app/components/management/anime/manage-create-anime-translation/manage-create-anime-translation.component';
 
 const routes: Routes = [
   {
@@ -42,7 +43,12 @@ const routes: Routes = [
     path: 'animes', children: [
       { path: '', component: ManageAnimeComponent, pathMatch: 'full' },
       { path: 'create', component: ManageCreateAnimeComponent },
-      { path: ':id', component: ManageAnimeDetailComponent },
+      {
+        path: ':id', children: [
+          { path: '', component: ManageAnimeDetailComponent, pathMatch: 'full' },
+          { path: 'createTranslation', component: ManageCreateAnimeTranslationComponent }
+        ]
+      },
     ],
   },
 
