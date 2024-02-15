@@ -1,4 +1,7 @@
 <form [formGroup]="form" class="flex flex-col items-center p-10" (ngSubmit)="onSubmit()">
+
+    <div class="mb-4 font-bold text-lg md:text-2xl">{{isUpdate ? "Modifier un " :"Ajouter un "}} anime </div>
+
     <div (click)="imageInput.click()"
         class="flex hover:bg-slate-100 cursor-pointer border-2 border-base-content justify-center items-center h-80 w-60">
         <ng-container *ngIf="previewImage;else elseBlock">
@@ -10,19 +13,44 @@
             </div>
         </ng-template>
     </div>
-    <div class="w-full flex flex-col items-center">
-        <label class="label mt-4">Nom : </label>
-        <input type="text" placeholder="Nom de l'animé" formControlName="name"
-            class="input border-base-content w-full mt-4 !outline-none" />
-        <div class="flex flex-col items-center alert alert-error mt-4 pb-4"
-            *ngIf="form.get('name')?.invalid && (form.get('name')?.dirty || form.get('name')?.touched)">
-            <div *ngIf="form.get('name')?.errors?.['required']">
-                Le nom est obligatoire
+
+    <div *ngIf="isUpdate" class="mt-4 w-full flex flex-col items-center justify-center md:flex-row">
+        <label class="label p-2">Choisir la langue : </label>
+        <div class="flex flex-row items-center">
+            <select class="select w-full max-w-xs !outline-none border-base-content" (change)="onChange($event)">
+                <option *ngFor="let lang of languagesAnime" [value]="lang.code"
+                    [selected]="form.get('language')?.value == lang.code">{{ lang.code | uppercase}}
+                </option>
+            </select>
+            <div *ngIf="languages && languagesAnime && languages.length > languagesAnime.length"
+                class="btn ml-4 outline outline-1">
+                <button class="text-2xl flex justify-center" title="Ajouter une traduction">
+                    <mat-icon [inline]="true"
+                        [routerLink]="['/manage/animes/', anime.id ,'createTranslation']">add</mat-icon>
+                </button>
             </div>
         </div>
-        <label class="label mt-4">Description : </label>
-        <textarea class="textarea border-base-content w-full mt-4 !outline-none" placeholder="Description de l'animé"
-            formControlName="description"></textarea>
+    </div>
+
+    <div class="w-full flex flex-col items-center">
+
+        <label class="label mt-4">Nom : </label>
+        <div>
+            <input type="text" placeholder="Nom de l'animé" formControlName="name"
+                class="input border-base-content w-full mt-4 !outline-none" />
+        </div>
+
+    </div>
+
+    <label class="label mt-4">Description : </label>
+    <div><textarea class="textarea border-base-content w-full mt-4 !outline-none" placeholder="Description de l'animé"
+            formControlName="description"></textarea></div>
+
+    <div class="flex flex-col items-center alert alert-error mt-4 pb-4"
+        *ngIf="form.get('name')?.invalid && (form.get('name')?.dirty || form.get('name')?.touched)">
+        <div *ngIf="form.get('name')?.errors?.['required']">
+            Le nom est obligatoire
+        </div>
         <div class="flex flex-col items-center alert alert-error mt-4 pb-4"
             *ngIf="form.get('description')?.invalid && (form.get('description')?.dirty || form.get('description')?.touched)">
             <div *ngIf="form.get('description')?.errors?.['required']">
