@@ -3,6 +3,7 @@ import { Anime, PagedAnime } from '../../../models/Anime';
 import { AnimeService } from '../../../_services/anime.service';
 import { Title } from '@angular/platform-browser';
 import { firstValueFrom } from 'rxjs';
+import { LanguageService } from 'src/app/_services/language.service';
 
 @Component({
   selector: 'app-anime-list',
@@ -18,7 +19,9 @@ export class AnimeListComponent implements OnInit, OnChanges {
 
   constructor(
     private service: AnimeService,
+    private languageService: LanguageService,
     private title: Title) { }
+
   ngOnInit(): void {
     this.fetchData()
   }
@@ -43,7 +46,7 @@ export class AnimeListComponent implements OnInit, OnChanges {
   }
 
   fetchAnimes() {
-    return firstValueFrom(this.service.getAll(this.currentPage))
+    return firstValueFrom(this.service.getAll(this.currentPage, this.languageService.getLanguage()))
   }
 
   onPageChange(page: number) {

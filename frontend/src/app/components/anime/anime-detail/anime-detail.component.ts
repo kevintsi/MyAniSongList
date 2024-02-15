@@ -6,6 +6,7 @@ import { AnimeService } from 'src/app/_services/anime.service';
 import { Anime } from 'src/app/models/Anime';
 import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
+import { LanguageService } from 'src/app/_services/language.service';
 
 @Component({
   selector: 'app-anime-detail',
@@ -20,6 +21,7 @@ export class AnimeDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private musicService: MusicService,
     private animeService: AnimeService,
+    private languageService: LanguageService,
     private title: Title
   ) { }
 
