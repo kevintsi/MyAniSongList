@@ -54,9 +54,9 @@ export class FormTypeComponent {
   }
 
   populateForm() {
-    this.formTypeGroup = this.formBuilder.group({
-      name: new FormControl(this.type.name, [Validators.required]),
-      language: new FormControl("fr", [Validators.required])
+    this.formTypeGroup.addControl("language", new FormControl("fr", [Validators.required]))
+    this.formTypeGroup.patchValue({
+      name: this.type.name
     })
   }
 

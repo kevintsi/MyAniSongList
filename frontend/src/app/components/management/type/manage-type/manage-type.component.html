@@ -4,8 +4,9 @@
     </div>
     <ng-container *ngIf="!isLoading">
         <div class="flex flex-row items-center pt-4">
-            <button type="button" class="btn outline outline-1 text-center ml-2" title="Ajouter un type de musique">
-                <mat-icon routerLink="/manage/types/create">add</mat-icon>
+            <button type="button" routerLink="/manage/types/create"
+                class="btn cursor-pointer outline outline-1 text-center ml-2" title="Ajouter un type de musique">
+                <mat-icon>add</mat-icon>
                 <label>Ajouter</label>
             </button>
         </div>
@@ -20,13 +21,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="hover:bg-base-300 cursor-pointer" [routerLink]="['/manage/types', type.id]"
-                        *ngFor="let type of types">
-                        <td class="overflow-hidden text-ellipsis whitespace-nowrap">
+                    <tr class="hover:bg-base-300 cursor-pointer" *ngFor="let type of types">
+                        <td class="overflow-hidden text-ellipsis whitespace-nowrap"
+                            [routerLink]="['/manage/types', type.id]">
                             {{ type.name}}
                         </td>
-                        <td class="md:text-6xl text-4xl text-center" (click)="delete(type)">
-                            <mat-icon [inline]="true"> delete</mat-icon>
+                        <td class="md:text-6xl text-4xl text-center">
+                            <mat-icon [inline]="true" (click)="delete(type)"> delete</mat-icon>
                         </td>
                     </tr>
                 </tbody>

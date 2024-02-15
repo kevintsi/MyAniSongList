@@ -11,7 +11,7 @@ import { Type } from 'src/app/models/Type';
 })
 export class ManageTypeComponent implements OnInit, OnDestroy {
   isLoading = true
-  types!: Array<Type>
+  types: Type[] = []
   deleteSubscription?: Subscription
 
   constructor(private service: TypeService, private title: Title) {

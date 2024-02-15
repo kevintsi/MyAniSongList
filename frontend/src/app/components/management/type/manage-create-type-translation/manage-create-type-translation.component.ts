@@ -53,7 +53,6 @@ export class ManageCreateTypeTranslationComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     if (this.formTypeGroup.valid) {
-      console.log("Form valid ", this.formTypeGroup)
       let type: Type = {
         id: parseInt(String(this.route.snapshot.paramMap.get('id'))),
         name: this.formTypeGroup.get('name')?.value
@@ -78,7 +77,6 @@ export class ManageCreateTypeTranslationComponent implements OnInit, OnDestroy {
 
   onChange($event: Event) {
     let lang_code: string = ($event.target as HTMLSelectElement).value
-    console.log("Change : ", lang_code)
     this.formTypeGroup.patchValue({
       language: lang_code
     })
