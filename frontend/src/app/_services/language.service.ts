@@ -21,6 +21,10 @@ export class LanguageService {
     return this.http.get<Language>(this.endpoint + '/languages/' + id)
   }
 
+  public getLanguage() {
+    return JSON.parse(String(localStorage.getItem("lang")))["id"]
+  }
+
   public getSupportedLanguagesByAnime(anime: Anime) {
     return this.http.get<Language[]>(this.endpoint + '/languages/animes/' + anime.id)
   }
