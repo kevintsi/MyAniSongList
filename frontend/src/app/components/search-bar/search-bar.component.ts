@@ -7,7 +7,6 @@ import { Subject, debounceTime, distinctUntilChanged, takeUntil } from 'rxjs';
   styleUrls: ['./search-bar.component.css']
 })
 export class SearchBarComponent implements OnDestroy {
-  @Input() defaultValue?: any
   @Output() searchEvent: EventEmitter<string> = new EventEmitter<string>();
   private searchTermSubject: Subject<string> = new Subject<string>();
   private destroy$: Subject<boolean> = new Subject<boolean>()
