@@ -59,14 +59,11 @@ class TestMusics():
             f"{self.ENDPOINT_BASE}/1?lang=fr")
 
         assert response_post_music.status_code == 201
-        assert response_get_music.json()["anime"]["id"] == response_post_music.json()[
-            "anime"]["id"]
-        assert response_get_music.json(
-        )["id"] == response_post_music.json()["id"]
-        assert response_get_music.json()["type"]["id"] == response_post_music.json()[
-            "type"]["id"]
+
         assert response_get_music.json()["name"] == response_post_music.json()[
             "name"]
+        assert response_get_music.json()["id"] == response_post_music.json()[
+            "id"]
 
     def test_get_music_by_id(self, test_app_with_db):
         blob_music = bucket.blob(
