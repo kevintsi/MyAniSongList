@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
 import { Subject, Subscription, firstValueFrom } from 'rxjs';
 import { MusicService } from 'src/app/_services/music.service';
 import { Music, PagedMusic } from 'src/app/models/Music';
@@ -18,10 +17,7 @@ export class ManageMusicComponent implements OnDestroy, OnInit {
   searchSubscription?: Subscription
   deleteSubscription?: Subscription
 
-  constructor(
-    private service: MusicService,
-    private translateService: TranslateService,
-    private title: Title) { }
+  constructor(private service: MusicService, private title: Title) { }
 
   ngOnDestroy(): void {
     this.searchSubscription?.unsubscribe()
@@ -29,10 +25,8 @@ export class ManageMusicComponent implements OnDestroy, OnInit {
   }
   ngOnInit(): void {
     this.fetchData()
-    this.translateService.onLangChange.subscribe(() => {
-      this.fetchData()
-    })
   }
+
   async fetchData() {
     try {
       this.musics = await this.fetchMusics()
