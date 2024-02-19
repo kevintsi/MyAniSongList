@@ -40,16 +40,16 @@ export class MusicService {
     return this.http.delete<Music[]>(this.endpoint + '/favorites/' + id)
   }
 
-  public getMusicsAnime(id_anime: number) {
-    return this.http.get<Music[]>(this.endpoint + '/musics/anime/' + id_anime)
+  public getMusicsAnime(id_anime: number, lang: string) {
+    return this.http.get<Music[]>(this.endpoint + '/musics/anime/' + id_anime + "?lang=" + lang)
   }
 
-  public getMusicsArtist(id_artist: number) {
-    return this.http.get<Music[]>(this.endpoint + '/musics/artist/' + id_artist)
+  public getMusicsArtist(id_artist: number, lang: string) {
+    return this.http.get<Music[]>(this.endpoint + '/musics/artist/' + id_artist + "?lang=" + lang)
   }
 
-  public get(id: number) {
-    return this.http.get<Music>(this.endpoint + '/musics/' + id)
+  public get(id: number, lang: string) {
+    return this.http.get<Music>(this.endpoint + '/musics/' + id + "?lang=" + lang)
   }
 
   public update(id: number, data: any) {

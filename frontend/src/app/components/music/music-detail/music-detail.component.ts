@@ -9,6 +9,7 @@ import { Music } from 'src/app/models/Music';
 import { Review } from 'src/app/models/Review';
 import { DomSanitizer, Title } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-music-detail',
@@ -38,6 +39,7 @@ export class MusicDetailComponent implements OnDestroy, OnInit {
     private musicService: MusicService,
     private reviewService: ReviewService,
     private authService: AuthService,
+    private translateService: TranslateService,
     private sanitizer: DomSanitizer,
     private title: Title,
     private toastr: ToastrService
@@ -110,7 +112,7 @@ export class MusicDetailComponent implements OnDestroy, OnInit {
 
 
   getMusic(id: number) {
-    return firstValueFrom(this.musicService.get(id))
+    return firstValueFrom(this.musicService.get(id, this.translateService.currentLang))
   }
   addToFavorites(): void {
     this.addFavoriteSubscription = this.musicService.addToFavorites(this.music.id).subscribe({

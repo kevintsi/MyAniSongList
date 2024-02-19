@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { firstValueFrom } from 'rxjs';
 import { MusicService } from 'src/app/_services/music.service';
@@ -18,6 +19,7 @@ export class ManageMusicDetailComponent implements OnInit {
     private music_service: MusicService,
     private route: ActivatedRoute,
     private toastr: ToastrService,
+    private translateService: TranslateService,
     private title: Title
   ) { }
 
@@ -34,7 +36,7 @@ export class ManageMusicDetailComponent implements OnInit {
   }
 
   get(id: number) {
-    return firstValueFrom(this.music_service.get(id))
+    return firstValueFrom(this.music_service.get(id, this.translateService.currentLang))
   }
 
 

@@ -47,12 +47,11 @@ export class AnimeDetailComponent implements OnInit {
   }
 
   async fetchAnime(id: number) {
-    console.log(this.translateService.currentLang)
     return firstValueFrom(this.animeService.get(id, this.translateService.currentLang))
   }
 
   async fetchMusics(id: number) {
-    return firstValueFrom(this.musicService.getMusicsAnime(id))
+    return firstValueFrom(this.musicService.getMusicsAnime(id, this.translateService.currentLang))
   }
 }
 
