@@ -19,5 +19,5 @@ export interface Music {
     id_video: string,
     anime: Anime,
     type: Type,
-    authors: Artist[]
+    artists: Artist[]
 }
