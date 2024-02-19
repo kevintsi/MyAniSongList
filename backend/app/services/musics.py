@@ -142,7 +142,7 @@ class MusicService(BaseService[Music, MusicCreate, MusicUpdate]):
                 self.db_session.add(db_obj)
                 try:
                     self.db_session.commit()
-                    return db_obj
+                    return MusicSchema.from_orm(db_obj)
                 except sqlalchemy.exc.IntegrityError as e:
                     self.db_session.rollback()
                     if "Duplicate entry" in str(e):

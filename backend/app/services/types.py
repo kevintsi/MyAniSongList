@@ -95,7 +95,7 @@ class TypeService(BaseService[Type, TypeCreate, TypeUpdate]):
 
             if lang_obj and music_type:
                 try:
-                    type_translation: Type = TypeTranslation(
+                    type_translation: TypeTranslation = TypeTranslation(
                         type=music_type,
                         name=obj.name,
                         language=lang_obj

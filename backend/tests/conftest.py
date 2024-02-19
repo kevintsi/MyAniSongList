@@ -82,12 +82,6 @@ def setUp(test_app_with_db, get_token_manager):
 
     assert response_post_type.status_code == 201
 
-    response_post_type_translation = test_app_with_db.post("/types/1/add_translation?lang=fr", json=type.dict(), headers={
-        "Authorization": f"Bearer {get_token_manager}"
-    })
-
-    assert response_post_type_translation.status_code == 201
-
     file_anime = open(
         "/usr/src/app/tests/images_test/demon_slayer.jpg", mode="rb")
 
