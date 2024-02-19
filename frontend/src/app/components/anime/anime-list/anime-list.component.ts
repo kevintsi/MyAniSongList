@@ -20,7 +20,6 @@ export class AnimeListComponent implements OnInit, OnChanges {
 
   constructor(
     private service: AnimeService,
-    private languageService: LanguageService,
     private translateService: TranslateService,
     private title: Title) {
 

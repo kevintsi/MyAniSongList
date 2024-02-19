@@ -76,7 +76,7 @@ export class FormMusicComponent implements OnDestroy {
       name: this.music.name,
       release_date: new Date(this.music.release_date).toISOString().split("T")[0],
       selected_anime: this.music.anime,
-      selected_artists: this.music.authors,
+      selected_artists: this.music.artists,
       type_id: this.music.type.id,
       id_video: this.music.id_video
     });

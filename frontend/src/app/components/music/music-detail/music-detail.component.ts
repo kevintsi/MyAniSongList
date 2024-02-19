@@ -48,6 +48,9 @@ export class MusicDetailComponent implements OnDestroy, OnInit {
   ngOnInit(): void {
     this.fetchData()
     this.initReviewAddedSubscription()
+    this.translateService.onLangChange.subscribe(() => {
+      this.fetchData()
+    })
   }
 
   getSafeUrl(id_video: string) {

@@ -24,7 +24,7 @@
                                     [ngClass]="music.type.id == 1 ? 'badge-primary'  : 'badge-secondary'">
                                     {{ music.type.name}}
                                 </div>
-                                <div *ngFor="let artist of music.authors">
+                                <div *ngFor="let artist of music.artists">
                                     <div class="overflow-hidden text-ellipsis whitespace-nowrap">{{ artist.name }}</div>
                                 </div>
                             </div>

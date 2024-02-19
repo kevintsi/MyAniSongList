@@ -106,11 +106,11 @@
                     <h2 class="font-bold text-start m-4 w-full-2 border-b border-gray-400/60">Artistes</h2>
                     <div class="flex flex-col lg:flex-row">
                         <div class="flex flex-row p-4 rounded-lg  justify-start items-center"
-                            *ngFor="let author of music?.authors">
-                            <img [src]="author.poster_img" [routerLink]="['/artists', author?.id]"
+                            *ngFor="let artist of music?.artists">
+                            <img [src]="artist.poster_img" [routerLink]="['/artists', artist?.id]"
                                 class="hover:opacity-80 rounded-full hover:cursor-pointer w-20 h-20" />
                             <div class="ml-4 w-40 md:w-full">
-                                <div class="overflow-hidden text-ellipsis whitespace-nowrap">{{ author.name }}</div>
+                                <div class="overflow-hidden text-ellipsis whitespace-nowrap">{{ artist.name }}</div>
                             </div>
                         </div>
                     </div>
