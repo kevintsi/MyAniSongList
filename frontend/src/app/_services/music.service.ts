@@ -59,7 +59,7 @@ export class MusicService {
     let music = {
       name: data.name,
       release_date: new Date(data.release_date),
-      authors: artists_id,
+      artists: artists_id,
       anime_id: data.selected_anime.id,
       type_id: data.type_id,
       id_video: data.id_video
@@ -95,7 +95,7 @@ export class MusicService {
     let music = {
       name: data.name,
       release_date: new Date(data.release_date),
-      authors: artists_id,
+      artists: artists_id,
       anime_id: data.selected_anime.id,
       type_id: data.type_id,
       id_video: data.id_video
