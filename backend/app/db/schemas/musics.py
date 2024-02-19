@@ -65,11 +65,11 @@ class MusicAnime(MusicBase):
 class Music(MusicBase):
     id: int
     poster_img: str
-    artists: List[Artist]
+    artists: list[Artist]
     avg_note: float = None
-    anime: Anime
-    type: Type
-    id_video: str = None
+    anime: Anime = None
+    type: Type = None
+    id_video: str
 
     class Config:
         orm_mode = True

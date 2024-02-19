@@ -5,6 +5,7 @@ from fastapi import Depends, UploadFile, status
 from app.db.schemas.musics import MusicAnime, MusicArtist, MusicCreate, MusicUpdate, Music as MusicSchema
 from app.db.schemas.animes import Anime as AnimeSchema
 from app.db.schemas.types import Type as TypeSchema
+from app.db.schemas.artists import Artist as ArtistSchema
 from starlette.exceptions import HTTPException
 from app.db.models import Anime, AnimeTranslation, Language, Music, Artist, Type, TypeTranslation, User
 from .base import BaseService
@@ -34,7 +35,8 @@ class MusicService(BaseService[Music, MusicCreate, MusicUpdate]):
         if lang and obj:
             return MusicSchema(name=obj.Music.name,
                                release_date=obj.Music.release_date,
-                               id=obj.Music.id, poster_img=obj.Music.poster_img,
+                               id=obj.Music.id,
+                               poster_img=obj.Music.poster_img,
                                artists=obj.Music.artists,
                                avg_note=obj.Music.avg_note,
                                anime=AnimeSchema(id=obj.AnimeTranslation.id_anime, description=obj.AnimeTranslation.description,
@@ -142,7 +144,18 @@ class MusicService(BaseService[Music, MusicCreate, MusicUpdate]):
                 self.db_session.add(db_obj)
                 try:
                     self.db_session.commit()
-                    return MusicSchema.from_orm(db_obj)
+
+                    list_artists = list(map(lambda obj: ArtistSchema(
+                        id=obj.id, name=obj.name, creation_year=obj.creation_year, poster_img=obj.poster_img), list_artists))
+
+                    return MusicSchema(
+                        id=db_obj.id,
+                        name=db_obj.name,
+                        release_date=db_obj.release_date,
+                        poster_img=db_obj.poster_img,
+                        id_video=obj.id_video,
+                        artists=list_artists)
+
                 except sqlalchemy.exc.IntegrityError as e:
                     self.db_session.rollback()
                     if "Duplicate entry" in str(e):
@@ -240,7 +253,14 @@ class MusicService(BaseService[Music, MusicCreate, MusicUpdate]):
 
             print(f"Music {db_obj}")
 
-            return db_obj
+            return MusicSchema(
+                id=db_obj.id,
+                name=db_obj.name,
+                release_date=db_obj.release_date,
+                poster_img=db_obj.poster_img,
+                id_video=obj.id_video,
+                artists=list(map(lambda obj: ArtistSchema(
+                    id=obj.id, name=obj.name, creation_year=obj.creation_year, poster_img=obj.poster_img), db_obj.artists)))
         else:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED, detail="Forbidden")

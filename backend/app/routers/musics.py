@@ -9,7 +9,7 @@ from fastapi import (
 )
 from fastapi_pagination import Page
 from fastapi_pagination.ext.sqlalchemy import paginate
-from app.db.models import Music, User
+from app.db.models import User
 from app.services.musics import OrderMusicBy
 from app.db.schemas.musics import MusicAnime, MusicArtist, MusicCreate, MusicShort, MusicUpdate, Music
 from typing import Annotated
