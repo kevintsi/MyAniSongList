@@ -2,12 +2,30 @@ from enum import Enum
 from sqlalchemy.orm import Session
 from sqlalchemy import select
 from fastapi import Depends, UploadFile, status
-from app.db.schemas.musics import MusicAnime, MusicArtist, MusicCreate, MusicUpdate, Music as MusicSchema
-from app.db.schemas.animes import Anime as AnimeSchema
+from app.db.schemas.musics import (
+    MusicAnime,
+    MusicArtist,
+    MusicCreate,
+    MusicUpdate,
+    Music as MusicSchema
+)
+from app.db.schemas.animes import (
+    Anime as AnimeSchema,
+    AnimeShort
+)
 from app.db.schemas.types import Type as TypeSchema
 from app.db.schemas.artists import Artist as ArtistSchema
 from starlette.exceptions import HTTPException
-from app.db.models import Anime, AnimeTranslation, Language, Music, Artist, Type, TypeTranslation, User
+from app.db.models import (
+    Anime,
+    AnimeTranslation,
+    Language,
+    Music,
+    Artist,
+    Type,
+    TypeTranslation,
+    User
+)
 from .base import BaseService
 from app.db.session import get_session
 import sqlalchemy
@@ -92,21 +110,26 @@ class MusicService(BaseService[Music, MusicCreate, MusicUpdate]):
                                 detail="language id not found")
 
     def get_musics_artist(self, id_artist: int, lang: str):
-        lang: Language = self.db_session.query(
-            Language).filter(Language.code == lang).first()
+        lang: Language = self.db_session.scalars(
+            select(Language).filter(Language.code == lang)).first()
 
         if lang:
-            musics = self.db_session.query(Music, TypeTranslation).join(
-                TypeTranslation,
-                TypeTranslation.id_type == Music.type_id).join(Music.artists).join(Language,
-                                                                                   Language.id ==
-                                                                                   TypeTranslation.id_language).filter(Artist.id == id_artist, TypeTranslation.id_language == lang.id).order_by(Music.release_date.desc())
+            musics = self.db_session.execute(
+                select(Music, TypeTranslation, AnimeTranslation).join(
+                    TypeTranslation,
+                    TypeTranslation.id_type == Music.type_id).join(
+                    AnimeTranslation,
+                    AnimeTranslation.id_anime == Music.anime_id).join(Music.artists).filter(Artist.id == id_artist, TypeTranslation.id_language == lang.id, AnimeTranslation.id_language == lang.id).order_by(Music.release_date.desc())).all()
 
             return [MusicArtist(
                 id=m.Music.id,
                 poster_img=m.Music.poster_img,
                 type=TypeSchema(id=m.TypeTranslation.id_type,
                                 name=m.TypeTranslation.name),
+                anime=AnimeShort(
+                    name=m.AnimeTranslation.name,
+                    poster_img=m.AnimeTranslation.anime.poster_img
+                ),
                 name=m.Music.name,
                 release_date=m.Music.release_date) for m in musics]
         else:
