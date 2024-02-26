@@ -33,3 +33,8 @@ class AnimeUpdate(AnimeCreate):
 class Anime(AnimeUpdate):
     id: int
     poster_img: str
+
+
+class AnimeShort(BaseModel):
+    name: str
+    poster_img: str
