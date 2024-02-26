@@ -2,7 +2,7 @@ import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Anime, PagedAnime } from '../../../models/Anime';
 import { AnimeService } from '../../../_services/anime.service';
 import { Title } from '@angular/platform-browser';
-import { firstValueFrom } from 'rxjs';
+import { Subscription, firstValueFrom } from 'rxjs';
 import { LanguageService } from 'src/app/_services/language.service';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -17,6 +17,8 @@ export class AnimeListComponent implements OnInit, OnChanges {
 
   currentPage: number = 1
 
+  languageSubscription?: Subscription;
+
 
   constructor(
     private service: AnimeService,
@@ -26,12 +28,18 @@ export class AnimeListComponent implements OnInit, OnChanges {
     this.title.setTitle("MyAniSongList - Animes")
   }
 
+
   ngOnInit(): void {
     this.fetchData()
-    this.translateService.onLangChange.subscribe(() => {
+    this.languageSubscription = this.translateService.onLangChange.subscribe(() => {
       this.fetchData()
     })
   }
+
+  ngOnDestroy(): void {
+    this.languageSubscription?.unsubscribe()
+  }
+
 
   ngOnChanges(changes: SimpleChanges): void {
     // When the 'data' property changes, scroll to the top

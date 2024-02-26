@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { firstValueFrom } from 'rxjs'
+import { Subscription, firstValueFrom } from 'rxjs'
 import { ArtistService } from 'src/app/_services/artist.service';
 import { MusicService } from 'src/app/_services/music.service';
 import { Artist } from 'src/app/models/Artist';
@@ -17,6 +17,9 @@ export class ArtistDetailComponent implements OnInit {
   isLoading: boolean = true
   musics: Music[] = []
   artist!: Artist
+
+  languageSubscription?: Subscription;
+
   constructor(
     private route: ActivatedRoute,
     private musicService: MusicService,
@@ -25,12 +28,18 @@ export class ArtistDetailComponent implements OnInit {
     private title: Title
   ) { }
 
+
   ngOnInit(): void {
     this.fetchData()
-    this.translateService.onLangChange.subscribe(() => {
+    this.languageSubscription = this.translateService.onLangChange.subscribe(() => {
       this.fetchData()
     })
   }
+
+  ngOnDestroy(): void {
+    this.languageSubscription?.unsubscribe()
+  }
+
 
   async fetchData() {
     let id_artist = Number(this.route.snapshot.paramMap.get("id"))

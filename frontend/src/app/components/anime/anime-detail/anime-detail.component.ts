@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { firstValueFrom } from 'rxjs'
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription, firstValueFrom } from 'rxjs'
 import { Music } from 'src/app/models/Music'
 import { MusicService } from 'src/app/_services/music.service';
 import { AnimeService } from 'src/app/_services/anime.service';
@@ -13,10 +13,12 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: './anime-detail.component.html',
   styleUrls: ['./anime-detail.component.css']
 })
-export class AnimeDetailComponent implements OnInit {
+export class AnimeDetailComponent implements OnInit, OnDestroy {
   isLoading: boolean = true
   musics!: Music[]
   anime!: Anime
+
+  languageSubscription?: Subscription
   constructor(
     private route: ActivatedRoute,
     private musicService: MusicService,
@@ -26,12 +28,18 @@ export class AnimeDetailComponent implements OnInit {
   ) {
   }
 
+
   ngOnInit(): void {
     this.fetchData()
-    this.translateService.onLangChange.subscribe(() => {
+    this.languageSubscription = this.translateService.onLangChange.subscribe(() => {
       this.fetchData()
     })
   }
+
+  ngOnDestroy(): void {
+    this.languageSubscription?.unsubscribe()
+  }
+
 
   async fetchData() {
     let id_anime = Number(this.route.snapshot.paramMap.get("id"))

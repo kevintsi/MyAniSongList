@@ -28,10 +28,11 @@ export class MusicDetailComponent implements OnDestroy, OnInit {
   noteMusic: number = 0
   description = new FormControl("")
 
-  reviewAddedSubscription!: Subscription
+  reviewAddedSubscription?: Subscription
   addFavoriteSubscription?: Subscription
   deleteFavoriteSubscription?: Subscription
   createReviewSubscription?: Subscription
+  languageSubscription?: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -48,7 +49,7 @@ export class MusicDetailComponent implements OnDestroy, OnInit {
   ngOnInit(): void {
     this.fetchData()
     this.initReviewAddedSubscription()
-    this.translateService.onLangChange.subscribe(() => {
+    this.languageSubscription = this.translateService.onLangChange.subscribe(() => {
       this.fetchData()
     })
   }
@@ -58,10 +59,11 @@ export class MusicDetailComponent implements OnDestroy, OnInit {
   }
 
   ngOnDestroy() {
-    this.reviewAddedSubscription.unsubscribe();
+    this.reviewAddedSubscription?.unsubscribe();
     this.addFavoriteSubscription?.unsubscribe();
     this.deleteFavoriteSubscription?.unsubscribe();
     this.createReviewSubscription?.unsubscribe();
+    this.languageSubscription?.unsubscribe()
   }
 
 
