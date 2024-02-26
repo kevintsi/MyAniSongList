@@ -4,7 +4,7 @@ import json
 from pydantic import BaseModel
 from .types import Type
 
-from .animes import Anime
+from .animes import Anime, AnimeShort
 from .artists import Artist
 
 
@@ -37,6 +37,7 @@ class MusicUpdate(MusicCreate):
 class MusicArtist(MusicBase):
     id: int
     poster_img: str
+    anime: AnimeShort
     type: Type
 
     class Config:
