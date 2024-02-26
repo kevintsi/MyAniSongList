@@ -27,6 +27,9 @@ export class ArtistDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchData()
+    this.translateService.onLangChange.subscribe(() => {
+      this.fetchData()
+    })
   }
 
   async fetchData() {
