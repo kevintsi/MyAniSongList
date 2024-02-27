@@ -11,8 +11,18 @@ from fastapi_pagination import Page
 from fastapi_pagination.ext.sqlalchemy import paginate
 from app.db.models import User
 from app.services.musics import OrderMusicBy
-from app.db.schemas.musics import MusicAnime, MusicArtist, MusicCreate, MusicShort, MusicUpdate, Music
+from app.db.schemas.musics import (
+    MusicAnime,
+    MusicArtist,
+    MusicCreate,
+    MusicSearch,
+    MusicShort,
+    MusicUpdate,
+    Music
+)
 from typing import Annotated
+
+from app.db.schemas.types import Type
 from .users import get_current_user
 from app.services.musics import (
     MusicService,
@@ -25,11 +35,11 @@ router = APIRouter(
 )
 
 
-@router.get("/all", response_model=Page[MusicShort])
+@router.get("/all", response_model=Page[MusicSearch])
 async def get_all(
     service: Annotated[MusicService, Depends(get_service)],
     order_by: OrderMusicBy = Query(None, description="Order items by")
-) -> Page[MusicShort]:
+) -> Page[MusicSearch]:
     """
 
     **Route to get all musics with page format**
@@ -40,7 +50,7 @@ async def get_all(
 
     **Returns:**
 
-        Page[MusicShort]: List of musics with page format
+        Page[MusicSearch]: List of musics with page format
     """
     return paginate(service.db_session, service.list(order_by))
 
