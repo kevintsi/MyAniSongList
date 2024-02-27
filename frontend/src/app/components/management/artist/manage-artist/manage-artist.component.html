@@ -4,9 +4,11 @@
     </div>
     <ng-container *ngIf="!isLoading">
         <div class="flex flex-row items-center pt-4">
-            <div class="text-4xl cursor-pointer">
-                <mat-icon [inline]="true" routerLink="/manage/artists/create">add</mat-icon>
-            </div>
+            <button type="button" routerLink="/manage/animes/create"
+                class="btn cursor-pointer outline outline-1 text-center ml-2 mr-2" title="Ajouter un type de musique">
+                <mat-icon>add</mat-icon>
+                <label>Ajouter</label>
+            </button>
             <app-search-bar (searchEvent)="performSearch($event)" class="w-full"></app-search-bar>
         </div>
         <div *ngIf="artists.items.length == 0">Il n'y a pas de d'artistes</div>
