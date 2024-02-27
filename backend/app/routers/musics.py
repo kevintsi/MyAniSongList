@@ -93,11 +93,11 @@ async def get_most_popular(
     return service.get_most_popular()
 
 
-@router.get("/search", response_model=Page[MusicShort])
+@router.get("/search", response_model=Page[MusicSearch])
 async def search(
     query: str,
     service: Annotated[MusicService, Depends(get_service)],
-) -> Page[MusicShort]:
+) -> Page[MusicSearch]:
     """
 
     **Route to search for musics matching query parameter**
@@ -109,7 +109,7 @@ async def search(
 
     **Returns:**
 
-        Page[MusicShort]: List of musics matching the query parameter with page format
+        Page[MusicSearch]: List of musics matching the query parameter with page format
     """
     return paginate(service.db_session, service.search(query))
 
