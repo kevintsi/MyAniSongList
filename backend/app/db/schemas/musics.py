@@ -53,6 +53,15 @@ class MusicShort(BaseModel):
         orm_mode = True
 
 
+class MusicSearch(MusicBase):
+    id: int
+    poster_img: str
+    type: Type
+
+    class Config:
+        orm_mode = True
+
+
 class MusicAnime(MusicBase):
     id: int
     poster_img: str
