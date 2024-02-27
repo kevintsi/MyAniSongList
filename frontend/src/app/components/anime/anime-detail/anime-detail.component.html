@@ -14,6 +14,7 @@
                 <div>
                     <h2 class="font-bold text-start m-4 border-b border-gray-400/60">Openings et Endings</h2>
                     <div class="flex flex-wrap">
+                        <div class="p-4" *ngIf="musics.length == 0">Il n'y a pas d'openings ni d'endings</div>
                         <div class="flex flex-row p-4 rounded-lg  items-center" *ngFor="let music of musics">
                             <img [routerLink]="['/musics', music?.id]" [src]="music.poster_img"
                                 class="hover:opacity-80 rounded-full hover:cursor-pointer object-cover w-20 h-20" />
