@@ -17,7 +17,9 @@ export class ManageMusicComponent implements OnDestroy, OnInit {
   searchSubscription?: Subscription
   deleteSubscription?: Subscription
 
-  constructor(private service: MusicService, private title: Title) { }
+  constructor(private service: MusicService, private title: Title) {
+    this.title.setTitle("MyAniSongList - Gestion - Musique")
+  }
 
   ngOnDestroy(): void {
     this.searchSubscription?.unsubscribe()
@@ -30,7 +32,6 @@ export class ManageMusicComponent implements OnDestroy, OnInit {
   async fetchData() {
     try {
       this.musics = await this.fetchMusics()
-      this.title.setTitle("MyAniSongList - Gestion - Musique")
     } catch (error) {
       console.log(error)
     }
