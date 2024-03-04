@@ -1,4 +1,7 @@
 <form [formGroup]="form" class="flex flex-col items-center  p-10" (ngSubmit)="onSubmit()">
+
+    <div class="mb-4 font-bold text-lg md:text-2xl">{{isUpdate ? "Modifier un(e) " :"Ajouter un(e) "}} artiste </div>
+
     <div (click)="imageInput.click()"
         class="flex hover:bg-slate-100 cursor-pointer  border-2 border-base-content justify-center items-center h-80 w-60">
         <ng-container *ngIf="previewImage;else elseBlock">

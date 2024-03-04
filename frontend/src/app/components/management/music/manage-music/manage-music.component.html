@@ -5,17 +5,17 @@
 
     <ng-container *ngIf="!isLoading">
         <div class="flex flex-row items-center pt-4">
-            <button type="button" routerLink="/manage/animes/create"
+            <button type="button" routerLink="/manage/musics/create"
                 class="btn cursor-pointer outline outline-1 text-center ml-2 mr-2" title="Ajouter un type de musique">
                 <mat-icon>add</mat-icon>
-                <label>Ajouter</label>
+                <label class="hidden md:inline-block">Ajouter</label>
             </button>
             <app-search-bar (searchEvent)="performSearch($event)" class="w-full"></app-search-bar>
         </div>
         <div *ngIf="musics.items.length == 0">Il n'y a pas de musiques</div>
         <div *ngIf="musics.items.length > 0">
             <table class="table table-fixed text-justify font-semibold">
-                <thead class="md:text-xl">
+                <thead class="md:text-xl text-center">
                     <tr>
                         <th></th>
                         <th>Nom</th>
@@ -25,20 +25,25 @@
                     </tr>
                 </thead>
 
-                <tbody>
+                <tbody class="text-center">
                     <tr class="hover:bg-base-300 cursor-pointer" [routerLink]="['/manage/musics', music.id]"
                         *ngFor="let music of musics.items">
+
                         <td class="flex justify-center items-center">
                             <div class="w-20 md:w-40 h-full">
                                 <img [src]="music.poster_img" [alt]="music.name" />
                             </div>
                         </td>
+
                         <td class="overflow-hidden text-ellipsis whitespace-nowrap">{{ music.name}} </td>
+
+                        <td class="overflow-hidden text-ellipsis whitespace-nowrap"> {{ music.type.name }}</td>
+
                         <td class="overflow-hidden text-ellipsis whitespace-nowrap"> {{music.release_date |
                             date:'dd-MM-YYY'
                             }}
                         </td>
-                        <td class="overflow-hidden text-ellipsis whitespace-nowrap"> {{ music.type.name }}</td>
+
                         <td class="md:text-6xl text-4xl text-center">
                             <mat-icon [inline]="true" (click)="delete(music)">delete</mat-icon>
                         </td>

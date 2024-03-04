@@ -5,22 +5,22 @@
     <ng-container *ngIf="!isLoading">
         <div class="flex flex-row items-center pt-4">
             <button type="button" routerLink="/manage/languages/create"
-                class="btn cursor-pointer outline outline-1 text-center ml-2" title="Ajouter un type de musique">
+                class="btn cursor-pointer outline outline-1 text-center ml-2 mr-2" title="Ajouter un type de musique">
                 <mat-icon>add</mat-icon>
-                <label>Ajouter</label>
+                <label class="hidden md:inline-block">Ajouter</label>
             </button>
         </div>
         <div *ngIf="languages.length == 0" class="text-center">Il n'y a pas de langues</div>
 
         <div *ngIf="languages.length > 0" class="h-full overflow-y-auto">
             <table class="table table-fixed text-center font-semibold">
-                <thead class="md:text-xl">
+                <thead class="md:text-xl text-center">
                     <tr>
                         <th>Code</th>
                         <th>Action</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="text-center">
                     <tr class="hover:bg-base-300 cursor-pointer" [routerLink]="['/manage/languages', lang.id]"
                         *ngFor="let lang of languages">
                         <td class="overflow-hidden text-ellipsis whitespace-nowrap">

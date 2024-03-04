@@ -5,9 +5,9 @@
     <ng-container *ngIf="!isLoading">
         <div class="flex flex-row items-center pt-4">
             <button type="button" routerLink="/manage/types/create"
-                class="btn cursor-pointer outline outline-1 text-center ml-2" title="Ajouter un type de musique">
+                class="btn cursor-pointer outline outline-1 text-center ml-2 mr-2" title="Ajouter un type de musique">
                 <mat-icon>add</mat-icon>
-                <label>Ajouter</label>
+                <label class="hidden md:inline-block">Ajouter</label>
             </button>
         </div>
         <div *ngIf="types.length == 0">Il n'y a pas de types</div>
@@ -20,7 +20,7 @@
                         <th>Action</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="text-center">
                     <tr class="hover:bg-base-300 cursor-pointer" *ngFor="let type of types">
                         <td class="overflow-hidden text-ellipsis whitespace-nowrap"
                             [routerLink]="['/manage/types', type.id]">

@@ -28,7 +28,6 @@ export class AnimeDetailComponent implements OnInit, OnDestroy {
   ) {
   }
 
-
   ngOnInit(): void {
     this.fetchData()
     this.languageSubscription = this.translateService.onLangChange.subscribe(() => {
@@ -61,6 +60,12 @@ export class AnimeDetailComponent implements OnInit, OnDestroy {
   async fetchMusics(id: number) {
     return firstValueFrom(this.musicService.getMusicsAnime(id, this.translateService.currentLang))
   }
+
+
+  getCurrentLang() {
+    return this.translateService.currentLang
+  }
+
 }
 
 

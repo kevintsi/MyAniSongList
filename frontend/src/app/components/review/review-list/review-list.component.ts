@@ -1,25 +1,42 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ReviewService } from 'src/app/_services/review.service';
 import { PagedReview } from 'src/app/models/Review';
-import { firstValueFrom } from 'rxjs'
+import { Subscription, firstValueFrom } from 'rxjs'
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-review-list',
   templateUrl: './review-list.component.html',
   styleUrls: ['./review-list.component.css']
 })
-export class ReviewListComponent {
+export class ReviewListComponent implements OnDestroy, OnInit {
   isLoading = true
   reviews!: PagedReview
+
+  languageSubscription?: Subscription
 
   currentPage: number = 2;
   pageSize: number = 10;
   totalItems: number = 0;
 
-  constructor(private service: ReviewService, private route: ActivatedRoute) { }
+  constructor(
+    private service: ReviewService,
+    private route: ActivatedRoute,
+    private translateService: TranslateService
+  ) { }
+
+
   ngOnInit(): void {
     this.fetchData()
+    this.languageSubscription = this.translateService.onLangChange.subscribe(() => {
+      this.fetchData()
+    })
+  }
+
+
+  ngOnDestroy(): void {
+    this.languageSubscription?.unsubscribe()
   }
 
   async fetchData() {
@@ -40,5 +57,9 @@ export class ReviewListComponent {
   onPageChange(page: number) {
     this.currentPage = page;
     this.fetchData()
+  }
+
+  getCurrentLang() {
+    return this.translateService.currentLang
   }
 }

@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { ReviewService } from 'src/app/_services/review.service';
 import { PagedReview } from 'src/app/models/Review';
-import { firstValueFrom } from 'rxjs'
+import { Subscription, firstValueFrom } from 'rxjs'
 import { Title } from '@angular/platform-browser';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-community-list',
@@ -13,13 +14,25 @@ export class CommunityListComponent {
   isLoading = true
   reviews!: PagedReview
 
+
+  languageSubscription?: Subscription
+
   currentPage: number = 1;
   pageSize: number = 10;
   totalItems: number = 0;
 
-  constructor(private service: ReviewService, private title: Title) { }
+  constructor(
+    private service: ReviewService,
+    private title: Title,
+    private translateService: TranslateService
+
+  ) { }
+
   ngOnInit(): void {
     this.fetchData()
+    this.languageSubscription = this.translateService.onLangChange.subscribe(() => {
+      this.fetchData()
+    })
   }
 
   async fetchData() {
@@ -40,5 +53,10 @@ export class CommunityListComponent {
   onPageChange(page: number) {
     this.currentPage = page;
     this.fetchData()
+  }
+
+
+  getCurrentLang() {
+    return this.translateService.currentLang
   }
 }

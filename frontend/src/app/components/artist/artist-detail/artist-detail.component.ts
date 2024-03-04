@@ -61,4 +61,9 @@ export class ArtistDetailComponent implements OnInit {
   async fetchMusicsArtist(id: number) {
     return firstValueFrom(this.musicService.getMusicsArtist(id, this.translateService.currentLang))
   }
+
+
+  getCurrentLang() {
+    return this.translateService.currentLang
+  }
 }

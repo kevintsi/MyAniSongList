@@ -67,7 +67,7 @@
                     <h2 class="font-bold border-b border-gray-400/60">Informations</h2>
                     <div class="flex flex-col pt-4">
                         <div><label class="font-bold">Date de sortie : </label> {{ music.release_date | date :
-                            "dd-MM-YYYY"}}</div>
+                            "longDate" : '' : getCurrentLang()}}</div>
                         <div>
                             <label class="font-bold">Type :</label>
                             <div class="badge badge-outline ml-2"

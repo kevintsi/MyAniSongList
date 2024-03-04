@@ -216,4 +216,9 @@ export class MusicDetailComponent implements OnDestroy, OnInit {
   counter(id?: number) {
     return id ? new Array(Math.round(id)) : []
   }
+
+  getCurrentLang() {
+    return this.translateService.currentLang
+  }
+
 }

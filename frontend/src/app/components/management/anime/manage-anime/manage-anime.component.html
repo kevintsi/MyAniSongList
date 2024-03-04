@@ -5,9 +5,9 @@
     <ng-container *ngIf="!isLoading">
         <div class="flex flex-row items-center pt-4">
             <button type="button" routerLink="/manage/animes/create"
-                class="btn cursor-pointer outline outline-1 text-center ml-2 mr-2" title="Ajouter un type de musique">
+                class="btn cursor-pointer outline outline-1 text-center ml-2 mr-2" title="Ajouter un anime">
                 <mat-icon>add</mat-icon>
-                <label>Ajouter</label>
+                <label class="hidden md:inline-block">Ajouter</label>
             </button>
             <app-search-bar (searchEvent)="performSearch($event)" class="w-full"></app-search-bar>
         </div>
@@ -15,7 +15,7 @@
 
         <div *ngIf="animes.items.length > 0" class="h-full overflow-y-auto">
             <table class="table table-fixed text-justify font-semibold">
-                <thead class="md:text-xl">
+                <thead class="md:text-xl text-center">
                     <tr>
                         <th></th>
                         <th>Nom</th>
@@ -23,7 +23,7 @@
                         <th>Action</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="text-center">
                     <tr class="hover:bg-base-300 cursor-pointer" [routerLink]="['/manage/animes', anime.id]"
                         *ngFor="let anime of animes.items">
                         <td class="flex justify-center items-center">

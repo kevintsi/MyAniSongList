@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { HttpClient, HttpClientModule } from '@angular/common/http';
@@ -32,6 +32,13 @@ import { ToastrModule } from 'ngx-toastr';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { LanguageDropDownComponent } from './components/language-drop-down/language-drop-down.component';
+import { registerLocaleData } from '@angular/common';
+import localeEn from '@angular/common/locales/en';
+import localeJp from '@angular/common/locales/ja';
+import localeJpExtra from '@angular/common/locales/extra/ja';
+import localeFr from '@angular/common/locales/fr';
+import localeFrExtra from '@angular/common/locales/extra/fr';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -79,11 +86,19 @@ import { LanguageDropDownComponent } from './components/language-drop-down/langu
     )
   ],
   providers: [
-    httpInterceptorProviders
+    httpInterceptorProviders,
+    { provide: LOCALE_ID, useValue: 'fr-FR' }
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor() {
+    registerLocaleData(localeEn, 'en');
+    registerLocaleData(localeJp, 'jp', localeJpExtra);
+    registerLocaleData(localeFr, 'fr', localeFrExtra);
+  }
+
+}
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json")
 }

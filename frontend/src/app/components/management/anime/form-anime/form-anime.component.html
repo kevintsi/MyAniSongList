@@ -38,24 +38,25 @@
         <div>
             <input type="text" placeholder="Nom de l'animé" formControlName="name"
                 class="input border-base-content w-full mt-4 !outline-none" />
+            <div class="flex flex-col items-center alert alert-error mt-4 pb-4"
+                *ngIf="form.get('name')?.invalid && (form.get('name')?.dirty || form.get('name')?.touched)">
+                <div *ngIf="form.get('name')?.errors?.['required']">
+                    Le nom est obligatoire
+                </div>
+            </div>
         </div>
 
     </div>
 
     <label class="label mt-4">Description : </label>
-    <div><textarea class="textarea border-base-content w-full mt-4 !outline-none" placeholder="Description de l'animé"
-            formControlName="description"></textarea></div>
+
+    <textarea class="textarea border-base-content w-full mt-4 !outline-none" placeholder="Description de l'animé"
+        formControlName="description"></textarea>
 
     <div class="flex flex-col items-center alert alert-error mt-4 pb-4"
-        *ngIf="form.get('name')?.invalid && (form.get('name')?.dirty || form.get('name')?.touched)">
-        <div *ngIf="form.get('name')?.errors?.['required']">
-            Le nom est obligatoire
-        </div>
-        <div class="flex flex-col items-center alert alert-error mt-4 pb-4"
-            *ngIf="form.get('description')?.invalid && (form.get('description')?.dirty || form.get('description')?.touched)">
-            <div *ngIf="form.get('description')?.errors?.['required']">
-                La description est obligatoire
-            </div>
+        *ngIf="form.get('description')?.invalid && (form.get('description')?.dirty || form.get('description')?.touched)">
+        <div *ngIf="form.get('description')?.errors?.['required']">
+            La description est obligatoire
         </div>
     </div>
     <input hidden="true" #imageInput type="file" (change)="processFile(imageInput)" />
