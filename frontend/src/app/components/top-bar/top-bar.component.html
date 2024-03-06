@@ -90,8 +90,8 @@
         <div class="hidden sm:block flex-none gap-2 mr-10">
             <ng-container *ngIf="isLoggedIn();else elseBlock">
                 <div class="dropdown dropdown-end  pr-4 border rounded-lg border-base-200 hover:bg-base-300">
-                    <div class="flex flex-row items-center">
-                        <label tabindex="0" class="btn btn-ghost btn-circle avatar">
+                    <div tabindex="0" class="flex flex-row items-center">
+                        <label class="btn btn-ghost btn-circle avatar">
                             <div class="w-10 rounded-full">
                                 <img [src]="user_pfp ? user_pfp : '/assets/images/default_image.jpg'" />
                             </div>
