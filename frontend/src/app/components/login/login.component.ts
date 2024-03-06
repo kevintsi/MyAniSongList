@@ -6,6 +6,7 @@ import { User } from '../../models/User';
 import { TokenService } from 'src/app/_services/token.service';
 import { firstValueFrom } from 'rxjs';
 import { Title } from '@angular/platform-browser';
+import { getAppTitle } from 'src/app/config/app';
 
 @Component({
   selector: 'app-login',
@@ -26,7 +27,7 @@ export class LoginComponent {
     private router: Router,
     private title: Title
   ) {
-    this.title.setTitle("MyAniSongList - Se connecter")
+    this.title.setTitle(getAppTitle("Se connecter"))
   }
 
   async onSubmit() {

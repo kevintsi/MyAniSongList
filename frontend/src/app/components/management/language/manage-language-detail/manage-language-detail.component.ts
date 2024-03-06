@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription, firstValueFrom } from 'rxjs';
 import { LanguageService } from 'src/app/_services/language.service';
+import { getAppTitle } from 'src/app/config/app';
 import { Language } from 'src/app/models/Language';
 
 @Component({
@@ -31,7 +32,7 @@ export class ManageLanguageDetailComponent {
     let id = Number(this.route.snapshot.paramMap.get('id'))
     try {
       this.language = await this.get(id)
-      this.title.setTitle("MyAniSongList - Gestion - Modifier une langue")
+      this.title.setTitle(getAppTitle("Gestion - Modifier une langue"))
     } catch (error) {
       console.log(error)
     } finally {

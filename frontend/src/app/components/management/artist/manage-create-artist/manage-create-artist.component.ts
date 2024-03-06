@@ -3,6 +3,7 @@ import { Title } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { ArtistService } from 'src/app/_services/artist.service';
+import { getAppTitle } from 'src/app/config/app';
 
 @Component({
   selector: 'app-manage-create-artist',
@@ -16,7 +17,7 @@ export class ManageCreateArtistComponent implements OnDestroy {
     private toastr: ToastrService,
     private title: Title
   ) {
-    this.title.setTitle("MyAniSongList - Gestion - Ajouter un(e) artiste")
+    this.title.setTitle(getAppTitle("Gestion - Ajouter un(e) artiste"))
   }
 
   ngOnDestroy(): void {

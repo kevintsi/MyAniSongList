@@ -1,4 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AppLanguages, getLangFromStorage } from 'src/app/config/lang';
+import { LANGUAGE_STORAGE_KEY } from 'src/app/config/storage';
+import { AppLanguage } from 'src/app/interfaces/AppLanguage';
 
 @Component({
   selector: 'app-language-drop-down',
@@ -7,24 +10,22 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 })
 export class LanguageDropDownComponent implements OnInit {
 
-  @Input() languages: any[] = [];
+  @Input() languages: AppLanguage[] = []
   @Output() languageSelected = new EventEmitter<any>();
 
-  selectedLanguage: any
+  selectedLanguage: AppLanguage = AppLanguages[0]
   isDropdownOpen = false;
 
   ngOnInit(): void {
-    this.selectedLanguage = localStorage.getItem("lang") ?
-      JSON.parse(String(localStorage.getItem("lang"))) : { id: "fr", code: "Français" }
-
-    localStorage.setItem("lang", JSON.stringify(this.selectedLanguage))
+    this.selectedLanguage = getLangFromStorage()
+    localStorage.setItem(LANGUAGE_STORAGE_KEY, this.selectedLanguage.id)
   }
 
   toggleDropdown() {
     this.isDropdownOpen = !this.isDropdownOpen;
   }
 
-  selectLanguage(lang: any) {
+  selectLanguage(lang: AppLanguage) {
     this.selectedLanguage = lang;
     this.isDropdownOpen = false;
     this.languageSelected.emit(lang);

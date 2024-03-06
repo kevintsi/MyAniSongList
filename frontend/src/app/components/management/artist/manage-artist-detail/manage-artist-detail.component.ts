@@ -6,6 +6,7 @@ import { Artist } from 'src/app/models/Artist';
 import { Subscription, firstValueFrom } from 'rxjs'
 import { ToastrService } from 'ngx-toastr';
 import { Title } from '@angular/platform-browser';
+import { getAppTitle } from 'src/app/config/app';
 
 @Component({
   selector: 'app-manage-artist-detail',
@@ -32,7 +33,7 @@ export class ManageArtistDetailComponent implements OnDestroy, OnInit {
     let id = Number(this.route.snapshot.paramMap.get('id'))
     try {
       this.artist = await this.get(id)
-      this.title.setTitle("MyAniSongList - Gestion - Modifier un(e) artiste")
+      this.title.setTitle(getAppTitle("Gestion - Modifier un(e) artiste"))
     } catch (error) {
       console.log(error)
     } finally {

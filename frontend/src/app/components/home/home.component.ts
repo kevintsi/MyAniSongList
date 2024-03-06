@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { firstValueFrom } from 'rxjs';
 import { MusicService } from 'src/app/_services/music.service';
+import { getAppTitle } from 'src/app/config/app';
 import { Music } from 'src/app/models/Music';
 
 @Component({
@@ -15,7 +16,7 @@ export class HomeComponent implements OnInit {
   popularMusics: Music[] = []
 
   constructor(private title: Title, private musicService: MusicService) {
-    this.title.setTitle("MyAniSongList - Accueil")
+    this.title.setTitle(getAppTitle("Accueil"))
   }
 
   ngOnInit() {

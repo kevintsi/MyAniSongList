@@ -1,7 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import { TranslateService } from '@ngx-translate/core';
 import { Subscription, firstValueFrom } from 'rxjs';
 import { TypeService } from 'src/app/_services/type.service';
+import { getAppTitle } from 'src/app/config/app';
 import { Type } from 'src/app/models/Type';
 
 @Component({
@@ -12,18 +14,27 @@ import { Type } from 'src/app/models/Type';
 export class ManageTypeComponent implements OnInit, OnDestroy {
   isLoading = true
   types: Type[] = []
-  deleteSubscription?: Subscription
 
-  constructor(private service: TypeService, private title: Title) {
-    this.title.setTitle("MyAniSongList - Gestion - Types")
+  deleteSubscription?: Subscription
+  languageChangeSubscription?: Subscription
+
+  constructor(
+    private service: TypeService,
+    private translateService: TranslateService,
+    private title: Title) {
+    this.title.setTitle(getAppTitle("Gestion - Types"))
   }
 
   ngOnInit(): void {
     this.fetchData()
+    this.languageChangeSubscription = this.translateService.onLangChange.subscribe({
+      next: () => this.fetchData()
+    })
   }
 
   ngOnDestroy(): void {
     this.deleteSubscription?.unsubscribe();
+    this.languageChangeSubscription?.unsubscribe();
   }
 
 
@@ -39,7 +50,7 @@ export class ManageTypeComponent implements OnInit, OnDestroy {
   }
 
   fetchTypes() {
-    return firstValueFrom(this.service.getAll())
+    return firstValueFrom(this.service.getAll(this.translateService.currentLang))
   }
 
   delete(selected: Type) {

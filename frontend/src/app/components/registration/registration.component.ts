@@ -7,6 +7,7 @@ import { Title } from '@angular/platform-browser';
 import { passwordMatchingValidator } from 'src/app/utils/utils';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
+import { getAppTitle } from 'src/app/config/app';
 
 @Component({
   selector: 'app-registration',
@@ -38,7 +39,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.title.setTitle("MyAniSongList - S'incrire")
+    this.title.setTitle(getAppTitle("S'incrire"))
   }
 
   onSubmit(): void {

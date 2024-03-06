@@ -3,6 +3,7 @@ import { Title } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { AnimeService } from 'src/app/_services/anime.service';
+import { getAppTitle } from 'src/app/config/app';
 
 @Component({
   selector: 'app-manage-create-anime',
@@ -17,7 +18,7 @@ export class ManageCreateAnimeComponent implements OnDestroy {
     private title: Title
   ) {
 
-    this.title.setTitle("MyAniSongList - Gestion - Ajouter un anime")
+    this.title.setTitle(getAppTitle("Gestion - Ajouter un anime"))
   }
   ngOnDestroy(): void {
     this.createSubscription?.unsubscribe();

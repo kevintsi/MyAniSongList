@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import { getAppTitle } from 'src/app/config/app';
 
 @Component({
   selector: 'app-not-found',
@@ -7,6 +8,6 @@ import { Title } from '@angular/platform-browser';
 })
 export class NotFoundComponent {
   constructor(private title: Title) {
-    this.title.setTitle("MyAniSongList - Page non trouvée")
+    this.title.setTitle(getAppTitle("Page non trouvée"))
   }
 }

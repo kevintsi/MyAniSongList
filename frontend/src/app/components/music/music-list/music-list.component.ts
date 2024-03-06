@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { firstValueFrom } from 'rxjs';
 import { MusicService } from 'src/app/_services/music.service';
+import { getAppTitle } from 'src/app/config/app';
 import { Music, PagedMusic } from 'src/app/models/Music';
 
 @Component({
@@ -23,7 +24,7 @@ export class MusicListComponent {
   async fetchData() {
     try {
       this.musics = await this.fetchMusics()
-      this.title.setTitle("MyAniSongList - Musiques")
+      this.title.setTitle(getAppTitle("Musiques"))
     } catch (error) {
       console.log(error)
     }

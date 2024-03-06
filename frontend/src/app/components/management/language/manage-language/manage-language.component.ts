@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Subscription, firstValueFrom } from 'rxjs';
 import { LanguageService } from 'src/app/_services/language.service';
+import { getAppTitle } from 'src/app/config/app';
 import { Language } from 'src/app/models/Language';
 
 @Component({
@@ -17,7 +18,7 @@ export class ManageLanguageComponent implements OnInit, OnDestroy {
   constructor(private service: LanguageService, private title: Title) { }
 
   ngOnInit(): void {
-    this.title.setTitle("MyAniSongList - Gestion - Langue")
+    this.title.setTitle(getAppTitle("Gestion - Langue"))
     this.fetchData()
   }
 

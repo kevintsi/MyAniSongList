@@ -5,6 +5,7 @@ import { Title } from '@angular/platform-browser';
 import { Subscription, firstValueFrom } from 'rxjs';
 import { LanguageService } from 'src/app/_services/language.service';
 import { TranslateService } from '@ngx-translate/core';
+import { getAppTitle } from 'src/app/config/app';
 
 @Component({
   selector: 'app-anime-list',
@@ -25,7 +26,7 @@ export class AnimeListComponent implements OnInit, OnChanges {
     private translateService: TranslateService,
     private title: Title) {
 
-    this.title.setTitle("MyAniSongList - Animes")
+    this.title.setTitle(getAppTitle("Animes"))
   }
 
 

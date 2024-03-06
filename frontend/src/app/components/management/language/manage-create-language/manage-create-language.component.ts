@@ -3,6 +3,7 @@ import { Title } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { LanguageService } from 'src/app/_services/language.service';
+import { getAppTitle } from 'src/app/config/app';
 import { Language } from 'src/app/models/Language';
 
 @Component({
@@ -18,7 +19,7 @@ export class ManageCreateLanguageComponent {
     private title: Title
   ) {
 
-    this.title.setTitle("MyAniSongList - Gestion - Ajouter une langue")
+    this.title.setTitle(getAppTitle("Gestion - Ajouter une langue"))
   }
   ngOnDestroy(): void {
     this.createSubscription?.unsubscribe();

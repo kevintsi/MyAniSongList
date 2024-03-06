@@ -6,6 +6,7 @@ import { Title } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
 import { passwordMatchingValidator } from 'src/app/utils/utils';
 import { Subscription } from 'rxjs';
+import { getAppTitle } from 'src/app/config/app';
 
 @Component({
   selector: 'app-profile-edit',
@@ -34,7 +35,7 @@ export class ProfileEditComponent implements OnInit, OnDestroy {
     private toastr: ToastrService
 
   ) {
-    this.title.setTitle("MyAniSongList - Mon profil")
+    this.title.setTitle(getAppTitle("Mon profil"))
   }
   ngOnDestroy(): void {
     this.authSubscription?.unsubscribe();

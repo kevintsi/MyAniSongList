@@ -11,15 +11,15 @@ export class AnimeService {
 
   constructor(private http: HttpClient) { }
 
-  public search(term: string, lang: string = "fr") {
+  public search(term: string, lang: string) {
     return this.http.get<PagedAnime>(this.endpoint + '/animes/search?query=' + term + "&lang=" + lang)
   }
 
-  public getAll(page: number, lang: string = "fr") {
+  public getAll(page: number, lang: string) {
     return this.http.get<PagedAnime>(this.endpoint + '/animes/all?page=' + page + "&lang=" + lang)
   }
 
-  public get(id: number, lang: string = "fr") {
+  public get(id: number, lang: string) {
     return this.http.get<Anime>(this.endpoint + '/animes/' + id + "?lang=" + lang)
   }
   public addTranslation(anime: Anime, lang: string) {

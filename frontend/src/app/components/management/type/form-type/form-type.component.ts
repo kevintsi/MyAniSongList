@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
 import { firstValueFrom } from 'rxjs';
 import { TypeService } from 'src/app/_services/type.service';
 import { Language } from 'src/app/models/Language';
@@ -22,6 +23,7 @@ export class FormTypeComponent {
 
   constructor(
     private service: TypeService,
+    private translateService: TranslateService,
     private formBuilder: FormBuilder
   ) { }
 
@@ -54,7 +56,7 @@ export class FormTypeComponent {
   }
 
   populateForm() {
-    this.formTypeGroup.addControl("language", new FormControl("fr", [Validators.required]))
+    this.formTypeGroup.addControl("language", new FormControl(this.translateService.currentLang, [Validators.required]))
     this.formTypeGroup.patchValue({
       name: this.type.name
     })

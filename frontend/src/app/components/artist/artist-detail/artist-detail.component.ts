@@ -5,6 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subscription, firstValueFrom } from 'rxjs'
 import { ArtistService } from 'src/app/_services/artist.service';
 import { MusicService } from 'src/app/_services/music.service';
+import { getAppTitle } from 'src/app/config/app';
 import { Artist } from 'src/app/models/Artist';
 import { Music } from 'src/app/models/Music';
 
@@ -46,7 +47,7 @@ export class ArtistDetailComponent implements OnInit {
     try {
       this.artist = await this.fetchArtist(id_artist)
       this.musics = await this.fetchMusicsArtist(id_artist)
-      this.title.setTitle("MyAniSongList - " + this.artist.name)
+      this.title.setTitle(getAppTitle(this.artist.name))
     } catch (error) {
       console.log(error)
     } finally {

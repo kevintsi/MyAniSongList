@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Token } from '../models/Token';
+import { ACCESS_TOKEN_STORAGE_KEY } from '../config/storage';
 
 @Injectable({
   providedIn: 'root'
@@ -13,10 +14,10 @@ export class TokenService {
   constructor(private http: HttpClient) { }
 
   setToken(token: Token) {
-    localStorage.setItem("access_token", token.access_token)
+    localStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, token.access_token)
   }
   getToken() {
-    return localStorage.getItem("access_token")
+    return localStorage.getItem(ACCESS_TOKEN_STORAGE_KEY)
   }
 
   getRefreshToken() {
@@ -24,7 +25,7 @@ export class TokenService {
   }
 
   clean() {
-    localStorage.removeItem("access_token")
+    localStorage.removeItem(ACCESS_TOKEN_STORAGE_KEY)
 
   }
 }

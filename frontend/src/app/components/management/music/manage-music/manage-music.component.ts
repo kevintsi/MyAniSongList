@@ -3,6 +3,7 @@ import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { Subject, Subscription, firstValueFrom } from 'rxjs';
 import { MusicService } from 'src/app/_services/music.service';
+import { getAppTitle } from 'src/app/config/app';
 import { Music, PagedMusic } from 'src/app/models/Music';
 
 @Component({
@@ -18,7 +19,7 @@ export class ManageMusicComponent implements OnDestroy, OnInit {
   deleteSubscription?: Subscription
 
   constructor(private service: MusicService, private title: Title) {
-    this.title.setTitle("MyAniSongList - Gestion - Musique")
+    this.title.setTitle(getAppTitle("Gestion - Musique"))
   }
 
   ngOnDestroy(): void {

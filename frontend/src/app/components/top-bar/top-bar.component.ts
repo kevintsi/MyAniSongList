@@ -4,12 +4,13 @@ import { NavigationEnd, Router } from '@angular/router';
 import { MusicService } from 'src/app/_services/music.service';
 import { ArtistService } from 'src/app/_services/artist.service';
 import { AnimeService } from 'src/app/_services/anime.service';
-import { Subject, Subscription, firstValueFrom } from 'rxjs';
+import { Subscription, firstValueFrom } from 'rxjs';
 import { TokenService } from 'src/app/_services/token.service';
-import jwtDecode from 'jwt-decode';
 import { UserService } from 'src/app/_services/user.service';
-import { Language } from 'src/app/models/Language';
 import { TranslateService } from '@ngx-translate/core';
+import { AppLanguages } from 'src/app/config/lang';
+import { AppLanguage } from 'src/app/interfaces/AppLanguage';
+import { LANGUAGE_STORAGE_KEY } from 'src/app/config/storage';
 
 @Component({
   selector: 'app-top-bar',
@@ -22,26 +23,16 @@ export class TopBarComponent implements OnInit, OnDestroy {
   isLoading = false
   isMenuOpen: boolean = false;
   isSearchBarOpen: boolean = false
-  routerSubscription?: Subscription
-  searchSubscription?: Subscription
-  logOutSubscription?: Subscription
   category: string = "animes"
   result_search?: any[] = []
   user_pfp?: string = ""
   username?: string = ""
-  languages: Array<any> = [{
-    "id": "fr",
-    "code": "Français",
-  },
-  {
-    "id": "en",
-    "code": "English",
-  },
-  {
-    "id": "jp",
-    "code": "日本語",
-  }
-  ]
+  languages = AppLanguages
+
+
+  routerSubscription?: Subscription
+  searchSubscription?: Subscription
+  logOutSubscription?: Subscription
 
   constructor(
     private authService: AuthService,
@@ -78,9 +69,9 @@ export class TopBarComponent implements OnInit, OnDestroy {
     this.logOutSubscription?.unsubscribe();
   }
 
-  onLanguageSelect(lang: any) {
+  onLanguageSelect(lang: AppLanguage) {
     this.translateService.use(lang.id)
-    localStorage.setItem("lang", JSON.stringify(lang))
+    localStorage.setItem(LANGUAGE_STORAGE_KEY, lang.id)
   }
 
   performSearch(searchTerm: string) {

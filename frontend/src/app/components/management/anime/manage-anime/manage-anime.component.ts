@@ -1,7 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import { TranslateService } from '@ngx-translate/core';
 import { Subscription, firstValueFrom } from 'rxjs';
 import { AnimeService } from 'src/app/_services/anime.service';
+import { getAppTitle } from 'src/app/config/app';
 import { Anime, PagedAnime } from 'src/app/models/Anime';
 
 @Component({
@@ -13,23 +15,29 @@ export class ManageAnimeComponent implements OnInit, OnDestroy {
   isLoading = true
   animes!: PagedAnime
   currentPage: number = 1
+  languageChangeSubscription?: Subscription
   searchSubscription?: Subscription
   deleteSubscription?: Subscription
 
   constructor(
     private service: AnimeService,
+    private translateService: TranslateService,
     private title: Title,
   ) {
-    this.title.setTitle("MyAniSongList - Gestion - Animes")
+    this.title.setTitle(getAppTitle("Gestion - Animes"))
   }
 
   ngOnInit(): void {
     this.fetchData()
+    this.translateService.onLangChange.subscribe({
+      next: () => this.fetchData()
+    })
   }
 
   ngOnDestroy(): void {
     this.searchSubscription?.unsubscribe();
     this.deleteSubscription?.unsubscribe();
+    this.languageChangeSubscription?.unsubscribe();
   }
 
 
@@ -45,7 +53,7 @@ export class ManageAnimeComponent implements OnInit, OnDestroy {
   }
 
   performSearch(searchTerm: string) {
-    this.searchSubscription = this.service.search(searchTerm).subscribe({
+    this.searchSubscription = this.service.search(searchTerm, this.translateService.currentLang).subscribe({
       next: (animes) => {
         this.animes = animes
       },
@@ -54,7 +62,7 @@ export class ManageAnimeComponent implements OnInit, OnDestroy {
   }
 
   fetchAnimes() {
-    return firstValueFrom(this.service.getAll(this.currentPage))
+    return firstValueFrom(this.service.getAll(this.currentPage, this.translateService.currentLang))
   }
 
   onPageChange(page: number) {

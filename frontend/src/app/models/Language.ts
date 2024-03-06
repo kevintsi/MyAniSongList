@@ -1,4 +1,4 @@
 export interface Language {
-    id?: Number,
+    id?: number,
     code: string,
 }

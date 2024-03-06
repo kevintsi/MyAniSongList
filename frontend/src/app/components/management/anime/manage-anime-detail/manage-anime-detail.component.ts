@@ -7,6 +7,9 @@ import { ToastrService } from 'ngx-toastr';
 import { Title } from '@angular/platform-browser';
 import { Language } from 'src/app/models/Language';
 import { LanguageService } from 'src/app/_services/language.service';
+import { getAppTitle } from 'src/app/config/app';
+import { AppLanguages } from 'src/app/config/lang';
+import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-manage-anime-detail',
   templateUrl: './manage-anime-detail.component.html',
@@ -22,11 +25,12 @@ export class ManageAnimeDetailComponent implements OnInit, OnDestroy {
   constructor(
     private service: AnimeService,
     private languageService: LanguageService,
+    private translateService: TranslateService,
     private route: ActivatedRoute,
     private toastr: ToastrService,
     private title: Title
   ) {
-    this.title.setTitle("MyAniSongList - Gestion - Modifier un anime")
+    this.title.setTitle(getAppTitle("Gestion - Modifier un anime"))
   }
 
   ngOnDestroy(): void {
@@ -59,7 +63,7 @@ export class ManageAnimeDetailComponent implements OnInit, OnDestroy {
   }
 
   get(id: number) {
-    return firstValueFrom(this.service.get(id))
+    return firstValueFrom(this.service.get(id, this.translateService.currentLang))
   }
 
   onSubmit(formData: any) {

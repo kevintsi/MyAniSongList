@@ -5,6 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { firstValueFrom } from 'rxjs';
 import { MusicService } from 'src/app/_services/music.service';
+import { getAppTitle } from 'src/app/config/app';
 import { Music } from 'src/app/models/Music';
 @Component({
   selector: 'app-manage-music-detail',
@@ -27,7 +28,7 @@ export class ManageMusicDetailComponent implements OnInit {
     let id = Number(this.route.snapshot.paramMap.get('id'))
     try {
       this.music = await this.get(id)
-      this.title.setTitle("MyAniSongList - Gestion - Modifier une musique")
+      this.title.setTitle(getAppTitle("Gestion - Modifier une musique"))
     } catch (error) {
       console.log(error)
     } finally {

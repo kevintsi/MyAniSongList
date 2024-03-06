@@ -2,6 +2,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Subscription, firstValueFrom } from 'rxjs';
 import { ArtistService } from 'src/app/_services/artist.service';
+import { getAppTitle } from 'src/app/config/app';
 import { Artist, PagedArtist } from 'src/app/models/Artist';
 
 @Component({
@@ -29,7 +30,7 @@ export class ManageArtistComponent implements OnDestroy {
   async fetchData() {
     try {
       this.artists = await this.fetchArtists()
-      this.title.setTitle("MyAniSongList - Gestion - Artiste")
+      this.title.setTitle(getAppTitle("Gestion - Artiste"))
     } catch (error) {
       console.log(error)
     }

@@ -3,6 +3,7 @@ import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { UserService } from 'src/app/_services/user.service';
+import { getAppTitle } from 'src/app/config/app';
 import { Music } from 'src/app/models/Music';
 import { User } from 'src/app/models/User';
 
@@ -27,7 +28,7 @@ export class ProfileComponent implements OnInit {
       let id = Number(this.route.snapshot.paramMap.get("id"))
       this.userInfo = await this.fetchUser(id)
       this.favorites = await this.fetchFavorites(id)
-      this.title.setTitle("MyAniSongList - Profil - " + this.userInfo.username)
+      this.title.setTitle(getAppTitle("Profil - " + this.userInfo.username))
     } catch (error) {
       console.log(error)
     }

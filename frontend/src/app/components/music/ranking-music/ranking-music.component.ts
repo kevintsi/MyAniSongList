@@ -3,6 +3,7 @@ import { MusicService } from 'src/app/_services/music.service';
 import { PagedMusic } from 'src/app/models/Music';
 import { firstValueFrom } from 'rxjs'
 import { Title } from '@angular/platform-browser';
+import { getAppTitle } from 'src/app/config/app';
 
 @Component({
   selector: 'app-ranking-music',
@@ -23,7 +24,7 @@ export class RankingMusicComponent {
   async fetchData() {
     try {
       this.musics = await this.fetchMusics()
-      this.title.setTitle("MyAniSongList - Classement des musiques")
+      this.title.setTitle(getAppTitle("Classement des musiques"))
     } catch (error) {
       console.log(error)
     }

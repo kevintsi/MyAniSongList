@@ -3,6 +3,7 @@ import { Title } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { TypeService } from 'src/app/_services/type.service';
+import { getAppTitle } from 'src/app/config/app';
 import { Type } from 'src/app/models/Type';
 
 @Component({
@@ -18,7 +19,7 @@ export class ManageCreateTypeComponent implements OnDestroy {
     private title: Title
   ) {
 
-    this.title.setTitle("MyAniSongList - Gestion - Ajouter un type")
+    this.title.setTitle(getAppTitle("Gestion - Ajouter un type"))
   }
   ngOnDestroy(): void {
     this.createSubscription?.unsubscribe();

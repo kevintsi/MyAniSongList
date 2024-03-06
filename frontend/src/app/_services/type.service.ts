@@ -12,11 +12,11 @@ export class TypeService {
 
   constructor(private http: HttpClient) { }
 
-  public getAll(lang: String = "fr") {
+  public getAll(lang: String) {
     return this.http.get<Type[]>(this.endpoint + '/types/all?lang=' + lang)
   }
 
-  public get(id: number, lang: String = "fr") {
+  public get(id: number, lang: String) {
     return this.http.get<Type>(this.endpoint + '/types/' + id + "?lang=" + lang)
   }
 
@@ -27,14 +27,14 @@ export class TypeService {
     })
   }
 
-  public addTranslation(type: Type, lang: String = "fr") {
+  public addTranslation(type: Type, lang: String) {
     const headers = new HttpHeaders().set('Content-Type', 'application/json')
     return this.http.post<Type>(this.endpoint + "/types/" + type.id + "/add_translation?lang=" + lang, JSON.stringify(type), {
       headers: headers
     })
   }
 
-  public updateTranslation(id: number, updatedType: Type, lang: String = "fr") {
+  public updateTranslation(id: number, updatedType: Type, lang: String) {
     const headers = new HttpHeaders().set('Content-Type', 'application/json')
     return this.http.put<Type>(this.endpoint + "/types/" + id + "/update_translation?lang=" + lang, JSON.stringify(updatedType), {
       headers: headers

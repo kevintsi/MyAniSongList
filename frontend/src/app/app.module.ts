@@ -38,6 +38,7 @@ import localeJp from '@angular/common/locales/ja';
 import localeJpExtra from '@angular/common/locales/extra/ja';
 import localeFr from '@angular/common/locales/fr';
 import localeFrExtra from '@angular/common/locales/extra/fr';
+import { AppLanguages } from './config/lang';
 
 @NgModule({
   declarations: [
@@ -81,7 +82,7 @@ import localeFrExtra from '@angular/common/locales/extra/fr';
         useFactory: (createTranslateLoader),
         deps: [HttpClient]
       },
-      defaultLanguage: "fr"
+      defaultLanguage: AppLanguages[0].id
     }
     )
   ],

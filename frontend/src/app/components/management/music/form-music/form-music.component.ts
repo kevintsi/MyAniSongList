@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { AnimeService } from 'src/app/_services/anime.service';
 import { ArtistService } from 'src/app/_services/artist.service';
@@ -27,20 +28,24 @@ export class FormMusicComponent implements OnDestroy {
   artists!: PagedArtist
   animes!: PagedAnime
   artistName: string = ""
+
   searchAnimeSubscription?: Subscription
   searchArtistSubscription?: Subscription
   searchTypeSubscription?: Subscription
+  languageChangeSubscription?: Subscription
 
   constructor(
     private typeService: TypeService,
     private animeService: AnimeService,
     private artistService: ArtistService,
+    private translateService: TranslateService,
     private formBuilder: FormBuilder) { }
 
   ngOnDestroy(): void {
-    this.searchAnimeSubscription?.unsubscribe()
-    this.searchArtistSubscription?.unsubscribe()
+    this.searchAnimeSubscription?.unsubscribe();
+    this.searchArtistSubscription?.unsubscribe();
     this.searchTypeSubscription?.unsubscribe();
+    this.languageChangeSubscription?.unsubscribe();
   }
 
   ngOnInit() {
@@ -49,6 +54,10 @@ export class FormMusicComponent implements OnDestroy {
       this.populateForm();
     }
     this.getTypes()
+
+    this.languageChangeSubscription = this.translateService.onLangChange.subscribe({
+      next: () => this.getTypes()
+    })
   }
 
   initForm() {
@@ -97,7 +106,7 @@ export class FormMusicComponent implements OnDestroy {
       return
     }
 
-    this.searchAnimeSubscription = this.animeService.search(searchTerm).subscribe({
+    this.searchAnimeSubscription = this.animeService.search(searchTerm, this.translateService.currentLang).subscribe({
       next: (animes) => {
         this.animes = animes
       },
@@ -124,7 +133,7 @@ export class FormMusicComponent implements OnDestroy {
   }
 
   getTypes() {
-    this.searchTypeSubscription = this.typeService.getAll()
+    this.searchTypeSubscription = this.typeService.getAll(this.translateService.currentLang)
       .subscribe({
         next: (types) => {
           this.types = types

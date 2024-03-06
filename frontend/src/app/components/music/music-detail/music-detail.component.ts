@@ -10,6 +10,7 @@ import { Review } from 'src/app/models/Review';
 import { DomSanitizer, Title } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
+import { getAppTitle } from 'src/app/config/app';
 
 @Component({
   selector: 'app-music-detail',
@@ -71,7 +72,7 @@ export class MusicDetailComponent implements OnDestroy, OnInit {
     let id_music = Number(this.route.snapshot.paramMap.get("id"))
     try {
       this.music = await this.getMusic(id_music);
-      this.title.setTitle("MyAniSongList - " + this.music.name)
+      this.title.setTitle(getAppTitle(this.music.name))
       this.reviews = (await this.getMusicReviews(id_music)).items
       if (this.isLoggedIn()) {
         this.userReview = await this.getUserReview(id_music)

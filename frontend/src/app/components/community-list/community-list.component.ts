@@ -4,6 +4,7 @@ import { PagedReview } from 'src/app/models/Review';
 import { Subscription, firstValueFrom } from 'rxjs'
 import { Title } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
+import { getAppTitle } from 'src/app/config/app';
 
 @Component({
   selector: 'app-community-list',
@@ -38,7 +39,7 @@ export class CommunityListComponent {
   async fetchData() {
     try {
       this.reviews = await this.fetchReviews()
-      this.title.setTitle("MyAniSongList - Communauté")
+      this.title.setTitle(getAppTitle("Communauté"))
     } catch (error) {
       console.log(error)
     } finally {

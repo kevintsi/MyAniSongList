@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
 import { firstValueFrom } from 'rxjs';
 import { AnimeService } from 'src/app/_services/anime.service';
 import { Anime } from 'src/app/models/Anime';
@@ -23,7 +24,9 @@ export class FormAnimeComponent {
 
   constructor(
     private service: AnimeService,
-    private formBuilder: FormBuilder) { }
+    private formBuilder: FormBuilder,
+    private translateService: TranslateService
+  ) { }
 
   ngOnInit() {
     this.initForm();
@@ -57,7 +60,7 @@ export class FormAnimeComponent {
   }
 
   populateForm() {
-    this.form.addControl("language", new FormControl("fr", [Validators.required]))
+    this.form.addControl("language", new FormControl(this.translateService.currentLang, [Validators.required]))
     this.form.patchValue({
       name: this.anime.name,
       description: this.anime.description,

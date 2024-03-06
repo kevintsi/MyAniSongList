@@ -9,6 +9,8 @@ import { Type } from 'src/app/models/Type';
 import { TypeService } from 'src/app/_services/type.service';
 import { LanguageService } from 'src/app/_services/language.service';
 import { Language } from 'src/app/models/Language';
+import { getAppTitle } from 'src/app/config/app';
+import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-manage-type-detail',
   templateUrl: './manage-type-detail.component.html',
@@ -18,25 +20,34 @@ export class ManageTypeDetailComponent implements OnInit, OnDestroy {
   isLoading = true
   type!: Type
   languagesType: Language[] = []
-  typeSubscription = new Subscription()
   languages: Language[] = []
+
+
+  typeSubscription?: Subscription
+  languageChangeSubscription?: Subscription
+
 
   constructor(
     private service: TypeService,
     private serviceLanguage: LanguageService,
+    private translateService: TranslateService,
     private route: ActivatedRoute,
     private toastr: ToastrService,
     private title: Title
   ) {
-    this.title.setTitle("MyAniSongList - Gestion - Modifier un type")
+    this.title.setTitle(getAppTitle("Gestion - Modifier un type"))
   }
 
   ngOnDestroy(): void {
-    this.typeSubscription.unsubscribe()
+    this.typeSubscription?.unsubscribe()
+    this.languageChangeSubscription?.unsubscribe();
   }
 
   ngOnInit() {
     this.fetchData()
+    this.languageChangeSubscription = this.translateService.onLangChange.subscribe({
+      next: () => this.fetchData()
+    })
   }
 
   async fetchData() {
@@ -61,7 +72,7 @@ export class ManageTypeDetailComponent implements OnInit, OnDestroy {
   }
 
   get(id: number) {
-    return firstValueFrom(this.service.get(id))
+    return firstValueFrom(this.service.get(id, this.translateService.currentLang))
   }
 
 
