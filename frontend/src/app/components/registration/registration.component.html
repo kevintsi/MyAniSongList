@@ -17,7 +17,7 @@
         </div>
         <label for="email" class="label">{{'Credentials.MailAddress' | translate}} :</label>
         <input type="email" id="email" formControlName="email" class="input border-base-content w-full"
-            placeholder="{{'Credentials.MailAddressPlaceholder' | translate}}" required>
+            placeholder="{{'Credentials.MailPlaceholder' | translate}}" required>
         <div class="flex flex-col items-center alert alert-error mt-4 pb-4"
             *ngIf="registrationForm.get('email')?.invalid && (registrationForm.get('email')?.dirty || registrationForm.get('email')?.touched)">
             <div *ngIf="registrationForm.get('email')?.errors?.['email']">

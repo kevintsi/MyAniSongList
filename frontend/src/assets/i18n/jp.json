@@ -122,6 +122,7 @@
     },
     "Credentials": {
         "Username": "ユーザー名",
+        "UsernamePlaceholder": "ユーザー名を入力してください...",
         "MailAddress": "メールアドレス",
         "MailPlaceholder": "メールアドレスを入力してください...",
         "Password": "パスワード",

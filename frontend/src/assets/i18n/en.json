@@ -122,6 +122,7 @@
     },
     "Credentials": {
         "Username": "Username",
+        "UsernamePlaceholder": "Enter your username...",
         "MailAddress": "Email Address",
         "MailPlaceholder": "Enter your email...",
         "Password": "Password",
