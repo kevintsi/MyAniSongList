@@ -24,6 +24,14 @@
         },
         "Search": "Recherche..."
     },
+    "LoginPage": {
+        "Title": "Connexion",
+        "ValidBtn": "Se connecter"
+    },
+    "RegisterPage": {
+        "Title": "Inscription",
+        "ValidBtn": "S'inscrire"
+    },
     "HomePage": {
         "HomeMessage": {
             "HomeMessageTitle": "Bienvenue",
@@ -32,5 +40,266 @@
         "HomeLastReleasedMusics": "Dernières musiques sorties",
         "HomeMostPopularMusics": "Musiques les plus populaires",
         "HomeNoMusics": "Aucune musiques"
+    },
+    "AnimePage": {
+        "NoAnimes": "Aucun animes",
+        "Details": {
+            "Synopsis": "Résumé",
+            "MusicsListTitle": "Openings et Endings",
+            "EmptyMusics": "Aucun openings ni endings pour cet animé"
+        }
+    },
+    "ArtistPage": {
+        "NoArtists": "Aucun artistes",
+        "Details": {
+            "Informations": {
+                "Title": "Informations",
+                "CreationYear": "Année de création"
+            },
+            "MusicsListTitle": "Openings et Endings",
+            "EmptyMusics": "Aucun openings ni endings chanté par cet artiste"
+        }
+    },
+    "FavoritesPage": {
+        "Title": "Vos favoris",
+        "NoFavorites": "Aucune musique favorite"
+    },
+    "MusicPage": {
+        "NoMusics": "Aucune musiques",
+        "TopMusics": {
+            "Title": "Classement des meilleurs musiques",
+            "Table": {
+                "Ranking": "Classement",
+                "Title": "Titre",
+                "Note": "Note"
+            }
+        },
+        "Details": {
+            "Informations": {
+                "Title": "Informations",
+                "ReleaseDate": "Date de sortie",
+                "Type": "Type"
+            },
+            "Favorite": {
+                "AddFavorite": "Ajouter au favoris",
+                "RemoveFavorite": "Supprimer des favoris"
+            },
+            "Review": {
+                "ReviewBtn": "Donne/Modifie ton avis",
+                "Title": "Avis",
+                "VisualNote": "Note visuel",
+                "MusicNote": "Note musique",
+                "Description": "Description",
+                "DescriptionPlaceholder": "Description...",
+                "ValidBtn": "Valider"
+            },
+            "MusicVideo": "Vidéo",
+            "MusicAnime": "Anime",
+            "SeeMore": "Voir plus"
+        }
+    },
+    "ReviewPage": {
+        "Title": "Avis",
+        "VisualNote": "Note du visuel",
+        "MusicNote": "Note de la musique",
+        "NoReviews": "Aucun avis",
+        "NoReviewsMusic": "Pas encore d'avis sur cet opening ou ending"
+    },
+    "CommunityPage": {
+        "NoReviews": "Aucun avis",
+        "Title": "Communautés - Tous les avis",
+        "From": "De",
+        "VisualNote": "Note du visuel",
+        "MusicNote": "Note de la musique"
+    },
+    "ProfilePage": {
+        "Title": "Informations",
+        "TitleFavoritesMusics": "Musiques favorites",
+        "NoFavoritesUser": "Aucune musiques ajoutées en favoris",
+        "UserProfilePicAlt": "Photo de profil de l'utilisateur",
+        "MusicPosterAlt": "Poster du single",
+        "ValidBtn": "Valider"
+    },
+    "Credentials": {
+        "Username": "Nom d'utilisateur",
+        "MailAddress": "Adresse e-mail",
+        "MailPlaceholder": "Entrez votre email...",
+        "Password": "Mot de passe",
+        "PasswordPlaceholder": "Entrez votre mot de passe...",
+        "ConfirmPassword": "Confirmer le mot de passe",
+        "ConfirmPasswordPlaceholder": "Confirmer le mot de passe..."
+    },
+    "Management": {
+        "Title": "Gestion",
+        "NavBar": {
+            "TitleAnime": "Anime",
+            "TitleMusic": "Musique",
+            "TitleArtist": "Artiste",
+            "TitleType": "Type",
+            "TitleLanguage": "Langue"
+        },
+        "Anime": {
+            "AddTitle": "Ajouter un anime",
+            "UpdateTitle": "Modifier un anime",
+            "LanguageLabel": "Choisir la langue",
+            "Title": "Ajouter un anime",
+            "NameLabel": "Nom",
+            "NamePlaceholder": "Nom de l'animé",
+            "DescriptionLabel": "Description",
+            "DescriptionPlaceholder": "Description de l'animé",
+            "AddTranslationBtn": "Ajouter une traduction",
+            "AddBtn": "Ajouter",
+            "UpdateBtn": "Modifier",
+            "Translation": {
+                "AddTitle": "Ajouter une traduction",
+                "LanguageLabel": "Choisir la langue",
+                "TitleLabel": "Traduction titre",
+                "DescriptionLabel": "Description"
+            }
+        },
+        "Artist": {
+            "AddTitle": "Ajouter un(e) artiste",
+            "UpdateTitle": "Modifier un(e) artiste",
+            "Title": "Ajouter un(e) artiste",
+            "ImageArtistAlt": "Image artiste",
+            "NameLabel": "Nom",
+            "NamePlaceholder": "Nom de l'artiste",
+            "CreationYearLabel": "Année de création",
+            "CreationYearPlaceholder": "Année de création",
+            "AddBtn": "Ajouter",
+            "UpdateBtn": "Modifier"
+        },
+        "Music": {
+            "AddTitle": "Ajouter une musique",
+            "UpdateTitle": "Modifier une musique",
+            "Title": "Ajouter un musique",
+            "ImageMusicAlt": "Image musique",
+            "NameLabel": "Nom",
+            "NamePlaceholder": "Nom de la musique",
+            "ReleaseDateLabel": "Date de sortie",
+            "AnimeLabel": "Anime",
+            "VideoLabel": "Vidéo",
+            "VideoPlaceholder": "Identifiant de la vidéo",
+            "ArtistsLabel": "Artistes",
+            "TypeLabel": "Type",
+            "DropDownDisabledType": "Selectionnez le type",
+            "AddBtn": "Ajouter",
+            "UpdateBtn": "Modifier"
+        },
+        "Language": {
+            "AddTitle": "Ajouter une langue",
+            "UpdateTitle": "Modifier une langue",
+            "NameLabel": "Langue",
+            "NamePlaceholder": "Nom de la langue",
+            "AddBtn": "Ajouter",
+            "UpdateBtn": "Modifier"
+        },
+        "Type": {
+            "AddTitle": "Ajouter un type",
+            "UpdateTitle": "Modifier un type",
+            "LanguageLabel": "Choisir la language",
+            "TypeLabel": "Nom du type de musique",
+            "TypePlaceholder": "Nom du type de musique",
+            "AddBtn": "Ajouter",
+            "UpdateBtn": "Modifier",
+            "Translation": {
+                "AddTitle": "Ajouter une traduction",
+                "LanguageLabel": "Choisir la langue",
+                "TranslationLabel": "Traduction type",
+                "TranslationPlaceholder": "Nom du type de musique"
+            }
+        },
+        "Content": {
+            "Anime": {
+                "Table": {
+                    "Name": "Nom",
+                    "Description": "Description",
+                    "Action": "Action"
+                },
+                "AddAnime": {
+                    "Main": "Ajouter",
+                    "Title": "Ajouter un anime"
+                },
+                "NoAnimes": "Il n'y a pas d'animes"
+            },
+            "Music": {
+                "Table": {
+                    "Name": "Nom",
+                    "Type": "Type",
+                    "ReleaseDate": "Date de sortie",
+                    "Action": "Action"
+                },
+                "AddMusic": {
+                    "Main": "Ajouter",
+                    "Title": "Ajouter une musique"
+                },
+                "NoMusics": "Il n'y a pas de musiques"
+            },
+            "Artist": {
+                "Table": {
+                    "Name": "Nom",
+                    "CreationYear": "Année de création",
+                    "Action": "Action"
+                },
+                "AddArtist": {
+                    "Main": "Ajouter",
+                    "Title": "Ajouter un artiste"
+                },
+                "NoArtists": "Il n'y a pas d'artistes"
+            },
+            "Type": {
+                "Table": {
+                    "Name": "Nom",
+                    "Action": "Action"
+                },
+                "AddTypeMusic": {
+                    "Main": "Ajouter",
+                    "Title": "Ajouter un type de musique"
+                },
+                "NoTypes": "Il n'y a pas de types"
+            },
+            "Language": {
+                "Table": {
+                    "Code": "Code",
+                    "Action": "Action"
+                },
+                "AddLanguage": {
+                    "Main": "Ajouter",
+                    "Title": "Ajouter une langue"
+                },
+                "NoLanguages": "Il n'y a pas de langues"
+            }
+        }
+    },
+    "NotFoundPage": {
+        "Title": "404 Page non trouvée",
+        "Content": "La page demandée n'a pas pu être trouvée"
+    },
+    "Pagination": {
+        "NextPage": "Suivante",
+        "PreviousPage": "Précedente"
+    },
+    "ErrorMessage": {
+        "EmailFormat": "L'email doit être avec le format d'email",
+        "MissingUsername": "Le nom d'utilisateur est obligatoire",
+        "UsernameTooShort": "Le nom d'utilisateur doit avoir au minimum 4 caractères",
+        "MissingEmail": "L'email est obligatoire",
+        "MissingPassword": "Le mot de passe est obligatoire",
+        "MissingConfPassword": "La confirmation du mot de passe est obligatoire",
+        "NotMatchingPassword": "Les deux mot de passe doivent être identiques",
+        "MissingArtistName": "Le nom de l'artiste est obligatoire",
+        "MissingArtistImage": "L'image artiste est obligatoire",
+        "MissingAnimeName": "Le nom est obligatoire",
+        "MissingAnimeDescription": "La description est obligatoire",
+        "MissingCreationYear": "L'année de création est obligatoire",
+        "MissingMusicImage": "L'image d'affiche musique est obligatoire",
+        "MissingMusicName": "Le nom de la musique est obligatoire",
+        "MissingReleaseDate": "La date de sortie est obligatoire",
+        "MissingMusicAnime": "L'anime est obligatoire",
+        "MissingVideoId": "L'identifiant de vidéo est obligatoire",
+        "MissingMusicArtists": "Choisir au moins un artiste",
+        "MissingMusicType": "Le type de musique est obligatoire",
+        "MissingLanguage": "La langue est obligatoire",
+        "MissingTypeName": "Le nom du type est obligatoire"
     }
 }

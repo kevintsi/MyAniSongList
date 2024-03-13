@@ -1,4 +1,4 @@
-<div *ngIf="reviews.length == 0" class=" p-4 text-center">Pas encore d'avis sur cet opening ou ending</div>
+<div *ngIf="reviews.length == 0" class=" p-4 text-center">{{'ReviewPage.NoReviewsMusic' | translate}}</div>
 <div class="flex flex-col items-center p-4 md:p-2">
     <div *ngFor="let review of reviews; trackBy: trackByReviewId" class="mt-4 pb-10 border-b border-gray-400/60 w-full">
         <div class="flex flex-row justify-start ">
@@ -12,11 +12,11 @@
                     <div>{{ review.creation_date | date : 'mediumDate' : '' : getCurrentLang()}}</div>
                 </div>
                 <div class="flex flex-col items-start pt-2">
-                    <h3>Note du visuel :</h3>
+                    <h3>{{'ReviewPage.VisualNote' | translate}} :</h3>
                     <app-rating-stars [isStatic]="true" [rate]="review.note_visual*2"></app-rating-stars>
                 </div>
                 <div class="flex flex-col items-start pt-2">
-                    <h3>Note de la musique :</h3>
+                    <h3>{{'ReviewPage.MusicNote' | translate}} :</h3>
                     <app-rating-stars [isStatic]="true" [rate]="review.note_music*2"></app-rating-stars>
                 </div>
                 <div class="pt-2 italic">{{ review.description}}</div>

@@ -1,10 +1,14 @@
 <form [formGroup]="formTypeGroup" class="flex flex-col items-center p-10" (ngSubmit)="onSubmit()">
     <div class="w-full flex flex-col items-center">
 
-        <div class="font-bold text-lg md:text-2xl">{{isUpdate ? "Modifier un " :"Ajouter un "}} type </div>
+        <div class="font-bold text-lg md:text-2xl" *ngIf="isUpdate;else createTitle">{{'Management.Type.UpdateTitle' |
+            translate}}</div>
+        <ng-template #createTitle>
+            <div class="font-bold text-lg md:text-2xl">{{'Management.Type.AddTitle' | translate}}</div>
+        </ng-template>
 
         <div *ngIf="isUpdate" class="mt-4 w-full flex flex-col items-center justify-center md:flex-row">
-            <label class="label p-2">Choisir la langue : </label>
+            <label class="label p-2">{{'Management.Type.LanguageLabel' | translate}} : </label>
             <div class="flex flex-row items-center">
                 <select class="select w-full max-w-xs !outline-none border-base-content" (change)="onChange($event)">
                     <option *ngFor="let lang of languagesType" [value]="lang.code"
@@ -13,7 +17,8 @@
                 </select>
                 <div *ngIf="languages && languagesType && languages.length > languagesType.length"
                     class="btn ml-4 outline outline-1">
-                    <button class="text-2xl flex justify-center" title="Ajouter une traduction">
+                    <button class="text-2xl flex justify-center"
+                        title="{{'Management.Type.Translation.AddTitle' | translate}}">
                         <mat-icon [inline]="true"
                             [routerLink]="['/manage/types/', type.id ,'createTranslation']">add</mat-icon>
                     </button>
@@ -22,20 +27,24 @@
         </div>
 
         <div class="flex flex-col items-center justify-center md:flex-row mt-4">
-            <label class="label mt-4">Nom du type de musique : </label>
+            <label class="label mt-4">{{'Management.Type.TypeLabel' | translate}} : </label>
             <div>
-                <input type="text" placeholder="Nom du type de musique" formControlName="name"
-                    class="input border-base-content w-full mt-4 !outline-none" />
+                <input type="text" placeholder="{{'Management.Type.TypePlaceholder' | translate}}"
+                    formControlName="name" class="input border-base-content w-full mt-4 !outline-none" />
             </div>
         </div>
 
         <div class="flex flex-col items-center alert alert-error mt-4 pb-4"
             *ngIf="formTypeGroup.get('name')?.invalid && (formTypeGroup.get('name')?.dirty || formTypeGroup.get('name')?.touched)">
             <label *ngIf="formTypeGroup.get('name')?.errors?.['required']">
-                Le nom est obligatoire
+                {{'ErrorMessage.MissingTypeName' | translate}}
             </label>
         </div>
 
     </div>
-    <button type="submit" class="btn mt-4">{{ isUpdate ? "Modifier" :"Ajouter"}}</button>
+    <button type="submit" class="btn mt-4" *ngIf="isUpdate;else createBtn">{{'Management.Type.UpdateBtn' |
+        translate}}</button>
+    <ng-template #createBtn>
+        <button type="submit" class="btn mt-4">{{'Management.Type.AddBtn' | translate}}</button>
+    </ng-template>
 </form>

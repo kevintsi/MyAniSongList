@@ -6,22 +6,24 @@
     <ng-container *ngIf="!isLoading">
         <div class="flex flex-row items-center pt-4">
             <button type="button" routerLink="/manage/musics/create"
-                class="btn cursor-pointer outline outline-1 text-center ml-2 mr-2" title="Ajouter un type de musique">
+                class="btn cursor-pointer outline outline-1 text-center ml-2 mr-2"
+                title="{{'Management.Content.Music.AddMusic.Title' | translate}}">
                 <mat-icon>add</mat-icon>
-                <label class="hidden md:inline-block">Ajouter</label>
+                <label class="hidden md:inline-block">{{'Management.Content.Music.AddMusic.Main' | translate}}</label>
             </button>
             <app-search-bar (searchEvent)="performSearch($event)" class="w-full"></app-search-bar>
         </div>
-        <div *ngIf="musics.items.length == 0">Il n'y a pas de musiques</div>
+        <div *ngIf="musics.items.length == 0">{{'Management.Content.Music.NoMusics' | translate}}</div>
         <div *ngIf="musics.items.length > 0">
             <table class="table table-fixed text-justify font-semibold">
                 <thead class="md:text-xl text-center">
                     <tr>
                         <th></th>
-                        <th>Nom</th>
-                        <th>Type</th>
-                        <th class="overflow-hidden text-ellipsis whitespace-nowrap">Date de sortie</th>
-                        <th>Action</th>
+                        <th>{{'Management.Content.Music.Table.Name' | translate}}</th>
+                        <th>{{'Management.Content.Music.Table.Type' | translate}}</th>
+                        <th class="overflow-hidden text-ellipsis whitespace-nowrap">
+                            {{'Management.Content.Music.Table.ReleaseDate' | translate}}</th>
+                        <th>{{'Management.Content.Music.Table.Action' | translate}}</th>
                     </tr>
                 </thead>
 

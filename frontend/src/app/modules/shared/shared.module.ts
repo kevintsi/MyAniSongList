@@ -15,7 +15,8 @@ import { TranslateModule } from '@ngx-translate/core';
     ],
     exports: [
         PaginationComponent,
-        SearchBarComponent
+        SearchBarComponent,
+        TranslateModule
     ]
 })
 export class SharedModule { }

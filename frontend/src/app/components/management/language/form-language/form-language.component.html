@@ -1,20 +1,29 @@
 <form class="flex flex-col items-center p-10" (ngSubmit)="onSubmit()">
 
-    <div class="font-bold text-lg md:text-2xl">{{isUpdate ? "Modifier une " :"Ajouter une "}} langue </div>
+    <div class="font-bold text-lg md:text-2xl" *ngIf="isUpdate;else createTitle">{{'Management.Language.UpdateTitle' |
+        translate}}</div>
+    <ng-template #createTitle>
+        <div class="font-bold text-lg md:text-2xl">{{'Management.Language.AddTitle' | translate}}</div>
+    </ng-template>
 
     <div class="w-full flex flex-col items-center md:flex-row mt-4">
-        <label class="label mt-4">Langue : </label>
+        <label class="label mt-4">{{'Management.Language.NameLabel' | translate}} : </label>
         <div>
-            <input type="text" placeholder="Nom de la langue" [formControl]="langName"
-                class="input border-base-content w-full mt-4 !outline-none" />
+            <input type="text" placeholder="{{'Management.Language.NamePlaceholder' | translate}}"
+                [formControl]="langName" class="input border-base-content w-full mt-4 !outline-none" />
         </div>
 
     </div>
     <div class="flex flex-col items-center alert alert-error mt-4 pb-4"
         *ngIf="langName?.invalid && (langName?.dirty || langName?.touched)">
         <label *ngIf="langName?.errors?.['required']">
-            Le nom est obligatoire
+            {{'ErrorMessage.MissingLanguage' | translate}}
         </label>
     </div>
-    <button type="submit" class="btn mt-4">{{ isUpdate ? "Modifier" :"Ajouter"}}</button>
+    <button type="submit" class="btn mt-4" *ngIf="isUpdate;else createBtn">{{'Management.Language.UpdateBtn' |
+        translate}}</button>
+    <ng-template #createBtn>
+        <button type="submit" class="btn mt-4">{{'Management.Language.AddBtn' |
+            translate}}</button>
+    </ng-template>
 </form>

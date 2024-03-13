@@ -21,7 +21,8 @@
                         <div class="p-4">N/A</div>
                     </ng-template>
                     <div *ngIf="isLoggedIn()" class="pb-4 cursor-pointer flex flex-row items-center">
-                        <button (click)="my_modal.showModal()" class="btn bg-base-300">Donne/Modifie ton avis
+                        <button (click)="my_modal.showModal()"
+                            class="btn bg-base-300">{{'MusicPage.Details.Review.ReviewBtn' | translate}}
                             <div class="text-2xl pl-2">
                                 <mat-icon [inline]="true">edit</mat-icon>
                             </div>
@@ -29,16 +30,19 @@
                     </div>
                     <dialog #my_modal class="modal">
                         <form method="dialog" class="modal-box flex flex-col" (ngSubmit)="onSubmit()">
-                            <h1 class="p-2 text-xl text-center font-bold">Avis</h1>
-                            <label class="label">Note visuel : *</label>
+                            <h1 class="p-2 text-xl text-center font-bold">{{'MusicPage.Details.Review.Title' |
+                                translate}}</h1>
+                            <label class="label">{{'MusicPage.Details.Review.VisualNote' | translate}} : *</label>
                             <app-rating-stars [isStatic]=false type="visual" [(rate)]="noteVisual" />
-                            <label class="label">Note musique : *</label>
+                            <label class="label">{{'MusicPage.Details.Review.MusicNote' | translate}} : *</label>
                             <app-rating-stars [isStatic]=false type="music" [(rate)]=noteMusic />
-                            <label class="label">Description :</label>
-                            <textarea [formControl]="description" placeholder="Description..."
+                            <label class="label">{{'MusicPage.Details.Review.Description' | translate}} :</label>
+                            <textarea [formControl]="description"
+                                placeholder="{{'MusicPage.Details.Review.DescriptionPlaceholder' | translate}}"
                                 class="textarea textarea-bordered"></textarea>
                             <div class="flex justify-center p-2">
-                                <button type="submit" class="btn">Valider</button>
+                                <button type="submit" class="btn">{{'MusicPage.Details.Review.ValidBtn' |
+                                    translate}}</button>
                             </div>
                         </form>
                         <form method="dialog" class="modal-backdrop">
@@ -50,7 +54,7 @@
                             <div class="text-2xl pt-2 pr-1">
                                 <mat-icon [inline]="true">favorite</mat-icon>
                             </div>
-                            <div>Supprimer des favoris</div>
+                            <div>{{'MusicPage.Details.Favorite.RemoveFavorite' | translate}}</div>
                         </button>
                     </ng-container>
                     <ng-template #elseBlock>
@@ -58,18 +62,20 @@
                             <div class="text-2xl pt-2 pr-1">
                                 <mat-icon [inline]="true">favorite_outline</mat-icon>
                             </div>
-                            <div>Ajouter au favoris</div>
+                            <div>{{'MusicPage.Details.Favorite.AddFavorite' | translate}}</div>
                         </button>
                     </ng-template>
 
                 </div>
                 <div class="w-full p-4">
-                    <h2 class="font-bold border-b border-gray-400/60">Informations</h2>
+                    <h2 class="font-bold border-b border-gray-400/60">{{'MusicPage.Details.Informations.Title' |
+                        translate}}</h2>
                     <div class="flex flex-col pt-4">
-                        <div><label class="font-bold">Date de sortie : </label> {{ music.release_date | date :
+                        <div><label class="font-bold">{{'MusicPage.Details.Informations.ReleaseDate' | translate}} :
+                            </label> {{ music.release_date | date :
                             "longDate" : '' : getCurrentLang()}}</div>
                         <div>
-                            <label class="font-bold">Type :</label>
+                            <label class="font-bold">{{'MusicPage.Details.Informations.Type' | translate}} :</label>
                             <div class="badge badge-outline ml-2"
                                 [ngClass]="music.type.id == 1 ? 'badge-primary'  : 'badge-secondary'">
                                 {{ music.type.name}}
@@ -79,7 +85,8 @@
                 </div>
             </div>
             <div class="flex flex-col w-full">
-                <h2 class="font-bold text-start m-4 w-full-2 border-b border-gray-400/60">Vidéo</h2>
+                <h2 class="font-bold text-start m-4 w-full-2 border-b border-gray-400/60">
+                    {{'MusicPage.Details.MusicVideo' | translate}}</h2>
                 <div class="p-4 flex flex-col items-center">
                     <div class="pt-4">
                         <iframe [src]="getSafeUrl(music.id_video)" frameborder="0" class="md:w-96 md:h-56"
@@ -88,7 +95,8 @@
                     </div>
                 </div>
                 <div>
-                    <h2 class="font-bold text-start m-4 w-full-2 border-b border-gray-400/60">Anime</h2>
+                    <h2 class="font-bold text-start m-4 w-full-2 border-b border-gray-400/60">
+                        {{'MusicPage.Details.MusicAnime' | translate}}</h2>
                     <div class="flex flex-col">
                         <div class="flex flex-row p-4 rounded-lg  items-center">
                             <img [src]="music.anime.poster_img" [routerLink]="['/animes', music.anime.id]"
@@ -117,12 +125,13 @@
                 </div>
 
                 <div>
-                    <h2 class="font-bold text-start m-4 w-full-2 border-b border-gray-400/60">Avis</h2>
+                    <h2 class="font-bold text-start m-4 w-full-2 border-b border-gray-400/60">
+                        {{'MusicPage.Details.Review.Title' | translate}}</h2>
                     <div class="flex flex-col lg:w-full lg:p-4">
                         <app-review-short-list [reviews]=reviews></app-review-short-list>
                         <div *ngIf="reviews.length == 10" class="text-center pt-4"><a
-                                [routerLink]="['/reviews', music.id]">Voir
-                                plus</a></div>
+                                [routerLink]="['/reviews', music.id]">{{'MusicPage.Details.SeeMore' | translate}}</a>
+                        </div>
                     </div>
                 </div>
             </div>

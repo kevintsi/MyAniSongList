@@ -1,11 +1,16 @@
 <form [formGroup]="form" class="flex flex-col items-center  p-10" (ngSubmit)="onSubmit()">
 
-    <div class="mb-4 font-bold text-lg md:text-2xl">{{isUpdate ? "Modifier un " :"Ajouter une "}} musique </div>
+    <div class="mb-4 font-bold text-lg md:text-2xl" *ngIf="isUpdate;else createTitle">{{'Management.Music.UpdateTitle' |
+        translate}}</div>
+    <ng-template #createTitle>
+        <div class="mb-4 font-bold text-lg md:text-2xl">{{'Management.Music.AddTitle' | translate}}</div>
+    </ng-template>
 
     <div (click)="imageInput.click()"
         class="flex hover:bg-slate-100 cursor-pointer border-2 border-base-content justify-center items-center h-80 w-60">
         <ng-container *ngIf="previewImage;else elseBlock">
-            <img class="h-full w-full object-contain" [src]="previewImage" alt="Image musique" />
+            <img class="h-full w-full object-contain" [src]="previewImage"
+                alt="{{'Management.Music.ImageMusicAlt' | translate}}" />
         </ng-container>
         <ng-template #elseBlock>
             <div class="text-8xl">
@@ -16,37 +21,37 @@
     <div class="flex flex-col items-center alert alert-error mt-4 pb-4"
         *ngIf="form.get('poster_img')?.invalid && (form.get('poster_img')?.dirty || form.get('poster_img')?.touched)">
         <div *ngIf="form.get('poster_img')?.errors?.['required']">
-            L'image d'affiche est obligatoire
+            {{'ErrorMessage.MissingMusicImage' | translate}}
         </div>
     </div>
-    <label class="label mt-4">Nom : </label>
+    <label class="label mt-4">{{'Management.Music.NameLabel' | translate}} : </label>
     <div>
         <input class="input border-base-content w-full mt-4 !outline-none" type="text" formControlName="name"
-            placeholder="Nom de la musique" />
+            placeholder="{{'Management.Music.NamePlaceholder' | translate}}" />
 
         <div class="flex flex-col items-center alert alert-error mt-4 pb-4"
             *ngIf="form.get('name')?.invalid && (form.get('name')?.dirty || form.get('name')?.touched)">
             <div *ngIf="form.get('name')?.errors?.['required']">
-                Le nom de la musique est obligatoire
+                {{'ErrorMessage.MissingMusicName' | translate}}
             </div>
         </div>
     </div>
 
 
-    <label class="label mt-4">Date de sortie : </label>
+    <label class="label mt-4">{{'Management.Music.ReleaseDateLabel' | translate}} : </label>
     <div>
         <input class="input border-base-content w-full !outline-none mt-4" type="date" formControlName="release_date" />
 
         <div class="flex flex-col items-center alert alert-error mt-4 pb-4"
             *ngIf="form.get('release_date')?.invalid && (form.get('release_date')?.dirty || form.get('release_date')?.touched)">
             <div *ngIf="form.get('release_date')?.errors?.['required']">
-                Le date de sortie est obligatoire
+                {{'ErrorMessage.MissingReleaseDate' | translate}}
             </div>
         </div>
     </div>
 
 
-    <label class="label mt-4">Anime : </label>
+    <label class="label mt-4"> {{'Management.Music.AnimeLabel' | translate}} : </label>
 
 
     <div>
@@ -67,7 +72,7 @@
         <div class="flex flex-col items-center alert alert-error mt-4 pb-4"
             *ngIf="form.get('selected_anime')?.invalid && (form.get('selected_anime')?.dirty || form.get('selected_anime')?.touched)">
             <div *ngIf="form.get('selected_anime')?.errors?.['required']">
-                L'anime est obligatoire
+                {{'ErrorMessage.MissingMusicAnime' | translate}}
             </div>
         </div>
 
@@ -80,20 +85,20 @@
 
     </div>
 
-    <label class="label mt-4">Video : </label>
+    <label class="label mt-4">{{'Management.Music.VideoLabel' | translate}} : </label>
     <div>
-        <input class="input border-base-content w-full  mt-4 !outline-none" placeholder="Identifiant de la vidéo"
-            type="text" formControlName="id_video" />
+        <input class="input border-base-content w-full  mt-4 !outline-none"
+            placeholder="{{'Management.Music.VideoPlaceholder' | translate}}" type="text" formControlName="id_video" />
 
         <div class="flex flex-col items-center alert alert-error mt-4 pb-4"
             *ngIf="form.get('id_video')?.invalid && (form.get('id_video')?.dirty || form.get('id_video')?.touched)">
             <div *ngIf="form.get('id_video')?.errors?.['required']">
-                L'identifiant de vidéo est obligatoire
+                {{'ErrorMessage.MissingVideoId' | translate}}
             </div>
         </div>
     </div>
 
-    <label class="label mt-4">Artistes : </label>
+    <label class="label mt-4">{{'Management.Music.ArtistsLabel' | translate}} : </label>
     <div>
         <div class="p-2 flex flex-wrap justify-start w-full">
             <ng-container *ngFor="let artist of form.get('selected_artists')?.value">
@@ -113,7 +118,7 @@
         <div class="flex flex-col items-center alert alert-error mt-4 pb-4"
             *ngIf="form.get('selected_artists')?.invalid && (form.get('selected_artists')?.dirty || form.get('selected_artists')?.touched)">
             <div *ngIf="form.get('selected_artists')?.errors?.['arrayEmpty']">
-                Choisir au moins un artiste
+                {{'MissingMusicArtists' | translate}}
             </div>
         </div>
 
@@ -124,19 +129,23 @@
         </ng-container>
     </div>
 
-    <label class="label mt-4">Types : </label>
+    <label class="label mt-4">{{'Management.Music.TypeLabel' | translate}} : </label>
     <div>
         <select class="select border-base-content !outline-none w-full" *ngIf="types" formControlName="type_id">
-            <option [ngValue]="null" disabled>Selectionnez le type</option>
+            <option [ngValue]="null" disabled>{{'Management.Music.DropDownDisabledType' | translate}}</option>
             <option [ngValue]="type.id" *ngFor="let type of types">{{ type.name}}</option>
         </select>
         <input [hidden]="true" #imageInput type="file" (change)="processFile(imageInput)" />
         <div class="flex flex-col items-center alert alert-error mt-4 pb-4"
             *ngIf="form.get('type_id')?.invalid && (form.get('type_id')?.dirty || form.get('type_id')?.touched)">
             <div *ngIf="form.get('type_id')?.errors?.['required']">
-                Le type de musique est obligatoire
+                {{'ErrorMessage.MissingMusicType' | translate}}
             </div>
         </div>
     </div>
-    <button class="btn mt-4" type="submit">{{ isUpdate ? "Modifier" : "Ajouter"}}</button>
+    <button class="btn mt-4" type="submit" *ngIf="isUpdate; else createBtn">{{'Management.Music.UpdateBtn' |
+        translate}}</button>
+    <ng-template #createBtn>
+        <button class="btn mt-4" type="submit">{{'Management.Music.AddBtn' | translate}}</button>
+    </ng-template>
 </form>

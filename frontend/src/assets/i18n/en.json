@@ -1,8 +1,8 @@
 {
     "TopBar": {
-        "LogIn": "Log in",
+        "LogIn": "Log In",
         "Register": "Register",
-        "LogOut": "Log out",
+        "LogOut": "Log Out",
         "Favorites": "Favorites",
         "Profile": "Profile",
         "Management": "Management"
@@ -12,8 +12,8 @@
         "Artists": "Artists",
         "Musics": {
             "Nav": "Musics",
-            "MusicsList": "Musics list",
-            "Ranking": "Ranking"
+            "MusicsList": "Music List",
+            "Ranking": "Top Music"
         },
         "Community": "Community",
         "DropDownCategory": {
@@ -24,13 +24,282 @@
         },
         "Search": "Search..."
     },
+    "LoginPage": {
+        "Title": "Log In",
+        "ValidBtn": "Log In"
+    },
+    "RegisterPage": {
+        "Title": "Register",
+        "ValidBtn": "Register"
+    },
     "HomePage": {
         "HomeMessage": {
             "HomeMessageTitle": "Welcome",
-            "HomeMessageMain": "Welcome to MyAniSongList, the web application where you will be able to give reviews on your favorites openings and endings from your favorites animes."
+            "HomeMessageMain": "Welcome to MyAniSongList, the web application where you can give your opinion on the openings and endings of your favorite anime."
         },
-        "HomeLastReleasedMusics": "Last musics released",
-        "HomeMostPopularMusics": "Most popular musics",
+        "HomeLastReleasedMusics": "Last Released Musics",
+        "HomeMostPopularMusics": "Most Popular Musics",
         "HomeNoMusics": "No musics"
+    },
+    "AnimePage": {
+        "NoAnimes": "No anime",
+        "Details": {
+            "Synopsis": "Synopsis",
+            "MusicsListTitle": "Openings and Endings",
+            "EmptyMusics": "No openings or endings for this anime"
+        }
+    },
+    "ArtistPage": {
+        "NoArtists": "No artists",
+        "Details": {
+            "Informations": {
+                "Title": "Information",
+                "CreationYear": "Creation Year"
+            },
+            "MusicsListTitle": "Openings and Endings",
+            "EmptyMusics": "No openings or endings sung by this artist"
+        }
+    },
+    "FavoritesPage": {
+        "Title": "Your Favorites",
+        "NoFavorites": "No favorite music"
+    },
+    "MusicPage": {
+        "NoMusics": "No musics",
+        "TopMusics": {
+            "Title": "Top Music Ranking",
+            "Table": {
+                "Ranking": "Ranking",
+                "Title": "Title",
+                "Note": "Note"
+            }
+        },
+        "Details": {
+            "Informations": {
+                "Title": "Information",
+                "ReleaseDate": "Release Date",
+                "Type": "Type"
+            },
+            "Favorite": {
+                "AddFavorite": "Add to Favorites",
+                "RemoveFavorite": "Remove from Favorites"
+            },
+            "Review": {
+                "ReviewBtn": "Give/Modify your opinion",
+                "Title": "Review",
+                "VisualNote": "Visual Note",
+                "MusicNote": "Music Note",
+                "Description": "Description",
+                "DescriptionPlaceholder": "Description...",
+                "ValidBtn": "Validate"
+            },
+            "MusicVideo": "Video",
+            "MusicAnime": "Anime",
+            "SeeMore": "See more"
+        }
+    },
+    "ReviewPage": {
+        "Title": "Reviews",
+        "VisualNote": "Visual Note",
+        "MusicNote": "Music Note",
+        "NoReviews": "No reviews",
+        "NoReviewsMusic": "No reviews yet for this opening or ending"
+    },
+    "CommunityPage": {
+        "NoReviews": "No reviews",
+        "Title": "Community - All Reviews",
+        "From": "From",
+        "VisualNote": "Visual Note",
+        "MusicNote": "Music Note"
+    },
+    "ProfilePage": {
+        "Title": "Information",
+        "TitleFavoritesMusics": "Favorite Musics",
+        "NoFavoritesUser": "No music added to favorites",
+        "UserProfilePicAlt": "User profile picture",
+        "MusicPosterAlt": "Single poster",
+        "ValidBtn": "Validate"
+    },
+    "Credentials": {
+        "Username": "Username",
+        "MailAddress": "Email Address",
+        "MailPlaceholder": "Enter your email...",
+        "Password": "Password",
+        "PasswordPlaceholder": "Enter your password...",
+        "ConfirmPassword": "Confirm Password",
+        "ConfirmPasswordPlaceholder": "Confirm the password..."
+    },
+    "Management": {
+        "Title": "Management",
+        "NavBar": {
+            "TitleAnime": "Anime",
+            "TitleMusic": "Music",
+            "TitleArtist": "Artist",
+            "TitleType": "Type",
+            "TitleLanguage": "Language"
+        },
+        "Anime": {
+            "AddTitle": "Add an anime",
+            "UpdateTitle": "Update an anime",
+            "LanguageLabel": "Choose the language",
+            "Title": "Add an anime",
+            "NameLabel": "Name",
+            "NamePlaceholder": "Anime name",
+            "DescriptionLabel": "Description",
+            "DescriptionPlaceholder": "Anime description",
+            "AddTranslationBtn": "Add a translation",
+            "AddBtn": "Add",
+            "UpdateBtn": "Update",
+            "Translation": {
+                "AddTitle": "Add a translation",
+                "LanguageLabel": "Choose the language",
+                "TitleLabel": "Translation title",
+                "DescriptionLabel": "Description"
+            }
+        },
+        "Artist": {
+            "AddTitle": "Add an artist",
+            "UpdateTitle": "Update an artist",
+            "Title": "Add an artist",
+            "ImageArtistAlt": "Artist image",
+            "NameLabel": "Name",
+            "NamePlaceholder": "Artist name",
+            "CreationYearLabel": "Creation Year",
+            "CreationYearPlaceholder": "Creation Year",
+            "AddBtn": "Add",
+            "UpdateBtn": "Update"
+        },
+        "Music": {
+            "AddTitle": "Add a music",
+            "UpdateTitle": "Update a music",
+            "Title": "Add a music",
+            "ImageMusicAlt": "Music image",
+            "NameLabel": "Name",
+            "NamePlaceholder": "Music name",
+            "ReleaseDateLabel": "Release Date",
+            "AnimeLabel": "Anime",
+            "VideoLabel": "Video",
+            "VideoPlaceholder": "Video ID",
+            "ArtistsLabel": "Artists",
+            "TypeLabel": "Type",
+            "DropDownDisabledType": "Select the type",
+            "AddBtn": "Add",
+            "UpdateBtn": "Update"
+        },
+        "Language": {
+            "AddTitle": "Add a language",
+            "UpdateTitle": "Update a language",
+            "NameLabel": "Language",
+            "NamePlaceholder": "Language name",
+            "AddBtn": "Add",
+            "UpdateBtn": "Update"
+        },
+        "Type": {
+            "AddTitle": "Add a type",
+            "UpdateTitle": "Update a type",
+            "LanguageLabel": "Choose the language",
+            "TypeLabel": "Music type name",
+            "TypePlaceholder": "Music type name",
+            "AddBtn": "Add",
+            "UpdateBtn": "Update",
+            "Translation": {
+                "AddTitle": "Add a translation",
+                "LanguageLabel": "Choose the language",
+                "TranslationLabel": "Type translation",
+                "TranslationPlaceholder": "Music type name"
+            }
+        },
+        "Content": {
+            "Anime": {
+                "Table": {
+                    "Name": "Name",
+                    "Description": "Description",
+                    "Action": "Action"
+                },
+                "AddAnime": {
+                    "Main": "Add",
+                    "Title": "Add an anime"
+                },
+                "NoAnimes": "There are no animes"
+            },
+            "Music": {
+                "Table": {
+                    "Name": "Name",
+                    "Type": "Type",
+                    "ReleaseDate": "Release Date",
+                    "Action": "Action"
+                },
+                "AddMusic": {
+                    "Main": "Add",
+                    "Title": "Add a music"
+                },
+                "NoMusics": "There are no musics"
+            },
+            "Artist": {
+                "Table": {
+                    "Name": "Name",
+                    "CreationYear": "Creation Year",
+                    "Action": "Action"
+                },
+                "AddArtist": {
+                    "Main": "Add",
+                    "Title": "Add an artist"
+                },
+                "NoArtists": "There are no artists"
+            },
+            "Type": {
+                "Table": {
+                    "Name": "Name",
+                    "Action": "Action"
+                },
+                "AddTypeMusic": {
+                    "Main": "Add",
+                    "Title": "Add a music type"
+                },
+                "NoTypes": "There are no types"
+            },
+            "Language": {
+                "Table": {
+                    "Code": "Code",
+                    "Action": "Action"
+                },
+                "AddLanguage": {
+                    "Main": "Add",
+                    "Title": "Add a language"
+                },
+                "NoLanguages": "There are no languages"
+            }
+        }
+    },
+    "NotFoundPage": {
+        "Title": "404 Page Not Found",
+        "Content": "The requested page could not be found"
+    },
+    "Pagination": {
+        "NextPage": "Next",
+        "PreviousPage": "Previous"
+    },
+    "ErrorMessage": {
+        "EmailFormat": "Email must be in email format",
+        "MissingUsername": "Username is required",
+        "UsernameTooShort": "Username must be at least 4 characters long",
+        "MissingEmail": "Email is required",
+        "MissingPassword": "Password is required",
+        "MissingConfPassword": "Confirmation password is required",
+        "NotMatchingPassword": "Both passwords must match",
+        "MissingArtistName": "Artist name is required",
+        "MissingArtistImage": "Artist image is required",
+        "MissingAnimeName": "Name is required",
+        "MissingAnimeDescription": "Description is required",
+        "MissingCreationYear": "Creation year is required",
+        "MissingMusicImage": "Music poster image is required",
+        "MissingMusicName": "Music name is required",
+        "MissingReleaseDate": "Release date is required",
+        "MissingMusicAnime": "Anime is required",
+        "MissingVideoId": "Video ID is required",
+        "MissingMusicArtists": "Choose at least one artist",
+        "MissingMusicType": "Music type is required",
+        "MissingLanguage": "Language is required",
+        "MissingTypeName": "Type name is required"
     }
 }

@@ -1,5 +1,5 @@
 <div class="container mx-auto pt-20 text-center md:pt-40">
-    <h1 class="p-4 text-3xl">Classement des meilleurs musiques</h1>
+    <h1 class="p-4 text-3xl">{{'MusicPage.TopMusics.Title' | translate}}</h1>
     <div class="flex justify-center" *ngIf="isLoading">
         <span class="loading loading-bars loading-lg"></span>
     </div>
@@ -10,9 +10,10 @@
                     <!-- head -->
                     <thead>
                         <tr>
-                            <th class="w-auto overflow-hidden text-ellipsis whitespace-nowrap">Classement</th>
-                            <th>Titre</th>
-                            <th>Note</th>
+                            <th class="w-auto overflow-hidden text-ellipsis whitespace-nowrap">
+                                {{'MusicPage.TopMusics.Table.Ranking' | translate}}</th>
+                            <th>{{'MusicPage.TopMusics.Table.Title' | translate}}</th>
+                            <th>{{'MusicPage.TopMusics.Table.Note' | translate}}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -49,7 +50,7 @@
             </div>
         </ng-container>
         <ng-template #elseBlock>
-            <div class="text-2xl p-4">Aucune musiques</div>
+            <div class="text-2xl p-4">{{'MusicPage.NoMusics' | translate}}</div>
         </ng-template>
     </div>
 </div>

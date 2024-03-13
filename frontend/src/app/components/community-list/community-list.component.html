@@ -1,6 +1,6 @@
 <div class="container mx-auto pt-20 md:pt-40">
     <h1 class="md:text-xl text-center w-full border-b pb-4 border-gray-400/10 font-bold">
-        Communautés - Tous les avis
+        {{'CommunityPage.Title' | translate}}
     </h1>
     <div class="flex justify-center p-4" *ngIf="isLoading">
         <span class="loading loading-bars loading-lg -z-10"></span>
@@ -19,11 +19,11 @@
                             <div>{{ review.creation_date | date : 'mediumDate': '': getCurrentLang() }}</div>
                         </div>
                         <div class="flex flex-col items-start justify-start pt-2">
-                            <h3>Note du visuel :</h3>
+                            <h3>{{'CommunityPage.VisualNote' | translate}} :</h3>
                             <app-rating-stars [isStatic]="true" [rate]="review.note_visual*2"></app-rating-stars>
                         </div>
                         <div class="flex flex-col items-start pt-2">
-                            <h3>Note de la musique :</h3>
+                            <h3>{{'CommunityPage.MusicNote' | translate}} :</h3>
                             <app-rating-stars [isStatic]="true" [rate]="review.note_music*2"></app-rating-stars>
                         </div>
                         <div class="pt-2 italic ">{{ review.description}}</div>
@@ -31,7 +31,8 @@
                 </div>
                 <div class="pt-4 pr-4 italic flex justify-end">
                     <div class="overflow-hidden text-ellipsis whitespace-nowrap">
-                        De <a class="underline" [routerLink]="['/musics',review.music.id]">{{review.music.name}}</a>
+                        {{'CommunityPage.From' | translate}} <a class="underline"
+                            [routerLink]="['/musics',review.music.id]">{{review.music.name}}</a>
                     </div>
                 </div>
             </div>
@@ -39,7 +40,7 @@
                 [pagedObject]="reviews"></app-pagination>
         </ng-container>
         <ng-template #elseBlock>
-            <div>Aucun commentaire </div>
+            <div>{{'CommunityPage.NoReviews' | translate}} </div>
         </ng-template>
     </div>
 </div>

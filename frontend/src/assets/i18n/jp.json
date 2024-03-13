@@ -3,17 +3,17 @@
         "LogIn": "ログイン",
         "Register": "登録",
         "LogOut": "ログアウト",
-        "Favorites": "気に入り",
-        "Profile": "プロファイル",
-        "Management": "経営"
+        "Favorites": "お気に入り",
+        "Profile": "プロフィール",
+        "Management": "管理"
     },
     "NavigationBar": {
         "Animes": "アニメ",
         "Artists": "アーティスト",
         "Musics": {
             "Nav": "音楽",
-            "MusicsList": "音楽",
-            "Ranking": "ランキング"
+            "MusicsList": "音楽リスト",
+            "Ranking": "トップ音楽"
         },
         "Community": "コミュニティ",
         "DropDownCategory": {
@@ -24,13 +24,282 @@
         },
         "Search": "検索..."
     },
+    "LoginPage": {
+        "Title": "ログイン",
+        "ValidBtn": "ログイン"
+    },
+    "RegisterPage": {
+        "Title": "登録",
+        "ValidBtn": "登録"
+    },
     "HomePage": {
         "HomeMessage": {
             "HomeMessageTitle": "ようこそ",
-            "HomeMessageMain": "MyAniSongListへようこそ、好きなオープニングとエンディングに評価できるウェブアプリ。"
+            "HomeMessageMain": "MyAniSongListへようこそ。ここでは、お気に入りのアニメのオープニングやエンディングについて意見を述べることができます。"
         },
-        "HomeLastReleasedMusics": "最新リリース",
-        "HomeMostPopularMusics": "ポピュラー音楽",
+        "HomeLastReleasedMusics": "最新の音楽",
+        "HomeMostPopularMusics": "人気のある音楽",
         "HomeNoMusics": "音楽なし"
+    },
+    "AnimePage": {
+        "NoAnimes": "アニメなし",
+        "Details": {
+            "Synopsis": "あらすじ",
+            "MusicsListTitle": "オープニングとエンディング",
+            "EmptyMusics": "このアニメにはオープニングやエンディングがありません"
+        }
+    },
+    "ArtistPage": {
+        "NoArtists": "アーティストなし",
+        "Details": {
+            "Informations": {
+                "Title": "情報",
+                "CreationYear": "制作年"
+            },
+            "MusicsListTitle": "オープニングとエンディング",
+            "EmptyMusics": "このアーティストによるオープニングやエンディングはありません"
+        }
+    },
+    "FavoritesPage": {
+        "Title": "お気に入り",
+        "NoFavorites": "お気に入りの音楽はありません"
+    },
+    "MusicPage": {
+        "NoMusics": "音楽なし",
+        "TopMusics": {
+            "Title": "トップ音楽ランキング",
+            "Table": {
+                "Ranking": "ランキング",
+                "Title": "タイトル",
+                "Note": "ノート"
+            }
+        },
+        "Details": {
+            "Informations": {
+                "Title": "情報",
+                "ReleaseDate": "リリース日",
+                "Type": "タイプ"
+            },
+            "Favorite": {
+                "AddFavorite": "お気に入りに追加",
+                "RemoveFavorite": "お気に入りから削除"
+            },
+            "Review": {
+                "ReviewBtn": "意見を投稿/変更する",
+                "Title": "レビュー",
+                "VisualNote": "視覚ノート",
+                "MusicNote": "音楽ノート",
+                "Description": "説明",
+                "DescriptionPlaceholder": "説明...",
+                "ValidBtn": "確認"
+            },
+            "MusicVideo": "ビデオ",
+            "MusicAnime": "アニメ",
+            "SeeMore": "もっと見る"
+        }
+    },
+    "ReviewPage": {
+        "Title": "レビュー",
+        "VisualNote": "視覚ノート",
+        "MusicNote": "音楽ノート",
+        "NoReviews": "レビューなし",
+        "NoReviewsMusic": "このオープニングやエンディングにはまだレビューがありません"
+    },
+    "CommunityPage": {
+        "NoReviews": "レビューなし",
+        "Title": "コミュニティ - すべてのレビュー",
+        "From": "From",
+        "VisualNote": "視覚ノート",
+        "MusicNote": "音楽ノート"
+    },
+    "ProfilePage": {
+        "Title": "情報",
+        "TitleFavoritesMusics": "お気に入りの音楽",
+        "NoFavoritesUser": "お気に入りに追加された音楽はありません",
+        "UserProfilePicAlt": "ユーザーのプロフィール画像",
+        "MusicPosterAlt": "シングルポスター",
+        "ValidBtn": "確認"
+    },
+    "Credentials": {
+        "Username": "ユーザー名",
+        "MailAddress": "メールアドレス",
+        "MailPlaceholder": "メールアドレスを入力してください...",
+        "Password": "パスワード",
+        "PasswordPlaceholder": "パスワードを入力してください...",
+        "ConfirmPassword": "パスワードの確認",
+        "ConfirmPasswordPlaceholder": "パスワードを確認してください..."
+    },
+    "Management": {
+        "Title": "管理",
+        "NavBar": {
+            "TitleAnime": "アニメ",
+            "TitleMusic": "音楽",
+            "TitleArtist": "アーティスト",
+            "TitleType": "タイプ",
+            "TitleLanguage": "言語"
+        },
+        "Anime": {
+            "AddTitle": "アニメを追加",
+            "UpdateTitle": "アニメを更新",
+            "LanguageLabel": "言語を選択",
+            "Title": "アニメを追加",
+            "NameLabel": "名前",
+            "NamePlaceholder": "アニメの名前",
+            "DescriptionLabel": "説明",
+            "DescriptionPlaceholder": "アニメの説明",
+            "AddTranslationBtn": "翻訳を追加",
+            "AddBtn": "追加",
+            "UpdateBtn": "更新",
+            "Translation": {
+                "AddTitle": "翻訳を追加",
+                "LanguageLabel": "言語を選択",
+                "TitleLabel": "タイトル翻訳",
+                "DescriptionLabel": "説明"
+            }
+        },
+        "Artist": {
+            "AddTitle": "アーティストを追加",
+            "UpdateTitle": "アーティストを更新",
+            "Title": "アーティストを追加",
+            "ImageArtistAlt": "アーティスト画像",
+            "NameLabel": "名前",
+            "NamePlaceholder": "アーティストの名前",
+            "CreationYearLabel": "制作年",
+            "CreationYearPlaceholder": "制作年",
+            "AddBtn": "追加",
+            "UpdateBtn": "更新"
+        },
+        "Music": {
+            "AddTitle": "音楽を追加",
+            "UpdateTitle": "音楽を更新",
+            "Title": "音楽を追加",
+            "ImageMusicAlt": "音楽ポスター画像",
+            "NameLabel": "名前",
+            "NamePlaceholder": "音楽の名前",
+            "ReleaseDateLabel": "リリース日",
+            "AnimeLabel": "アニメ",
+            "VideoLabel": "ビデオ",
+            "VideoPlaceholder": "ビデオID",
+            "ArtistsLabel": "アーティスト",
+            "TypeLabel": "タイプ",
+            "DropDownDisabledType": "タイプを選択",
+            "AddBtn": "追加",
+            "UpdateBtn": "更新"
+        },
+        "Language": {
+            "AddTitle": "言語を追加",
+            "UpdateTitle": "言語を更新",
+            "NameLabel": "言語",
+            "NamePlaceholder": "言語の名前",
+            "AddBtn": "追加",
+            "UpdateBtn": "更新"
+        },
+        "Type": {
+            "AddTitle": "タイプを追加",
+            "UpdateTitle": "タイプを更新",
+            "LanguageLabel": "言語を選択",
+            "TypeLabel": "音楽タイプ名",
+            "TypePlaceholder": "音楽タイプ名",
+            "AddBtn": "追加",
+            "UpdateBtn": "更新",
+            "Translation": {
+                "AddTitle": "翻訳を追加",
+                "LanguageLabel": "言語を選択",
+                "TranslationLabel": "タイプ翻訳",
+                "TranslationPlaceholder": "音楽タイプ名"
+            }
+        },
+        "Content": {
+            "Anime": {
+                "Table": {
+                    "Name": "名前",
+                    "Description": "説明",
+                    "Action": "アクション"
+                },
+                "AddAnime": {
+                    "Main": "追加",
+                    "Title": "アニメを追加"
+                },
+                "NoAnimes": "アニメはありません"
+            },
+            "Music": {
+                "Table": {
+                    "Name": "名前",
+                    "Type": "タイプ",
+                    "ReleaseDate": "リリース日",
+                    "Action": "アクション"
+                },
+                "AddMusic": {
+                    "Main": "追加",
+                    "Title": "音楽を追加"
+                },
+                "NoMusics": "音楽はありません"
+            },
+            "Artist": {
+                "Table": {
+                    "Name": "名前",
+                    "CreationYear": "制作年",
+                    "Action": "アクション"
+                },
+                "AddArtist": {
+                    "Main": "追加",
+                    "Title": "アーティストを追加"
+                },
+                "NoArtists": "アーティストはありません"
+            },
+            "Type": {
+                "Table": {
+                    "Name": "名前",
+                    "Action": "アクション"
+                },
+                "AddTypeMusic": {
+                    "Main": "追加",
+                    "Title": "音楽タイプを追加"
+                },
+                "NoTypes": "タイプはありません"
+            },
+            "Language": {
+                "Table": {
+                    "Code": "コード",
+                    "Action": "アクション"
+                },
+                "AddLanguage": {
+                    "Main": "追加",
+                    "Title": "言語を追加"
+                },
+                "NoLanguages": "言語はありません"
+            }
+        }
+    },
+    "NotFoundPage": {
+        "Title": "404 ページが見つかりません",
+        "Content": "要求されたページが見つかりませんでした"
+    },
+    "Pagination": {
+        "NextPage": "次へ",
+        "PreviousPage": "前へ"
+    },
+    "ErrorMessage": {
+        "EmailFormat": "メールはメール形式でなければなりません",
+        "MissingUsername": "ユーザー名が必要です",
+        "UsernameTooShort": "ユーザー名は4文字以上である必要があります",
+        "MissingEmail": "メールが必要です",
+        "MissingPassword": "パスワードが必要です",
+        "MissingConfPassword": "確認用パスワードが必要です",
+        "NotMatchingPassword": "パスワードが一致しません",
+        "MissingArtistName": "アーティスト名が必要です",
+        "MissingArtistImage": "アーティスト画像が必要です",
+        "MissingAnimeName": "名前が必要です",
+        "MissingAnimeDescription": "説明が必要です",
+        "MissingCreationYear": "制作年が必要です",
+        "MissingMusicImage": "音楽ポスター画像が必要です",
+        "MissingMusicName": "音楽名が必要です",
+        "MissingReleaseDate": "リリース日が必要です",
+        "MissingMusicAnime": "アニメが必要です",
+        "MissingVideoId": "ビデオIDが必要です",
+        "MissingMusicArtists": "少なくとも1つのアーティストを選択してください",
+        "MissingMusicType": "音楽タイプが必要です",
+        "MissingLanguage": "言語が必要です",
+        "MissingTypeName": "タイプ名が必要です"
     }
 }

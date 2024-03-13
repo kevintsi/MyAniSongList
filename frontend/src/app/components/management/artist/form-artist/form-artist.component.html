@@ -1,11 +1,16 @@
 <form [formGroup]="form" class="flex flex-col items-center  p-10" (ngSubmit)="onSubmit()">
 
-    <div class="mb-4 font-bold text-lg md:text-2xl">{{isUpdate ? "Modifier un(e) " :"Ajouter un(e) "}} artiste </div>
+    <div class="mb-4 font-bold text-lg md:text-2xl" *ngIf="isUpdate;else createTitle">{{'Management.Artist.UpdateTitle'
+        | translate}}</div>
+    <ng-template #createTitle>
+        <div class="mb-4 font-bold text-lg md:text-2xl">{{'Management.Artist.AddTitle' | translate}}</div>
+    </ng-template>
 
     <div (click)="imageInput.click()"
         class="flex hover:bg-slate-100 cursor-pointer  border-2 border-base-content justify-center items-center h-80 w-60">
         <ng-container *ngIf="previewImage;else elseBlock">
-            <img class="h-full w-full object-contain" [src]="previewImage" alt="Image artiste" />
+            <img class="h-full w-full object-contain" [src]="previewImage"
+                alt="{{'Management.Artist.ImageArtistAlt' | translate}}" />
         </ng-container>
         <ng-template #elseBlock>
             <div class="text-8xl">
@@ -16,34 +21,41 @@
     <div class="flex flex-col items-center alert alert-error mt-4 pb-4"
         *ngIf="form.get('poster_img')?.invalid && (form.get('poster_img')?.dirty || form.get('poster_img')?.touched)">
         <div *ngIf="form.get('poster_img')?.errors?.['required']">
-            L'image d'affiche est obligatoire
+            {{'ErrorMessage.MissingArtistImage' | translate}}
         </div>
     </div>
     <div class="w-full flex flex-col items-center">
-        <label class="label mt-4">Nom : </label>
+        <label class="label mt-4">{{'Management.Artist.NameLabel' | translate}} : </label>
         <div>
-            <input type="text" placeholder="Nom de l'artiste" formControlName="name"
+            <input type="text" placeholder="{{'Management.Artist.NamePlaceholder' | translate}}" formControlName="name"
                 class="input border-base-content w-full mt-4 !outline-none" />
             <div class="flex flex-col items-center alert alert-error mt-4 pb-4"
                 *ngIf="form.get('name')?.invalid && (form.get('name')?.dirty || form.get('name')?.touched)">
                 <div *ngIf="form.get('name')?.errors?.['required']">
-                    Le nom de l'artiste est obligatoire
+                    {{'ErrorMessage.MissingArtistName' | translate}}
                 </div>
             </div>
         </div>
-        <label class="label mt-4">Date de création : </label>
+        <label class="label mt-4">{{'Management.Artist.CreationYearLabel' | translate}} : </label>
         <div>
-            <input class="input border-base-content mt-4 w-full !outline-none" placeholder="Date de création"
-                type="number" min="1900" max="2099" formControlName="creation_year" />
+            <input class="input border-base-content mt-4 w-full !outline-none"
+                placeholder="{{'Management.Artist.CreationYearPlaceholder' | translate}}" type="number" min="1900"
+                max="2099" formControlName="creation_year" />
             <div class="flex flex-col items-center alert alert-error mt-4 pb-4"
                 *ngIf="form.get('creation_year')?.invalid && (form.get('creation_year')?.dirty || form.get('creation_year')?.touched)">
                 <div *ngIf="form.get('creation_year')?.errors?.['required']">
-                    L'année de création est obligatoire
+                    {{'ErrorMessage.MissingCreationYear'}}
                 </div>
             </div>
         </div>
 
     </div>
     <input [hidden]="true" #imageInput type="file" (change)="processFile(imageInput)" />
-    <button type="submit" class="btn mt-4">Valider</button>
+
+    <button type="submit" class="btn mt-4" *ngIf="isUpdate;else createBtn">{{'Management.Artist.UpdateBtn' |
+        translate}}</button>
+    <ng-template #createBtn>
+        <button type="submit" class="btn mt-4">{{'Management.Artist.AddBtn'}}</button>
+    </ng-template>
+
 </form>

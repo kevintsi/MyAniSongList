@@ -10,13 +10,16 @@
             <div class="flex flex-col items-center">
                 <img class="rounded-3xl p-4 w-56 lg:w-80 pb-4" src="{{artist.poster_img}}" alt="{{artist.name}}" />
                 <div class="w-full p-4">
-                    <h2 class="font-bold border-b border-gray-400/60">Informations</h2>
-                    <div class="pt-4"><label class="font-bold">Année de création :</label> {{ artist.creation_year}}
+                    <h2 class="font-bold border-b border-gray-400/60">{{'ArtistPage.Details.Informations.Title' |
+                        translate}}</h2>
+                    <div class="pt-4"><label class="font-bold">{{'ArtistPage.Details.Informations.CreationYear' |
+                            translate}} : </label> {{ artist.creation_year}}
                     </div>
                 </div>
             </div>
             <div class="w-full">
-                <h2 class="font-bold text-start m-4 w-full-2 border-b border-gray-400/60">Openings et Endings</h2>
+                <h2 class="font-bold text-start m-4 w-full-2 border-b border-gray-400/60">
+                    {{'ArtistPage.Details.MusicsListTitle' | translate}}</h2>
                 <div class="flex flex-wrap ">
                     <div class="flex flex-row rounded-lg  p-4 items-center" *ngFor="let music of musics">
                         <img [src]="music.poster_img" [routerLink]="['/musics', music?.id]"
@@ -32,7 +35,7 @@
                         </div>
                     </div>
                 </div>
-                <div *ngIf="musics.length == 0" class="pt-4">Il n'y a pas d'openings/endings liés à cet artiste</div>
+                <div *ngIf="musics.length == 0" class="pt-4">{{'ArtistPage.Details.EmptyMusics' | translate}}</div>
             </div>
         </div>
     </div>

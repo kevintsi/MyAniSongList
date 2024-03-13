@@ -5,21 +5,24 @@
     <ng-container *ngIf="!isLoading">
         <div class="flex flex-row items-center pt-4">
             <button type="button" routerLink="/manage/artists/create"
-                class="btn cursor-pointer outline outline-1 text-center ml-2 mr-2" title="Ajouter un type de musique">
+                class="btn cursor-pointer outline outline-1 text-center ml-2 mr-2"
+                title="{{'Management.Content.Artist.AddArtist.Title' | translate}}">
                 <mat-icon>add</mat-icon>
-                <label class="hidden md:inline-block">Ajouter</label>
+                <label class="hidden md:inline-block">{{'Management.Content.Artist.AddArtist.Main' | translate}}</label>
             </button>
             <app-search-bar (searchEvent)="performSearch($event)" class="w-full"></app-search-bar>
         </div>
-        <div *ngIf="artists.items.length == 0">Il n'y a pas de d'artistes</div>
+        <div *ngIf="artists.items.length == 0">{{'Management.Content.Artist.NoArtists' | translate}}</div>
         <div *ngIf="artists.items.length > 0">
             <table class="table table-fixed text-justify font-semibold">
                 <thead class="md:text-xl text-center">
                     <tr>
                         <th></th>
-                        <th class="overflow-hidden text-ellipsis whitespace-nowrap">Nom</th>
-                        <th class="overflow-hidden text-ellipsis whitespace-nowrap">Date de création</th>
-                        <th>Action</th>
+                        <th class="overflow-hidden text-ellipsis whitespace-nowrap">
+                            {{'Management.Content.Artist.Table.Name' | translate}}</th>
+                        <th class="overflow-hidden text-ellipsis whitespace-nowrap">
+                            {{'Management.Content.Artist.Table.CreationYear' | translate}}</th>
+                        <th>{{'Management.Content.Artist.Table.Action' | translate}}</th>
                     </tr>
                 </thead>
                 <tbody class="text-center">

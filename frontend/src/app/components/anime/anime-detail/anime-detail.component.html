@@ -9,12 +9,15 @@
         <div class="flex flex-col lg:flex-row items-center border-l border-r border-b border-gray-400/10">
             <img class="pt-4 rounded-3xl md:w-60 w-44 pb-4" src="{{anime.poster_img}}" alt="{{anime.name}}" />
             <div>
-                <h2 class="font-bold text-start m-4 border-b w-full-2 border-gray-400/60">Synopsis</h2>
+                <h2 class="font-bold text-start m-4 border-b w-full-2 border-gray-400/60">{{'AnimePage.Details.Synopsis'
+                    | translate}}</h2>
                 <p class="p-4">{{ anime.description}}</p>
                 <div>
-                    <h2 class="font-bold text-start m-4 border-b border-gray-400/60">Openings et Endings</h2>
+                    <h2 class="font-bold text-start m-4 border-b border-gray-400/60">
+                        {{'AnimePage.Details.MusicsListTitle' | translate}}</h2>
                     <div class="flex flex-wrap">
-                        <div class="p-4" *ngIf="musics.length == 0">Il n'y a pas d'openings ni d'endings</div>
+                        <div class="p-4" *ngIf="musics.length == 0">{{'AnimePage.Details.EmptyMusics' | translate}}
+                        </div>
                         <div class="flex flex-row p-4 rounded-lg  items-center" *ngFor="let music of musics">
                             <img [routerLink]="['/musics', music?.id]" [src]="music.poster_img"
                                 class="hover:opacity-80 rounded-full hover:cursor-pointer object-cover w-20 h-20" />

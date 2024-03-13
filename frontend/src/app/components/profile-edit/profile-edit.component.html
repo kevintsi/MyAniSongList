@@ -3,7 +3,7 @@
         <span class="loading loading-bars -z-10 loading-lg"></span>
     </div>
     <div *ngIf="!isLoading" class="flex flex-col items-center h-full border-l border-r border-b border-gray-400/10">
-        <h1 class="text-center text-2xl font-medium p-4">Informations</h1>
+        <h1 class="text-center text-2xl font-medium p-4">{{'ProfilePage.Title' | translate}}</h1>
         <form [formGroup]="updateForm" class="md:w-1/2 flex flex-col items-center" (ngSubmit)="onSubmit()">
             <div (click)="imageInput.click()"
                 class="flex hover:bg-slate-100  border-2 border-base-content justify-center items-center h-80 w-60">
@@ -17,54 +17,54 @@
                 </ng-template>
             </div>
 
-            <label for="username" class="label">Nom d'utilisateur :</label>
+            <label for="username" class="label">{{'Credentials.Username' | translate}} :</label>
             <input type="text" formControlName="username" class="input border-base-content w-full" required>
             <div class="flex flex-col items-center alert alert-error mt-4 pb-4"
                 *ngIf="updateForm.get('username')?.invalid && (updateForm.get('username')?.dirty || updateForm.get('username')?.touched)">
                 <div *ngIf="updateForm.get('username')?.errors?.['required']">
-                    Le nom d'utilisateur est obligatoire
+                    {{'ErrorMessage.MissingUsername' | translate}}
                 </div>
                 <div *ngIf="updateForm.get('username')?.errors?.['minlength']">
-                    Le nom d'utilisateur doit avoir au minimum 4 caractères
+                    {{'ErrorMessage.UsernameTooShort' | translate}}
                 </div>
             </div>
-            <label for="email" class="label">Adresse e-mail :</label>
+            <label for="email" class="label">{{'Credentials.MailAddress' | translate}} :</label>
             <input type="email" id="email" formControlName="email" class="input border-base-content w-full " required>
             <div class="flex flex-col items-center alert alert-error mt-4 pb-4"
                 *ngIf="updateForm.get('email')?.invalid && (updateForm.get('email')?.dirty || updateForm.get('email')?.touched)">
                 <div *ngIf="updateForm.get('email')?.errors?.['email']">
-                    L'email doit être avec le format d'email
+                    {{'ErrorMessage.EmailFormat' | translate}}
                 </div>
                 <div *ngIf="updateForm.get('email')?.errors?.['required']">
-                    L'email est obligatoire
+                    {{'ErrorMessage.MissingEmail' | translate}}
                 </div>
             </div>
-            <label for="password" class="label">Mot de passe :</label>
+            <label for="password" class="label">{{'Credentials.Password' | translate}} :</label>
             <input type="password" id="password" formControlName="password" class="input border-base-content w-full"
                 required>
             <div class="flex flex-col items-center alert alert-error mt-4 pb-4"
                 *ngIf="updateForm.get('password')?.invalid && (updateForm.get('password')?.dirty || updateForm.get('password')?.touched)">
                 <div *ngIf="updateForm.get('password')?.errors?.['required']">
-                    Le mot de passe est obligatoire
+                    {{'ErrorMessage.MissingPassword' | translate}}
                 </div>
             </div>
 
-            <label for="confirm-password" class="label">Confirmer le mot de passe :</label>
+            <label for="confirm-password" class="label">{{'Credentials.ConfirmPassword' | translate}} :</label>
             <input type="password" id="confirm-password" formControlName="confirmPassword"
                 class="input border-base-content w-full" required>
 
             <div class="flex flex-col items-center alert alert-error mt-4 pb-4"
                 *ngIf="updateForm.get('confirmPassword')?.invalid && (updateForm.get('confirmPassword')?.dirty || updateForm.get('confirmPassword')?.touched)">
                 <div *ngIf="updateForm.get('confirmPassword')?.errors?.['required']">
-                    La confirmation du mot de passe est obligatoire
+                    {{'ErrorMessage.MissingConfPassword' | translate}}
                 </div>
             </div>
             <div class="flex flex-col items-center alert alert-error mt-4 pb-4"
                 *ngIf="updateForm.get('confirmPassword')?.dirty && updateForm?.errors?.['notmatched']">
-                Les deux mot de passe doivent être identiques
+                {{'ErrorMessage.NotMatchingPassword' | translate}}
             </div>
 
-            <button class="btn m-4" type="submit">Valider</button>
+            <button class="btn m-4" type="submit">{{'ProfilePage.ValidBtn' | translate}}</button>
 
             <input [hidden]="true" #imageInput type="file" (change)="processFile(imageInput)" />
         </form>
