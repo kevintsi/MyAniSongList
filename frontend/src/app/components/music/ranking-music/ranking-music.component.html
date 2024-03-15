@@ -1,8 +1,7 @@
-<div class="container mx-auto pt-20 text-center md:pt-40">
+<div class="container mx-auto text-center font-bold">
     <h1 class="p-4 text-3xl">{{'MusicPage.TopMusics.Title' | translate}}</h1>
-    <div class="flex justify-center" *ngIf="isLoading">
-        <span class="loading loading-bars loading-lg"></span>
-    </div>
+
+    <app-loader *ngIf="isLoading"></app-loader>
     <div *ngIf="!isLoading" class="flex flex-col items-center">
         <ng-container *ngIf="musics.items.length > 0;else elseBlock">
             <div class="overflow-x-auto">

@@ -1,8 +1,6 @@
 <div class="container mx-auto flex flex-col items-center justify-center border">
 
-    <div class="flex justify-center -z-10" *ngIf="isLoading">
-        <span class="loading loading-bars loading-lg"></span>
-    </div>
+    <app-loader *ngIf="isLoading"></app-loader>
 
     <form *ngIf="!isLoading" [formGroup]="formAnimeGroup" class=" flex flex-col items-center p-10">
         <h1 class="font-bold text-lg md:text-2xl"> {{'Management.Anime.Translation.AddTitle' | translate}}</h1>

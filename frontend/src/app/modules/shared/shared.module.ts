@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { PaginationComponent } from 'src/app/components/pagination/pagination.component';
 import { SearchBarComponent } from 'src/app/components/search-bar/search-bar.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { LoaderComponent } from 'src/app/components/loader/loader.component';
 
 @NgModule({
     imports: [
@@ -11,11 +12,13 @@ import { TranslateModule } from '@ngx-translate/core';
     ],
     declarations: [
         PaginationComponent,
-        SearchBarComponent
+        SearchBarComponent,
+        LoaderComponent,
     ],
     exports: [
         PaginationComponent,
         SearchBarComponent,
+        LoaderComponent,
         TranslateModule
     ]
 })

@@ -1,7 +1,6 @@
 <div class="container mx-auto flex flex-col items-center justify-center border-l border-r border-b border-gray-400/10">
-    <div class="flex justify-center -z-10" *ngIf="isLoading">
-        <span class="loading loading-bars loading-lg"></span>
-    </div>
+
+    <app-loader *ngIf="isLoading"></app-loader>
     <form *ngIf="!isLoading" [formGroup]="formTypeGroup" class=" flex flex-col items-center p-10">
         <h1 class="font-bold text-lg md:text-2xl">{{'Management.Type.Translation.AddTitle' | translate}} </h1>
         <div class="w-full flex flex-col items-center mt-4 ">

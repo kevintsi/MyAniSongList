@@ -1,8 +1,7 @@
-<div class="container mx-auto pt-20 md:pt-40">
+<div class="container mx-auto">
     <h1>{{'ReviewPage.Title' | translate }}</h1>
-    <div class="flex justify-center" *ngIf="isLoading">
-        <span class="loading loading-bars -z-10 loading-lg"></span>
-    </div>
+
+    <app-loader *ngIf="isLoading"></app-loader>
     <div *ngIf="!isLoading" class="flex flex-col items-center">
         <ng-container *ngIf="reviews.items.length > 0;else elseBlock">
             <div class="flex flex-col items-center">

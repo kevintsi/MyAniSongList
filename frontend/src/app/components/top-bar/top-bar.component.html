@@ -1,10 +1,54 @@
-<div class="fixed top-0 w-full">
+<header class="sticky top-0 w-full">
     <div class="navbar p-1 bg-base-300">
-        <div class="flex-1">
-            <a routerLink="/" class="btn btn-ghost normal-case text-xl">MyAniSongList</a>
+        <div class="container">
+            <div class="flex-1">
+                <a routerLink="/" class="btn btn-ghost normal-case text-xl">MyAniSongList</a>
+            </div>
+            <app-language-drop-down [languages]="languages"
+                (languageSelected)="onLanguageSelect($event)"></app-language-drop-down>
+
+            <div class="hidden sm:block flex-none gap-2">
+                <ng-container *ngIf="isLoggedIn();else elseBlock">
+                    <div tabindex="0" class="dropdown dropdown-end border rounded-lg border-base-200 hover:bg-base-300">
+                        <div class="flex flex-row items-center cursor-pointer">
+                            <label class="btn btn-ghost btn-circle avatar">
+                                <div class="w-10 rounded-full">
+                                    <img [src]="user_pfp ? user_pfp : '/assets/images/default_image.jpg'" />
+                                </div>
+                            </label>
+
+                            <label class="font-bold capitalize">{{username}}</label>
+                            <div class="text-2xl pt-2">
+                                <mat-icon [inline]="true">expand_more</mat-icon>
+                            </div>
+                        </div>
+                        <ul tabindex="0"
+                            class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
+                            <li><a routerLink="/editProfile">{{'TopBar.Profile' | translate}}</a></li>
+                            <li><a routerLink="/favorites">{{'TopBar.Favorites' | translate}}</a></li>
+                            <li *ngIf="isManager()"> <a routerLink="/manage">{{'TopBar.Management' | translate}}</a>
+                            </li>
+                            <li (click)="logout()" class="flex flex-row items-center">
+                                <a class="pl-2">
+                                    <div class="text-2xl">
+                                        <mat-icon [inline]="true">logout</mat-icon>
+                                    </div>
+                                    {{'TopBar.LogOut' | translate}}
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </ng-container>
+                <ng-template #elseBlock>
+                    <ul tabindex="0" class="flex flex-row p-2 ">
+                        <li><a routerLink="/register">{{'TopBar.Register' | translate}}</a></li>
+                        <li><a routerLink="/login">{{'TopBar.LogIn' | translate}}</a></li>
+                    </ul>
+                </ng-template>
+            </div>
         </div>
-        <app-language-drop-down [languages]="languages"
-            (languageSelected)="onLanguageSelect($event)"></app-language-drop-down>
+
+
         <div class="sm:hidden text-3xl flex items-center pr-3">
             <mat-icon (click)="toggleSearchBar()" [inline]="true">search</mat-icon>
         </div>
@@ -21,9 +65,7 @@
                 </div>
             </div>
             <div *ngIf="isLoading">
-                <div class="flex justify-center" *ngIf="isLoading">
-                    <span class="loading loading-bars loading-sm"></span>
-                </div>
+                <app-loader *ngIf="isLoading"></app-loader>
             </div>
             <ng-container *ngIf="!isLoading">
                 <div class="flex flex-col bg-base-200" *ngFor="let item of result_search">
@@ -87,47 +129,8 @@
             </ul>
         </div>
 
-        <div class="hidden sm:block flex-none gap-2 mr-10">
-            <ng-container *ngIf="isLoggedIn();else elseBlock">
-                <div tabindex="0"
-                    class="dropdown dropdown-end  pr-4 border rounded-lg border-base-200 hover:bg-base-300">
-                    <div class="flex flex-row items-center cursor-pointer">
-                        <label class="btn btn-ghost btn-circle avatar">
-                            <div class="w-10 rounded-full">
-                                <img [src]="user_pfp ? user_pfp : '/assets/images/default_image.jpg'" />
-                            </div>
-                        </label>
-
-                        <label class="font-bold capitalize">{{username}}</label>
-                        <div class="text-2xl pt-2">
-                            <mat-icon [inline]="true">expand_more</mat-icon>
-                        </div>
-                    </div>
-                    <ul tabindex="0"
-                        class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
-                        <li><a routerLink="/editProfile">{{'TopBar.Profile' | translate}}</a></li>
-                        <li><a routerLink="/favorites">{{'TopBar.Favorites' | translate}}</a></li>
-                        <li *ngIf="isManager()"> <a routerLink="/manage">{{'TopBar.Management' | translate}}</a> </li>
-                        <li (click)="logout()" class="flex flex-row items-center">
-                            <a class="pl-2">
-                                <div class="text-2xl">
-                                    <mat-icon [inline]="true">logout</mat-icon>
-                                </div>
-                                {{'TopBar.LogOut' | translate}}
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </ng-container>
-            <ng-template #elseBlock>
-                <ul tabindex="0" class="flex flex-row p-2 ">
-                    <li><a routerLink="/register">{{'TopBar.Register' | translate}}</a></li>
-                    <li><a routerLink="/login">{{'TopBar.LogIn' | translate}}</a></li>
-                </ul>
-            </ng-template>
-        </div>
     </div>
-    <div class="hidden sm:flex bg-base-100 flex-row  justify-between">
+    <div class="hidden sm:flex bg-base-100 flex-row container justify-between">
         <ul class="flex flex-row">
             <li class="!p-4"><a routerLink="/animes">{{'NavigationBar.Animes' | translate}}</a></li>
             <li class="!p-4"><a routerLink="/artists">{{'NavigationBar.Artists' | translate}}</a></li>
@@ -143,7 +146,7 @@
 
             <li class="!p-4"><a routerLink="/community">{{'NavigationBar.Community' | translate}}</a></li>
         </ul>
-        <div class="pr-14 pt-2">
+        <div class="pt-2 pb-2">
             <div class="flex flex-row ">
                 <select class="select mr-4 !outline-none border-base-content" [(ngModel)]="category">
                     <option value="musics">{{'NavigationBar.DropDownCategory.Music' | translate}}</option>
@@ -170,4 +173,4 @@
 
         </div>
     </div>
-</div>
+</header>

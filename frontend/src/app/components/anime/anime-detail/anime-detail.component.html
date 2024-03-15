@@ -1,10 +1,8 @@
-<div class="container mx-auto flex flex-col h-full">
-    <div class="flex justify-center -z-10 pt-20 md:pt-40" *ngIf="isLoading">
-        <span class="loading loading-bars loading-lg"></span>
-    </div>
+<div class="container mx-auto flex flex-col">
+    <app-loader *ngIf="isLoading"></app-loader>
     <div *ngIf="!isLoading" class="flex flex-col justify-start">
-        <div class="w-full border-b border-gray-400/60 bg-base-200 pt-20 md:pt-40 pb-2">
-            <h1 class="font-bold p-4 text-start">{{ anime.name}}</h1>
+        <div class="w-full border-b border-gray-400/60 bg-base-200 p-4">
+            <h1 class="font-bold text-center md:text-start">{{ anime.name}}</h1>
         </div>
         <div class="flex flex-col lg:flex-row items-center border-l border-r border-b border-gray-400/10">
             <img class="pt-4 rounded-3xl md:w-60 w-44 pb-4" src="{{anime.poster_img}}" alt="{{anime.name}}" />

@@ -39,6 +39,8 @@ import localeJpExtra from '@angular/common/locales/extra/ja';
 import localeFr from '@angular/common/locales/fr';
 import localeFrExtra from '@angular/common/locales/extra/fr';
 import { AppLanguages } from './config/lang';
+import { FooterComponent } from './components/footer/footer.component';
+import { LoaderComponent } from './components/loader/loader.component';
 
 @NgModule({
   declarations: [
@@ -64,6 +66,7 @@ import { AppLanguages } from './config/lang';
     ProfileEditComponent,
     NotFoundComponent,
     LanguageDropDownComponent,
+    FooterComponent,
   ],
   imports: [
     HttpClientModule,

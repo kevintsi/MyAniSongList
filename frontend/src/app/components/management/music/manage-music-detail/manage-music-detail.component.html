@@ -1,7 +1,6 @@
 <div class="container mx-auto flex flex-col justify-center border-l border-r border-b border-gray-400/10">
-    <div class="flex justify-center z-10" *ngIf="isLoading">
-        <span class="loading loading-bars loading-lg"></span>
-    </div>
+
+    <app-loader *ngIf="isLoading"></app-loader>
     <app-form-music *ngIf="!isLoading" class="w-full" [isUpdate]=true [music]="music"
         (submitForm)="onSubmit($event)"></app-form-music>
 </div>

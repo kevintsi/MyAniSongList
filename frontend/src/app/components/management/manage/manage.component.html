@@ -1,27 +1,27 @@
-<div class="container mx-auto pt-20 md:pt-40">
+<div class="container mx-auto pt-10">
 
-    <div class="flex flex-col items-center">
-        <h1 class="text-xl md:text-2xl font-bold">{{'Management.Title' |
-            translate}}</h1>
+        <div class="flex flex-col items-center">
+                <h1 class="text-xl md:text-2xl font-bold">{{'Management.Title' |
+                        translate}}</h1>
 
-        <div class="menu menu-horizontal text-center md:text-2xl">
-            <li><a routerLink="/manage/animes" routerLinkActive="active"
-                    ariaCurrentWhenActive="page">{{'Management.NavBar.TitleAnime' |
-                    translate}}</a></li>
-            <li><a routerLink="/manage/musics" routerLinkActive="active"
-                    ariaCurrentWhenActive="page">{{'Management.NavBar.TitleMusic' |
-                    translate}}</a></li>
-            <li><a routerLink="/manage/artists" routerLinkActive="active"
-                    ariaCurrentWhenActive="page">{{'Management.NavBar.TitleArtist' |
-                    translate}}</a></li>
-            <li><a routerLink="/manage/types" routerLinkActive="active"
-                    ariaCurrentWhenActive="page">{{'Management.NavBar.TitleType' |
-                    translate}}</a></li>
-            <li><a routerLink="/manage/languages" routerLinkActive="active"
-                    ariaCurrentWhenActive="page">{{'Management.NavBar.TitleLanguage' |
-                    translate}}</a></li>
+                <div class="menu menu-horizontal text-center md:text-2xl">
+                        <li><a routerLink="/manage/animes" routerLinkActive="active"
+                                        ariaCurrentWhenActive="page">{{'Management.NavBar.TitleAnime' |
+                                        translate}}</a></li>
+                        <li><a routerLink="/manage/musics" routerLinkActive="active"
+                                        ariaCurrentWhenActive="page">{{'Management.NavBar.TitleMusic' |
+                                        translate}}</a></li>
+                        <li><a routerLink="/manage/artists" routerLinkActive="active"
+                                        ariaCurrentWhenActive="page">{{'Management.NavBar.TitleArtist' |
+                                        translate}}</a></li>
+                        <li><a routerLink="/manage/types" routerLinkActive="active"
+                                        ariaCurrentWhenActive="page">{{'Management.NavBar.TitleType' |
+                                        translate}}</a></li>
+                        <li><a routerLink="/manage/languages" routerLinkActive="active"
+                                        ariaCurrentWhenActive="page">{{'Management.NavBar.TitleLanguage' |
+                                        translate}}</a></li>
+                </div>
         </div>
-    </div>
 
-    <router-outlet></router-outlet>
+        <router-outlet></router-outlet>
 </div>
