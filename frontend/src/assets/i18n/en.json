@@ -35,7 +35,7 @@
     "HomePage": {
         "HomeMessage": {
             "HomeMessageTitle": "Welcome",
-            "HomeMessageMain": "Welcome to MyAniSongList, the web application where you can give your opinion on the openings and endings of your favorite anime."
+            "HomeMessageMain": "Welcome to MyAniSongList, the web application where you can give reviews on the openings and endings of your favorite anime."
         },
         "HomeLastReleasedMusics": "Last Released Musics",
         "HomeMostPopularMusics": "Most Popular Musics",
@@ -71,7 +71,7 @@
             "Table": {
                 "Ranking": "Ranking",
                 "Title": "Title",
-                "Note": "Note"
+                "Note": "Rating"
             }
         },
         "Details": {
@@ -85,10 +85,10 @@
                 "RemoveFavorite": "Remove from Favorites"
             },
             "Review": {
-                "ReviewBtn": "Give/Modify your opinion",
+                "ReviewBtn": "Give/Modify your review",
                 "Title": "Review",
-                "VisualNote": "Visual Note",
-                "MusicNote": "Music Note",
+                "VisualNote": "Visual Rating",
+                "MusicNote": "Music Rating",
                 "Description": "Description",
                 "DescriptionPlaceholder": "Description...",
                 "ValidBtn": "Validate"
@@ -101,8 +101,8 @@
     },
     "ReviewPage": {
         "Title": "Reviews",
-        "VisualNote": "Visual Note",
-        "MusicNote": "Music Note",
+        "VisualNote": "Visual Rating",
+        "MusicNote": "Music Rating",
         "NoReviews": "No reviews",
         "NoReviewsMusic": "No reviews yet for this opening or ending"
     },
@@ -110,8 +110,8 @@
         "NoReviews": "No reviews",
         "Title": "Community - All Reviews",
         "From": "From",
-        "VisualNote": "Visual Note",
-        "MusicNote": "Music Note"
+        "VisualNote": "Visual Rating",
+        "MusicNote": "Music Rating"
     },
     "ProfilePage": {
         "Title": "Information",

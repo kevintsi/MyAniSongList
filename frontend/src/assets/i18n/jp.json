@@ -71,7 +71,7 @@
             "Table": {
                 "Ranking": "ランキング",
                 "Title": "タイトル",
-                "Note": "ノート"
+                "Note": "レーティング"
             }
         },
         "Details": {
@@ -87,8 +87,8 @@
             "Review": {
                 "ReviewBtn": "意見を投稿/変更する",
                 "Title": "レビュー",
-                "VisualNote": "視覚ノート",
-                "MusicNote": "音楽ノート",
+                "VisualNote": "視覚評価",
+                "MusicNote": "音楽評価",
                 "Description": "説明",
                 "DescriptionPlaceholder": "説明...",
                 "ValidBtn": "確認"
@@ -101,8 +101,8 @@
     },
     "ReviewPage": {
         "Title": "レビュー",
-        "VisualNote": "視覚ノート",
-        "MusicNote": "音楽ノート",
+        "VisualNote": "視覚評価",
+        "MusicNote": "音楽評価",
         "NoReviews": "レビューなし",
         "NoReviewsMusic": "このオープニングやエンディングにはまだレビューがありません"
     },
@@ -110,8 +110,8 @@
         "NoReviews": "レビューなし",
         "Title": "コミュニティ - すべてのレビュー",
         "From": "From",
-        "VisualNote": "視覚ノート",
-        "MusicNote": "音楽ノート"
+        "VisualNote": "視覚評価",
+        "MusicNote": "音楽評価"
     },
     "ProfilePage": {
         "Title": "情報",
