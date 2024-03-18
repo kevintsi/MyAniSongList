@@ -17,50 +17,64 @@
             </div>
 
             <label for="username" class="label">{{'Credentials.Username' | translate}} :</label>
-            <input type="text" formControlName="username" class="input border-base-content w-full" required>
-            <div class="flex flex-col items-center alert alert-error mt-4 pb-4"
-                *ngIf="updateForm.get('username')?.invalid && (updateForm.get('username')?.dirty || updateForm.get('username')?.touched)">
-                <div *ngIf="updateForm.get('username')?.errors?.['required']">
-                    {{'ErrorMessage.MissingUsername' | translate}}
-                </div>
-                <div *ngIf="updateForm.get('username')?.errors?.['minlength']">
-                    {{'ErrorMessage.UsernameTooShort' | translate}}
+            <div>
+                <input type="text" formControlName="username"
+                    placeholder="{{'Credentials.UsernamePlaceholder' | translate}}"
+                    class="input border-base-content w-full" required>
+                <div class="flex flex-col items-center alert alert-error mt-4 pb-4"
+                    *ngIf="updateForm.get('username')?.invalid && (updateForm.get('username')?.dirty || updateForm.get('username')?.touched)">
+                    <div *ngIf="updateForm.get('username')?.errors?.['required']">
+                        {{'ErrorMessage.MissingUsername' | translate}}
+                    </div>
+                    <div *ngIf="updateForm.get('username')?.errors?.['minlength']">
+                        {{'ErrorMessage.UsernameTooShort' | translate}}
+                    </div>
                 </div>
             </div>
+
             <label for="email" class="label">{{'Credentials.MailAddress' | translate}} :</label>
-            <input type="email" id="email" formControlName="email" class="input border-base-content w-full " required>
-            <div class="flex flex-col items-center alert alert-error mt-4 pb-4"
-                *ngIf="updateForm.get('email')?.invalid && (updateForm.get('email')?.dirty || updateForm.get('email')?.touched)">
-                <div *ngIf="updateForm.get('email')?.errors?.['email']">
-                    {{'ErrorMessage.EmailFormat' | translate}}
-                </div>
-                <div *ngIf="updateForm.get('email')?.errors?.['required']">
-                    {{'ErrorMessage.MissingEmail' | translate}}
+            <div>
+                <input type="email" id="email" formControlName="email"
+                    placeholder="{{'Credentials.MailPlaceholder' | translate}}"
+                    class="input border-base-content w-full " required>
+                <div class="flex flex-col items-center alert alert-error mt-4 pb-4"
+                    *ngIf="updateForm.get('email')?.invalid && (updateForm.get('email')?.dirty || updateForm.get('email')?.touched)">
+                    <div *ngIf="updateForm.get('email')?.errors?.['email']">
+                        {{'ErrorMessage.EmailFormat' | translate}}
+                    </div>
+                    <div *ngIf="updateForm.get('email')?.errors?.['required']">
+                        {{'ErrorMessage.MissingEmail' | translate}}
+                    </div>
                 </div>
             </div>
             <label for="password" class="label">{{'Credentials.Password' | translate}} :</label>
-            <input type="password" id="password" formControlName="password" class="input border-base-content w-full"
-                required>
-            <div class="flex flex-col items-center alert alert-error mt-4 pb-4"
-                *ngIf="updateForm.get('password')?.invalid && (updateForm.get('password')?.dirty || updateForm.get('password')?.touched)">
-                <div *ngIf="updateForm.get('password')?.errors?.['required']">
-                    {{'ErrorMessage.MissingPassword' | translate}}
+            <div>
+                <input type="password" id="password" placeholder="{{'Credentials.PasswordPlaceholder' | translate}}"
+                    formControlName="password" class="input border-base-content w-full" required>
+                <div class="flex flex-col items-center alert alert-error mt-4 pb-4"
+                    *ngIf="updateForm.get('password')?.invalid && (updateForm.get('password')?.dirty || updateForm.get('password')?.touched)">
+                    <div *ngIf="updateForm.get('password')?.errors?.['required']">
+                        {{'ErrorMessage.MissingPassword' | translate}}
+                    </div>
                 </div>
             </div>
 
             <label for="confirm-password" class="label">{{'Credentials.ConfirmPassword' | translate}} :</label>
-            <input type="password" id="confirm-password" formControlName="confirmPassword"
-                class="input border-base-content w-full" required>
+            <div>
+                <input type="password" id="confirm-password"
+                    placeholder="{{'Credentials.ConfirmPasswordPlaceholder' | translate}}"
+                    formControlName="confirmPassword" class="input border-base-content w-full" required>
 
-            <div class="flex flex-col items-center alert alert-error mt-4 pb-4"
-                *ngIf="updateForm.get('confirmPassword')?.invalid && (updateForm.get('confirmPassword')?.dirty || updateForm.get('confirmPassword')?.touched)">
-                <div *ngIf="updateForm.get('confirmPassword')?.errors?.['required']">
-                    {{'ErrorMessage.MissingConfPassword' | translate}}
+                <div class="flex flex-col items-center alert alert-error mt-4 pb-4"
+                    *ngIf="updateForm.get('confirmPassword')?.invalid && (updateForm.get('confirmPassword')?.dirty || updateForm.get('confirmPassword')?.touched)">
+                    <div *ngIf="updateForm.get('confirmPassword')?.errors?.['required']">
+                        {{'ErrorMessage.MissingConfPassword' | translate}}
+                    </div>
                 </div>
-            </div>
-            <div class="flex flex-col items-center alert alert-error mt-4 pb-4"
-                *ngIf="updateForm.get('confirmPassword')?.dirty && updateForm?.errors?.['notmatched']">
-                {{'ErrorMessage.NotMatchingPassword' | translate}}
+                <div class="flex flex-col items-center alert alert-error mt-4 pb-4"
+                    *ngIf="updateForm.get('confirmPassword')?.dirty && updateForm?.errors?.['notmatched']">
+                    {{'ErrorMessage.NotMatchingPassword' | translate}}
+                </div>
             </div>
 
             <button class="btn m-4" type="submit">{{'ProfilePage.ValidBtn' | translate}}</button>
