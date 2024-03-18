@@ -5,41 +5,39 @@
             <h1 class="font-bold text-center md:text-start">{{ anime.name}}</h1>
         </div>
         <div class="flex flex-col lg:flex-row items-center border-l border-r border-b border-gray-400/10">
-            <img class="pt-4 rounded-3xl md:w-60 w-44 pb-4" src="{{anime.poster_img}}" alt="{{anime.name}}" />
-            <div>
+
+            <img class="pt-4 rounded-3xl md:w-60 w-44 pb-4 pl-4" src="{{anime.poster_img}}" alt="{{anime.name}}" />
+
+            <div class="flex flex-col items-center lg:items-start">
                 <h2 class="font-bold text-start m-4 border-b w-full-2 border-gray-400/60">{{'AnimePage.Details.Synopsis'
                     | translate}}</h2>
                 <p class="p-4">{{ anime.description}}</p>
-                <div>
-                    <h2 class="font-bold text-start m-4 border-b border-gray-400/60">
-                        {{'AnimePage.Details.MusicsListTitle' | translate}}</h2>
-                    <div class="flex flex-wrap">
-                        <div class="p-4" *ngIf="musics.length == 0">{{'AnimePage.Details.EmptyMusics' | translate}}
-                        </div>
-                        <div class="flex flex-row p-4 rounded-lg  items-center" *ngFor="let music of musics">
-                            <img [routerLink]="['/musics', music?.id]" [src]="music.poster_img"
-                                class="hover:opacity-80 rounded-full hover:cursor-pointer object-cover w-20 h-20" />
-                            <div class="pl-4 w-40 md:w-full">
-                                <div class="overflow-hidden text-ellipsis whitespace-nowrap">{{ music.name }}</div>
-                                <div>{{ music.release_date | date : 'longDate' : '': getCurrentLang()}}
-                                </div>
-                                <div class="badge badge-outline"
-                                    [ngClass]="music.type.id == 1 ? 'badge-primary'  : 'badge-secondary'">
-                                    {{ music.type.name}}
-                                </div>
-                                <div *ngFor="let artist of music.artists">
-                                    <div class="overflow-hidden text-ellipsis whitespace-nowrap">{{ artist.name }}</div>
-                                </div>
+
+                <h2 class="font-bold text-start m-4 border-b border-gray-400/60">
+                    {{'AnimePage.Details.MusicsListTitle' | translate}}</h2>
+                <div class="flex flex-wrap">
+                    <div class="p-4 text-center" *ngIf="musics.length == 0">{{'AnimePage.Details.EmptyMusics' |
+                        translate}}
+                    </div>
+                    <div class="flex flex-row p-4 rounded-lg  items-center" *ngFor="let music of musics">
+                        <img [routerLink]="['/musics', music?.id]" [src]="music.poster_img"
+                            class="hover:opacity-80 rounded-full hover:cursor-pointer object-cover w-20 h-20" />
+                        <div class="pl-4 w-40 md:w-full">
+                            <div class="overflow-hidden text-ellipsis whitespace-nowrap">{{ music.name }}</div>
+                            <div>{{ music.release_date | date : 'longDate' : '': getCurrentLang()}}
+                            </div>
+                            <div class="badge badge-outline"
+                                [ngClass]="music.type.id == 1 ? 'badge-primary'  : 'badge-secondary'">
+                                {{ music.type.name}}
+                            </div>
+                            <div *ngFor="let artist of music.artists">
+                                <div class="overflow-hidden text-ellipsis whitespace-nowrap">{{ artist.name }}</div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div>
-            <div>
 
-            </div>
         </div>
     </div>
 </div>

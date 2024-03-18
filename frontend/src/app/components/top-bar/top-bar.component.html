@@ -55,9 +55,9 @@
         <div *ngIf="isSearchBarOpen" class="block fixed z-50 w-full top-16 h-full bg-black/20">
             <div class="w-full join">
                 <select class="select border-base-content join-item !outline-none grow w-1/2" [(ngModel)]="category">
-                    <option value="musics">{{'NavigationBar.DropDownCategory.Anime' | translate}}</option>
+                    <option value="musics">{{'NavigationBar.DropDownCategory.Music' | translate}}</option>
                     <option value="artists">{{'NavigationBar.DropDownCategory.Artist' | translate}}</option>
-                    <option value="animes">{{'NavigationBar.DropDownCategory.Music' | translate}}</option>
+                    <option value="animes">{{'NavigationBar.DropDownCategory.Anime' | translate}}</option>
                     <option value="profile">{{'NavigationBar.DropDownCategory.User' | translate}}</option>
                 </select>
                 <div class="w-full h-full">
@@ -132,8 +132,8 @@
     </div>
     <div class="hidden sm:flex bg-base-100 flex-row container justify-between">
         <ul class="flex flex-row">
-            <li class="!p-4"><a routerLink="/animes">{{'NavigationBar.Animes' | translate}}</a></li>
-            <li class="!p-4"><a routerLink="/artists">{{'NavigationBar.Artists' | translate}}</a></li>
+            <li class="!p-4 hover:bg-base-300"><a routerLink="/animes">{{'NavigationBar.Animes' | translate}}</a></li>
+            <li class="!p-4 hover:bg-base-300"><a routerLink="/artists">{{'NavigationBar.Artists' | translate}}</a></li>
             <li class="relative cursor-pointer  !p-4 hover:bg-base-300">
                 <a>{{'NavigationBar.Musics.Nav' | translate}}</a>
                 <ul class="hidden absolute pt-2 left-0 w-40">
@@ -144,7 +144,8 @@
                 </ul>
             </li>
 
-            <li class="!p-4"><a routerLink="/community">{{'NavigationBar.Community' | translate}}</a></li>
+            <li class="!p-4 hover:bg-base-300"><a routerLink="/community">{{'NavigationBar.Community' | translate}}</a>
+            </li>
         </ul>
         <div class="pt-2 pb-2">
             <div class="flex flex-row ">

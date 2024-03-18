@@ -1,57 +1,52 @@
-<div class="container mx-auto h-screen flex flex-col items-center justify-center">
-    <h1 class="text-center text-2xl font-medium p-4">{{'RegisterPage.Title' | translate}}</h1>
+<div class="container mx-auto flex flex-col items-center justify-center">
+    <h1 class="text-center text-2xl font-medium p-4 mb-4">{{'RegisterPage.Title' | translate}}</h1>
 
     <form [formGroup]="registrationForm" class="w-full flex flex-col  items-center" (ngSubmit)="onSubmit()">
 
-        <label for="username" class="label">{{'Credentials.Username' | translate}} :</label>
-        <input type="text" formControlName="username" class="input border-base-content w-full"
-            placeholder="{{'Credentials.UsernamePlaceholder' | translate}}" required>
-        <div class="flex flex-col items-center alert alert-error mt-4 pb-4"
-            *ngIf="registrationForm.get('username')?.invalid && (registrationForm.get('username')?.dirty || registrationForm.get('username')?.touched)">
-            <div *ngIf="registrationForm.get('username')?.errors?.['required']">
-                {{'ErrorMessage.MissingUsername' | translate}}
-            </div>
-            <div *ngIf="registrationForm.get('username')?.errors?.['minlength']">
-                {{'ErrorMessage.UsernameTooShort' | translate}}
-            </div>
-        </div>
-        <label for="email" class="label">{{'Credentials.MailAddress' | translate}} :</label>
-        <input type="email" id="email" formControlName="email" class="input border-base-content w-full"
-            placeholder="{{'Credentials.MailPlaceholder' | translate}}" required>
-        <div class="flex flex-col items-center alert alert-error mt-4 pb-4"
-            *ngIf="registrationForm.get('email')?.invalid && (registrationForm.get('email')?.dirty || registrationForm.get('email')?.touched)">
-            <div *ngIf="registrationForm.get('email')?.errors?.['email']">
-                {{'ErrorMessage.EmailFormat' | translate}}
-            </div>
-            <div *ngIf="registrationForm.get('email')?.errors?.['required']">
-                {{'ErrorMessage.MissingEmail' | translate}}
-            </div>
-        </div>
-        <label for="password" class="label">{{'Credentials.Password' | translate}}:</label>
-        <input type="password" id="password" formControlName="password" class="input border-base-content w-full"
-            placeholder="{{'Credentials.PasswordPlaceholder' | translate}}" required>
-
-        <div class="flex flex-col items-center alert alert-error mt-4 pb-4"
-            *ngIf="registrationForm.get('password')?.invalid && (registrationForm.get('password')?.dirty || registrationForm.get('password')?.touched)">
-            <div *ngIf="registrationForm.get('password')?.errors?.['required']">
-                {{'ErrorMessage.MissingPassword' | translate}}
+        <div class="flex flex-col items-center pt-4">
+            <label for="email" class="label">{{'Credentials.MailAddress' | translate}} :</label>
+            <input type="email" id="email" formControlName="email" class="input border-base-content w-full"
+                placeholder="{{'Credentials.MailPlaceholder' | translate}}" required>
+            <div class="flex flex-col items-center alert alert-error mt-4 pb-4"
+                *ngIf="registrationForm.get('email')?.invalid && (registrationForm.get('email')?.dirty || registrationForm.get('email')?.touched)">
+                <div *ngIf="registrationForm.get('email')?.errors?.['email']">
+                    {{'ErrorMessage.EmailFormat' | translate}}
+                </div>
+                <div *ngIf="registrationForm.get('email')?.errors?.['required']">
+                    {{'ErrorMessage.MissingEmail' | translate}}
+                </div>
             </div>
         </div>
 
-        <label for="confirm-password" class="label">{{'Credentials.ConfirmPassword' | translate}} :</label>
-        <input type="password" id="confirm-password"
-            placeholder="{{'Credentials.ConfirmPasswordPlaceholder' | translate}}" formControlName="confirmPassword"
-            class="input border-base-content w-full " required>
+        <div class="flex flex-col items-center pt-4">
+            <label for="password" class="label">{{'Credentials.Password' | translate}}:</label>
+            <input type="password" id="password" formControlName="password" class="input border-base-content w-full"
+                placeholder="{{'Credentials.PasswordPlaceholder' | translate}}" required>
 
-        <div class="flex flex-col items-center alert alert-error mt-4 pb-4"
-            *ngIf="registrationForm.get('confirmPassword')?.invalid && (registrationForm.get('confirmPassword')?.dirty || registrationForm.get('confirmPassword')?.touched)">
-            <div *ngIf="registrationForm.get('confirmPassword')?.errors?.['required']">
-                {{'ErrorMessage.MissingConfPassword' | translate}}
+            <div class="flex flex-col items-center alert alert-error mt-4 pb-4"
+                *ngIf="registrationForm.get('password')?.invalid && (registrationForm.get('password')?.dirty || registrationForm.get('password')?.touched)">
+                <div *ngIf="registrationForm.get('password')?.errors?.['required']">
+                    {{'ErrorMessage.MissingPassword' | translate}}
+                </div>
             </div>
         </div>
-        <div class="flex flex-col items-center alert alert-error mt-4 pb-4"
-            *ngIf="registrationForm.get('confirmPassword')?.dirty && registrationForm?.errors?.['notmatched']">
-            {{'ErrorMessage.NotMatchingPassword' | translate}}
+
+        <div class="flex flex-col items-center pt-4">
+            <label for="confirm-password" class="label">{{'Credentials.ConfirmPassword' | translate}} :</label>
+            <input type="password" id="confirm-password"
+                placeholder="{{'Credentials.ConfirmPasswordPlaceholder' | translate}}" formControlName="confirmPassword"
+                class="input border-base-content w-full " required>
+
+            <div class="flex flex-col items-center alert alert-error mt-4 pb-4"
+                *ngIf="registrationForm.get('confirmPassword')?.invalid && (registrationForm.get('confirmPassword')?.dirty || registrationForm.get('confirmPassword')?.touched)">
+                <div *ngIf="registrationForm.get('confirmPassword')?.errors?.['required']">
+                    {{'ErrorMessage.MissingConfPassword' | translate}}
+                </div>
+            </div>
+            <div class="flex flex-col items-center alert alert-error mt-4 pb-4"
+                *ngIf="registrationForm.get('confirmPassword')?.dirty && registrationForm?.errors?.['notmatched']">
+                {{'ErrorMessage.NotMatchingPassword' | translate}}
+            </div>
         </div>
 
         <button class="btn mt-4" type="submit">{{'RegisterPage.ValidBtn' | translate}}</button>
