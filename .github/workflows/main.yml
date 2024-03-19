@@ -13,16 +13,16 @@ jobs:
 
       - name: Run container
         run: |
-          docker run --name myanisonglist-tdd
-          -e DATABASE_URL=sqlite:///./anisong.db
-          -e SECRET_KEY=${{ secrets.SECRET_KEY }}
-          -e ALGORITHM=${{ secrets.ALGORITHM }}
-          -e PROJECT_ID=${{ secrets.PROJECT_ID }}
-          -e PRIVATE_KEY_ID=${{ secrets.PRIVATE_KEY_ID }}
-          -e CLIENT_EMAIL=${{ secrets.CLIENT_EMAIL }}
-          -e CLIENT_ID=${{ secrets.CLIENT_ID }}
-          -e CLIENT_CERT_URL=${{ secrets.CLIENT_CERT_URL }}
-          -e BUCKET_NAME=${{ secrets.BUCKET_NAME }}
+          docker run --name myanisonglist-tdd \
+          -e DATABASE_URL=sqlite:///./anisong.db \
+          -e SECRET_KEY=${{ secrets.SECRET_KEY }} \
+          -e ALGORITHM=${{ secrets.ALGORITHM }} \
+          -e PROJECT_ID=${{ secrets.PROJECT_ID }} \
+          -e PRIVATE_KEY_ID=${{ secrets.PRIVATE_KEY_ID }} \
+          -e CLIENT_EMAIL=${{ secrets.CLIENT_EMAIL }} \
+          -e CLIENT_ID=${{ secrets.CLIENT_ID }} \
+          -e CLIENT_CERT_URL=${{ secrets.CLIENT_CERT_URL }} \
+          -e BUCKET_NAME=${{ secrets.BUCKET_NAME }} \
           -p 5003:8888 myanisonglist-img:latest
         
       - name: Pytest
