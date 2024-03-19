@@ -1,0 +1,29 @@
+name: Deploy MyAniSongList
+run-name: Test before deployment MyAniSongList CI/CD
+on: [push]
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@v2.3.4
+
+      - name : Build container
+        run : docker build -f ./backend/Dockerfile.test -t myanisonglist-img:latest ./backend/
+
+      - name: Run container
+        run: |
+          docker run -d --name myanisonglist-tdd 
+          -e DATABASE_URL=sqlite:///./anisong.db 
+          -e SECRET_KEY=${{ secrets.SECRET_KEY }} 
+          -e ALGORITHM=${{ secrets.ALGORITHM }}
+          -e PROJECT_ID=${{ secrets.PROJECT_ID }}
+          -e PRIVATE_KEY_ID=${{ secrets.PRIVATE_KEY_ID }}
+          -e CLIENT_EMAIL=${{ secrets.CLIENT_EMAIL }}
+          -e CLIENT_ID=${{ secrets.CLIENT_ID }}
+          -e CLIENT_CERT_URL=${{ secrets.CLIENT_CERT_URL }}
+          -e BUCKET_NAME=${{ secrets.BUCKET_NAME }}
+          -p 5003:8888 myanisonglist-img:latest
+        
+      - name: Pytest
+        run: docker exec myanisonglist-tdd pytest .
