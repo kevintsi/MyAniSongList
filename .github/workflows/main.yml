@@ -14,8 +14,8 @@ jobs:
       - name: Run container
         run: |
           docker run --name myanisonglist-tdd
-          -e DATABASE_URL=sqlite:///./anisong.db 
-          -e SECRET_KEY=${{ secrets.SECRET_KEY }} 
+          -e DATABASE_URL=sqlite:///./anisong.db
+          -e SECRET_KEY=${{ secrets.SECRET_KEY }}
           -e ALGORITHM=${{ secrets.ALGORITHM }}
           -e PROJECT_ID=${{ secrets.PROJECT_ID }}
           -e PRIVATE_KEY_ID=${{ secrets.PRIVATE_KEY_ID }}
