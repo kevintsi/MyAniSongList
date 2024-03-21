@@ -23,12 +23,20 @@ class ReviewService(BaseService[Review, ReviewCreate, ReviewUpdate]):
         return review
 
     def create(self, obj: ReviewCreate, id_user):
+
+        user: User = self.db_session.get(User, id_user)
+        music: Music = self.db_session.get(Music, obj.music_id)
+
+        if user == None or music == None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, detail="User or Music not found")
+
         db_obj: Review = Review(
             note_visual=obj.note_visual,
             note_music=obj.note_music,
             creation_date=datetime.now(),
-            music_id=obj.music_id,
-            user_id=id_user,
+            music=music,
+            user=user,
             description=obj.description
         )
 
@@ -41,6 +49,7 @@ class ReviewService(BaseService[Review, ReviewCreate, ReviewUpdate]):
                 user_review.description = obj.description
                 self.db_session.commit()
                 self.calculate_note(user_review)
+                db_obj = user_review
             else:
                 print(f"converted to Review model : {db_obj}")
                 self.db_session.add(db_obj)
@@ -50,6 +59,7 @@ class ReviewService(BaseService[Review, ReviewCreate, ReviewUpdate]):
             self.db_session.commit()
             print("NEW REVIEW MUSIC UPDATED : ", db_obj.music)
             print("End create or update review successfully")
+            print(db_obj)
             return db_obj
         except sqlalchemy.exc.IntegrityError as e:
             if "Duplicate entry" in str(e):
