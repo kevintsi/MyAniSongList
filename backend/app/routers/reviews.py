@@ -60,14 +60,14 @@ async def add(
     return service.create(review, current_user.id)
 
 
-@router.put("/update/{id}")
+@router.put("/update/{id}", response_model=Review)
 async def update(
     id: int,
     review: ReviewUpdate,
     service: ReviewService = Depends(get_service),
     current_user: User = Depends(get_current_user)
 ):
-    service.update(id, review, current_user)
+    return service.update(id, review, current_user)
 
 
 @router.delete("/delete/{id}")
@@ -76,4 +76,4 @@ async def delete(
     service: ReviewService = Depends(get_service),
     current_user: User = Depends(get_current_user)
 ):
-    return service.delete(id, current_user)
+    service.delete(id, current_user)

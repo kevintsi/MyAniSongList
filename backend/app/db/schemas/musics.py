@@ -48,6 +48,7 @@ class MusicShort(BaseModel):
     id: int
     poster_img: str
     name: str
+    avg_note:  float
 
     class Config:
         orm_mode = True
@@ -56,8 +57,6 @@ class MusicShort(BaseModel):
 class MusicSearch(MusicBase):
     id: int
     poster_img: str
-    type: Type
-    avg_note: float
 
     class Config:
         orm_mode = True

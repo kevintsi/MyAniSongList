@@ -35,11 +35,11 @@ router = APIRouter(
 )
 
 
-@router.get("/all", response_model=Page[MusicSearch])
+@router.get("/all", response_model=Page[MusicShort])
 async def get_all(
     service: Annotated[MusicService, Depends(get_service)],
     order_by: OrderMusicBy = Query(None, description="Order items by")
-) -> Page[MusicSearch]:
+) -> Page[MusicShort]:
     """
 
     **Route to get all musics with page format**
@@ -50,7 +50,7 @@ async def get_all(
 
     **Returns:**
 
-        Page[MusicSearch]: List of musics with page format
+        Page[MusicShort]: List of musics with page format
     """
     return paginate(service.db_session, service.list(order_by))
 
