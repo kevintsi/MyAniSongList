@@ -19,9 +19,9 @@ export class ProfileEditComponent implements OnInit, OnDestroy {
   updateForm = this.formBuilder.group({
     username: new FormControl("", [Validators.required]),
     email: new FormControl("", [Validators.email, Validators.required]),
-    password: new FormControl("", [Validators.required]),
-    confirmPassword: new FormControl("", [Validators.required])
-  }, { validators: passwordMatchingValidator });
+    password: new FormControl(""),
+    confirmPassword: new FormControl("")
+  }, { validators: [passwordMatchingValidator] });
 
   previewImage?: any
   file: any
@@ -61,33 +61,45 @@ export class ProfileEditComponent implements OnInit, OnDestroy {
 
 
   onSubmit(): void {
-    const { username, email, password, confirmPassword } = this.updateForm.value
+    console.log(this.updateForm)
+    if (this.updateForm.valid) {
+      const { username, email, password, confirmPassword } = this.updateForm.value
 
-    if (username?.length == 0 || password?.length == 0 || email?.length == 0 || confirmPassword?.length == 0) return;
-    if (password != confirmPassword) return;
+      let user: User;
 
-    let user: User = {
-      username: username?.toString(),
-      email: email?.toString(),
-      password: password?.toString(),
+      if ((password && confirmPassword) && (password?.length > 0 && confirmPassword?.length > 0)) {
+        user = {
+          username: username?.toString(),
+          email: email?.toString(),
+          password: password?.toString(),
+        }
+      } else {
+        user = {
+          username: username?.toString(),
+          email: email?.toString()
+        }
+      }
+
+
+
+      this.updateSubscription = this.authService.update(user, this.file)
+        .subscribe({
+          next: () => {
+            this.toastr.success("Mise à jour du profil", 'Update', {
+              progressBar: true,
+              timeOut: 3000
+            })
+          },
+          error: err => {
+            console.log(err)
+            this.toastr.error("Echec mise à jour du profil", 'Update', {
+              progressBar: true,
+              timeOut: 3000
+            })
+          }
+        })
     }
 
-    this.updateSubscription = this.authService.update(user, this.file)
-      .subscribe({
-        next: () => {
-          this.toastr.success("Mise à jour du profil", 'Update', {
-            progressBar: true,
-            timeOut: 3000
-          })
-        },
-        error: err => {
-          console.log(err)
-          this.toastr.error("Echec mise à jour du profil", 'Update', {
-            progressBar: true,
-            timeOut: 3000
-          })
-        }
-      })
   }
 
   processFile(imageInput: any) {

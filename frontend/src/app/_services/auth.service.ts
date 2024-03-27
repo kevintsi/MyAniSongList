@@ -37,7 +37,8 @@ export class AuthService {
     const form_data = new FormData()
 
     form_data.append("user", JSON.stringify(user))
-    form_data.append('profile_picture', file ? file : "")
+
+    if (file) form_data.append('profile_picture', file)
 
     return this.http.put(
       this.endpoint + '/users/update/',
