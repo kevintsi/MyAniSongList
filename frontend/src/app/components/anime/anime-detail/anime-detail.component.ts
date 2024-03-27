@@ -30,7 +30,6 @@ export class AnimeDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    console.log(this.translateService.currentLang)
     this.fetchData()
     this.languageSubscription = this.translateService.onLangChange.subscribe(() => {
       this.fetchData()

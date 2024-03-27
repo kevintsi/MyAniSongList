@@ -25,12 +25,11 @@ export class AnimeListComponent implements OnInit, OnChanges {
     private service: AnimeService,
     private translateService: TranslateService,
     private title: Title) {
-
-    this.title.setTitle(getAppTitle("Animes"))
   }
 
 
   ngOnInit(): void {
+    this.title.setTitle(getAppTitle("Animes"))
     this.fetchData()
     this.languageSubscription = this.translateService.onLangChange.subscribe(() => {
       this.fetchData()
