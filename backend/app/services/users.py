@@ -39,16 +39,20 @@ class UserService(BaseService[User, UserCreate, UserUpdate]):
                 raise e
 
     def update(self, id, obj: UserUpdate, pfp: UploadFile):
-        print(f"Profile picture sent : {pfp}")
-        blob = bucket.blob(f"profile_pictures/{pfp.filename}")
-        blob.upload_from_file(pfp.file, content_type="image/png")
-        blob.make_public()
 
         user: User = self.db_session.get(User, id)
-        user.profile_picture = blob.public_url
+        print(f"Profile picture sent : {pfp}")
+        if pfp:
+            blob = bucket.blob(f"profile_pictures/{pfp.filename}")
+            blob.upload_from_file(pfp.file, content_type="image/png")
+            blob.make_public()
+            user.profile_picture = blob.public_url
 
         for col, value in obj.dict(exclude_unset=True).items():
-            setattr(user, col, value)
+            if col == "password":
+                setattr(user, col, get_password_hash(value))
+            else:
+                setattr(user, col, value)
 
         self.db_session.commit()
 

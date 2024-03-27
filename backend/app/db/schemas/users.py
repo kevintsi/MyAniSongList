@@ -20,7 +20,11 @@ class UserCreate(UserBase):
 # UPDATE
 
 
-class UserUpdate(UserCreate):
+class UserUpdate(BaseModel):
+    username: str = None
+    password: str = None
+    email: str = None
+
     @classmethod
     def __get_validators__(cls):
         yield cls.validate_to_json

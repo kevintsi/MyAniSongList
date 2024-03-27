@@ -122,10 +122,10 @@ async def register(
 
 @router.put("/update", response_model=User, status_code=status.HTTP_200_OK)
 async def update(
-    profile_picture: UploadFile,
     service: Annotated[UserService, Depends(get_service)],
-    user: Annotated[UserUpdate, Body(embed=True)],
-    current_user: Annotated[User, Depends(get_current_user)]
+    current_user: Annotated[User, Depends(get_current_user)],
+    user: Annotated[UserUpdate, Body(embed=True)] = None,
+    profile_picture: UploadFile | None = None,
 ) -> User:
     """
 
@@ -133,10 +133,10 @@ async def update(
 
     **Args:**
 
-        profile_picture (UploadFile): Profile picture
         service (Annotated[UserService, Depends): User service
         current_user (Annotated[User, Depends): Get user using the token in the header
-        user (Annotated[UserUpdate, Body]): User update schema
+        user (Annotated[UserUpdate, Body]): Optional User update schema
+        profile_picture (UploadFile): Optional Profile picture
 
     **Returns:**
 
