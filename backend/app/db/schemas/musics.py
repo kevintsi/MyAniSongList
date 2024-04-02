@@ -49,6 +49,8 @@ class MusicShort(BaseModel):
     poster_img: str
     name: str
     avg_note:  float
+    release_date: datetime
+    type: Type
 
     class Config:
         orm_mode = True
