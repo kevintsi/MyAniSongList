@@ -2,9 +2,9 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { Subject, Subscription, firstValueFrom } from 'rxjs';
-import { MusicService } from 'src/app/_services/music.service';
-import { getAppTitle } from 'src/app/config/app';
-import { Music, PagedMusic } from 'src/app/models/Music';
+import { MusicService } from 'src/app/services/music/music.service';
+import { getAppTitle } from 'src/app/config/app.config';
+import { Music, PagedMusic } from 'src/app/models/music.model';
 
 @Component({
   selector: 'app-manage-music',

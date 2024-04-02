@@ -4,10 +4,10 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription, firstValueFrom } from 'rxjs';
-import { AnimeService } from 'src/app/_services/anime.service';
-import { LanguageService } from 'src/app/_services/language.service';
-import { Anime } from 'src/app/models/Anime';
-import { Language } from 'src/app/models/Language';
+import { AnimeService } from 'src/app/services/anime/anime.service';
+import { LanguageService } from 'src/app/services/language/language.service';
+import { Anime } from 'src/app/models/anime.model';
+import { Language } from 'src/app/models/language.model';
 
 @Component({
   selector: 'app-manage-create-anime-translation',

@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Review } from 'src/app/models/Review';
+import { Review } from 'src/app/models/review.model';
 
 @Component({
   selector: 'app-review-short-list',

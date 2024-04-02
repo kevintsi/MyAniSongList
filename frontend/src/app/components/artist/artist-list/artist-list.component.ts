@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { firstValueFrom } from 'rxjs';
-import { ArtistService } from 'src/app/_services/artist.service';
-import { getAppTitle } from 'src/app/config/app';
-import { PagedArtist } from 'src/app/models/Artist';
+import { ArtistService } from 'src/app/services/artist/artist.service';
+import { getAppTitle } from 'src/app/config/app.config';
+import { PagedArtist } from 'src/app/models/artist.model';
 
 @Component({
   selector: 'app-artist-list',

@@ -1,13 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { User } from '../../models/User';
-import { AuthService } from '../../_services/auth.service';
+import { User } from '../../models/user.model';
+import { AuthService } from '../../services/auth/auth.service';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { passwordMatchingValidator } from 'src/app/utils/utils';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
-import { getAppTitle } from 'src/app/config/app';
+import { getAppTitle } from 'src/app/config/app.config';
 
 @Component({
   selector: 'app-registration',

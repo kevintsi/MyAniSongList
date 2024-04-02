@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { PagedUser, User } from '../models/User';
+import { PagedUser, User } from '../../models/user.model';
 import { HttpClient } from '@angular/common/http';
-import { Music } from '../models/Music';
+import { Music } from '../../models/music.model';
 
 @Injectable({
   providedIn: 'root'

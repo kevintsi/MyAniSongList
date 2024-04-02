@@ -1,5 +1,5 @@
 import { inject } from '@angular/core';
-import { AuthService } from '../_services/auth.service';
+import { AuthService } from '../services/auth/auth.service';
 import { ActivatedRouteSnapshot, createUrlTreeFromSnapshot } from '@angular/router';
 
 export const isSignedInGuard = (next: ActivatedRouteSnapshot) => {

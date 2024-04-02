@@ -2,14 +2,14 @@ import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { AnimeService } from 'src/app/_services/anime.service';
-import { ArtistService } from 'src/app/_services/artist.service';
-import { MusicService } from 'src/app/_services/music.service';
-import { TypeService } from 'src/app/_services/type.service';
-import { Anime, PagedAnime } from 'src/app/models/Anime';
-import { Artist, PagedArtist } from 'src/app/models/Artist';
-import { Music } from 'src/app/models/Music';
-import { Type } from 'src/app/models/Type';
+import { AnimeService } from 'src/app/services/anime/anime.service';
+import { ArtistService } from 'src/app/services/artist/artist.service';
+import { MusicService } from 'src/app/services/music/music.service';
+import { TypeService } from 'src/app/services/type/type.service';
+import { Anime, PagedAnime } from 'src/app/models/anime.model';
+import { Artist, PagedArtist } from 'src/app/models/artist.model';
+import { Music } from 'src/app/models/music.model';
+import { Type } from 'src/app/models/type.model';
 
 @Component({
   selector: 'app-form-music',

@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { ReviewService } from 'src/app/_services/review.service';
-import { PagedReview } from 'src/app/models/Review';
+import { ReviewService } from 'src/app/services/review/review.service';
+import { PagedReview } from 'src/app/models/review.model';
 import { Subscription, firstValueFrom } from 'rxjs'
 import { Title } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
-import { getAppTitle } from 'src/app/config/app';
+import { getAppTitle } from 'src/app/config/app.config';
 
 @Component({
   selector: 'app-community-list',

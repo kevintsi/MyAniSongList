@@ -1,11 +1,11 @@
 import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { Anime, PagedAnime } from '../../../models/Anime';
-import { AnimeService } from '../../../_services/anime.service';
+import { Anime, PagedAnime } from '../../../models/anime.model';
+import { AnimeService } from '../../../services/anime/anime.service';
 import { Title } from '@angular/platform-browser';
 import { Subscription, firstValueFrom } from 'rxjs';
-import { LanguageService } from 'src/app/_services/language.service';
+import { LanguageService } from 'src/app/services/language/language.service';
 import { TranslateService } from '@ngx-translate/core';
-import { getAppTitle } from 'src/app/config/app';
+import { getAppTitle } from 'src/app/config/app.config';
 
 @Component({
   selector: 'app-anime-list',

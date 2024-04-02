@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from '../../environments/environment';
-import { Token } from '../models/Token';
-import { ACCESS_TOKEN_STORAGE_KEY } from '../config/storage';
+import { environment } from '../../../environments/environment';
+import { Token } from '../../models/token.model';
+import { ACCESS_TOKEN_STORAGE_KEY } from '../../config/storage.config';
 
 @Injectable({
   providedIn: 'root'

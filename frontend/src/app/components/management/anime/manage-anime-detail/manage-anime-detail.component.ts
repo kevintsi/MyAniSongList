@@ -1,14 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AnimeService } from 'src/app/_services/anime.service';
-import { Anime } from 'src/app/models/Anime';
+import { AnimeService } from 'src/app/services/anime/anime.service';
+import { Anime } from 'src/app/models/anime.model';
 import { Subscription, firstValueFrom } from 'rxjs'
 import { ToastrService } from 'ngx-toastr';
 import { Title } from '@angular/platform-browser';
-import { Language } from 'src/app/models/Language';
-import { LanguageService } from 'src/app/_services/language.service';
-import { getAppTitle } from 'src/app/config/app';
-import { AppLanguages } from 'src/app/config/lang';
+import { Language } from 'src/app/models/language.model';
+import { LanguageService } from 'src/app/services/language/language.service';
+import { getAppTitle } from 'src/app/config/app.config';
+import { AppLanguages } from 'src/app/config/lang.config';
 import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-manage-anime-detail',

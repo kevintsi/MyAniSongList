@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
-import { UserService } from 'src/app/_services/user.service';
-import { getAppTitle } from 'src/app/config/app';
-import { Music } from 'src/app/models/Music';
-import { User } from 'src/app/models/User';
+import { UserService } from 'src/app/services/user/user.service';
+import { getAppTitle } from 'src/app/config/app.config';
+import { Music } from 'src/app/models/music.model';
+import { User } from 'src/app/models/user.model';
 
 @Component({
   selector: 'app-profile',

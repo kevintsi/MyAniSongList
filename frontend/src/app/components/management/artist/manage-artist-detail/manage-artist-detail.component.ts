@@ -1,12 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ArtistService } from 'src/app/_services/artist.service';
-import { Artist } from 'src/app/models/Artist';
+import { ArtistService } from 'src/app/services/artist/artist.service';
+import { Artist } from 'src/app/models/artist.model';
 import { Subscription, firstValueFrom } from 'rxjs'
 import { ToastrService } from 'ngx-toastr';
 import { Title } from '@angular/platform-browser';
-import { getAppTitle } from 'src/app/config/app';
+import { getAppTitle } from 'src/app/config/app.config';
 
 @Component({
   selector: 'app-manage-artist-detail',

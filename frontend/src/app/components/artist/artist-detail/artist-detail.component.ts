@@ -3,11 +3,11 @@ import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription, firstValueFrom } from 'rxjs'
-import { ArtistService } from 'src/app/_services/artist.service';
-import { MusicService } from 'src/app/_services/music.service';
-import { getAppTitle } from 'src/app/config/app';
-import { Artist } from 'src/app/models/Artist';
-import { Music } from 'src/app/models/Music';
+import { ArtistService } from 'src/app/services/artist/artist.service';
+import { MusicService } from 'src/app/services/music/music.service';
+import { getAppTitle } from 'src/app/config/app.config';
+import { Artist } from 'src/app/models/artist.model';
+import { Music } from 'src/app/models/music.model';
 
 @Component({
   selector: 'app-artist-detail',

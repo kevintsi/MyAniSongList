@@ -2,8 +2,8 @@ import { Component, OnDestroy } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
-import { ArtistService } from 'src/app/_services/artist.service';
-import { getAppTitle } from 'src/app/config/app';
+import { ArtistService } from 'src/app/services/artist/artist.service';
+import { getAppTitle } from 'src/app/config/app.config';
 
 @Component({
   selector: 'app-manage-create-artist',

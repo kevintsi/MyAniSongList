@@ -4,10 +4,10 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription, firstValueFrom } from 'rxjs';
-import { LanguageService } from 'src/app/_services/language.service';
-import { TypeService } from 'src/app/_services/type.service';
-import { Language } from 'src/app/models/Language';
-import { Type } from 'src/app/models/Type';
+import { LanguageService } from 'src/app/services/language/language.service';
+import { TypeService } from 'src/app/services/type/type.service';
+import { Language } from 'src/app/models/language.model';
+import { Type } from 'src/app/models/type.model';
 
 @Component({
   selector: 'app-manage-create-type-translation',

@@ -1,16 +1,16 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AuthService } from '../../_services/auth.service';
+import { AuthService } from '../../services/auth/auth.service';
 import { NavigationEnd, Router } from '@angular/router';
-import { MusicService } from 'src/app/_services/music.service';
-import { ArtistService } from 'src/app/_services/artist.service';
-import { AnimeService } from 'src/app/_services/anime.service';
+import { MusicService } from 'src/app/services/music/music.service';
+import { ArtistService } from 'src/app/services/artist/artist.service';
+import { AnimeService } from 'src/app/services/anime/anime.service';
 import { Subscription, firstValueFrom } from 'rxjs';
-import { TokenService } from 'src/app/_services/token.service';
-import { UserService } from 'src/app/_services/user.service';
+import { TokenService } from 'src/app/services/token/token.service';
+import { UserService } from 'src/app/services/user/user.service';
 import { TranslateService } from '@ngx-translate/core';
-import { AppLanguages } from 'src/app/config/lang';
-import { AppLanguage } from 'src/app/interfaces/AppLanguage';
-import { LANGUAGE_STORAGE_KEY } from 'src/app/config/storage';
+import { AppLanguages } from 'src/app/config/lang.config';
+import { AppLanguage } from 'src/app/interfaces/app-language.interface';
+import { LANGUAGE_STORAGE_KEY } from 'src/app/config/storage.config';
 
 @Component({
   selector: 'app-top-bar',

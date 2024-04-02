@@ -1,6 +1,6 @@
-import { Anime } from "./Anime";
-import { Artist } from "./Artist";
-import { Type } from "./Type";
+import { Anime } from "./anime.model";
+import { Artist } from "./artist.model";
+import { Type } from "./type.model";
 
 export interface PagedMusic {
     items: Array<Music>

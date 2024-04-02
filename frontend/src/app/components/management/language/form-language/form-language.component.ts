@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
-import { Language } from 'src/app/models/Language';
+import { Language } from 'src/app/models/language.model';
 @Component({
   selector: 'app-form-language',
   templateUrl: './form-language.component.html',

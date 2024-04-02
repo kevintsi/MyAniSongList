@@ -2,15 +2,15 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, firstValueFrom } from 'rxjs';
-import { AuthService } from 'src/app/_services/auth.service';
-import { MusicService } from 'src/app/_services/music.service';
-import { ReviewService } from 'src/app/_services/review.service';
-import { Music } from 'src/app/models/Music';
-import { Review } from 'src/app/models/Review';
+import { AuthService } from 'src/app/services/auth/auth.service';
+import { MusicService } from 'src/app/services/music/music.service';
+import { ReviewService } from 'src/app/services/review/review.service';
+import { Music } from 'src/app/models/music.model';
+import { Review } from 'src/app/models/review.model';
 import { DomSanitizer, Title } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
-import { getAppTitle } from 'src/app/config/app';
+import { getAppTitle } from 'src/app/config/app.config';
 
 @Component({
   selector: 'app-music-detail',

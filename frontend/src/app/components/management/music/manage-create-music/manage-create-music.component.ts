@@ -2,8 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
-import { MusicService } from 'src/app/_services/music.service';
-import { getAppTitle } from 'src/app/config/app';
+import { MusicService } from 'src/app/services/music/music.service';
+import { getAppTitle } from 'src/app/config/app.config';
 
 @Component({
   selector: 'app-manage-create-music',

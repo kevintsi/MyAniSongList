@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from "@angular/forms"
-import { AuthService } from '../../_services/auth.service';
+import { AuthService } from '../../services/auth/auth.service';
 import { Router } from '@angular/router';
-import { User } from '../../models/User';
-import { TokenService } from 'src/app/_services/token.service';
+import { User } from '../../models/user.model';
+import { TokenService } from 'src/app/services/token/token.service';
 import { firstValueFrom } from 'rxjs';
 import { Title } from '@angular/platform-browser';
-import { getAppTitle } from 'src/app/config/app';
+import { getAppTitle } from 'src/app/config/app.config';
 
 @Component({
   selector: 'app-login',

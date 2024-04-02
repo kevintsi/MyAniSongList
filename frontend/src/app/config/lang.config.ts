@@ -1,5 +1,5 @@
-import { AppLanguage } from "../interfaces/AppLanguage";
-import { LANGUAGE_STORAGE_KEY } from "./storage";
+import { AppLanguage } from "../interfaces/app-language.interface";
+import { LANGUAGE_STORAGE_KEY } from "./storage.config";
 
 export const AppLanguages: AppLanguage[] = [{
     "id": "fr",

@@ -2,9 +2,9 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { firstValueFrom } from 'rxjs';
-import { AnimeService } from 'src/app/_services/anime.service';
-import { Anime } from 'src/app/models/Anime';
-import { Language } from 'src/app/models/Language';
+import { AnimeService } from 'src/app/services/anime/anime.service';
+import { Anime } from 'src/app/models/anime.model';
+import { Language } from 'src/app/models/language.model';
 
 @Component({
   selector: 'app-form-anime',

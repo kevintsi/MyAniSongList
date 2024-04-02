@@ -2,9 +2,9 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription, firstValueFrom } from 'rxjs';
-import { TypeService } from 'src/app/_services/type.service';
-import { getAppTitle } from 'src/app/config/app';
-import { Type } from 'src/app/models/Type';
+import { TypeService } from 'src/app/services/type/type.service';
+import { getAppTitle } from 'src/app/config/app.config';
+import { Type } from 'src/app/models/type.model';
 
 @Component({
   selector: 'app-manage-type',

@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { AppLanguages, getLangFromStorage } from 'src/app/config/lang';
-import { LANGUAGE_STORAGE_KEY } from 'src/app/config/storage';
-import { AppLanguage } from 'src/app/interfaces/AppLanguage';
+import { AppLanguages, getLangFromStorage } from 'src/app/config/lang.config';
+import { LANGUAGE_STORAGE_KEY } from 'src/app/config/storage.config';
+import { AppLanguage } from 'src/app/interfaces/app-language.interface';
 
 @Component({
   selector: 'app-language-drop-down',

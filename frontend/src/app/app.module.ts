@@ -9,7 +9,7 @@ import { LoginComponent } from './components/login/login.component';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { HomeComponent } from './components/home/home.component';
 import { ProfileComponent } from './components/profile/profile.component';
-import { httpInterceptorProviders } from './_helpers/http.interceptor';
+import { httpInterceptorProviders } from './interceptors/http.interceptor';
 import { AnimeListComponent } from './components/anime/anime-list/anime-list.component';
 import { ManageComponent } from './components/management/manage/manage.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -38,9 +38,8 @@ import localeJp from '@angular/common/locales/ja';
 import localeJpExtra from '@angular/common/locales/extra/ja';
 import localeFr from '@angular/common/locales/fr';
 import localeFrExtra from '@angular/common/locales/extra/fr';
-import { AppLanguages } from './config/lang';
+import { AppLanguages } from './config/lang.config';
 import { FooterComponent } from './components/footer/footer.component';
-import { LoaderComponent } from './components/loader/loader.component';
 
 @NgModule({
   declarations: [

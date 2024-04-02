@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ReviewService } from 'src/app/_services/review.service';
-import { PagedReview } from 'src/app/models/Review';
+import { ReviewService } from 'src/app/services/review/review.service';
+import { PagedReview } from 'src/app/models/review.model';
 import { Subscription, firstValueFrom } from 'rxjs'
 import { TranslateService } from '@ngx-translate/core';
 

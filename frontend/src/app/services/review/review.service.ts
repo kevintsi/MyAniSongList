@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { environment } from '../../environments/environment';
+import { environment } from '../../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { PagedReview, Review } from '../models/Review';
+import { PagedReview, Review } from '../../models/review.model';
 import { Subject } from 'rxjs';
 
 @Injectable({

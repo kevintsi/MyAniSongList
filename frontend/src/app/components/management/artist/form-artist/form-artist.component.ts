@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Artist } from 'src/app/models/Artist';
+import { Artist } from 'src/app/models/artist.model';
 
 @Component({
   selector: 'app-form-artist',

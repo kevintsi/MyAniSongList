@@ -2,9 +2,9 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { firstValueFrom } from 'rxjs';
-import { TypeService } from 'src/app/_services/type.service';
-import { Language } from 'src/app/models/Language';
-import { Type } from 'src/app/models/Type';
+import { TypeService } from 'src/app/services/type/type.service';
+import { Language } from 'src/app/models/language.model';
+import { Type } from 'src/app/models/type.model';
 
 @Component({
   selector: 'app-form-type',

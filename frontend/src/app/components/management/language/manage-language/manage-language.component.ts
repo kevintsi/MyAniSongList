@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Subscription, firstValueFrom } from 'rxjs';
-import { LanguageService } from 'src/app/_services/language.service';
-import { getAppTitle } from 'src/app/config/app';
-import { Language } from 'src/app/models/Language';
+import { LanguageService } from 'src/app/services/language/language.service';
+import { getAppTitle } from 'src/app/config/app.config';
+import { Language } from 'src/app/models/language.model';
 
 @Component({
   selector: 'app-manage-language',

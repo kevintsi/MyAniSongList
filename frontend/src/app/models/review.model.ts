@@ -1,5 +1,5 @@
-import { Music } from "./Music";
-import { User } from "./User";
+import { Music } from "./music.model";
+import { User } from "./user.model";
 
 export interface PagedReview {
     items: Array<Review>

@@ -2,8 +2,8 @@ import { Component, OnDestroy } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
-import { AnimeService } from 'src/app/_services/anime.service';
-import { getAppTitle } from 'src/app/config/app';
+import { AnimeService } from 'src/app/services/anime/anime.service';
+import { getAppTitle } from 'src/app/config/app.config';
 
 @Component({
   selector: 'app-manage-create-anime',

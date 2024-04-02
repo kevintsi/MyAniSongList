@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './components/login/login.component'
-import { ManagerGuard, isSignedInGuard, notSignedInGuard } from './guards/authguard.service';
+import { ManagerGuard, isSignedInGuard, notSignedInGuard } from './guards/auth.guard';
 import { HomeComponent } from './components/home/home.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { ProfileEditComponent } from './components/profile-edit/profile-edit.component';

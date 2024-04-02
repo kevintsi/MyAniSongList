@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { MusicService } from 'src/app/_services/music.service';
-import { PagedMusic } from 'src/app/models/Music';
+import { MusicService } from 'src/app/services/music/music.service';
+import { PagedMusic } from 'src/app/models/music.model';
 import { firstValueFrom } from 'rxjs'
 import { Title } from '@angular/platform-browser';
-import { getAppTitle } from 'src/app/config/app';
+import { getAppTitle } from 'src/app/config/app.config';
 
 @Component({
   selector: 'app-ranking-music',

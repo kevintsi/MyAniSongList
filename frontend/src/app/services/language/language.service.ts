@@ -1,9 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { Language } from '../models/Language';
-import { Anime } from '../models/Anime';
-import { Type } from '../models/Type';
+import { Language } from '../../models/language.model';
+import { Anime } from '../../models/anime.model';
+import { Type } from '../../models/type.model';
 
 @Injectable({
   providedIn: 'root'

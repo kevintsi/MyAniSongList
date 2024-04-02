@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from '../../environments/environment';
-import { Anime, PagedAnime } from '../models/Anime';
+import { environment } from '../../../environments/environment';
+import { Anime, PagedAnime } from '../../models/anime.model';
 
 @Injectable({
   providedIn: 'root'

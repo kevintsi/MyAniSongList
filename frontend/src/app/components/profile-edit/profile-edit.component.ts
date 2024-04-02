@@ -1,12 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AuthService } from '../../_services/auth.service';
-import { User } from '../../models/User';
+import { AuthService } from '../../services/auth/auth.service';
+import { User } from '../../models/user.model';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
 import { passwordMatchingValidator } from 'src/app/utils/utils';
 import { Subscription } from 'rxjs';
-import { getAppTitle } from 'src/app/config/app';
+import { getAppTitle } from 'src/app/config/app.config';
 
 @Component({
   selector: 'app-profile-edit',

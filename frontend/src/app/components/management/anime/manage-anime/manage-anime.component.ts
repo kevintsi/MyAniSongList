@@ -2,9 +2,9 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription, firstValueFrom } from 'rxjs';
-import { AnimeService } from 'src/app/_services/anime.service';
-import { getAppTitle } from 'src/app/config/app';
-import { Anime, PagedAnime } from 'src/app/models/Anime';
+import { AnimeService } from 'src/app/services/anime/anime.service';
+import { getAppTitle } from 'src/app/config/app.config';
+import { Anime, PagedAnime } from 'src/app/models/anime.model';
 
 @Component({
   selector: 'app-manage-anime',

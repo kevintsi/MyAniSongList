@@ -4,9 +4,9 @@ import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { firstValueFrom } from 'rxjs';
-import { MusicService } from 'src/app/_services/music.service';
-import { getAppTitle } from 'src/app/config/app';
-import { Music } from 'src/app/models/Music';
+import { MusicService } from 'src/app/services/music/music.service';
+import { getAppTitle } from 'src/app/config/app.config';
+import { Music } from 'src/app/models/music.model';
 @Component({
   selector: 'app-manage-music-detail',
   templateUrl: './manage-music-detail.component.html',

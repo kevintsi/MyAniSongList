@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { getLangFromStorage } from './config/lang';
-import { APP_TITLE } from './config/app';
+import { getLangFromStorage } from './config/lang.config';
+import { APP_TITLE } from './config/app.config';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
