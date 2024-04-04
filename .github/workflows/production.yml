@@ -35,6 +35,7 @@ jobs:
         run: docker exec myanisonglist-tdd pytest .
         
   deployment-backend:
+    needs: tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout master
@@ -47,6 +48,7 @@ jobs:
           curl "$deploy_url"
 
   deployment-frontend:
+    needs: tests
     runs-on: ubuntu-latest
     steps:
        - uses: actions/checkout@v2
