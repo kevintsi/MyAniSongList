@@ -1,0 +1,60 @@
+name: Deploy MyAniSongList
+run-name: Test before deployment production MyAniSongList CI/CD
+env:
+    VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+    VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+on:
+  push:
+    branches: [main]
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@v2.3.4
+
+      - name : Build container
+        run : docker build -f ./backend/Dockerfile.test -t myanisonglist-img:latest ./backend/
+
+      - name: Run container
+        run: |
+          docker run -d --name myanisonglist-tdd \
+          -e DATABASE_URL=sqlite:///./anisong.db \
+          -e SECRET_KEY=${{ secrets.SECRET_KEY }} \
+          -e ALGORITHM=${{ secrets.ALGORITHM }} \
+          -e PROJECT_ID=${{ secrets.PROJECT_ID }} \
+          -e PRIVATE_KEY_ID=${{ secrets.PRIVATE_KEY_ID }} \
+          -e PRIVATE_KEY="${{ secrets.PRIVATE_KEY }}" \
+          -e CLIENT_EMAIL=${{ secrets.CLIENT_EMAIL }} \
+          -e CLIENT_ID=${{ secrets.CLIENT_ID }} \
+          -e CLIENT_CERT_URL=${{ secrets.CLIENT_CERT_URL }} \
+          -e BUCKET_NAME=${{ secrets.BUCKET_NAME }} \
+          -p 5003:8888 myanisonglist-img:latest
+        
+      - name: Pytest
+        run: docker exec myanisonglist-tdd pytest .
+        
+  deployment-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@v2.3.4
+      
+      - name: Deploy backend
+        env:
+            deploy_url: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+        run: |
+          curl "$deploy_url"
+
+  deployment-frontend:
+    runs-on: ubuntu-latest
+    steps:
+       - uses: actions/checkout@v2
+       - name: Install Vercel CLI
+         run: npm install --global vercel@latest
+       - name: Pull Vercel Environment Information
+         run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+       - name: Build Project Artifacts
+         run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+       - name: Deploy Project Artifacts to Vercel
+         run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
