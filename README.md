@@ -34,8 +34,8 @@ Avant de commencer, assurez-vous d'avoir installé Docker et créer un projet su
       REDIS_HOST = redis
       REDIS_PORT = 6379
       MYSQL_ROOT_PASSWORD =
-      USERNAME_ADMIN = Lors du lancement un compte adminisatrateur est crée avec ce nom d'utilisateur
-      PASSWORD_ADMIN = Lors du lancement un compte adminisatrateur est crée avec ce mot de passe  
+      USERNAME_ADMIN = Lors du lancement un compte administrateur est crée avec ce nom d'utilisateur
+      PASSWORD_ADMIN = Lors du lancement un compte administrateur est crée avec ce mot de passe  
       ORIGINS = http://localhost:4200
       DOMAIN = localhost
       PROJECT_ID=
