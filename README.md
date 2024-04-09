@@ -21,7 +21,7 @@ L'architecture est divisée en deux parties principales :
 
 ### Prérequis
 
-Avant de commencer, assurez-vous d'avoir installé Docker
+Avant de commencer, assurez-vous d'avoir installé Docker et créer un projet sur Firebase puis récupérer une clé privée.
 
 ### Instructions
 
@@ -31,15 +31,20 @@ Avant de commencer, assurez-vous d'avoir installé Docker
       DATABASE_URL=mysql+pymysql://ROOT_NAME:ROOT_PASSWORD@db/DATABASE_NAME
       SECRET_KEY=
       ALGORITHM=
-      REDIS_HOST= 
-      REDIS_PORT=
-      MYSQL_DATABASE=
-      MYSQL_USER_ROOT=
-      MYSQL_ROOT_PASSWORD=
-      USERNAME_ADMIN=
-      PASSWORD_ADMIN=
-      ORIGINS=
-      DOMAIN=
+      REDIS_HOST = redis
+      REDIS_PORT = 6379
+      MYSQL_ROOT_PASSWORD =
+      USERNAME_ADMIN = Lors du lancement un compte adminisatrateur est crée avec ce nom d'utilisateur
+      PASSWORD_ADMIN = Lors du lancement un compte adminisatrateur est crée avec ce mot de passe  
+      ORIGINS = http://localhost:4200
+      DOMAIN = localhost
+      PROJECT_ID=
+      PRIVATE_KEY_ID=
+      PRIVATE_KEY=
+      CLIENT_EMAIL=
+      CLIENT_ID=
+      CLIENT_CERT_URL=
+      BUCKET_NAME= Nom du projet
    ```
 
 2. A la racine du projet et exécutez les commandes suivantes :
@@ -59,12 +64,29 @@ Avant de commencer, assurez-vous d'avoir installé Docker
 
 ## Fonctionnalités
 
-- Creation de compte
-- Modification de profil
-- Notation d'un opening/ending
-- Affichage des animés
-- Affichage des musiques
-- Affichage des artistes
+FONCTIONNALITES GENERALES :
+   
+   - Création de compte
+   - Connexion
+   - Affichage des animes/détails
+   - Affichage des musiques/détails
+   - Affichage des avis
+   - Affichage du classement des meilleurs musiques
+   - Affichage des artistes/détails
+
+COMPTE NORMAL :
+
+   - Modification de profil
+   - Notation d'un musique
+
+ADMININISTRATEUR :
+
+   - Gestion des langues
+   - Gestion des animes
+   - Gestion des types de musiques
+   - Gestion des artistes
+   - Gestion des musiques
+
 
 ## Remarques
 
