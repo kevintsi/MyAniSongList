@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ArtistService } from 'src/app/services/artist/artist.service';
 import { Artist } from 'src/app/models/artist.model';

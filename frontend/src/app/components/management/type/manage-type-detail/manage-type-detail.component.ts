@@ -1,7 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AnimeService } from 'src/app/services/anime/anime.service';
-import { Anime } from 'src/app/models/anime.model';
 import { Subscription, firstValueFrom } from 'rxjs'
 import { ToastrService } from 'ngx-toastr';
 import { Title } from '@angular/platform-browser';

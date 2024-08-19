@@ -3,7 +3,7 @@ import { Title } from '@angular/platform-browser';
 import { firstValueFrom } from 'rxjs';
 import { MusicService } from 'src/app/services/music/music.service';
 import { getAppTitle } from 'src/app/config/app.config';
-import { Music, PagedMusic } from 'src/app/models/music.model';
+import { PagedMusic } from 'src/app/models/music.model';
 
 @Component({
   selector: 'app-music-list',

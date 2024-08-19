@@ -4,7 +4,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { AnimeService } from 'src/app/services/anime/anime.service';
 import { ArtistService } from 'src/app/services/artist/artist.service';
-import { MusicService } from 'src/app/services/music/music.service';
 import { TypeService } from 'src/app/services/type/type.service';
 import { Anime, PagedAnime } from 'src/app/models/anime.model';
 import { Artist, PagedArtist } from 'src/app/models/artist.model';

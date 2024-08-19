@@ -8,7 +8,6 @@ import { Title } from '@angular/platform-browser';
 import { Language } from 'src/app/models/language.model';
 import { LanguageService } from 'src/app/services/language/language.service';
 import { getAppTitle } from 'src/app/config/app.config';
-import { AppLanguages } from 'src/app/config/lang.config';
 import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-manage-anime-detail',
