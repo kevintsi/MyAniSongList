@@ -21,7 +21,7 @@ export class ProfileEditComponent implements OnInit, OnDestroy {
   alreadyExistsError: boolean = false
   systemError: boolean = false
   updateForm = this.formBuilder.group({
-    username: new FormControl("", [Validators.required]),
+    username: new FormControl("", [Validators.required, Validators.minLength(4)]),
     email: new FormControl("", [Validators.email, Validators.required]),
     password: new FormControl(""),
     confirmPassword: new FormControl("")
