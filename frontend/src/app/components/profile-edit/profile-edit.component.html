@@ -4,6 +4,14 @@
     <div *ngIf="!isLoading" class="flex flex-col items-center h-full border-l border-r border-b border-gray-400/10">
         <h1 class="text-center text-2xl font-medium p-4">{{'ProfilePage.Title' | translate}}</h1>
         <form [formGroup]="updateForm" class="md:w-1/2 flex flex-col items-center" (ngSubmit)="onSubmit()">
+            <div>
+                <div *ngIf="alreadyExistsError" class="alert alert-error flex flex-col items-center mb-2">
+                    <div>{{'ErrorMessage.AlreadyExistsError' | translate}}</div>
+                </div>
+                <div *ngIf="systemError" class="alert alert-error flex flex-col items-center mb-2">
+                    <div>{{'ErrorMessage.AppError' | translate}}</div>
+                </div>
+            </div>
             <div (click)="imageInput.click()"
                 class="flex hover:bg-slate-100  border-2 border-base-content justify-center items-center h-80 w-60">
                 <ng-container *ngIf="previewImage;else elseBlock">

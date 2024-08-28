@@ -4,9 +4,10 @@ import { AuthService } from '../../services/auth/auth.service';
 import { Router } from '@angular/router';
 import { User } from '../../models/user.model';
 import { TokenService } from 'src/app/services/token/token.service';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, Subscription } from 'rxjs';
 import { Title } from '@angular/platform-browser';
 import { getAppTitle } from 'src/app/config/app.config';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-login',
@@ -15,15 +16,18 @@ import { getAppTitle } from 'src/app/config/app.config';
 })
 export class LoginComponent {
   isLoading: boolean = false
-  errorLogin?: string
+  errorLogin: boolean = false
+
   loginForm = this.formBuilder.group({
     email: new FormControl("", [Validators.email, Validators.required]),
     password: new FormControl("", [Validators.required]),
   })
+
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private tokenService: TokenService,
+    private translateService: TranslateService,
     private router: Router,
     private title: Title
   ) {
@@ -46,7 +50,7 @@ export class LoginComponent {
         this.router.navigateByUrl("/")
       } catch (error) {
         console.log(error)
-        this.errorLogin = "Email ou mot de passe incorrect"
+        this.errorLogin = true
       } finally {
         this.isLoading = false
       }

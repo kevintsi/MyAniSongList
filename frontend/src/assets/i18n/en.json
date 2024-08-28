@@ -283,6 +283,9 @@
     },
     "ErrorMessage": {
         "EmailFormat": "Email must be in email format",
+        "LoginError": "Incorrect email or password",
+        "AlreadyExistsError": "An account already exists with this email address or username",
+        "AppError": "System error (backend)",
         "MissingUsername": "Username is required",
         "UsernameTooShort": "Username must be at least 4 characters long",
         "MissingEmail": "Email is required",

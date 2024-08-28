@@ -283,6 +283,9 @@
     },
     "ErrorMessage": {
         "EmailFormat": "L'email doit être avec le format d'email",
+        "LoginError": "Email ou mot de passe incorrect",
+        "AlreadyExistsError": "Un compte existe déjà avec cette adresse email ou ce nom d'utilisateur",
+        "AppError": "Erreur système (backend)",
         "MissingUsername": "Le nom d'utilisateur est obligatoire",
         "UsernameTooShort": "Le nom d'utilisateur doit avoir au minimum 4 caractères",
         "MissingEmail": "L'email est obligatoire",

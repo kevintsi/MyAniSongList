@@ -7,6 +7,8 @@ import { ToastrService } from 'ngx-toastr';
 import { passwordMatchingValidator } from 'src/app/utils/utils';
 import { Subscription } from 'rxjs';
 import { getAppTitle } from 'src/app/config/app.config';
+import { HttpErrorResponse } from '@angular/common/http';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-profile-edit',
@@ -16,6 +18,8 @@ import { getAppTitle } from 'src/app/config/app.config';
 
 export class ProfileEditComponent implements OnInit, OnDestroy {
   isLoading: boolean = true
+  alreadyExistsError: boolean = false
+  systemError: boolean = false
   updateForm = this.formBuilder.group({
     username: new FormControl("", [Validators.required]),
     email: new FormControl("", [Validators.email, Validators.required]),
@@ -28,9 +32,11 @@ export class ProfileEditComponent implements OnInit, OnDestroy {
 
   authSubscription?: Subscription
   updateSubscription?: Subscription
+
   constructor(
     private authService: AuthService,
     private formBuilder: FormBuilder,
+    private translateService: TranslateService,
     private title: Title,
     private toastr: ToastrService
 
@@ -90,8 +96,15 @@ export class ProfileEditComponent implements OnInit, OnDestroy {
               timeOut: 3000
             })
           },
-          error: err => {
+          error: (err: HttpErrorResponse) => {
             console.log(err)
+            switch (err.status) {
+              case 409:
+                this.alreadyExistsError = true
+                break
+              default:
+                this.systemError = true
+            }
             this.toastr.error("Echec mise à jour du profil", 'Update', {
               progressBar: true,
               timeOut: 3000

@@ -283,6 +283,9 @@
     },
     "ErrorMessage": {
         "EmailFormat": "メールはメール形式でなければなりません",
+        "LoginError": "メールアドレスまたはパスワードが間違っています",
+        "AlreadyExistsError": "このメールアドレスまたはユーザー名を持つアカウントがすでに存在します",
+        "AppError": "システムエラー（バックエンド）",
         "MissingUsername": "ユーザー名が必要です",
         "UsernameTooShort": "ユーザー名は4文字以上である必要があります",
         "MissingEmail": "メールが必要です",
