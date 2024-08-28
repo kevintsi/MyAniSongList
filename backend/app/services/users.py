@@ -53,9 +53,15 @@ class UserService(BaseService[User, UserCreate, UserUpdate]):
                 setattr(user, col, get_password_hash(value))
             else:
                 setattr(user, col, value)
-
-        self.db_session.commit()
-
+        try:
+            self.db_session.commit()
+        except sqlalchemy.exc.IntegrityError as e:
+            self.db_session.rollback()
+            if "Duplicate entry" in str(e):
+                raise HTTPException(status_code=409, detail="Conflict Error")
+            else:
+                raise e
+        
         return user
 
 

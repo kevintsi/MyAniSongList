@@ -43,8 +43,11 @@ export class RegistrationComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
-    const { username, email, password, confirmPassword } = this.registrationForm.value
-    if (this.registrationForm.valid && password === confirmPassword) {
+
+    if (this.registrationForm.valid) {
+
+      const { username, email, password } = this.registrationForm.value
+
       let user: User = {
         username: username?.toString(),
         email: email?.toString(),
