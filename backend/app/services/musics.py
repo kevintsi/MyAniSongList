@@ -86,7 +86,7 @@ class MusicService(BaseService[Music, MusicCreate, MusicUpdate]):
         return select(Music).filter(Music.name.like(f"%{term}%"))
 
     def get_musics_anime(self, id_anime: int, lang: str):
-        lang: Language = self.db_session.scalars(
+        lang: Language | None = self.db_session.scalars(
             select(Language).filter(Language.code == lang)).first()
 
         if lang:
@@ -112,7 +112,7 @@ class MusicService(BaseService[Music, MusicCreate, MusicUpdate]):
                                 detail="language id not found")
 
     def get_musics_artist(self, id_artist: int, lang: str):
-        lang: Language = self.db_session.scalars(
+        lang: Language | None = self.db_session.scalars(
             select(Language).filter(Language.code == lang)).first()
 
         if lang:

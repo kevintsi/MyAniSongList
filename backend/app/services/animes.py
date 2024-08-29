@@ -32,20 +32,20 @@ class AnimeService(BaseService[Anime, AnimeCreate, AnimeUpdate]):
 
         if obj_lang and anime:
 
-            obj: AnimeTranslation = self.db_session.scalars(select(AnimeTranslation).where(
+            obj: AnimeTranslation | None = self.db_session.scalars(select(AnimeTranslation).where(
                 AnimeTranslation.id_language == obj_lang.id, AnimeTranslation.id_anime == anime.id)).first()
 
             if obj is None:
                 raise HTTPException(
                     status_code=status.HTTP_404_NOT_FOUND, detail="Error no translation found for this language")
-
+            
             return AnimeSchema(id=obj.id_anime, name=obj.name, description=obj.description, poster_img=obj.anime.poster_img)
         else:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND, detail="Error language or anime id")
 
     def search(self, term: str, lang: str):
-        lang: Language = self.db_session.scalars(select(
+        lang: Language | None = self.db_session.scalars(select(
             Language).filter(Language.code == lang)).first()
         if lang:
             return select(AnimeTranslation).filter(AnimeTranslation.name.like(f"%{term}%"), AnimeTranslation.id_language == lang.id)
@@ -55,7 +55,7 @@ class AnimeService(BaseService[Anime, AnimeCreate, AnimeUpdate]):
 
     def create(self, obj: AnimeCreate, poster_img: UploadFile, user: User):
         if user.is_manager:
-            lang_obj: Language = self.db_session.scalars(
+            lang_obj: Language | None = self.db_session.scalars(
                 select(Language).filter(Language.code == "fr")).first()
 
             if lang_obj:
@@ -67,12 +67,10 @@ class AnimeService(BaseService[Anime, AnimeCreate, AnimeUpdate]):
                 blob = bucket.blob(f"anime_poster_images/{filename}")
                 blob.upload_from_file(webp_buffer, content_type="image/webp")
                 blob.make_public()
-                try:
-                    anime: Anime = self.db_session.scalars(select(Anime).filter(
-                        Anime.poster_img == blob.public_url)).first()
 
-                    if not anime:
-                        anime: Anime = Anime(poster_img=blob.public_url)
+                try:
+
+                    anime: Anime = Anime(poster_img=blob.public_url)
 
                     anime_translation: AnimeTranslation = AnimeTranslation(
                         anime=anime,
@@ -84,7 +82,9 @@ class AnimeService(BaseService[Anime, AnimeCreate, AnimeUpdate]):
                     print(f"converted to Anime model : {anime_translation}")
                     self.db_session.add(anime_translation)
                     self.db_session.commit()
+
                     return AnimeSchema(id=anime.id, name=anime_translation.name, description=anime_translation.description, poster_img=anime.poster_img)
+                
                 except exc.IntegrityError as e:
                     self.db_session.rollback()
                     if "Duplicate entry" in str(e):
@@ -101,10 +101,10 @@ class AnimeService(BaseService[Anime, AnimeCreate, AnimeUpdate]):
 
     def create_translation(self, obj: AnimeTranslationCreate, id: int,  lang: str, user: User):
         if user.is_manager:
-            lang_obj: Language = self.db_session.query(
+            lang_obj: Language | None = self.db_session.query(
                 Language).filter(Language.code == lang).first()
 
-            anime: Anime = self.db_session.query(Anime).filter(
+            anime: Anime | None = self.db_session.query(Anime).filter(
                 Anime.id == id).first()
 
             if lang_obj and anime:
@@ -125,23 +125,23 @@ class AnimeService(BaseService[Anime, AnimeCreate, AnimeUpdate]):
                     self.db_session.rollback()
                     if "Duplicate entry" in str(e):
                         raise HTTPException(
-                            status_code=409, detail="Conflict Error")
+                            status_code=status.HTTP_409_CONFLICT, detail="Conflict Error")
                     else:
                         raise e
             else:
                 raise HTTPException(
                     status_code=404, detail="Error language or anime id")
         else:
-            raise HTTPException(status_code=401, detail="Forbidden")
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Forbidden")
 
     def update(self, id, obj: AnimeUpdate, poster_img: UploadFile, lang: str, user: User):
 
         if user.is_manager:
 
-            obj_lang: Language = self.db_session.scalars(select(
+            obj_lang: Language | None = self.db_session.scalars(select(
                 Language).filter(Language.code == lang)).first()
 
-            anime: Anime = self.db_session.get(Anime, id)
+            anime: Anime | None = self.db_session.get(Anime, id)
 
             if anime and obj_lang:
                 if poster_img:

@@ -9,6 +9,10 @@ application_default_credentials.json
 static/profile_pictures/
 static/poster_images/
 
+Scripts/
+Include/
+pyvenv.cfg
+
 .env.*
 data/
 anisong.db

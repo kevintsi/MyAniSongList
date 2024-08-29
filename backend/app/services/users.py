@@ -1,7 +1,7 @@
 from io import BytesIO
 from sqlalchemy.orm import Session
 from sqlalchemy import select, update
-from fastapi import Depends, UploadFile
+from fastapi import Depends, UploadFile, status
 from app.db.schemas.users import UserUpdate, UserCreate
 from app.db.models import User
 from .base import BaseService
@@ -36,13 +36,17 @@ class UserService(BaseService[User, UserCreate, UserUpdate]):
         except sqlalchemy.exc.IntegrityError as e:
             self.db_session.rollback()
             if "Duplicate entry" in str(e):
-                raise HTTPException(status_code=409, detail="Conflict Error")
+                raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Conflict Error")
             else:
                 raise e
 
     def update(self, id, obj: UserUpdate, pfp: UploadFile):
 
-        user: User = self.db_session.get(User, id)
+        user: User | None = self.db_session.get(User, id)
+        
+        if not user:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+        
         if pfp:
             image = Image.open(BytesIO(pfp.file.read()))
             print(f"Image : {image}")
@@ -65,7 +69,7 @@ class UserService(BaseService[User, UserCreate, UserUpdate]):
         except sqlalchemy.exc.IntegrityError as e:
             self.db_session.rollback()
             if "Duplicate entry" in str(e):
-                raise HTTPException(status_code=409, detail="Conflict Error")
+                raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Conflict Error")
             else:
                 raise e
         

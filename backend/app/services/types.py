@@ -42,10 +42,10 @@ class TypeService(BaseService[Type, TypeCreate, TypeUpdate]):
                 status_code=status.HTTP_401_UNAUTHORIZED, detail="Forbidden")
 
     def get_translation(self, id: int, lang: str):
-        lang_obj = self.db_session.scalars(
+        lang_obj : Language | None  = self.db_session.scalars(
             select(Language).filter(Language.code == lang)).first()
 
-        type_obj: Type = self.db_session.get(Type, id)
+        type_obj: Type | None = self.db_session.get(Type, id)
 
         if lang_obj and type_obj:
             res = self.db_session.scalars(select(TypeTranslation).filter(
@@ -88,7 +88,7 @@ class TypeService(BaseService[Type, TypeCreate, TypeUpdate]):
 
     def add_translation(self, obj: TypeCreate, lang: str, id, user: User):
         if user.is_manager:
-            lang_obj: Language = self.db_session.scalars(select(Language).filter(
+            lang_obj: Language | None = self.db_session.scalars(select(Language).filter(
                 Language.code == lang)).first()
 
             music_type: Type | None = self.db_session.get(Type, id)
@@ -122,7 +122,7 @@ class TypeService(BaseService[Type, TypeCreate, TypeUpdate]):
 
     def update_translation(self, obj: TypeUpdate, lang: str, id, user: User) -> Type:
         if user.is_manager:
-            lang_obj: Language = self.db_session.scalars(
+            lang_obj: Language | None = self.db_session.scalars(
                 select(Language).filter(Language.code == lang)).first()
 
             type_obj: Type | None = self.db_session.get(Type, id)
@@ -145,9 +145,9 @@ class TypeService(BaseService[Type, TypeCreate, TypeUpdate]):
                 status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
 
     def delete(self, id: int, user: User):
-        db_obj = self.db_session.get(Type, id)
+        db_obj : Type | None = self.db_session.get(Type, id)
 
-        if db_obj is None:
+        if not db_obj:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND, detail="Error type id not found")
 

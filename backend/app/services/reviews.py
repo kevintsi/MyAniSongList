@@ -24,10 +24,10 @@ class ReviewService(BaseService[Review, ReviewCreate, ReviewUpdate]):
 
     def create(self, obj: ReviewCreate, id_user):
 
-        user: User = self.db_session.get(User, id_user)
-        music: Music = self.db_session.get(Music, obj.music_id)
+        user: User | None = self.db_session.get(User, id_user)
+        music: Music | None = self.db_session.get(Music, obj.music_id)
 
-        if user == None or music == None:
+        if not user or not music:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND, detail="User or Music not found")
 
@@ -40,7 +40,7 @@ class ReviewService(BaseService[Review, ReviewCreate, ReviewUpdate]):
             description=obj.description
         )
 
-        user_review = self.db_session.scalars(select(Review).filter(
+        user_review : Review | None = self.db_session.scalars(select(Review).filter(
             Review.user_id == id_user, Review.music_id == obj.music_id)).first()
         try:
             if user_review:
