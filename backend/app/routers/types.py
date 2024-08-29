@@ -1,21 +1,13 @@
 from typing import Annotated
-from fastapi import (
-    APIRouter,
-    Depends,
-    status
-)
-from .users import get_current_user
+
 from app.db.models import User
 from app.db.schemas.types import Type, TypeCreate, TypeUpdate
-from app.services.types import (
-    TypeService,
-    get_service,
-)
+from app.services.types import TypeService, get_service
+from fastapi import APIRouter, Depends, status
 
-router = APIRouter(
-    prefix='/types',
-    tags=["Types"]
-)
+from .users import get_current_user
+
+router = APIRouter(prefix="/types", tags=["Types"])
 
 
 @router.get("/all", response_model=list[Type])
@@ -43,7 +35,7 @@ async def get_all(
 async def add(
     type: TypeCreate,
     service: Annotated[TypeService, Depends(get_service)],
-    current_user: Annotated[User, Depends(get_current_user)]
+    current_user: Annotated[User, Depends(get_current_user)],
 ) -> Type:
     """
 
@@ -52,7 +44,7 @@ async def add(
     **Args:**
 
         type (TypeCreate): Type create schema
-        service (Annotated[TypeService, Depends]): Type service 
+        service (Annotated[TypeService, Depends]): Type service
         current_user (Annotated[User, Depends]): Get user using the token in the header
 
     **Returns:**
@@ -62,13 +54,17 @@ async def add(
     return service.create(type, current_user)
 
 
-@router.post("/{id}/add_translation", response_model=Type, status_code=status.HTTP_201_CREATED)
+@router.post(
+    "/{id}/add_translation",
+    response_model=Type,
+    status_code=status.HTTP_201_CREATED,
+)
 async def add_translation(
     id: str,
     type: TypeCreate,
     lang: str,
     service: Annotated[TypeService, Depends(get_service)],
-    current_user: Annotated[User, Depends(get_current_user)]
+    current_user: Annotated[User, Depends(get_current_user)],
 ) -> Type:
     """
 
@@ -84,7 +80,7 @@ async def add_translation(
 
     **Returns:**
 
-        Type: Created type translation 
+        Type: Created type translation
     """
     return service.add_translation(type, lang, id, current_user)
 
@@ -94,7 +90,7 @@ async def update(
     id: int,
     type: TypeUpdate,
     service: Annotated[TypeService, Depends(get_service)],
-    current_user: Annotated[User, Depends(get_current_user)]
+    current_user: Annotated[User, Depends(get_current_user)],
 ) -> Type:
     """
 
@@ -120,7 +116,7 @@ async def update_translation(
     id: int,
     type: TypeUpdate,
     service: Annotated[TypeService, Depends(get_service)],
-    current_user: Annotated[User, Depends(get_current_user)]
+    current_user: Annotated[User, Depends(get_current_user)],
 ) -> Type:
     """
 
@@ -145,7 +141,7 @@ async def update_translation(
 async def delete(
     id: int,
     service: Annotated[TypeService, Depends(get_service)],
-    current_user: Annotated[User, Depends(get_current_user)]
+    current_user: Annotated[User, Depends(get_current_user)],
 ):
     """
 

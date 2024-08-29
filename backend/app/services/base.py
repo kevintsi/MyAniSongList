@@ -1,12 +1,12 @@
-from typing import Any, Generic, List, Optional, Type, TypeVar
-from fastapi import status
-from sqlalchemy import select
-from sqlalchemy.exc import IntegrityError
-from pydantic import BaseModel
-from sqlalchemy.orm import Session
-from starlette.exceptions import HTTPException
+from typing import Any, Generic, Optional, Type, TypeVar
 
 from app.db.models import Base
+from fastapi import status
+from pydantic import BaseModel
+from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm import Session
+from starlette.exceptions import HTTPException
 
 ModelType = TypeVar("ModelType", bound=Base)
 CreateSchemaType = TypeVar("CreateSchemaType", bound=BaseModel)
@@ -23,7 +23,8 @@ class BaseService(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         obj: ModelType | None = self.db_session.get(self.model, id)
         if obj is None:
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND, detail="Not Found")
+                status_code=status.HTTP_404_NOT_FOUND, detail="Not Found"
+            )
         return obj
 
     def list(self):
@@ -39,7 +40,9 @@ class BaseService(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
             self.db_session.rollback()
             if "Duplicate entry" in str(e):
                 raise HTTPException(
-                    status_code=status.HTTP_409_CONFLICT, detail="Conflict Error")
+                    status_code=status.HTTP_409_CONFLICT,
+                    detail="Conflict Error",
+                )
             else:
                 raise e
         return db_obj

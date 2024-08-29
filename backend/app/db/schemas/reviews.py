@@ -1,7 +1,8 @@
 from datetime import datetime
-from pydantic import BaseModel
-from .musics import MusicShort
 
+from pydantic import BaseModel
+
+from .musics import MusicShort
 from .users import User
 
 

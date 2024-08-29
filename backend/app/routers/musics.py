@@ -1,44 +1,29 @@
-from fastapi import (
-    APIRouter,
-    Depends,
-    File,
-    Body,
-    Query,
-    UploadFile,
-    status
-)
-from fastapi_pagination import Page
-from fastapi_pagination.ext.sqlalchemy import paginate
+from typing import Annotated
+
 from app.db.models import User
-from app.services.musics import OrderMusicBy
 from app.db.schemas.musics import (
+    Music,
     MusicAnime,
     MusicArtist,
     MusicCreate,
     MusicSearch,
     MusicShort,
     MusicUpdate,
-    Music
 )
-from typing import Annotated
+from app.services.musics import MusicService, OrderMusicBy, get_service
+from fastapi import APIRouter, Body, Depends, Query, UploadFile, status
+from fastapi_pagination import Page
+from fastapi_pagination.ext.sqlalchemy import paginate
 
-from app.db.schemas.types import Type
 from .users import get_current_user
-from app.services.musics import (
-    MusicService,
-    get_service,
-)
 
-router = APIRouter(
-    prefix='/musics',
-    tags=["Musics"]
-)
+router = APIRouter(prefix="/musics", tags=["Musics"])
 
 
 @router.get("/all", response_model=Page[MusicShort])
 async def get_all(
     service: Annotated[MusicService, Depends(get_service)],
-    order_by: OrderMusicBy = Query(None, description="Order items by")
+    order_by: OrderMusicBy = Query(None, description="Order items by"),
 ) -> Page[MusicShort]:
     """
 
@@ -80,7 +65,7 @@ async def get_most_popular(
 ) -> list[MusicShort]:
     """
 
-    **Route to get the 5 most popular musics** 
+    **Route to get the 5 most popular musics**
 
     **Args:**
 
@@ -165,7 +150,7 @@ async def add(
     music: Annotated[MusicCreate, Body(embed=True)],
     poster_img: UploadFile,
     service: Annotated[MusicService, Depends(get_service)],
-    current_user: Annotated[User, Depends(get_current_user)]
+    current_user: Annotated[User, Depends(get_current_user)],
 ):
     """
 
@@ -216,7 +201,7 @@ async def update(
 async def delete(
     id: int,
     service: Annotated[MusicService, Depends(get_service)],
-    current_user: Annotated[User, Depends(get_current_user)]
+    current_user: Annotated[User, Depends(get_current_user)],
 ):
     """
 

@@ -1,5 +1,5 @@
 import json
-from typing import List
+
 from pydantic import BaseModel
 
 
@@ -10,12 +10,14 @@ class UserBase(BaseModel):
 class UserLogin(UserBase):
     password: str
 
+
 # POST
 
 
 class UserCreate(UserBase):
     username: str
     password: str
+
 
 # UPDATE
 
@@ -34,6 +36,7 @@ class UserUpdate(BaseModel):
         if isinstance(value, str):
             return cls(**json.loads(value))
         return value
+
 
 # GET
 

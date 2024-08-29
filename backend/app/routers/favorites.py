@@ -1,24 +1,20 @@
 from typing import Annotated
+
+from app.db.models import User
+from app.db.schemas.musics import Music, MusicShort
+from app.services.musics import MusicService, get_service
 from fastapi import APIRouter, status
 from fastapi.params import Depends
-from app.db.schemas.musics import MusicShort
-from app.db.models import User
+
 from .users import get_current_user
-from app.db.schemas.musics import Music
 
-from app.services.musics import MusicService, get_service
-
-
-router = APIRouter(
-    prefix='/favorites',
-    tags=["Favorites"]
-)
+router = APIRouter(prefix="/favorites", tags=["Favorites"])
 
 
 @router.get("/all", response_model=list[Music])
 async def get_all(
     service: Annotated[MusicService, Depends(get_service)],
-    current_user: Annotated[User, Depends(get_current_user)]
+    current_user: Annotated[User, Depends(get_current_user)],
 ) -> list[Music]:
     """
 
@@ -61,7 +57,7 @@ async def get_user_all(
 async def add(
     id_music: str,
     service: Annotated[MusicService, Depends(get_service)],
-    current_user: Annotated[User, Depends(get_current_user)]
+    current_user: Annotated[User, Depends(get_current_user)],
 ):
     """
 
@@ -80,7 +76,7 @@ async def add(
 async def delete(
     id_music: str,
     service: Annotated[MusicService, Depends(get_service)],
-    current_user: Annotated[User, Depends(get_current_user)]
+    current_user: Annotated[User, Depends(get_current_user)],
 ):
     """
 

@@ -1,27 +1,15 @@
-from fastapi import (
-    APIRouter,
-    Depends,
-    File,
-    Body,
-    UploadFile,
-    status
-)
 from typing import Annotated
 
+from app.db.models import User
+from app.db.schemas.artists import Artist, ArtistCreate, ArtistUpdate
+from app.services.artists import ArtistService, get_service
+from fastapi import APIRouter, Body, Depends, UploadFile, status
 from fastapi_pagination import Page
 from fastapi_pagination.ext.sqlalchemy import paginate
-from app.db.models import User
-from app.db.schemas.artists import ArtistCreate, ArtistUpdate, Artist
-from .users import get_current_user
-from app.services.artists import (
-    ArtistService,
-    get_service,
-)
 
-router = APIRouter(
-    prefix='/artists',
-    tags=["artists"]
-)
+from .users import get_current_user
+
+router = APIRouter(prefix="/artists", tags=["artists"])
 
 
 @router.get("/all", response_model=Page[Artist])
@@ -64,7 +52,9 @@ async def search(
     return paginate(service.db_session, service.search(query))
 
 
-@router.post("/add", response_model=Artist, status_code=status.HTTP_201_CREATED)
+@router.post(
+    "/add", response_model=Artist, status_code=status.HTTP_201_CREATED
+)
 async def add(
     artist: Annotated[ArtistCreate, Body(embed=True)],
     poster_img: UploadFile,
@@ -120,7 +110,7 @@ async def update(
 async def delete(
     id: int,
     service: Annotated[ArtistService, Depends(get_service)],
-    current_user: Annotated[User, Depends(get_current_user)]
+    current_user: Annotated[User, Depends(get_current_user)],
 ):
     """
 

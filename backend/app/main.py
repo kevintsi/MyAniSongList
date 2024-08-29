@@ -1,18 +1,18 @@
-
 import os
+
+from app.routers import (
+    animes,
+    artists,
+    favorites,
+    languages,
+    musics,
+    reviews,
+    types,
+    users,
+)
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi_pagination import add_pagination
-from app.routers import (
-    users,
-    animes,
-    musics,
-    types,
-    reviews,
-    favorites,
-    languages,
-    artists
-)
 
 app = FastAPI()
 

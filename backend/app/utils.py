@@ -1,10 +1,11 @@
 from datetime import datetime, timedelta
 from os import getenv
-from sqlalchemy import select
+
 import jwt
-from sqlalchemy.orm import Session
 from app.db.models import User
 from passlib.context import CryptContext
+from sqlalchemy import select
+from sqlalchemy.orm import Session
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -12,15 +13,17 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 def get_user(db_session: Session, email: str):
     try:
         res = db_session.scalars(
-            select(User).filter(User.email == email)).one()
-    except:
+            select(User).filter(User.email == email)
+        ).one()
+    except Exception as e:
+        print(f"Error when getting user by email : {e}")
         res = None
 
     return res
 
 
 def authenticate_user(db_session: Session, email: str, password: str):
-    user: User = get_user(db_session, email)
+    user: User | None = get_user(db_session, email)
 
     if not user:
         return False
@@ -39,8 +42,9 @@ def get_password_hash(password):
 
 def create_access_token(data: dict, expires_delta: timedelta):
     to_encode = data.copy()
-    expire = datetime.utcnow() + expires_delta
+    expire = datetime.now() + expires_delta
     to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(to_encode, getenv(
-        "SECRET_KEY"), algorithm=getenv("ALGORITHM"))
+    encoded_jwt = jwt.encode(
+        to_encode, getenv("SECRET_KEY"), algorithm=getenv("ALGORITHM")
+    )
     return encoded_jwt

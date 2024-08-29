@@ -1,11 +1,11 @@
-from typing import List
-from datetime import datetime
 import json
+from datetime import datetime
+
 from pydantic import BaseModel
-from .types import Type
 
 from .animes import Anime, AnimeShort
 from .artists import Artist
+from .types import Type
 
 
 class MusicBase(BaseModel):
@@ -48,7 +48,7 @@ class MusicShort(BaseModel):
     id: int
     poster_img: str
     name: str
-    avg_note:  float
+    avg_note: float
     release_date: datetime
     type: Type
 

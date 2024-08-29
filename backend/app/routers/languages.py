@@ -1,18 +1,13 @@
 from typing import Annotated
-from fastapi import (
-    APIRouter,
-    Depends,
-    status
-)
+
 from app.db.models import User
 from app.db.schemas.languages import Language, LanguageCreate, LanguageUpdate
 from app.services.languages import LanguageService, get_service
+from fastapi import APIRouter, Depends, status
+
 from .users import get_current_user
 
-router = APIRouter(
-    prefix='/languages',
-    tags=["Languages"]
-)
+router = APIRouter(prefix="/languages", tags=["Languages"])
 
 
 @router.get("/all", response_model=list[Language])
@@ -35,8 +30,7 @@ async def get_all(
 
 @router.get("/{id}", response_model=Language)
 async def get(
-    id: int,
-    service: Annotated[LanguageService, Depends(get_service)]
+    id: int, service: Annotated[LanguageService, Depends(get_service)]
 ) -> Language:
     """
 
@@ -56,8 +50,7 @@ async def get(
 
 @router.get("/animes/{id}", response_model=list[Language])
 async def get_languages_by_anime(
-    id: int,
-    service: Annotated[LanguageService, Depends(get_service)]
+    id: int, service: Annotated[LanguageService, Depends(get_service)]
 ) -> list[Language]:
     """
 
@@ -76,9 +69,8 @@ async def get_languages_by_anime(
 
 
 @router.get("/types/{id}", response_model=list[Language])
-async def get_languages_by_anime(
-    id: int,
-    service: Annotated[LanguageService, Depends(get_service)]
+async def get_languages_by_type(
+    id: int, service: Annotated[LanguageService, Depends(get_service)]
 ) -> list[Language]:
     """
 
@@ -96,11 +88,13 @@ async def get_languages_by_anime(
     return service.get_languages_by_type(id)
 
 
-@router.post("/add", response_model=Language, status_code=status.HTTP_201_CREATED)
+@router.post(
+    "/add", response_model=Language, status_code=status.HTTP_201_CREATED
+)
 async def add(
     language: LanguageCreate,
     service: Annotated[LanguageService, Depends(get_service)],
-    current_user: Annotated[User, Depends(get_current_user)]
+    current_user: Annotated[User, Depends(get_current_user)],
 ) -> Language:
     """
 
@@ -124,7 +118,7 @@ async def update(
     id: int,
     language: LanguageUpdate,
     service: Annotated[LanguageService, Depends(get_service)],
-    current_user: Annotated[User, Depends(get_current_user)]
+    current_user: Annotated[User, Depends(get_current_user)],
 ) -> Language:
     """
 
@@ -148,7 +142,7 @@ async def update(
 async def delete(
     id: int,
     service: Annotated[LanguageService, Depends(get_service)],
-    current_user: Annotated[User, Depends(get_current_user)]
+    current_user: Annotated[User, Depends(get_current_user)],
 ):
     """
 

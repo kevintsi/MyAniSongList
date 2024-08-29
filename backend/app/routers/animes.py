@@ -1,26 +1,20 @@
-from fastapi import (
-    APIRouter,
-    Depends,
-    File,
-    Body,
-    UploadFile,
-    status
+from typing import Annotated
+
+from app.db.models import User
+from app.db.schemas.animes import (
+    Anime,
+    AnimeCreate,
+    AnimeTranslationCreate,
+    AnimeUpdate,
 )
+from app.services.animes import AnimeService, get_service
+from fastapi import APIRouter, Body, Depends, File, UploadFile, status
 from fastapi_pagination import Page
 from fastapi_pagination.ext.sqlalchemy import paginate
-from app.db.models import User
-from app.db.schemas.animes import Anime, AnimeCreate, AnimeTranslationCreate, AnimeUpdate
-from typing import Annotated, Optional
-from .users import get_current_user
-from app.services.animes import (
-    AnimeService,
-    get_service,
-)
 
-router = APIRouter(
-    prefix='/animes',
-    tags=["Animes"]
-)
+from .users import get_current_user
+
+router = APIRouter(prefix="/animes", tags=["Animes"])
 
 
 @router.get("/all", response_model=Page[Anime])
@@ -41,14 +35,19 @@ async def get_all(
         Page[Anime]: Animes with pages
     """
     res = service.list(lang)
-    return paginate(service.db_session, res,
-                    transformer=lambda items: [
-                        Anime(
-                            id=row.id_anime,
-                            description=row.description,
-                            poster_img=row.anime.poster_img,
-                            name=row.name).dict() for row in items
-                    ])
+    return paginate(
+        service.db_session,
+        res,
+        transformer=lambda items: [
+            Anime(
+                id=row.id_anime,
+                description=row.description,
+                poster_img=row.anime.poster_img,
+                name=row.name,
+            ).dict()
+            for row in items
+        ],
+    )
 
 
 @router.get("/search", response_model=Page[Anime])
@@ -71,14 +70,19 @@ async def search(
         Page[Anime]: Animes with page
     """
     res = service.search(query, lang)
-    return paginate(service.db_session, res,
-                    transformer=lambda items: [
-                        Anime(
-                            id=row.id_anime,
-                            description=row.description,
-                            poster_img=row.anime.poster_img,
-                            name=row.name).dict() for row in items
-                    ])
+    return paginate(
+        service.db_session,
+        res,
+        transformer=lambda items: [
+            Anime(
+                id=row.id_anime,
+                description=row.description,
+                poster_img=row.anime.poster_img,
+                name=row.name,
+            ).dict()
+            for row in items
+        ],
+    )
 
 
 @router.post("/add", response_model=Anime, status_code=status.HTTP_201_CREATED)
@@ -86,7 +90,7 @@ async def add(
     anime: Annotated[AnimeCreate, Body(embed=True)],
     poster_img: Annotated[UploadFile, File()],
     service: Annotated[AnimeService, Depends(get_service)],
-    current_user: Annotated[User, Depends(get_current_user)]
+    current_user: Annotated[User, Depends(get_current_user)],
 ) -> Anime:
     """
     **Route to create an Anime**
@@ -94,7 +98,7 @@ async def add(
     **Args:**
 
         poster_img (Annotated[UploadFile, File): Poster image
-        service (Annotated[AnimeService, Depends): Anime service 
+        service (Annotated[AnimeService, Depends): Anime service
         current_user (Annotated[User, Depends): Get user using the token in the header
         anime (Annotated[AnimeCreate, Body, optional]): Anime schema.
 
@@ -105,13 +109,17 @@ async def add(
     return service.create(anime, poster_img, current_user)
 
 
-@router.post("/{id}/add_translation/", response_model=Anime, status_code=status.HTTP_201_CREATED)
+@router.post(
+    "/{id}/add_translation/",
+    response_model=Anime,
+    status_code=status.HTTP_201_CREATED,
+)
 async def add_translation(
     id: int,
     lang: str,
     anime: AnimeTranslationCreate,
     service: Annotated[AnimeService, Depends(get_service)],
-    current_user: Annotated[User, Depends(get_current_user)]
+    current_user: Annotated[User, Depends(get_current_user)],
 ) -> Anime:
     """
     **Route to add translation for an anime**
@@ -166,7 +174,7 @@ async def update(
 async def delete(
     id: int,
     service: Annotated[AnimeService, Depends(get_service)],
-    current_user: Annotated[User, Depends(get_current_user)]
+    current_user: Annotated[User, Depends(get_current_user)],
 ):
     """
     **Route to delete an anime**

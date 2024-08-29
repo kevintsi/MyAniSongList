@@ -1,47 +1,41 @@
+import os
 from datetime import datetime, timedelta, timezone
 from os import getenv
-import os
 from typing import Annotated
-from fastapi import (
-    APIRouter,
-    Cookie,
-    Depends,
-    HTTPException,
-    Response,
-    status,
-    Body,
-    UploadFile
-)
-from fastapi_pagination import Page
+
 import jwt
 import redis
+from app.db.schemas.token import Token
 from app.db.schemas.users import User, UserLogin
-from app.utils import (
-    authenticate_user,
-    create_access_token,
-)
-from sqlalchemy.orm import Session
-from fastapi_pagination.ext.sqlalchemy import paginate
 from app.services.users import (
-    UserService,
     UserCreate,
+    UserService,
     UserUpdate,
     get_service,
     get_session,
 )
-from fastapi.security import HTTPBearer
-
-from app.db.schemas.token import Token
-
-router = APIRouter(
-    prefix='/users',
-    tags=["Users"]
+from app.utils import authenticate_user, create_access_token
+from fastapi import (
+    APIRouter,
+    Body,
+    Cookie,
+    Depends,
+    HTTPException,
+    Response,
+    UploadFile,
+    status,
 )
+from fastapi.security import HTTPBearer
+from fastapi_pagination import Page
+from fastapi_pagination.ext.sqlalchemy import paginate
+from sqlalchemy.orm import Session
+
+router = APIRouter(prefix="/users", tags=["Users"])
 
 
 async def get_current_user(
-        token: Annotated[str, Depends(HTTPBearer())],
-        user_service: Annotated[UserService, Depends(get_service)]
+    token: Annotated[str, Depends(HTTPBearer())],
+    user_service: Annotated[UserService, Depends(get_service)],
 ) -> User:
     """
 
@@ -66,8 +60,11 @@ async def get_current_user(
         headers={"WWW-Authenticate": "Bearer"},
     )
     try:
-        payload = jwt.decode(token.credentials, getenv("SECRET_KEY"),
-                             algorithms=getenv("ALGORITHM"))
+        payload = jwt.decode(
+            token.credentials,
+            getenv("SECRET_KEY"),
+            algorithms=getenv("ALGORITHM"),
+        )
         user = payload.get("sub")
         print(f"Value in access token : {user} {type(user)}")
         if user is None:
@@ -80,8 +77,7 @@ async def get_current_user(
 
 @router.get("/search", response_model=Page[User])
 async def search(
-    query: str,
-    service: Annotated[UserService, Depends(get_service)]
+    query: str, service: Annotated[UserService, Depends(get_service)]
 ) -> Page[User]:
     """
 
@@ -89,20 +85,21 @@ async def search(
 
     **Args:**
 
-        query (str): User searched 
+        query (str): User searched
         service (Annotated[UserService, Depends]): User service
 
     **Returns:**
 
-        Page[User]: List of users matching the query parameter using pages format 
+        Page[User]: List of users matching the query parameter using pages format
     """
     return paginate(service.db_session, service.search(query))
 
 
-@router.post("/register", response_model=User, status_code=status.HTTP_201_CREATED)
+@router.post(
+    "/register", response_model=User, status_code=status.HTTP_201_CREATED
+)
 async def register(
-    user: UserCreate,
-    service: Annotated[UserService, Depends(get_service)]
+    user: UserCreate, service: Annotated[UserService, Depends(get_service)]
 ) -> User:
     """
 
@@ -146,7 +143,9 @@ async def update(
     return service.update(current_user.id, user, profile_picture)
 
 
-@router.post('/login', summary="Create access tokens for user", response_model=Token)
+@router.post(
+    "/login", summary="Create access tokens for user", response_model=Token
+)
 async def login(
     response: Response,
     form_data: UserLogin,
@@ -160,7 +159,7 @@ async def login(
 
         response (Response): Response to add refresh token to cookie
         form_data (UserLogin): User login schema
-        db_session (Annotated[Session, Depends): Session 
+        db_session (Annotated[Session, Depends): Session
 
     **Raises:**
 
@@ -170,39 +169,43 @@ async def login(
 
         Token: Created access token
     """
-    user = authenticate_user(
-        db_session, form_data.email, form_data.password)
+    user = authenticate_user(db_session, form_data.email, form_data.password)
 
     if not user:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Invalid username or password")
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Invalid username or password",
+        )
     print(user)
     access_token_expires = timedelta(minutes=15)
     print(access_token_expires)
     access_token = create_access_token(
-        data={"sub": {"id": user.id, "is_manager": user.is_manager}}, expires_delta=access_token_expires)
+        data={"sub": {"id": user.id, "is_manager": user.is_manager}},
+        expires_delta=access_token_expires,
+    )
 
     refresh_token_expires = timedelta(days=7)
     refresh_token = create_access_token(
-        data={"sub": {"id": user.id, "is_manager": user.is_manager}}, expires_delta=refresh_token_expires)
+        data={"sub": {"id": user.id, "is_manager": user.is_manager}},
+        expires_delta=refresh_token_expires,
+    )
 
-    response.set_cookie(key="refresh_token",
-                        value=refresh_token,
-                        samesite="none",
-                        secure=True,
-                        httponly=True,
-                        domain=os.getenv("DOMAIN"),
-                        expires=datetime.now(
-                            timezone.utc)+refresh_token_expires
-                        )
+    response.set_cookie(
+        key="refresh_token",
+        value=refresh_token,
+        samesite="none",
+        secure=True,
+        httponly=True,
+        domain=os.getenv("DOMAIN"),
+        expires=datetime.now(timezone.utc) + refresh_token_expires,
+    )
 
     return Token(access_token=access_token)
 
 
 @router.post("/refresh_token", response_model=Token)
 def refresh_access_token(
-        response: Response,
-        refresh_token: str = Cookie(None)
+    response: Response, refresh_token: str = Cookie(None)
 ) -> Token:
     """
     **Route to refresh access token**
@@ -225,10 +228,10 @@ def refresh_access_token(
         r = redis.Redis(
             host=os.getenv("REDIS_HOST"),
             port=os.getenv("REDIS_PORT"),
-            password=os.getenv("REDIS_PASSWORD")
+            password=os.getenv("REDIS_PASSWORD"),
         )
         if refresh_token:
-            if r.sismember('token_blacklist', refresh_token):
+            if r.sismember("token_blacklist", refresh_token):
                 raise HTTPException(
                     status_code=status.HTTP_403_FORBIDDEN,
                     detail="Invalid refresh token has already been revoked",
@@ -236,29 +239,45 @@ def refresh_access_token(
                 )
             else:
                 # Verify and decode the refresh token
-                decoded_token = jwt.decode(refresh_token, getenv(
-                    "SECRET_KEY"), algorithms=getenv("ALGORITHM"))
+                decoded_token = jwt.decode(
+                    refresh_token,
+                    getenv("SECRET_KEY"),
+                    algorithms=getenv("ALGORITHM"),
+                )
                 user = decoded_token.get("sub")
                 print(user)
                 # Generate a new access token
                 access_token_expires = timedelta(minutes=15)
                 new_access_token = create_access_token(
-                    data={"sub": {"id": user['id'], "is_manager": user['is_manager']}}, expires_delta=access_token_expires
+                    data={
+                        "sub": {
+                            "id": user["id"],
+                            "is_manager": user["is_manager"],
+                        }
+                    },
+                    expires_delta=access_token_expires,
                 )
 
                 refresh_token_expires = timedelta(days=7)
                 new_refresh_token = create_access_token(
-                    data={"sub": {"id": user['id'], "is_manager": user['is_manager']}}, expires_delta=refresh_token_expires)
+                    data={
+                        "sub": {
+                            "id": user["id"],
+                            "is_manager": user["is_manager"],
+                        }
+                    },
+                    expires_delta=refresh_token_expires,
+                )
 
-                response.set_cookie("refresh_token",
-                                    value=new_refresh_token,
-                                    samesite="none",
-                                    secure=True,
-                                    httponly=True,
-                                    domain=os.getenv("DOMAIN"),
-                                    expires=datetime.now(
-                                        timezone.utc)+refresh_token_expires
-                                    )
+                response.set_cookie(
+                    "refresh_token",
+                    value=new_refresh_token,
+                    samesite="none",
+                    secure=True,
+                    httponly=True,
+                    domain=os.getenv("DOMAIN"),
+                    expires=datetime.now(timezone.utc) + refresh_token_expires,
+                )
 
                 r.sadd("token_blacklist", refresh_token)
                 # Return the new access token
@@ -273,7 +292,7 @@ def refresh_access_token(
         raise e
 
 
-@router.post('/logout')
+@router.post("/logout")
 def logout(response: Response, refresh_token: str = Cookie(default=None)):
     """
 
@@ -290,7 +309,7 @@ def logout(response: Response, refresh_token: str = Cookie(default=None)):
     r = redis.Redis(
         host=os.getenv("REDIS_HOST"),
         port=os.getenv("REDIS_PORT"),
-        password=os.getenv("REDIS_PASSWORD")
+        password=os.getenv("REDIS_PASSWORD"),
     )
 
     r.sadd("token_blacklist", refresh_token)
@@ -303,8 +322,7 @@ def logout(response: Response, refresh_token: str = Cookie(default=None)):
 @router.get("/me", response_model=User)
 async def profile(
     current_user: Annotated[User, Depends(get_current_user)],
-    service: Annotated[UserService, Depends(get_service)]
-
+    service: Annotated[UserService, Depends(get_service)],
 ) -> User:
     """
 
@@ -325,9 +343,7 @@ async def profile(
 
 @router.get("/{id}", response_model=User)
 async def get_user(
-    id: int,
-    service: Annotated[UserService, Depends(get_service)]
-
+    id: int, service: Annotated[UserService, Depends(get_service)]
 ) -> User:
     """
 
@@ -348,7 +364,7 @@ async def get_user(
 @router.delete("/delete")
 async def delete(
     service: Annotated[UserService, Depends(get_service)],
-    current_user: Annotated[User, Depends(get_current_user)]
+    current_user: Annotated[User, Depends(get_current_user)],
 ):
     """
 
