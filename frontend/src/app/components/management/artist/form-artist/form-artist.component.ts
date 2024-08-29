@@ -45,6 +45,7 @@ export class FormArtistComponent {
   onSubmit() {
     if (this.form.valid) {
       const formData = this.form.value;
+      console.log(formData)
       this.submitForm.emit(formData);
     }
   }

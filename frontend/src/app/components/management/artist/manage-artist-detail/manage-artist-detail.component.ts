@@ -45,6 +45,7 @@ export class ManageArtistDetailComponent implements OnDestroy, OnInit {
   }
 
   onSubmit(formData: any) {
+    console.log(formData)
     let id = Number(this.route.snapshot.paramMap.get('id'))
     this.updateSubscription = this.service.update(id, formData)
       .subscribe({

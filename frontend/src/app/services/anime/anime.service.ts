@@ -39,7 +39,7 @@ export class AnimeService {
     }
 
     form_data.append("anime", JSON.stringify(anime))
-    data?.poster_img ? form_data.append('poster_img', data?.poster_img) : null
+    data.poster_img ? form_data.append('poster_img', data.poster_img) : null
 
     return this.http.put(
       this.endpoint + '/animes/update/' + id + "?lang=" + lang,

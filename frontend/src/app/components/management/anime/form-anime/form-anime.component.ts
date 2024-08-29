@@ -85,9 +85,9 @@ export class FormAnimeComponent {
     }
   }
 
-  processFile(imageInput: any) {
-    const file = imageInput.files[0];
-    if (file) {
+  processFile(imageInput: HTMLInputElement) {
+    if (imageInput.files) {
+      const file = imageInput.files[0];
       if (["image/jpeg", "image/png", "image/svg+xml"].includes(file.type)) {
         this.form.patchValue({
           poster_img: file

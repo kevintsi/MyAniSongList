@@ -32,10 +32,8 @@ export class ArtistService {
     }
 
     const form_data = new FormData()
-
-    form_data.append("author", JSON.stringify(artist))
-    if (data.file != null)
-      form_data.append('poster_img', data.file)
+    form_data.append("artist", JSON.stringify(artist))
+    data.poster_img ? form_data.append('poster_img', data.poster_img) : null
 
     return this.http.put(
       this.endpoint + '/artists/update/' + id,

@@ -28,7 +28,7 @@ export class ProfileEditComponent implements OnInit, OnDestroy {
   }, { validators: [passwordMatchingValidator] });
 
   previewImage?: any
-  file: any
+  file: File | null = null
 
   authSubscription?: Subscription
   updateSubscription?: Subscription
@@ -36,7 +36,6 @@ export class ProfileEditComponent implements OnInit, OnDestroy {
   constructor(
     private authService: AuthService,
     private formBuilder: FormBuilder,
-    private translateService: TranslateService,
     private title: Title,
     private toastr: ToastrService
 
@@ -86,7 +85,7 @@ export class ProfileEditComponent implements OnInit, OnDestroy {
         }
       }
 
-
+      if (!this.file) return
 
       this.updateSubscription = this.authService.update(user, this.file)
         .subscribe({
@@ -115,9 +114,9 @@ export class ProfileEditComponent implements OnInit, OnDestroy {
 
   }
 
-  processFile(imageInput: any) {
-    this.file = imageInput.files[0];
-    if (this.file) {
+  processFile(imageInput: HTMLInputElement) {
+    if (imageInput.files) {
+      this.file = imageInput.files[0]
       if (["image/jpeg", "image/png", "image/svg+xml"].includes(this.file.type)) {
         let fileReader = new FileReader();
         fileReader.readAsDataURL(this.file);
