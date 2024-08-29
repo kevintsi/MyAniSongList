@@ -1,3 +1,4 @@
+from io import BytesIO
 from sqlalchemy.orm import Session
 from sqlalchemy import select
 from fastapi import Depends, UploadFile, status
@@ -6,6 +7,7 @@ from starlette.exceptions import HTTPException
 from app.db.models import Artist, User
 from .base import BaseService
 from app.db.session import get_session
+from PIL import Image
 import sqlalchemy
 from app.firebase import bucket
 
@@ -22,8 +24,13 @@ class ArtistService(BaseService[Artist, ArtistCreate, ArtistUpdate]):
 
     def create(self, obj: ArtistCreate, poster_img: UploadFile, user: User):
         if user.is_manager:
-            blob = bucket.blob(f"artist_poster_images/{poster_img.filename}")
-            blob.upload_from_file(poster_img.file, content_type="image/png")
+            image = Image.open(BytesIO(poster_img.file.read()))
+            webp_buffer = BytesIO()
+            image.save(webp_buffer, format="WEBP", quality=100)
+            webp_buffer.seek(0)
+            filename = poster_img.filename.rsplit('.', 1)[0] + ".webp"
+            blob = bucket.blob(f"artist_poster_images/{filename}")
+            blob.upload_from_file(webp_buffer, content_type="image/webp")
             blob.make_public()
 
             db_obj: Artist = Artist(
@@ -60,10 +67,14 @@ class ArtistService(BaseService[Artist, ArtistCreate, ArtistUpdate]):
                 setattr(db_obj, column, value)
 
             if poster_img is not None:
+                image = Image.open(BytesIO(poster_img.file.read()))
+                webp_buffer = BytesIO()
+                image.save(webp_buffer, format="WEBP", quality=100)
+                webp_buffer.seek(0)
+                filename = poster_img.filename.rsplit('.', 1)[0] + ".webp"
                 blob = bucket.blob(
-                    f"artist_poster_images/{poster_img.filename}")
-                blob.upload_from_file(
-                    poster_img.file, content_type="image/png")
+                    f"artist_poster_images/{filename}")
+                blob.upload_from_file(webp_buffer, content_type="image/webp")
                 blob.make_public()
 
                 setattr(db_obj, "poster_img", blob.public_url)

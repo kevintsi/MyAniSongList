@@ -1,3 +1,4 @@
+from io import BytesIO
 from sqlalchemy.orm import Session
 from sqlalchemy import select, update
 from fastapi import Depends, UploadFile
@@ -7,6 +8,7 @@ from .base import BaseService
 from app.db.session import get_session
 from starlette.exceptions import HTTPException
 import sqlalchemy
+from PIL import Image
 from app.utils import get_password_hash
 from datetime import datetime
 from app.firebase import bucket
@@ -41,10 +43,15 @@ class UserService(BaseService[User, UserCreate, UserUpdate]):
     def update(self, id, obj: UserUpdate, pfp: UploadFile):
 
         user: User = self.db_session.get(User, id)
-        print(f"Profile picture sent : {pfp}")
         if pfp:
-            blob = bucket.blob(f"profile_pictures/{pfp.filename}")
-            blob.upload_from_file(pfp.file, content_type="image/png")
+            image = Image.open(BytesIO(pfp.file.read()))
+            print(f"Image : {image}")
+            webp_buffer = BytesIO()
+            image.save(webp_buffer, format="WEBP", quality=100)
+            webp_buffer.seek(0)
+            filename = pfp.filename.rsplit('.', 1)[0] + ".webp"
+            blob = bucket.blob(f"profile_pictures/{filename}")
+            blob.upload_from_file(webp_buffer, content_type="image/webp")
             blob.make_public()
             user.profile_picture = blob.public_url
 

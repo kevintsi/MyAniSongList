@@ -1,3 +1,4 @@
+from io import BytesIO
 from sqlalchemy.orm import Session
 from fastapi import Depends, UploadFile, status
 from app.db.schemas.animes import AnimeCreate,  AnimeUpdate, Anime as AnimeSchema, AnimeTranslationCreate
@@ -6,6 +7,7 @@ from app.db.models import Anime, AnimeTranslation, Language, User
 from .base import BaseService
 from app.db.session import get_session
 from sqlalchemy import select, exc
+from PIL import Image
 from app.firebase import bucket
 
 
@@ -57,10 +59,13 @@ class AnimeService(BaseService[Anime, AnimeCreate, AnimeUpdate]):
                 select(Language).filter(Language.code == "fr")).first()
 
             if lang_obj:
-                blob = bucket.blob(
-                    f"anime_poster_images/{poster_img.filename}")
-                blob.upload_from_file(
-                    poster_img.file, content_type="image/png")
+                image = Image.open(BytesIO(poster_img.file.read()))
+                webp_buffer = BytesIO()
+                image.save(webp_buffer, format="WEBP", quality=100)
+                webp_buffer.seek(0)
+                filename = poster_img.filename.rsplit('.', 1)[0] + ".webp"
+                blob = bucket.blob(f"anime_poster_images/{filename}")
+                blob.upload_from_file(webp_buffer, content_type="image/webp")
                 blob.make_public()
                 try:
                     anime: Anime = self.db_session.scalars(select(Anime).filter(
@@ -140,10 +145,14 @@ class AnimeService(BaseService[Anime, AnimeCreate, AnimeUpdate]):
 
             if anime and obj_lang:
                 if poster_img:
+                    image = Image.open(BytesIO(poster_img.file.read()))
+                    webp_buffer = BytesIO()
+                    image.save(webp_buffer, format="WEBP", quality=100)
+                    webp_buffer.seek(0)
+                    filename = poster_img.filename.rsplit('.', 1)[0] + ".webp"
                     blob = bucket.blob(
-                        f"anime_poster_images/{poster_img.filename}")
-                    blob.upload_from_file(
-                        poster_img.file, content_type="image/png")
+                        f"anime_poster_images/{filename}")
+                    blob.upload_from_file(webp_buffer, content_type="image/webp")
                     blob.make_public()
 
                     anime.poster_img = blob.public_url
