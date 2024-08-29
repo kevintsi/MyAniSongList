@@ -111,13 +111,13 @@ class TestMusics:
         )
 
     def test_get_music_by_id(self, test_app_with_db):
-        blob_music = bucket.blob("music_poster_images/Gurenge.jpg")
+        blob_music = bucket.blob("music_poster_images/Gurenge.webp")
         blob_music.make_public()
 
-        blob_anime = bucket.blob("anime_poster_images/demon_slayer.jpg")
+        blob_anime = bucket.blob("anime_poster_images/demon_slayer.webp")
         blob_anime.make_public()
 
-        blob_artist = bucket.blob("artist_poster_images/LiSA.jpg")
+        blob_artist = bucket.blob("artist_poster_images/LiSA.webp")
         blob_anime.make_public()
 
         music = Music(

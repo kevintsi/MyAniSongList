@@ -54,8 +54,10 @@ class TestAnimes:
                     },
                 )
 
+                new_filename = response.json()["poster_img"].rsplit(".",1)[0]+".webp"
+
                 blob = bucket.blob(
-                    f"anime_poster_images/{anime['poster_img']}"
+                    f"anime_poster_images/{new_filename}"
                 )
                 blob.make_public()
 
@@ -65,10 +67,10 @@ class TestAnimes:
                     response.json()["description"]
                     == anime["anime"].description
                 )
-                assert response.json()["poster_img"] == blob.public_url
+                assert new_filename == blob.public_url
 
     def test_get_anime_by_id(self, test_app_with_db):
-        blob = bucket.blob("anime_poster_images/naruto_affiche.jpg")
+        blob = bucket.blob("anime_poster_images/naruto_affiche.webp")
         blob.make_public()
         anime = Anime(
             id=1,

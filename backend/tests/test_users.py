@@ -47,7 +47,7 @@ class TestUsers:
                 },
             )
 
-        blob = bucket.blob("profile_pictures/naruto.jpg")
+        blob = bucket.blob("profile_pictures/naruto.webp")
         blob.make_public()
 
         response_get = test_app_with_db.get(
@@ -94,7 +94,7 @@ class TestUsers:
 
     def test_get_user(self, test_app_with_db):
         response = test_app_with_db.get(f"{self.ENDPOINT_BASE}/3")
-        blob = bucket.blob("profile_pictures/naruto.jpg")
+        blob = bucket.blob("profile_pictures/naruto.webp")
         blob.make_public()
         assert response.status_code == 200
         assert response.json() == User(
