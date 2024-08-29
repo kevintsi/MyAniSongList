@@ -24,7 +24,7 @@ class TestAnimes:
             },
             {
                 "anime": AnimeCreate(
-                    name="One Pice", description="description fr one piece"
+                    name="One Piece", description="description fr one piece"
                 ),
                 "poster_img": "one_piece.jpg",
             },
@@ -54,7 +54,8 @@ class TestAnimes:
                     },
                 )
 
-                new_filename = response.json()["poster_img"].rsplit(".",1)[0]+".webp"
+                new_filename = anime["poster_img"].rsplit(".",1)[0]+".webp"
+                print(new_filename)
 
                 blob = bucket.blob(
                     f"anime_poster_images/{new_filename}"
@@ -67,7 +68,7 @@ class TestAnimes:
                     response.json()["description"]
                     == anime["anime"].description
                 )
-                assert new_filename == blob.public_url
+                assert response.json()["poster_img"] == blob.public_url
 
     def test_get_anime_by_id(self, test_app_with_db):
         blob = bucket.blob("anime_poster_images/naruto_affiche.webp")

@@ -44,7 +44,7 @@ class TestArtists:
                     },
                 )
                 
-                new_filename = response.json()["poster_img"].rsplit(".",1)[0]+".webp"
+                new_filename = artist["poster_img"].rsplit(".",1)[0]+".webp"
 
                 blob = bucket.blob(
                     f"artist_poster_images/{new_filename}"
@@ -57,7 +57,7 @@ class TestArtists:
                     response.json()["creation_year"]
                     == artist["artist"].creation_year
                 )
-                assert new_filename == blob.public_url
+                assert response.json()["poster_img"] == blob.public_url
 
     def test_get_artist_by_id(self, test_app_with_db):
         blob = bucket.blob("artist_poster_images/flow_band.webp")
