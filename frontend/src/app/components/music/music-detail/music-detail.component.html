@@ -88,7 +88,8 @@
                     {{'MusicPage.Details.MusicVideo' | translate}}</h2>
                 <div class="p-4 flex flex-col items-center">
                     <div class="pt-4">
-                        <iframe [src]="getSafeUrl(music.id_video)" frameborder="0" class="md:w-96 md:h-56"
+                        <iframe [src]="'https://www.youtube.com/embed/'+ music.id_video | safe" frameborder="0"
+                            class="md:w-96 md:h-56"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                             allowfullscreen></iframe>
                     </div>

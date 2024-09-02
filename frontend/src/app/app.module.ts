@@ -40,6 +40,7 @@ import localeFr from '@angular/common/locales/fr';
 import localeFrExtra from '@angular/common/locales/extra/fr';
 import { AppLanguages } from './config/lang.config';
 import { FooterComponent } from './components/footer/footer.component';
+import { SafePipe } from './components/pipe/safe.pipe';
 
 @NgModule({
   declarations: [
@@ -66,6 +67,7 @@ import { FooterComponent } from './components/footer/footer.component';
     NotFoundComponent,
     LanguageDropDownComponent,
     FooterComponent,
+    SafePipe,
   ],
   imports: [
     HttpClientModule,
