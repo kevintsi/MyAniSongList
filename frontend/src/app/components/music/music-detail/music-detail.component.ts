@@ -55,11 +55,6 @@ export class MusicDetailComponent implements OnDestroy, OnInit {
     })
   }
 
-  getSafeUrl(id_video: string): SafeResourceUrl {
-    console.log("getSafeUrl", id_video)
-    return this.sanitizer.bypassSecurityTrustResourceUrl("https://www.youtube.com/embed/" + id_video)
-  }
-
   ngOnDestroy() {
     this.reviewAddedSubscription?.unsubscribe();
     this.addFavoriteSubscription?.unsubscribe();
