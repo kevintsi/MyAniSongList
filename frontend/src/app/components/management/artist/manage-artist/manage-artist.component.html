@@ -29,7 +29,7 @@
                         *ngFor="let artist of artists.items">
                         <td class="flex justify-center items-center">
                             <div class="w-20 md:w-40 h-full">
-                                <img [src]="artist.poster_img" [alt]="artist.name" />
+                                <img [src]="artist.poster_img" [alt]="artist.name" loading="lazy" />
                             </div>
                         </td>
                         <td class="overflow-hidden text-ellipsis whitespace-nowrap">{{ artist.name}} </td>

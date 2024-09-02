@@ -22,7 +22,8 @@
                             <th>{{i+1}}</th>
                             <td class="overflow-auto">
                                 <div class="flex flex-row items-center">
-                                    <img [src]="music.poster_img" class="w-12 h-12 object-contain mr-4" />
+                                    <img [src]="music.poster_img" class="w-12 h-12 object-contain mr-4"
+                                        loading="lazy" />
                                     <label class="text-ellipsis whitespace-nowrap">
                                         {{music.name}}
                                     </label>
