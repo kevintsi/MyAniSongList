@@ -17,7 +17,7 @@ export class AnimeListComponent implements OnInit, OnChanges {
 
   currentPage: number = 1
 
-  languageSubscription?: Subscription;
+  private languageSubscription!: Subscription;
 
 
   constructor(
@@ -28,7 +28,6 @@ export class AnimeListComponent implements OnInit, OnChanges {
 
 
   ngOnInit(): void {
-    this.title.setTitle(getAppTitle("Animes"))
     this.fetchData()
     this.languageSubscription = this.translateService.onLangChange.subscribe(() => {
       this.fetchData()
@@ -36,7 +35,7 @@ export class AnimeListComponent implements OnInit, OnChanges {
   }
 
   ngOnDestroy(): void {
-    this.languageSubscription?.unsubscribe()
+    if (this.languageSubscription) this.languageSubscription.unsubscribe()
   }
 
 
@@ -50,6 +49,7 @@ export class AnimeListComponent implements OnInit, OnChanges {
   async fetchData() {
     try {
       this.animes = await this.fetchAnimes()
+      this.title.setTitle(getAppTitle("Animes"))
     } catch (error) {
       console.log(error)
     }

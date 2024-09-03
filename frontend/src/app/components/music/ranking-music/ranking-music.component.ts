@@ -13,7 +13,6 @@ import { getAppTitle } from 'src/app/config/app.config';
 export class RankingMusicComponent {
   isLoading = true
   musics!: PagedMusic
-
   currentPage: number = 1
 
   constructor(private service: MusicService, private title: Title) { }

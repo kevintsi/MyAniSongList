@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ReviewService } from 'src/app/services/review/review.service';
 import { PagedReview } from 'src/app/models/review.model';
 import { Subscription, firstValueFrom } from 'rxjs'
@@ -11,16 +11,14 @@ import { getAppTitle } from 'src/app/config/app.config';
   templateUrl: './community-list.component.html',
   styleUrls: ['./community-list.component.css']
 })
-export class CommunityListComponent {
+export class CommunityListComponent implements OnInit, OnDestroy {
   isLoading = true
   reviews!: PagedReview
-
-
-  languageSubscription?: Subscription
-
   currentPage: number = 1;
   pageSize: number = 10;
   totalItems: number = 0;
+
+  private languageSubscription!: Subscription
 
   constructor(
     private service: ReviewService,
@@ -30,16 +28,20 @@ export class CommunityListComponent {
   ) { }
 
   ngOnInit(): void {
+    this.title.setTitle(getAppTitle("Communauté"))
     this.fetchData()
     this.languageSubscription = this.translateService.onLangChange.subscribe(() => {
       this.fetchData()
     })
   }
 
+  ngOnDestroy(): void {
+    if (this.languageSubscription) this.languageSubscription.unsubscribe()
+  }
+
   async fetchData() {
     try {
       this.reviews = await this.fetchReviews()
-      this.title.setTitle(getAppTitle("Communauté"))
     } catch (error) {
       console.log(error)
     } finally {

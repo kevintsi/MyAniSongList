@@ -19,7 +19,7 @@ export class ArtistDetailComponent implements OnInit {
   musics: Music[] = []
   artist!: Artist
 
-  languageSubscription?: Subscription;
+  private languageSubscription!: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -38,15 +38,15 @@ export class ArtistDetailComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    this.languageSubscription?.unsubscribe()
+    if (this.languageSubscription) this.languageSubscription.unsubscribe()
   }
 
 
   async fetchData() {
-    let id_artist = Number(this.route.snapshot.paramMap.get("id"))
+    let artistId = Number(this.route.snapshot.paramMap.get("id"))
     try {
-      this.artist = await this.fetchArtist(id_artist)
-      this.musics = await this.fetchMusicsArtist(id_artist)
+      this.artist = await this.fetchArtist(artistId)
+      this.musics = await this.fetchMusicsArtist(artistId)
       this.title.setTitle(getAppTitle(this.artist.name))
     } catch (error) {
       console.log(error)

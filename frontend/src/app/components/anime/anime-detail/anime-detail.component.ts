@@ -16,10 +16,11 @@ import { getAppTitle } from 'src/app/config/app.config';
 })
 export class AnimeDetailComponent implements OnInit, OnDestroy {
   isLoading: boolean = true
-  musics!: Music[]
+  musics: Music[] = []
   anime!: Anime
 
-  languageSubscription?: Subscription
+  private languageSubscription!: Subscription
+
   constructor(
     private route: ActivatedRoute,
     private musicService: MusicService,
@@ -37,16 +38,16 @@ export class AnimeDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.languageSubscription?.unsubscribe()
+    if (this.languageSubscription) this.languageSubscription.unsubscribe()
   }
 
 
   async fetchData() {
-    let id_anime = Number(this.route.snapshot.paramMap.get("id"))
+    let animeId = Number(this.route.snapshot.paramMap.get("id"))
     try {
-      this.anime = await this.fetchAnime(id_anime)
+      this.anime = await this.fetchAnime(animeId)
       this.title.setTitle(getAppTitle(this.anime.name))
-      this.musics = await this.fetchMusics(id_anime)
+      this.musics = await this.fetchMusics(animeId)
     } catch (error) {
       console.log(error)
     } finally {

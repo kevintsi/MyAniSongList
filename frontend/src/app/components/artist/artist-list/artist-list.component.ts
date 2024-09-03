@@ -16,10 +16,10 @@ export class ArtistListComponent implements OnInit {
 
   currentPage: number = 1
 
-  constructor(private service: ArtistService, private title: Title) {
-    this.title.setTitle(getAppTitle("Artistes"))
-  }
+  constructor(private service: ArtistService, private title: Title) { }
+
   ngOnInit(): void {
+    this.title.setTitle(getAppTitle("Artistes"))
     this.fetchData()
   }
 

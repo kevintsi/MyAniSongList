@@ -12,11 +12,11 @@ import { Music } from 'src/app/models/music.model';
 })
 export class FavoriteListComponent {
   isLoading = true
-  musics!: Music[]
-
+  musics: Music[] = []
   currentPage: number = 1
 
   constructor(private service: MusicService, private title: Title) { }
+
   ngOnInit(): void {
     this.fetchData()
   }

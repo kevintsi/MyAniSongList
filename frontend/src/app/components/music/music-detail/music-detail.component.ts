@@ -7,7 +7,7 @@ import { MusicService } from 'src/app/services/music/music.service';
 import { ReviewService } from 'src/app/services/review/review.service';
 import { Music } from 'src/app/models/music.model';
 import { Review } from 'src/app/models/review.model';
-import { DomSanitizer, SafeResourceUrl, Title } from '@angular/platform-browser';
+import { Title } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
 import { getAppTitle } from 'src/app/config/app.config';
@@ -42,7 +42,6 @@ export class MusicDetailComponent implements OnDestroy, OnInit {
     private reviewService: ReviewService,
     private authService: AuthService,
     private translateService: TranslateService,
-    private sanitizer: DomSanitizer,
     private title: Title,
     private toastr: ToastrService
   ) { }
@@ -65,13 +64,13 @@ export class MusicDetailComponent implements OnDestroy, OnInit {
 
 
   async fetchData() {
-    let id_music = Number(this.route.snapshot.paramMap.get("id"))
+    let musicId = Number(this.route.snapshot.paramMap.get("id"))
     try {
-      this.music = await this.getMusic(id_music);
+      this.music = await this.getMusic(musicId);
       this.title.setTitle(getAppTitle(this.music.name))
-      this.reviews = (await this.getMusicReviews(id_music)).items
+      this.reviews = (await this.getMusicReviews(musicId)).items
       if (this.isLoggedIn()) {
-        this.userReview = await this.getUserReview(id_music)
+        this.userReview = await this.getUserReview(musicId)
         if (this.userReview) {
           this.description.setValue(this.userReview.description)
           this.noteMusic = this.userReview.note_music * 2

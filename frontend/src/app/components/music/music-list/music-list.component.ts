@@ -13,7 +13,6 @@ import { PagedMusic } from 'src/app/models/music.model';
 export class MusicListComponent {
   isLoading = true
   musics!: PagedMusic
-
   currentPage: number = 1
 
   constructor(private service: MusicService, private title: Title) { }
