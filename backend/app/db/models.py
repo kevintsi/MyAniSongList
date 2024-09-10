@@ -5,11 +5,13 @@ from sqlalchemy import (
     DateTime,
     Float,
     ForeignKey,
+    Boolean,
     Integer,
     String,
     Table,
     Text,
     func,
+    MetaData
 )
 from sqlalchemy.orm import (
     DeclarativeBase,
@@ -20,7 +22,13 @@ from sqlalchemy.orm import (
 
 
 class Base(DeclarativeBase):
-    pass
+    metadata = MetaData(naming_convention={
+        "ix": "ix_%(column_0_label)s",
+        "uq": "uq_%(table_name)s_%(column_0_name)s",
+        "ck": "ck_%(table_name)s_`%(constraint_name)s`",
+        "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
+        "pk": "pk_%(table_name)s"
+    })
 
 
 chante_table = Table(
@@ -164,7 +172,7 @@ class User(Base):
     username = mapped_column(String(250), nullable=False, unique=True)
     email = mapped_column(String(250), nullable=False, unique=True)
     password = mapped_column(String(250), nullable=False)
-    is_manager = mapped_column(Integer, nullable=False, default=False)
+    is_manager = mapped_column(Boolean, nullable=False, default=False)
     profile_picture = mapped_column(String(250))
     creation_date = mapped_column(DateTime, nullable=False, default=func.now())
 
@@ -259,3 +267,39 @@ class Review(Base):
 
     def __repr__(self):
         return f"Review({self.id},{self.note_visual},{self.note_music},{self.creation_date},{self.music_id},{self.user_id},{self.description})"
+    
+class RequestMusic(Base):
+    __tablename__= "request_music"
+
+    id = mapped_column(Integer, primary_key=True)
+    creation_date = mapped_column(DateTime, nullable=False)
+    is_done = mapped_column(Boolean, nullable=False)
+    video_id = mapped_column(String(50), nullable=False)
+    music_name = mapped_column(String(255), nullable=False)
+    anime_name = mapped_column(String(255), nullable=False)
+    artists = mapped_column(String(255), nullable=False)
+    user_id = mapped_column(ForeignKey("user.id", ondelete="CASCADE"), nullable=False, index=True)
+    type_id = mapped_column(ForeignKey("type.id", ondelete="CASCADE"), nullable=False, index=True)
+
+    type : Mapped["Type"] = relationship("Type")
+    user : Mapped["User"] = relationship("User")
+
+    def __repr__(self) -> str:
+        return f"RequestMusic({self.id},{self.music_name})"
+    
+
+class Notification(Base):
+    __tablename__= "notification"
+
+    id = mapped_column(Integer, primary_key=True)
+    creation_date = mapped_column(DateTime, nullable=False)
+    music_id = mapped_column(
+        ForeignKey("music.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    user_id = mapped_column(ForeignKey("user.id", ondelete="CASCADE"), nullable=False, index=True)
+
+    music : Mapped["Music"] = relationship("Music")
+    user : Mapped["User"] = relationship("User", back_populates="notifications")
+
+    def __repr__(self) -> str:
+        return f"Notification({self.id})"
