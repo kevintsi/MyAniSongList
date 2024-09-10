@@ -182,6 +182,8 @@ class User(Base):
     favorites: Mapped[List["Music"]] = relationship(
         secondary=favorite_table, cascade="all, delete"
     )
+    notifications : Mapped[List["Notification"]] = relationship(
+        back_populates="user", cascade="all, delete")
 
     def __repr__(self):
         return f"""User(
