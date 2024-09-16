@@ -3,7 +3,7 @@ from typing import Annotated
 from app.db.models import User
 from app.db.schemas.types import Type, TypeCreate, TypeUpdate
 from app.services.types import TypeService, get_service
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, HTTPException, status
 
 from .users import get_current_user
 
@@ -51,7 +51,12 @@ async def add(
 
         Type: Created type
     """
-    return service.create(type, current_user)
+    if current_user.is_manager:
+        return service.create(type)
+    else:
+        raise HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized"
+    )
 
 
 @router.post(
@@ -82,8 +87,12 @@ async def add_translation(
 
         Type: Created type translation
     """
-    return service.add_translation(type, lang, id, current_user)
-
+    if current_user.is_manager:
+        return service.add_translation(type, lang, id)
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized"
+        )
 
 @router.put("/update/{id}", response_model=Type)
 async def update(
@@ -107,8 +116,12 @@ async def update(
 
         Type: Updated type
     """
-    return service.update(id, type, current_user)
-
+    if current_user.is_manager:
+        return service.update(id, type)
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized"
+        )
 
 @router.put("/{id}/update_translation", response_model=Type)
 async def update_translation(
@@ -134,8 +147,12 @@ async def update_translation(
 
         Type: Update type translation
     """
-    return service.update_translation(type, lang, id, current_user)
-
+    if current_user.is_manager:
+        return service.update_translation(type, lang, id)
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized"
+        )
 
 @router.delete("/delete/{id}")
 async def delete(
@@ -153,7 +170,12 @@ async def delete(
         service (Annotated[TypeService, Depends]): Type service
         current_user (Annotated[User, Depends]): Get user using the token in the header
     """
-    return service.delete(id, current_user)
+    if current_user.is_manager:
+        return service.delete(id)
+    else:
+          raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized"
+        )
 
 
 @router.get("/{id}", response_model=Type)

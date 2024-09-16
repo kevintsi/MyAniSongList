@@ -8,7 +8,7 @@ from app.db.schemas.animes import (
     AnimeUpdate,
 )
 from app.services.animes import AnimeService, get_service
-from fastapi import APIRouter, Body, Depends, File, UploadFile, status
+from fastapi import APIRouter, Body, Depends, File, HTTPException, UploadFile, status
 from fastapi_pagination import Page
 from fastapi_pagination.ext.sqlalchemy import paginate
 
@@ -106,7 +106,12 @@ async def add(
 
         Anime: Created anime
     """
-    return service.create(anime, poster_img, current_user)
+    if current_user.is_manager:
+        return service.create(anime, poster_img)
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized"
+        )
 
 
 @router.post(
@@ -136,8 +141,13 @@ async def add_translation(
         Anime: Created anime translation
 
     """
+    if current_user.is_manager:
+        return service.create_translation(anime, id, lang)
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized"
+        )
 
-    return service.create_translation(anime, id, lang, current_user)
 
 
 @router.put("/update/{id}", response_model=Anime)
@@ -166,9 +176,10 @@ async def update(
 
         Anime: Anime updated
     """
-    print("Begin update route")
-    return service.update(id, anime, poster_img, lang, current_user)
-
+    if current_user.is_manager:
+        return service.update(id, anime, poster_img, lang)
+    else:
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
 
 @router.delete("/delete/{id}")
 async def delete(
@@ -185,8 +196,10 @@ async def delete(
         service (Annotated[AnimeService, Depends]): Anime service
         current_user (Annotated[User, Depends]): Get user using the token in the header
     """
-    return service.delete(id, current_user)
-
+    if current_user.is_manager:
+        return service.delete(id)
+    else:
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
 
 @router.get("/{id}", response_model=Anime)
 async def get(

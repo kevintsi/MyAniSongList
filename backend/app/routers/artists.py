@@ -3,7 +3,7 @@ from typing import Annotated
 from app.db.models import User
 from app.db.schemas.artists import Artist, ArtistCreate, ArtistUpdate
 from app.services.artists import ArtistService, get_service
-from fastapi import APIRouter, Body, Depends, UploadFile, status
+from fastapi import APIRouter, Body, Depends, HTTPException, UploadFile, status
 from fastapi_pagination import Page
 from fastapi_pagination.ext.sqlalchemy import paginate
 
@@ -76,8 +76,12 @@ async def add(
 
         artist: Created artist
     """
-    return service.create(artist, poster_img, current_user)
-
+    if current_user.is_manager:
+        return service.create(artist, poster_img)
+    else:
+        raise HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized"
+    )
 
 @router.put("/update/{id}", response_model=Artist)
 async def update(
@@ -103,8 +107,12 @@ async def update(
 
         artist: Updated artist
     """
-    return service.update(id, artist, poster_img, current_user)
-
+    if current_user.is_manager:
+        return service.update(id, artist, poster_img)
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized"
+        )
 
 @router.delete("/delete/{id}")
 async def delete(
@@ -122,8 +130,12 @@ async def delete(
         service (Annotated[ArtistService, Depends): Artist service
         current_user (Annotated[User, Depends): Get user using the token in the header
     """
-    return service.delete(id, current_user)
-
+    if current_user.is_manager:
+        return service.delete(id)
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized"
+        )
 
 @router.get("/{id}", response_model=Artist)
 async def get(

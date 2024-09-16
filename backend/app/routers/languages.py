@@ -3,7 +3,7 @@ from typing import Annotated
 from app.db.models import User
 from app.db.schemas.languages import Language, LanguageCreate, LanguageUpdate
 from app.services.languages import LanguageService, get_service
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, HTTPException, status
 
 from .users import get_current_user
 
@@ -110,8 +110,12 @@ async def add(
 
         Language: Created language
     """
-    return service.create(language, current_user)
-
+    if current_user.is_manager:
+        return service.create(language)
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized"
+        )
 
 @router.put("/update/{id}", response_model=Language)
 async def update(
@@ -135,8 +139,12 @@ async def update(
 
         Language: Language updated
     """
-    return service.update(id, language, current_user)
-
+    if current_user.is_manager:
+        return service.update(id, language)
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized"
+        )
 
 @router.delete("/delete/{id}")
 async def delete(
@@ -155,4 +163,9 @@ async def delete(
         current_user (Annotated[User, Depends): Get user using the token in the header
 
     """
-    return service.delete(id, current_user)
+    if current_user.is_manager:
+        return service.delete(id)
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized"
+        )

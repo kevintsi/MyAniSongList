@@ -11,7 +11,7 @@ from app.db.schemas.musics import (
     MusicUpdate,
 )
 from app.services.musics import MusicService, OrderMusicBy, get_service
-from fastapi import APIRouter, Body, Depends, Query, UploadFile, status
+from fastapi import APIRouter, Body, Depends, HTTPException, Query, UploadFile, status
 from fastapi_pagination import Page
 from fastapi_pagination.ext.sqlalchemy import paginate
 
@@ -167,7 +167,12 @@ async def add(
 
         Music: Created music
     """
-    return service.create(music, poster_img, current_user)
+    if current_user.is_manager:
+        return service.create(music, poster_img)
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized"
+        )
 
 
 @router.put("/update/{id}", response_model=Music)
@@ -194,7 +199,12 @@ async def update(
 
         Music: Updated music
     """
-    return service.update(id, music, poster_img, current_user)
+    if current_user.is_manager:
+        return service.update(id, music, poster_img)
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized"
+        )
 
 
 @router.delete("/delete/{id}")
@@ -213,7 +223,12 @@ async def delete(
         service (Annotated[MusicService, Depends]): Music id
         current_user (Annotated[User, Depends]): Get user using the token in the header
     """
-    service.delete(id, current_user)
+    if current_user.is_manager:
+        service.delete(id)
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized"
+        )
 
 
 @router.get("/{id}", response_model=Music)

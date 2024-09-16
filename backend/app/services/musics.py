@@ -193,83 +193,78 @@ class MusicService(BaseService[Music, MusicCreate, MusicUpdate]):
                 detail="language id not found",
             )
 
-    def create(self, obj: MusicCreate, poster_img: UploadFile, user: User):
-        if user.is_manager:
-            image = Image.open(BytesIO(poster_img.file.read()))
-            webp_buffer = BytesIO()
-            image.save(webp_buffer, format="WEBP", quality=100)
-            webp_buffer.seek(0)
-            filename = poster_img.filename.rsplit(".", 1)[0] + ".webp"
-            blob = bucket.blob(f"music_poster_images/{filename}")
-            blob.upload_from_file(webp_buffer, content_type="image/webp")
-            blob.make_public()
+    def create(self, obj: MusicCreate, poster_img: UploadFile):
+        image = Image.open(BytesIO(poster_img.file.read()))
+        webp_buffer = BytesIO()
+        image.save(webp_buffer, format="WEBP", quality=100)
+        webp_buffer.seek(0)
+        filename = poster_img.filename.rsplit(".", 1)[0] + ".webp"
+        blob = bucket.blob(f"music_poster_images/{filename}")
+        blob.upload_from_file(webp_buffer, content_type="image/webp")
+        blob.make_public()
 
-            anime = self.db_session.get(Anime, obj.anime_id)
-            type = self.db_session.get(Type, obj.type_id)
+        anime = self.db_session.get(Anime, obj.anime_id)
+        type = self.db_session.get(Type, obj.type_id)
 
-            list_artists = []
+        list_artists = []
 
-            for id in obj.artists:
-                list_artists.append(self.db_session.get(Artist, id))
+        for id in obj.artists:
+            list_artists.append(self.db_session.get(Artist, id))
 
-            print(anime, type, list_artists)
+        print(anime, type, list_artists)
 
-            if anime and type and len(list_artists) > 0:
-                db_obj: Music = Music(
-                    name=obj.name,
-                    release_date=obj.release_date,
-                    type=type,
-                    anime=anime,
-                    poster_img=blob.public_url,
+        if anime and type and len(list_artists) > 0:
+            db_obj: Music = Music(
+                name=obj.name,
+                release_date=obj.release_date,
+                type=type,
+                anime=anime,
+                poster_img=blob.public_url,
+                id_video=obj.id_video,
+                artists=list_artists,
+            )
+
+            print(f"converted to Music model : ${db_obj}")
+            self.db_session.add(db_obj)
+            try:
+                self.db_session.commit()
+
+                list_artists = list(
+                    map(
+                        lambda obj: ArtistSchema(
+                            id=obj.id,
+                            name=obj.name,
+                            creation_year=obj.creation_year,
+                            poster_img=obj.poster_img,
+                        ),
+                        list_artists,
+                    )
+                )
+
+                return MusicSchema(
+                    id=db_obj.id,
+                    name=db_obj.name,
+                    release_date=db_obj.release_date,
+                    poster_img=db_obj.poster_img,
                     id_video=obj.id_video,
                     artists=list_artists,
                 )
 
-                print(f"converted to Music model : ${db_obj}")
-                self.db_session.add(db_obj)
-                try:
-                    self.db_session.commit()
-
-                    list_artists = list(
-                        map(
-                            lambda obj: ArtistSchema(
-                                id=obj.id,
-                                name=obj.name,
-                                creation_year=obj.creation_year,
-                                poster_img=obj.poster_img,
-                            ),
-                            list_artists,
-                        )
+            except sqlalchemy.exc.IntegrityError as e:
+                self.db_session.rollback()
+                if "Duplicate entry" in str(e):
+                    raise HTTPException(
+                        status_code=status.HTTP_409_CONFLICT,
+                        detail="Conflict Error",
                     )
-
-                    return MusicSchema(
-                        id=db_obj.id,
-                        name=db_obj.name,
-                        release_date=db_obj.release_date,
-                        poster_img=db_obj.poster_img,
-                        id_video=obj.id_video,
-                        artists=list_artists,
-                    )
-
-                except sqlalchemy.exc.IntegrityError as e:
-                    self.db_session.rollback()
-                    if "Duplicate entry" in str(e):
-                        raise HTTPException(
-                            status_code=status.HTTP_409_CONFLICT,
-                            detail="Conflict Error",
-                        )
-                    else:
-                        raise e
-            else:
-                raise HTTPException(
-                    status_code=status.HTTP_404_NOT_FOUND,
-                    detail="Anime or Type or Artists not found",
-                )
+                else:
+                    raise e
         else:
             raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED, detail="Forbidden"
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Anime or Type or Artists not found",
             )
-
+        
     def add_to_favorite(self, id: str, user: User):
         music = self.db_session.get(Music, id)
 
@@ -330,75 +325,68 @@ class MusicService(BaseService[Music, MusicCreate, MusicUpdate]):
                 raise e
         print("End remove from favorite")
 
-    def update(self, id, obj: MusicUpdate, poster_img: UploadFile, user: User):
-        if user.is_manager:
-            db_obj = self.db_session.get(Music, id)
+    def update(self, id, obj: MusicUpdate, poster_img: UploadFile):
+        db_obj = self.db_session.get(Music, id)
 
-            if db_obj is None:
-                raise HTTPException(
-                    status_code=status.HTTP_404_NOT_FOUND,
-                    detail="Music id not found",
+        if db_obj is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Music id not found",
+            )
+
+        list_artist = []
+
+        for id in obj.artists:
+            list_artist.append(self.db_session.get(Artist, id))
+
+        for column, value in obj.dict(exclude_unset=True).items():
+            if column == "artists":
+                db_obj.artists = list_artist
+            else:
+                setattr(db_obj, column, value)
+
+        if poster_img is not None:
+            image = Image.open(BytesIO(poster_img.file.read()))
+            webp_buffer = BytesIO()
+            image.save(webp_buffer, format="WEBP", quality=100)
+            webp_buffer.seek(0)
+            filename = poster_img.filename.rsplit(".", 1)[0] + ".webp"
+            blob = bucket.blob(f"music_poster_images/{filename}")
+            blob.upload_from_file(webp_buffer, content_type="image/webp")
+            blob.make_public()
+
+            setattr(db_obj, "poster_img", blob.public_url)
+
+        self.db_session.commit()
+
+        print(f"Music {db_obj}")
+
+        return MusicSchema(
+            id=db_obj.id,
+            name=db_obj.name,
+            release_date=db_obj.release_date,
+            poster_img=db_obj.poster_img,
+            id_video=obj.id_video,
+            artists=list(
+                map(
+                    lambda obj: ArtistSchema(
+                        id=obj.id,
+                        name=obj.name,
+                        creation_year=obj.creation_year,
+                        poster_img=obj.poster_img,
+                    ),
+                    db_obj.artists,
                 )
+            ),
+        )
 
-            list_artist = []
-
-            for id in obj.artists:
-                list_artist.append(self.db_session.get(Artist, id))
-
-            for column, value in obj.dict(exclude_unset=True).items():
-                if column == "artists":
-                    db_obj.artists = list_artist
-                else:
-                    setattr(db_obj, column, value)
-
-            if poster_img is not None:
-                image = Image.open(BytesIO(poster_img.file.read()))
-                webp_buffer = BytesIO()
-                image.save(webp_buffer, format="WEBP", quality=100)
-                webp_buffer.seek(0)
-                filename = poster_img.filename.rsplit(".", 1)[0] + ".webp"
-                blob = bucket.blob(f"music_poster_images/{filename}")
-                blob.upload_from_file(webp_buffer, content_type="image/webp")
-                blob.make_public()
-
-                setattr(db_obj, "poster_img", blob.public_url)
-
-            self.db_session.commit()
-
-            print(f"Music {db_obj}")
-
-            return MusicSchema(
-                id=db_obj.id,
-                name=db_obj.name,
-                release_date=db_obj.release_date,
-                poster_img=db_obj.poster_img,
-                id_video=obj.id_video,
-                artists=list(
-                    map(
-                        lambda obj: ArtistSchema(
-                            id=obj.id,
-                            name=obj.name,
-                            creation_year=obj.creation_year,
-                            poster_img=obj.poster_img,
-                        ),
-                        db_obj.artists,
-                    )
-                ),
-            )
-        else:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED, detail="Forbidden"
-            )
-
-    def delete(self, id: int, user: User):
-        if user.is_manager:
-            db_obj = self.db_session.get(Music, id)
-            self.db_session.delete(db_obj)
-            self.db_session.commit()
-        else:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED, detail="Forbidden"
-            )
+    def delete(self, id: int):
+        db_obj = self.db_session.get(Music, id)
+        if db_obj is None:
+            raise HTTPException(status.HTTP_404_NOT_FOUND, detail="Music not found")
+        self.db_session.delete(db_obj)
+        self.db_session.commit()
+        
 
 
 def get_service(db_session: Session = Depends(get_session)) -> MusicService:

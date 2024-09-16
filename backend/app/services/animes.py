@@ -83,157 +83,85 @@ class AnimeService(BaseService[Anime, AnimeCreate, AnimeUpdate]):
                 status_code=status.HTTP_404_NOT_FOUND, detail="Error language"
             )
 
-    def create(self, obj: AnimeCreate, poster_img: UploadFile, user: User):
-        if user.is_manager:
-            lang_obj: Language | None = self.db_session.scalars(
-                select(Language).filter(Language.code == "fr")
-            ).first()
+    def create(self, obj: AnimeCreate, poster_img: UploadFile):
+        lang_obj: Language | None = self.db_session.scalars(
+            select(Language).filter(Language.code == "fr")
+        ).first()
 
-            if lang_obj:
-                image = Image.open(BytesIO(poster_img.file.read()))
-                webp_buffer = BytesIO()
-                image.save(webp_buffer, format="WEBP", quality=100)
-                webp_buffer.seek(0)
-                filename = poster_img.filename.rsplit(".", 1)[0] + ".webp"
-                blob = bucket.blob(f"anime_poster_images/{filename}")
-                blob.upload_from_file(webp_buffer, content_type="image/webp")
-                blob.make_public()
+        if lang_obj:
+            image = Image.open(BytesIO(poster_img.file.read()))
+            webp_buffer = BytesIO()
+            image.save(webp_buffer, format="WEBP", quality=100)
+            webp_buffer.seek(0)
+            filename = poster_img.filename.rsplit(".", 1)[0] + ".webp"
+            blob = bucket.blob(f"anime_poster_images/{filename}")
+            blob.upload_from_file(webp_buffer, content_type="image/webp")
+            blob.make_public()
 
-                try:
+            try:
 
-                    anime: Anime = Anime(poster_img=blob.public_url)
+                anime: Anime = Anime(poster_img=blob.public_url)
 
-                    anime_translation: AnimeTranslation = AnimeTranslation(
-                        anime=anime,
-                        name=obj.name,
-                        description=obj.description,
-                        language=lang_obj,
-                    )
-
-                    print(f"converted to Anime model : {anime_translation}")
-                    self.db_session.add(anime_translation)
-                    self.db_session.commit()
-
-                    return AnimeSchema(
-                        id=anime.id,
-                        name=anime_translation.name,
-                        description=anime_translation.description,
-                        poster_img=anime.poster_img,
-                    )
-
-                except exc.IntegrityError as e:
-                    self.db_session.rollback()
-                    if "Duplicate entry" in str(e):
-                        raise HTTPException(
-                            status_code=status.HTTP_409_CONFLICT,
-                            detail="Conflict Error",
-                        )
-                    else:
-                        raise e
-            else:
-                raise HTTPException(
-                    status_code=status.HTTP_404_NOT_FOUND,
-                    detail="Error language",
+                anime_translation: AnimeTranslation = AnimeTranslation(
+                    anime=anime,
+                    name=obj.name,
+                    description=obj.description,
+                    language=lang_obj,
                 )
+
+                print(f"converted to Anime model : {anime_translation}")
+                self.db_session.add(anime_translation)
+                self.db_session.commit()
+
+                return AnimeSchema(
+                    id=anime.id,
+                    name=anime_translation.name,
+                    description=anime_translation.description,
+                    poster_img=anime.poster_img,
+                )
+
+            except exc.IntegrityError as e:
+                self.db_session.rollback()
+                if "Duplicate entry" in str(e):
+                    raise HTTPException(
+                        status_code=status.HTTP_409_CONFLICT,
+                        detail="Conflict Error",
+                    )
+                else:
+                    raise e
         else:
             raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED, detail="Forbidden"
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Error language",
             )
+
 
     def create_translation(
-        self, obj: AnimeTranslationCreate, id: int, lang: str, user: User
+        self, obj: AnimeTranslationCreate, id: int, lang: str
     ):
-        if user.is_manager:
-            lang_obj: Language | None = (
-                self.db_session.query(Language)
-                .filter(Language.code == lang)
-                .first()
-            )
+        lang_obj: Language | None = (
+            self.db_session.query(Language)
+            .filter(Language.code == lang)
+            .first()
+        )
 
-            anime: Anime | None = (
-                self.db_session.query(Anime).filter(Anime.id == id).first()
-            )
+        anime: Anime | None = (
+            self.db_session.query(Anime).filter(Anime.id == id).first()
+        )
 
-            if lang_obj and anime:
-                try:
-                    anime_translation: AnimeTranslation = AnimeTranslation(
-                        anime=anime,
-                        name=obj.name,
-                        description=obj.description,
-                        language=lang_obj,
-                    )
-
-                    print(
-                        f"converted to AnimeTranslation model : {anime_translation}"
-                    )
-                    self.db_session.add(anime_translation)
-                    self.db_session.commit()
-                    return AnimeSchema(
-                        id=anime.id,
-                        name=anime_translation.name,
-                        description=anime_translation.description,
-                        poster_img=anime.poster_img,
-                    )
-                except exc.IntegrityError as e:
-                    self.db_session.rollback()
-                    if "Duplicate entry" in str(e):
-                        raise HTTPException(
-                            status_code=status.HTTP_409_CONFLICT,
-                            detail="Conflict Error",
-                        )
-                    else:
-                        raise e
-            else:
-                raise HTTPException(
-                    status_code=404, detail="Error language or anime id"
+        if lang_obj and anime:
+            try:
+                anime_translation: AnimeTranslation = AnimeTranslation(
+                    anime=anime,
+                    name=obj.name,
+                    description=obj.description,
+                    language=lang_obj,
                 )
-        else:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED, detail="Forbidden"
-            )
 
-    def update(
-        self,
-        id,
-        obj: AnimeUpdate,
-        poster_img: UploadFile,
-        lang: str,
-        user: User,
-    ):
-
-        if user.is_manager:
-
-            obj_lang: Language | None = self.db_session.scalars(
-                select(Language).filter(Language.code == lang)
-            ).first()
-
-            anime: Anime | None = self.db_session.get(Anime, id)
-
-            if anime and obj_lang:
-                if poster_img:
-                    image = Image.open(BytesIO(poster_img.file.read()))
-                    webp_buffer = BytesIO()
-                    image.save(webp_buffer, format="WEBP", quality=100)
-                    webp_buffer.seek(0)
-                    filename = poster_img.filename.rsplit(".", 1)[0] + ".webp"
-                    blob = bucket.blob(f"anime_poster_images/{filename}")
-                    blob.upload_from_file(
-                        webp_buffer, content_type="image/webp"
-                    )
-                    blob.make_public()
-
-                    anime.poster_img = blob.public_url
-
-                anime_translation: AnimeTranslation = self.db_session.scalars(
-                    select(AnimeTranslation).filter(
-                        AnimeTranslation.id_anime == anime.id,
-                        AnimeTranslation.id_language == obj_lang.id,
-                    )
-                ).first()
-
-                for col, value in obj.dict(exclude_unset=True).items():
-                    setattr(anime_translation, col, value)
-
+                print(
+                    f"converted to AnimeTranslation model : {anime_translation}"
+                )
+                self.db_session.add(anime_translation)
                 self.db_session.commit()
                 return AnimeSchema(
                     id=anime.id,
@@ -241,25 +169,78 @@ class AnimeService(BaseService[Anime, AnimeCreate, AnimeUpdate]):
                     description=anime_translation.description,
                     poster_img=anime.poster_img,
                 )
-            else:
-                raise HTTPException(
-                    status_code=status.HTTP_404_NOT_FOUND,
-                    detail="Error language or anime id",
-                )
+            except exc.IntegrityError as e:
+                self.db_session.rollback()
+                if "Duplicate entry" in str(e):
+                    raise HTTPException(
+                        status_code=status.HTTP_409_CONFLICT,
+                        detail="Conflict Error",
+                    )
+                else:
+                    raise e
         else:
             raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED, detail="Forbidden"
+                status_code=status.HTTP_404_NOT_FOUND, detail="Error language or anime id"
             )
 
-    def delete(self, id: int, user: User):
-        if user.is_manager:
-            db_obj = self.db_session.get(Anime, id)
-            self.db_session.delete(db_obj)
+
+    def update(
+        self,
+        id,
+        obj: AnimeUpdate,
+        poster_img: UploadFile,
+        lang: str,
+    ):
+        obj_lang: Language | None = self.db_session.scalars(
+            select(Language).filter(Language.code == lang)
+        ).first()
+
+        anime: Anime | None = self.db_session.get(Anime, id)
+
+        if anime and obj_lang:
+            if poster_img:
+                image = Image.open(BytesIO(poster_img.file.read()))
+                webp_buffer = BytesIO()
+                image.save(webp_buffer, format="WEBP", quality=100)
+                webp_buffer.seek(0)
+                filename = poster_img.filename.rsplit(".", 1)[0] + ".webp"
+                blob = bucket.blob(f"anime_poster_images/{filename}")
+                blob.upload_from_file(
+                    webp_buffer, content_type="image/webp"
+                )
+                blob.make_public()
+
+                anime.poster_img = blob.public_url
+
+            anime_translation: AnimeTranslation = self.db_session.scalars(
+                select(AnimeTranslation).filter(
+                    AnimeTranslation.id_anime == anime.id,
+                    AnimeTranslation.id_language == obj_lang.id,
+                )
+            ).first()
+
+            for col, value in obj.dict(exclude_unset=True).items():
+                setattr(anime_translation, col, value)
+
             self.db_session.commit()
+            return AnimeSchema(
+                id=anime.id,
+                name=anime_translation.name,
+                description=anime_translation.description,
+                poster_img=anime.poster_img,
+            )
         else:
             raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED, detail="Forbidden"
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Error language or anime id",
             )
+
+    def delete(self, id: int):
+        db_obj = self.db_session.get(Anime, id)
+        if db_obj is None:
+            raise HTTPException(status.HTTP_404_NOT_FOUND, detail="Error anime id doesn't exist")
+        self.db_session.delete(db_obj)
+        self.db_session.commit()
 
 
 def get_service(db_session: Session = Depends(get_session)) -> AnimeService:
