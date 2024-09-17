@@ -10,7 +10,7 @@ from app.db.schemas.music_requests import (
 
 router = APIRouter(prefix="/request_music", tags=["Request Musics"])
 
-@router.get("/request_music/all")
+@router.get("/all")
 async def get_all(
     service : Annotated[MusicRequestService, Depends(get_service)], 
     current_user : Annotated[User, Depends(get_current_user)]
@@ -20,7 +20,7 @@ async def get_all(
     else:
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
     
-@router.post("/request_music", response_model=MusicRequest)
+@router.post("/", response_model=MusicRequest)
 async def request_music(
     music_request : CreateMusicRequest,
     service: Annotated[MusicRequestService, Depends(get_service)],

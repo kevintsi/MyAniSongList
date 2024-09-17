@@ -222,6 +222,7 @@ class MusicService(BaseService[Music, MusicCreate, MusicUpdate]):
                 poster_img=blob.public_url,
                 id_video=obj.id_video,
                 artists=list_artists,
+                avg_note=0
             )
 
             print(f"converted to Music model : ${db_obj}")

@@ -84,7 +84,8 @@ class AnimeTranslation(Base):
     description = mapped_column(Text(), nullable=False)
 
     anime: Mapped["Anime"] = relationship(
-        "Anime", back_populates="anime_translations"
+        "Anime", 
+        back_populates="anime_translations",
     )
     language: Mapped["Language"] = relationship(
         back_populates="anime_translations"
@@ -101,9 +102,10 @@ class Anime(Base):
     poster_img = mapped_column(String(250), nullable=False)
 
     anime_translations: Mapped[List[AnimeTranslation]] = relationship(
-        back_populates="anime", cascade="delete, all"
+        back_populates="anime", cascade="all, delete"
     )
-    musics: Mapped[List["Music"]] = relationship(back_populates="anime")
+    musics: Mapped[List["Music"]] = relationship(
+        back_populates="anime", cascade="all, delete")
 
     def __repr__(self):
         return f"Anime({self.id},{self.poster_img})"
@@ -140,7 +142,8 @@ class Type(Base):
     type_translations: Mapped[List[TypeTranslation]] = relationship(
         back_populates="type", cascade="all, delete"
     )
-    musics: Mapped[List["Music"]] = relationship(back_populates="type")
+    musics: Mapped[List["Music"]] = relationship(
+        back_populates="type", cascade="all, delete")
 
     def __repr__(self):
         return f"Type({self.id})"
