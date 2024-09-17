@@ -25,10 +25,9 @@
                     </tr>
                 </thead>
                 <tbody class="text-center">
-                    <tr class="hover:bg-base-300 cursor-pointer" [routerLink]="['/manage/artists', artist.id]"
-                        *ngFor="let artist of artists.items">
+                    <tr class="hover:bg-base-300 cursor-pointer" *ngFor="let artist of artists.items">
                         <td class="flex justify-center items-center">
-                            <div class="w-20 md:w-40 h-full">
+                            <div class="w-20 md:w-40 h-full" [routerLink]="['/manage/artists', artist.id]">
                                 <img [src]="artist.poster_img" [alt]="artist.name" loading="lazy" />
                             </div>
                         </td>

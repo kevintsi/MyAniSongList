@@ -25,9 +25,9 @@
                     </tr>
                 </thead>
                 <tbody class="text-center">
-                    <tr class="hover:bg-base-300 cursor-pointer" [routerLink]="['/manage/languages', lang.id]"
-                        *ngFor="let lang of languages">
-                        <td class="overflow-hidden text-ellipsis whitespace-nowrap">
+                    <tr class="hover:bg-base-300 cursor-pointer" *ngFor="let lang of languages">
+                        <td class="overflow-hidden text-ellipsis whitespace-nowrap"
+                            [routerLink]="['/manage/languages', lang.id]">
                             {{ lang.code | uppercase }}
                         </td>
                         <td class="md:text-6xl text-4xl text-center" (click)="delete(lang)">

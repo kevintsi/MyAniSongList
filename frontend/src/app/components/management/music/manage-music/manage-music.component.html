@@ -27,11 +27,10 @@
                 </thead>
 
                 <tbody class="text-center">
-                    <tr class="hover:bg-base-300 cursor-pointer" [routerLink]="['/manage/musics', music.id]"
-                        *ngFor="let music of musics.items">
+                    <tr class="hover:bg-base-300 cursor-pointer" *ngFor="let music of musics.items">
 
                         <td class="flex justify-center items-center">
-                            <div class="w-20 md:w-40 h-full">
+                            <div class="w-20 md:w-40 h-full" [routerLink]="['/manage/musics', music.id]">
                                 <img [src]="music.poster_img" [alt]="music.name" loading="lazy" />
                             </div>
                         </td>

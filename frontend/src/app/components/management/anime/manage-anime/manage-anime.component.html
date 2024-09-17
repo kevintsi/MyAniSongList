@@ -25,11 +25,10 @@
                     </tr>
                 </thead>
                 <tbody class="text-center">
-                    <tr class="hover:bg-base-300 cursor-pointer" [routerLink]="['/manage/animes', anime.id]"
-                        *ngFor="let anime of animes.items">
+                    <tr class="hover:bg-base-300 cursor-pointer" *ngFor="let anime of animes.items">
                         <td class="flex justify-center items-center">
-                            <div class="h-full w-20 md:w-40">
-                                <img [src]="anime.poster_img" [alt]="anime.name" loading="lazy" />
+                            <div class="h-full w-20 md:w-40" [routerLink]="['/manage/animes', anime.id]">
+                                <img [src]=" anime.poster_img" [alt]="anime.name" loading="lazy" />
                             </div>
                         </td>
                         <td class="overflow-hidden text-ellipsis whitespace-nowrap">
