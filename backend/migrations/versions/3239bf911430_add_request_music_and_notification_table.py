@@ -37,6 +37,7 @@ def upgrade() -> None:
     op.create_table('notification',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('creation_date', sa.DateTime(), nullable=False),
+    sa.Column('is_read', sa.Boolean(), nullable=False),
     sa.Column('music_id', sa.Integer(), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['music_id'], ['music.id'], name=op.f('fk_notification_music_id_music'), ondelete='CASCADE'),

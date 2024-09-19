@@ -298,6 +298,7 @@ class Notification(Base):
 
     id = mapped_column(Integer, primary_key=True)
     creation_date = mapped_column(DateTime, nullable=False)
+    is_read = mapped_column(Boolean, nullable=False)
     music_id = mapped_column(
         ForeignKey("music.id", ondelete="CASCADE"), nullable=False, index=True
     )
