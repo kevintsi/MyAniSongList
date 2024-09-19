@@ -5,7 +5,7 @@ from app.db.schemas.music_requests import (
     CreateMusicRequest,
     MusicRequest
 )
-from sqlalchemy import select
+from sqlalchemy import select, update
 from sqlalchemy.exc import IntegrityError
 from app.db.models import User, Type
 from app.db.schemas.users import User as UserSchema
@@ -57,6 +57,39 @@ class MusicRequestService(BaseService[RequestMusic, CreateMusicRequest, None]):
         except IntegrityError as e:
             self.db_session.rollback()
             print(f"Error : {e}")
+    
+    def update_request(self, id : int):
+        req_music : RequestMusic | None = self.db_session.get(RequestMusic, id)
         
+        if req_music is None:
+            raise HTTPException(status.HTTP_404_NOT_FOUND, detail="Request music with this id not found")
+        
+        try:
+            stmt = (
+                update(RequestMusic).
+            where(RequestMusic.id == id).
+            values(is_done=True)
+            )
+
+            self.db_session.execute(stmt)
+
+            return req_music
+        except IntegrityError as e:
+            self.db_session.rollback()
+            print(f"Error : {e}")
+
+    def delete(self, id : int):
+        req_music : RequestMusic | None = self.db_session.get(RequestMusic, id)
+        
+        if req_music is None:
+            raise HTTPException(status.HTTP_404_NOT_FOUND, detail="Request music with this id not found")
+        
+        try:
+            self.db_session.delete(req_music)
+            self.db_session.commit()
+        except IntegrityError as e:
+            self.db_session.rollback()
+            print(f"Error : {e}")
+
 def get_service(db_session: Session = Depends(get_session)) -> MusicRequestService:
     return MusicRequestService(db_session)
