@@ -9,7 +9,8 @@ from app.routers import (
     reviews,
     types,
     users,
-    music_request
+    music_request,
+    notifications
 )
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -36,6 +37,7 @@ app.include_router(reviews.router)
 app.include_router(favorites.router)
 app.include_router(languages.router)
 app.include_router(music_request.router)
+app.include_router(notifications.router)
 
 
 @app.get("/")
