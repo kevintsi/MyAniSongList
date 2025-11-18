@@ -13,6 +13,6 @@ pytz==2023.3
 fastapi-pagination==0.12.4
 redis==5.0.1
 redis[hiredis]
-passlib[bcrypt]==1.7.4
+bcrypt==4.2.0
 python-multipart==0.0.6
 firebase_admin==6.3.0
