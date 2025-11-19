@@ -30,12 +30,12 @@ def authenticate_user(db_session: Session, email: str, password: str):
 
 
 def verify_password(plain_password, hashed_password):
-    return bcrypt.checkpw(plain_password, hashed_password)
+    return bcrypt.checkpw(plain_password.encode("utf-8"), hashed_password)
 
 
 def get_password_hash(password):
     salt = bcrypt.gensalt()
-    return bcrypt.hashpw(password,salt)
+    return bcrypt.hashpw(password.encode("utf-8"),salt)
 
 
 def create_access_token(data: dict, expires_delta: timedelta):
